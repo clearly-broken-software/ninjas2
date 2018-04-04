@@ -3,6 +3,8 @@
 # ---------------------------- #
 # Created by falkTX
 #
+# Modified by Clearly Broken Software
+#
 
 AR  ?= ar
 CC  ?= gcc

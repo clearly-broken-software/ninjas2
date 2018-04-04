@@ -1,7 +1,7 @@
 /*
- * DISTRHO Kars Plugin, based on karplong by Chris Cannam.
- * Copyright (C) 2015 Filipe Coelho <falktx@falktx.com>
- *
+ * Ninjas 2
+ * 
+ * Copyright (C) 2018 Clearly Broken Software
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
  * permission notice appear in all copies.

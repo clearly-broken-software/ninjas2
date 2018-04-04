@@ -3,6 +3,8 @@
 # ---------------------------- #
 # Created by falkTX
 #
+# Modified by Clearly Broken Software
+#
 
 # NAME, OBJS_DSP and OBJS_UI have been defined before
 

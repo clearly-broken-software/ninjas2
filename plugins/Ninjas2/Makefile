@@ -3,6 +3,8 @@
 # ---------------------------- #
 # Created by falkTX
 #
+# Modified by Clearly Broken Software
+#
 
 # --------------------------------------------------------------
 # Project name, used for binaries
