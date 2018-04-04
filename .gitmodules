@@ -1,0 +1,7 @@
+[submodule "dpf"]
+	path = dpf
+	url = https://github.com/pdesaulniers/DPF.git
+	branch = waveshaper
+[submodule "plugins/Ninjas2/Common"]
+	path = plugins/Ninjas2/Common
+	url = https://github.com/pdesaulniers/wolf-common.git
