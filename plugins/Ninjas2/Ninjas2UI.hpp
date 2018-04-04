@@ -18,6 +18,7 @@
 #define NINJAS_UI_HPP_INCLUDED
 
 #include "DistrhoUI.hpp"
+#include "Window.hpp"
 #include "sndfile.hh"
 #include "DistrhoPlugin.hpp"
 #include "iterator"
@@ -30,7 +31,7 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
 
-class NinjasUI : public UI,
+class NinjasUI : public UI
 {
 public:
   NinjasUI();
@@ -49,8 +50,6 @@ protected:
   void onDisplay() override;
 
 private:
-  Image 
-
   void calcWaveform ( String fp, std::vector<float> & sampleVector );
   void recallSliceSettings ( int slice );
   void getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets );
@@ -99,7 +98,7 @@ private:
   int sampleChannels;
   std::vector<float>sampleVector;
   bool sample_is_loaded;
-  DGL::Window::FileBrowserOptions filebrowseropts;
+  Window::FileBrowserOptions filebrowseropts;
   std::string directory;
   Rectangle<int> boxes[128];
 

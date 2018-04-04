@@ -8,6 +8,10 @@ AR  ?= ar
 CC  ?= gcc
 CXX ?= g++
 
+export PLUGIN_NAME ?= ninjas2
+export DISTRHO_NAMESPACE ?= NINJAS2_DISTRHO
+export DGL_NAMESPACE ?= NINJAS2_DGL
+
 # --------------------------------------------------------------
 # Fallback to Linux if no other OS defined
 
@@ -78,6 +82,8 @@ BUILD_CXX_FLAGS = $(BASE_FLAGS) $(CXXFLAGS) $(CPPFLAGS)
 LINK_FLAGS      = $(LINK_OPTS) $(LDFLAGS)
 endif
 
+CXXFLAGS += -DPLUGIN_NAME=\"$(PLUGIN_NAME)\" -DDISTRHO_NAMESPACE=$(DISTRHO_NAMESPACE) -DDGL_NAMESPACE=$(DGL_NAMESPACE)
+
 # --------------------------------------------------------------
 # Check for optional libs
 
@@ -101,8 +107,8 @@ endif
 ifeq ($(HAVE_DGL),true)
 
 ifeq ($(LINUX),true)
-DGL_FLAGS = $(shell pkg-config --cflags gl x11)
-DGL_LIBS  = $(shell pkg-config --libs gl x11)
+DGL_FLAGS = $(shell pkg-config --cflags gl x11 xcursor)
+DGL_LIBS  = $(shell pkg-config --libs gl x11 xcursor) -static-libgcc -static-libstdc++ -lpthread
 endif
 
 ifeq ($(MACOS),true)
@@ -110,7 +116,7 @@ DGL_LIBS  = -framework OpenGL -framework Cocoa
 endif
 
 ifeq ($(WIN32),true)
-DGL_LIBS  = -lopengl32 -lgdi32
+DGL_LIBS  = -lopengl32 -lgdi32 -static-libgcc -static-libstdc++ -static -lpthread
 endif
 
 endif # HAVE_DGL

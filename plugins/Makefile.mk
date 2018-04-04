@@ -18,7 +18,7 @@ endif
 TARGET_DIR = ../../bin
 
 BUILD_C_FLAGS   += -I.
-BUILD_CXX_FLAGS += -I. -I../../aubio/src -I../../dpf/distrho -I../../dpf/dgl
+BUILD_CXX_FLAGS += -I. -I../../aubio/src -I../../dpf/distrho -I../../dpf/dgl -I./Common/Widgets -I./Common/Utils -I./Common/Structures
 BUILD_CXX_FLAGS +=  $(shell pkg-config --cflags samplerate sndfile)
 
 ifeq ($(HAVE_DGL),true)
@@ -51,7 +51,7 @@ vst        = $(TARGET_DIR)/$(NAME)-vst$(LIB_EXT)
 DISTRHO_PLUGIN_FILES = ../../dpf/distrho/DistrhoPluginMain.cpp ../../aubio/libaubio.a
 
 ifeq ($(HAVE_DGL),true)
-DISTRHO_UI_FILES     = ../../dpf/distrho/DistrhoUIMain.cpp ../../aubio/libaubio.a ../../dpf/libdgl.a
+DISTRHO_UI_FILES     = ../../dpf/distrho/src/IdleThread.cpp ../../dpf/distrho/DistrhoUIMain.cpp ../../aubio/libaubio.a ../../dpf/libdgl.a
 endif
 
 # --------------------------------------------------------------
@@ -81,6 +81,11 @@ all:
 
 clean:
 	rm -f *.d *.o
+	rm -f Common/Structures/src/*.d Common/Structures/src/*.o
+	rm -f Common/Structures/test/*.d Common/Structures/test/*.o
+	rm -f Common/Widgets/src/*.d Common/Widgets/src/*.o
+	rm -f Common/Utils/Fonts/getchunk
+	rm -f Common/Utils/src/*.d Common/Utils/src/*.o	
 	rm -rf $(TARGET_DIR)/$(NAME) $(TARGET_DIR)/$(NAME)-* $(TARGET_DIR)/$(NAME).lv2/
 
 # --------------------------------------------------------------

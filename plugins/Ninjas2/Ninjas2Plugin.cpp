@@ -15,7 +15,7 @@
 */
 
 #include "DistrhoPlugin.hpp"
-#include "NinjasPlugin.hpp"
+#include "Ninjas2Plugin.hpp"
 #include <sndfile.hh>
 #include <vector>
 #include <iostream>
@@ -176,14 +176,14 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
       parameter.midiCC = 110;
       break;
     }
-    case paramFloppy:
+    case paramLoad:
     {
       parameter.hints = kParameterIsAutomable|kParameterIsBoolean;
       parameter.ranges.def = 0.0f;
       parameter.ranges.min = 0.0f;
       parameter.ranges.max = 1.0f;
-      parameter.name   = "Floppy";
-      parameter.symbol  = "floppy";
+      parameter.name   = "Load";
+      parameter.symbol  = "load";
       break;
     }
 
@@ -246,12 +246,12 @@ void NinjasPlugin::setState ( const char* key, const char* value )
             createSlicesOnsets ();
 
           bypass = false;
-          setParameterValue ( paramFloppy,1.0f );
+          setParameterValue ( paramLoad, 1.0f );
         }
       else
         {
           bypass = true;
-          setParameterValue ( paramFloppy,0.0f );
+          setParameterValue ( paramLoad, 0.0f );
         }
     }
 }

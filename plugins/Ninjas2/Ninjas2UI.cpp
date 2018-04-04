@@ -16,15 +16,12 @@
 
 
 #include "DistrhoUI.hpp"
-#include "NinjasUI.hpp"
-#include "NinjasArtwork.hpp"
+#include "Ninjas2UI.hpp"
 #include <iostream>
 #include <string>
 #include "DistrhoPluginInfo.h"
 
 START_NAMESPACE_DISTRHO
-
-namespace Art = NinjasArtwork;
 
 // -----------------------------------------------------------------------------------------------------------
 NinjasUI::NinjasUI()
@@ -41,6 +38,7 @@ NinjasUI::NinjasUI()
   sampleChannels = 1;
   sample_is_loaded = false;
 
+  /*
   fKnobSlices = new ImageKnob ( this,
                                 Image ( Art::rotary_slicesData, Art::rotary_slicesWidth, Art::rotary_slicesHeight, GL_BGR ) );
   fKnobSlices->setId ( paramNumberOfSlices );
@@ -177,7 +175,7 @@ NinjasUI::NinjasUI()
         } // for x
     } // for y
 
-
+*/
 }
 
 /**
@@ -186,6 +184,7 @@ NinjasUI::NinjasUI()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
+  /*
   switch ( index )
     {
     case paramNumberOfSlices:
@@ -255,7 +254,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           recallSliceSettings ( slice );
         }
     }
-
+*/
 }
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
@@ -280,6 +279,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
 /* ----------------------------------------------------------------------------------------------------------
  * Widget Callbacks
  *----------------------------------------------------------------------------------------------------------*/
+/*
 void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
 {
   const uint buttonId ( imageSwitch->getId() );
@@ -511,10 +511,10 @@ void  NinjasUI::imageSliderValueChanged ( ImageSlider* slider, float value )
 
 }
 
-
+*/
 void NinjasUI::onDisplay()
 {
-  fImgBackground.draw();
+  //fImgBackground.draw();
   glEnable ( GL_BLEND );
   glEnable ( GL_LINE_SMOOTH );
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
@@ -607,7 +607,7 @@ void NinjasUI::onDisplay()
     }
   glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );
 
-  fImgFrame.drawAt ( 355,45 );
+  //fImgFrame.drawAt ( 355,45 );
 
 }
 
@@ -626,7 +626,7 @@ void NinjasUI::calcWaveform ( String fp, std::vector<float> & sampleVector )
       return;
     }
   sample_is_loaded =true;
-  fSwitchFloppy->setDown ( true );
+  //fSwitchFloppy->setDown ( true );
   float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
 
   sampleVector.resize ( sampleSize * sampleChannels );
@@ -708,8 +708,7 @@ std::string NinjasUI::dirnameOf ( const std::string& fname )
          : fname.substr ( 0, pos );
 }
 
-
-
+/*
 void NinjasUI::recallSliceSettings ( int slice )
 {
   setParameterValue ( paramAttack, p_Attack[slice] );
@@ -729,8 +728,9 @@ void NinjasUI::recallSliceSettings ( int slice )
   setParameterValue ( paramLoopRev, p_LoopRev[slice] );
   fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );
   repaint();
-
 }
+
+*/
 
 void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets )
 {
@@ -787,7 +787,6 @@ void NinjasUI::createSlicesRaw ()
     {
       a_slices[i].sliceStart = ( int ) i * sliceSize;
       a_slices[i].sliceEnd =   (( int ) ( i+1 ) * sliceSize ) - 1 ;
-
     }
 }
 

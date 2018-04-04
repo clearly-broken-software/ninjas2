@@ -8,10 +8,23 @@ include Makefile.mk
 
 all: libs plugins gen
 
+define MISSING_SUBMODULES_ERROR
+
+Cannot find DGL! Please run "make submodules" to clone the missing submodules, then retry building the plugin.
+
+endef
+
 # --------------------------------------------------------------
+submodules: 
+	git submodule update --init --recursive
 
 libs:
+ifeq (,$(wildcard dpf/dgl))
+	$(error $(MISSING_SUBMODULES_ERROR))
+endif
+
 	$(MAKE) -C aubio
+
 ifeq ($(HAVE_DGL),true)
 	$(MAKE) -C dpf/dgl
 endif
@@ -42,3 +55,4 @@ endif
 # --------------------------------------------------------------
 
 .PHONY: plugins
+

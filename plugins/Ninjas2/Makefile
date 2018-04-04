@@ -7,7 +7,7 @@
 # --------------------------------------------------------------
 # Project name, used for binaries
 
-NAME = ninjas
+NAME = ninjas2
 
 # --------------------------------------------------------------
 # Files to build
@@ -16,6 +16,22 @@ OBJS_DSP = \
 	Ninjas2Plugin.cpp.o
 
 OBJS_UI  = \
+	Common/Utils/src/Mathf.cpp.o \
+	Common/Structures/src/Graph.cpp.o \
+	Common/Structures/src/Layout.cpp.o \
+	Common/Structures/src/Animation.cpp.o \
+	Common/Widgets/src/NanoSwitch.cpp.o \
+	Common/Widgets/src/RemoveDCSwitch.cpp.o \
+	Common/Widgets/src/NanoButton.cpp.o \
+	Common/Widgets/src/ResetGraphButton.cpp.o \
+	Common/Widgets/src/NanoWheel.cpp.o \
+	Common/Widgets/src/NanoKnob.cpp.o \
+	Common/Widgets/src/VolumeKnob.cpp.o \
+	Common/Widgets/src/ResizeHandle.cpp.o \
+	Common/Widgets/src/LabelBox.cpp.o \
+	Common/Widgets/src/BipolarModeSwitch.cpp.o \
+	Common/Widgets/src/GlowingLabelsBox.cpp.o \
+	Common/Widgets/src/NanoLabel.cpp.o \
 	Ninjas2UI.cpp.o
 
 # --------------------------------------------------------------
