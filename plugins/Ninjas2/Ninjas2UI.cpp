@@ -24,10 +24,11 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 NinjasUI::NinjasUI()
-  : UI ()
+  : UI (1276, 350)
 {
   // init lcd
   waveform.fill ( lcd_center );
+
   // knobs
   slicemethod = false;
   currentSlice = 0;
@@ -37,59 +38,38 @@ NinjasUI::NinjasUI()
   sampleChannels = 1;
   sample_is_loaded = false;
 
-  /*
-  fKnobSlices = new ImageKnob ( this,
-                                Image ( Art::rotary_slicesData, Art::rotary_slicesWidth, Art::rotary_slicesHeight, GL_BGR ) );
+  fKnobSlices = new VolumeKnob ( this, Size<uint> ( 54, 54 ) );
   fKnobSlices->setId ( paramNumberOfSlices );
-  fKnobSlices->setAbsolutePos ( 279, 79 );
-  fKnobSlices->setRange ( 1.0f, 16.0f );
-  fKnobSlices->setDefault ( 1.0f );
-  fKnobSlices->setValue ( 1.0f );
-  fKnobSlices->setImageLayerCount ( 16 );
+  fKnobSlices->setRange ( 1.0f, 128.0f );
+  fKnobSlices->setColor ( Color ( 0,200,255,255 ) );
   fKnobSlices->setStep ( 1.0f );
   fKnobSlices->setCallback ( this );
 
-  // ADSR
-  fKnobAttack = new ImageKnob ( this,
-                                Image ( Art::rotary_adsrData, Art::rotary_adsrWidth, Art::rotary_adsrHeight, GL_BGRA ) );
+  fKnobAttack = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
   fKnobAttack->setId ( paramAttack );
-  fKnobAttack->setAbsolutePos ( 560, 255 );
   fKnobAttack->setRange ( 0.05f, 1.0f );
-  fKnobAttack->setDefault ( 0.05f );
-  fKnobAttack->setValue ( 0.05f );
-  fKnobAttack->setRotationAngle ( 300 );
-  fKnobAttack->setCallback ( this );
+  fKnobAttack->setColor (Color ( 0,200,255,255 ) );
+  fKnobAttack->setCallback( this );
 
-  fKnobDecay = new ImageKnob ( this,
-                               Image ( Art::rotary_adsrData, Art::rotary_adsrWidth, Art::rotary_adsrHeight, GL_BGRA ) );
+  fKnobDecay = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
   fKnobDecay->setId ( paramDecay );
-  fKnobDecay->setAbsolutePos ( 637, 255 );
   fKnobDecay->setRange ( 0.05f, 1.0f );
-  fKnobDecay->setDefault ( 0.0f );
-  fKnobDecay->setValue ( 0.05f );
-  fKnobDecay->setRotationAngle ( 300 );
+  fKnobDecay->setColor(Color(0,200,255,255));
   fKnobDecay->setCallback ( this );
 
-  fKnobSustain = new ImageKnob ( this,
-                                 Image ( Art::rotary_adsrData, Art::rotary_adsrWidth, Art::rotary_adsrHeight, GL_BGRA ) );
+  fKnobSustain = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
   fKnobSustain->setId ( paramSustain );
-  fKnobSustain->setAbsolutePos ( 715, 255 );
   fKnobSustain->setRange ( 0.0f, 1.0f );
-  fKnobSustain->setDefault ( 1.0f );
-  fKnobSustain->setValue ( 1.0f );
-  fKnobSustain->setRotationAngle ( 300 );
-  fKnobSustain->setCallback ( this );
+  fKnobSustain->setColor(Color(0,200,255,255));
+  fKnobSustain->setCallback ( this ); 
 
-  fKnobRelease = new ImageKnob ( this,
-                                 Image ( Art::rotary_adsrData, Art::rotary_adsrWidth, Art::rotary_adsrHeight, GL_BGRA ) );
+  fKnobRelease = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
   fKnobRelease->setId ( paramRelease );
-  fKnobRelease->setAbsolutePos ( 792, 255 );
   fKnobRelease->setRange ( 0.05f, 1.0f );
-  fKnobRelease->setDefault ( 0.05f );
-  fKnobRelease->setValue ( 0.05f );
-  fKnobRelease->setRotationAngle ( 300 );
-  fKnobRelease->setCallback ( this );
+  fKnobRelease->setColor(Color(0,200,255,255));
+  fKnobRelease->setCallback ( this ); 
 
+  /*
   // slider
   Image sliderImage ( Art::sliderData, Art::sliderWidth, Art:: sliderHeight );
   Point<int> sliderPosStart ( 295,150 );
@@ -104,7 +84,7 @@ NinjasUI::NinjasUI()
   fSliceModeSlider->setStep ( 1.0f );
   fSliceModeSlider->setValue ( 0.0f );
   fSliceModeSlider->setCallback ( this );
-
+  
   // switches
 
   // play modes
@@ -175,6 +155,20 @@ NinjasUI::NinjasUI()
     } // for y
 
 */
+    positionWidgets();
+}
+
+void NinjasUI::positionWidgets()
+{
+  const float width = getWidth();
+  const float height = getHeight();
+
+  fKnobSlices->setAbsolutePos ( 279, 79 );
+  fKnobAttack->setAbsolutePos ( 560, 255 );
+  fKnobDecay->setAbsolutePos ( 637, 255 );
+  fKnobSustain->setAbsolutePos ( 715, 255 );
+  fKnobRelease->setAbsolutePos ( 792, 255 );
+
 }
 
 /**
@@ -183,7 +177,6 @@ NinjasUI::NinjasUI()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
-  /*
   switch ( index )
     {
     case paramNumberOfSlices:
@@ -192,6 +185,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       createSlicesRaw ();
       break;
       // Play Modes
+    /*
     case paramOneShotFwd:
       fSwitchFwd->setDown ( value > 0.5f );
       p_OneShotFwd[currentSlice] = value > 0.5f;
@@ -209,6 +203,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       p_LoopRev[currentSlice] = value > 0.5f;
       break;
       // ADSR
+    */
     case paramAttack:
       fKnobAttack->setValue ( value );
       p_Attack[currentSlice] = value;
@@ -225,7 +220,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       fKnobRelease->setValue ( value );
       p_Release[currentSlice] = value;
       break;
-
+      /*
       // floppy
     case paramFloppy:
       if ( sample_is_loaded )
@@ -240,9 +235,10 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
     case paramSliceMode:
       fSliceModeSlider->setValue ( value );
       break;
-    }
+    */}
 
   // selector grid
+  /*
   if ( index >= paramSwitch01 && index <= paramSwitch16 )
     {
       int slice = index - paramSwitch01;
@@ -252,8 +248,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           currentSlice = slice;
           recallSliceSettings ( slice );
         }
-    }
-*/
+    } */
 }
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
@@ -486,7 +481,47 @@ void NinjasUI::imageKnobValueChanged ( ImageKnob* knob, float value )
     }
 }
 
+*/
 
+void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
+{
+  int KnobID = knob->getId();  
+
+  setParameterValue ( KnobID,value );
+
+  switch ( KnobID )
+    {
+    case paramNumberOfSlices:
+      slices = value;
+      if ( !slicemethod )
+        {
+          createSlicesRaw ();
+        }
+      else
+        {
+          createSlicesOnsets ();
+        }
+      break;
+
+    case paramAttack:
+      p_Attack[currentSlice]=value;
+      break;
+    case paramDecay:
+      p_Decay[currentSlice]=value;
+      break;
+    case  paramSustain:
+      p_Sustain[currentSlice]=value;
+      break;
+    case paramRelease:
+      p_Release[currentSlice]=value;
+      break;
+    default:
+      setParameterValue ( KnobID,value );
+
+    }
+}
+
+/*
 void  NinjasUI::imageSliderDragStarted ( ImageSlider* slider )
 {
   editParameter ( slider->getId(), true );
@@ -511,8 +546,22 @@ void  NinjasUI::imageSliderValueChanged ( ImageSlider* slider, float value )
 }
 
 */
-void NinjasUI::onDisplay()
+void NinjasUI::onNanoDisplay()
 {
+  const float width = getWidth();
+  const float height = getHeight();
+
+  beginPath();
+
+  fillColor(Color(150,150,150, 255));
+
+  rect(0, 0, width, height);
+  fill();
+
+  closePath();
+
+  return;
+
   //fImgBackground.draw();
   glEnable ( GL_BLEND );
   glEnable ( GL_LINE_SMOOTH );
@@ -607,7 +656,6 @@ void NinjasUI::onDisplay()
   glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );
 
   //fImgFrame.drawAt ( 355,45 );
-
 }
 
 void NinjasUI::calcWaveform ( String fp, std::vector<float> & sampleVector )
@@ -707,7 +755,6 @@ std::string NinjasUI::dirnameOf ( const std::string& fname )
          : fname.substr ( 0, pos );
 }
 
-/*
 void NinjasUI::recallSliceSettings ( int slice )
 {
   setParameterValue ( paramAttack, p_Attack[slice] );
@@ -718,18 +765,16 @@ void NinjasUI::recallSliceSettings ( int slice )
   fKnobSustain->setValue ( p_Sustain[slice] );
   setParameterValue ( paramRelease, p_Release[slice] );
   fKnobRelease->setValue ( p_Release[slice] );
-  setParameterValue ( paramOneShotFwd, p_OneShotFwd[slice] );
+  /*setParameterValue ( paramOneShotFwd, p_OneShotFwd[slice] );
   fSwitchFwd->setDown ( p_OneShotFwd[slice] == 1.0f );
   setParameterValue ( paramOneShotRev,  p_OneShotRev[slice] );
   fSwitchRev->setDown ( p_OneShotRev[slice] == 1.0f );
   setParameterValue ( paramLoopFwd, p_LoopFwd[slice] );
   fSwitchLoopFwd->setDown ( p_LoopFwd[slice] == 1.0f );
   setParameterValue ( paramLoopRev, p_LoopRev[slice] );
-  fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );
+  fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );*/
   repaint();
 }
-
-*/
 
 void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets )
 {

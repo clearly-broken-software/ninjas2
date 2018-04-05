@@ -27,16 +27,22 @@
 #include "aubio.h"
 //#include "Slice.h"
 
+//Wolf Widgets
+#include "VolumeKnob.hpp"
+
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
 
-class NinjasUI : public UI
+class NinjasUI : public UI,
+                 public NanoKnob::Callback
 {
 public:
   NinjasUI();
 
 protected:
+  void positionWidgets();
+  
   // -------------------------------------------------------------------
   // DSP Callbacks
 
@@ -47,9 +53,12 @@ protected:
   // -------------------------------------------------------------------
   // Widget Callbacks
 
-  void onDisplay() override;
+  void onNanoDisplay() override;
+  void nanoKnobValueChanged(NanoKnob* nanoKnob, const float value) override;
 
 private:
+  ScopedPointer<VolumeKnob> fKnobSlices, fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
+
   void calcWaveform ( String fp, std::vector<float> & sampleVector );
   void recallSliceSettings ( int slice );
   void getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets );
