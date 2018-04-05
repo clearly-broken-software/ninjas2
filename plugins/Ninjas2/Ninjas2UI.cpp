@@ -38,84 +38,71 @@ NinjasUI::NinjasUI()
   sampleChannels = 1;
   sample_is_loaded = false;
 
-  fKnobSlices = new VolumeKnob ( this, Size<uint> ( 54, 54 ) );
+  const Size<uint> knobSize = Size<uint> ( 54, 54 );
+
+  fKnobSlices = new VolumeKnob ( this, knobSize );
   fKnobSlices->setId ( paramNumberOfSlices );
   fKnobSlices->setRange ( 1.0f, 128.0f );
   fKnobSlices->setColor ( Color ( 0,200,255,255 ) );
   fKnobSlices->setStep ( 1.0f );
   fKnobSlices->setCallback ( this );
 
-  fKnobAttack = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
+  fKnobAttack = new VolumeKnob (this, knobSize );
   fKnobAttack->setId ( paramAttack );
   fKnobAttack->setRange ( 0.05f, 1.0f );
   fKnobAttack->setColor (Color ( 0,200,255,255 ) );
   fKnobAttack->setCallback( this );
 
-  fKnobDecay = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
+  fKnobDecay = new VolumeKnob (this, knobSize );
   fKnobDecay->setId ( paramDecay );
   fKnobDecay->setRange ( 0.05f, 1.0f );
   fKnobDecay->setColor(Color(0,200,255,255));
   fKnobDecay->setCallback ( this );
 
-  fKnobSustain = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
+  fKnobSustain = new VolumeKnob (this, knobSize );
   fKnobSustain->setId ( paramSustain );
   fKnobSustain->setRange ( 0.0f, 1.0f );
   fKnobSustain->setColor(Color(0,200,255,255));
   fKnobSustain->setCallback ( this ); 
 
-  fKnobRelease = new VolumeKnob (this, Size<uint> ( 54, 54 ) );
+  fKnobRelease = new VolumeKnob (this, knobSize );
   fKnobRelease->setId ( paramRelease );
   fKnobRelease->setRange ( 0.05f, 1.0f );
   fKnobRelease->setColor(Color(0,200,255,255));
   fKnobRelease->setCallback ( this ); 
 
-  /*
-  // slider
-  Image sliderImage ( Art::sliderData, Art::sliderWidth, Art:: sliderHeight );
-  Point<int> sliderPosStart ( 295,150 );
-  Point<int> sliderPosEnd ( 295,169 );
+  //slider
 
-  fSliceModeSlider = new ImageSlider ( this, sliderImage );
-  fSliceModeSlider->setId ( paramSliceMode );
-  //fSliceModeSlider->setInverted ( true );
-  fSliceModeSlider->setStartPos ( sliderPosStart );
-  fSliceModeSlider->setEndPos ( sliderPosEnd );
-  fSliceModeSlider->setRange ( 0.0f, 1.0f );
-  fSliceModeSlider->setStep ( 1.0f );
-  fSliceModeSlider->setValue ( 0.0f );
-  fSliceModeSlider->setCallback ( this );
-  
+  fSliceModeSlider = new BipolarModeSwitch(this, Size<uint>(16, 34));
+  fSliceModeSlider->setCallback(this);
+  fSliceModeSlider->setId(paramSliceMode);
+
+  fLabelsBoxSliceModeSlider = new GlowingLabelsBox(this, Size<uint>(58, 42));
+  fLabelsBoxSliceModeSlider->setLabels({"RAW", "ONSETS"});
+
   // switches
 
   // play modes
-  fSwitchFwd = new ImageSwitch ( this,
-                                 Image ( Art::switch_offData, Art::switch_offWidth, Art::switch_offHeight, GL_BGR ),
-                                 Image ( Art::switch_onData, Art::switch_onWidth, Art::switch_offHeight, GL_BGR ) );
+
+  const Size<uint> switchSize = Size<uint>(30,29);
+
+  fSwitchFwd = new RemoveDCSwitch(this, switchSize);
   fSwitchFwd->setId ( paramOneShotFwd );
-  fSwitchFwd->setAbsolutePos ( 441,242 );
   fSwitchFwd->setCallback ( this );
 
-  fSwitchRev = new ImageSwitch ( this,
-                                 Image ( Art::switch_offData, Art::switch_offWidth, Art::switch_offHeight, GL_BGR ),
-                                 Image ( Art::switch_onData, Art::switch_onWidth, Art::switch_offHeight, GL_BGR ) );
+  fSwitchRev = new RemoveDCSwitch(this, switchSize);
   fSwitchRev->setId ( paramOneShotRev );
-  fSwitchRev->setAbsolutePos ( 479,242 );
   fSwitchRev->setCallback ( this );
 
-  fSwitchLoopFwd = new ImageSwitch ( this,
-                                     Image ( Art::switch_offData, Art::switch_offWidth, Art::switch_offHeight, GL_BGR ),
-                                     Image ( Art::switch_onData, Art::switch_onWidth, Art::switch_offHeight, GL_BGR ) );
+  fSwitchLoopFwd = new RemoveDCSwitch(this, switchSize);
   fSwitchLoopFwd->setId ( paramLoopFwd );
-  fSwitchLoopFwd->setAbsolutePos ( 441,291 );
   fSwitchLoopFwd->setCallback ( this );
 
-  fSwitchLoopRev = new ImageSwitch ( this,
-                                     Image ( Art::switch_offData, Art::switch_offWidth, Art::switch_offHeight, GL_BGR ),
-                                     Image ( Art::switch_onData, Art::switch_onWidth, Art::switch_offHeight, GL_BGR ) );
+  fSwitchLoopRev = new RemoveDCSwitch(this, switchSize);
   fSwitchLoopRev->setId ( paramLoopRev );
-  fSwitchLoopRev->setAbsolutePos ( 479,291 );
   fSwitchLoopRev->setCallback ( this );
 
+  /*
   // floppy
 
   fSwitchFloppy = new ImageSwitch ( this,
@@ -124,38 +111,21 @@ NinjasUI::NinjasUI()
   fSwitchFloppy->setId ( paramFloppy );
   fSwitchFloppy->setAbsolutePos ( 92,220 );
   fSwitchFloppy->setCallback ( this );
+  */
 
   // grid
 
-  for ( int i = paramSwitch01, j =0 ; i <= paramSwitch16; ++i , ++j )
+  for ( int i = paramSwitch01, j = 0 ; i <= paramSwitch16; ++i , ++j )
     {
 
-      fGrid[j] = new ImageSwitch ( this,
-                                   Image ( Art::switch_offData, Art::switch_offWidth, Art::switch_offHeight, GL_BGR ),
-                                   Image ( Art::switch_onData, Art::switch_onWidth, Art::switch_onHeight, GL_BGR ) );
+      fGrid[j] = new RemoveDCSwitch ( this, switchSize );
       fGrid[j]->setId ( i );
-      // fGrid[j]->setAbsolutePos(981+j*41,89);
       fGrid[j]->setCallback ( this );
     }
 
   fGrid[0]->setDown ( true );
-
-  // set coordinates for grid
-
-  // x = 980, y = 90
-
-
-  for ( int y = 0 ; y < 4 ; ++y )
-    {
-      for ( int x = 0 ; x < 4 ; ++x )
-        {
-          int index = y * 4 + x;
-          fGrid[index]->setAbsolutePos ( 981+x*41,89+y*46 );
-        } // for x
-    } // for y
-
-*/
-    positionWidgets();
+  
+  positionWidgets();
 }
 
 void NinjasUI::positionWidgets()
@@ -169,6 +139,26 @@ void NinjasUI::positionWidgets()
   fKnobSustain->setAbsolutePos ( 715, 255 );
   fKnobRelease->setAbsolutePos ( 792, 255 );
 
+  fSliceModeSlider->setAbsolutePos ( 265, 150 );
+  fLabelsBoxSliceModeSlider->setAbsolutePos ( 290, 146 );
+
+  fSwitchFwd->setAbsolutePos ( 441,242 );
+  fSwitchRev->setAbsolutePos ( 479, 242 );
+  fSwitchLoopFwd->setAbsolutePos ( 441, 291 );
+  fSwitchLoopRev->setAbsolutePos ( 479, 291 );
+
+  // set coordinates for grid
+
+  // x = 980, y = 90
+
+  for ( int y = 0 ; y < 4 ; ++y )
+  {
+    for ( int x = 0 ; x < 4 ; ++x )
+    {
+        int index = y * 4 + x;
+        fGrid[index]->setAbsolutePos ( 981+x*41,89+y*46 );
+    } // for x
+  } // for y
 }
 
 /**
@@ -185,7 +175,6 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       createSlicesRaw ();
       break;
       // Play Modes
-    /*
     case paramOneShotFwd:
       fSwitchFwd->setDown ( value > 0.5f );
       p_OneShotFwd[currentSlice] = value > 0.5f;
@@ -203,7 +192,6 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       p_LoopRev[currentSlice] = value > 0.5f;
       break;
       // ADSR
-    */
     case paramAttack:
       fKnobAttack->setValue ( value );
       p_Attack[currentSlice] = value;
@@ -232,23 +220,26 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSwitchFloppy->setDown ( 0 );
         }
       break;
+    */
     case paramSliceMode:
-      fSliceModeSlider->setValue ( value );
+      fSliceModeSlider->setDown ( value > 0.5f );
       break;
-    */}
+    }
 
   // selector grid
-  /*
+  
   if ( index >= paramSwitch01 && index <= paramSwitch16 )
     {
       int slice = index - paramSwitch01;
       fGrid[slice]->setDown ( value > 0.5f );
-      if ( value == 1 )
+      if ( fGrid[slice]->isDown() )
         {
           currentSlice = slice;
           recallSliceSettings ( slice );
         }
-    } */
+      }
+
+  repaint();
 }
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
@@ -293,8 +284,55 @@ void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
         }
 
     }
+}
+*/
 
-  switch ( buttonId )
+void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
+{
+  int KnobID = knob->getId();  
+
+  setParameterValue ( KnobID,value );
+
+  switch ( KnobID )
+    {
+    case paramNumberOfSlices:
+      slices = value;
+      if ( !slicemethod )
+        {
+          createSlicesRaw ();
+        }
+      else
+        {
+          createSlicesOnsets ();
+        }
+      break;
+
+    case paramAttack:
+      p_Attack[currentSlice]=value;
+      break;
+    case paramDecay:
+      p_Decay[currentSlice]=value;
+      break;
+    case  paramSustain:
+      p_Sustain[currentSlice]=value;
+      break;
+    case paramRelease:
+      p_Release[currentSlice]=value;
+      break;
+    default:
+      setParameterValue ( KnobID,value );
+
+    }
+
+    repaint();
+  }
+  
+void NinjasUI::nanoSwitchClicked(NanoSwitch* nanoSwitch)
+{
+  const float value = nanoSwitch->isDown() ? 1.0f : 0.0f;
+  const uint buttonId = nanoSwitch->getId();
+
+   switch ( buttonId )
     {
     case paramOneShotFwd:
     {
@@ -387,7 +425,6 @@ void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
       p_LoopFwd[currentSlice]    = 0;
       p_LoopRev[currentSlice]    = 1;
 
-
       editParameter ( paramOneShotFwd, true );
       editParameter ( paramOneShotRev, true );
       editParameter ( paramLoopFwd, true );
@@ -409,6 +446,12 @@ void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
       editParameter ( paramLoopRev, false );
       break;
     }
+    case paramSliceMode:
+    {
+      fLabelsBoxSliceModeSlider->setSelectedIndex((int)value);
+      setParameterValue ( paramSliceMode, value );
+      break;
+    }
 
 
     } // switch (buttonId)
@@ -417,7 +460,6 @@ void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
 
   if ( buttonId >= paramSwitch01 && buttonId <= paramSwitch16 )
     {
-
       for ( uint32_t i = paramSwitch01, j=0; i <= paramSwitch16; ++i,++j )
         {
           editParameter ( i, true );
@@ -430,110 +472,10 @@ void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
             }
           editParameter ( i, false );
         }
-    }
-}
+      }
 
-void NinjasUI::imageKnobDragStarted ( ImageKnob* knob )
-{
-  editParameter ( knob->getId(), true );
-}
-
-void NinjasUI::imageKnobDragFinished ( ImageKnob* knob )
-{
-  editParameter ( knob->getId(), false );
-}
-
-void NinjasUI::imageKnobValueChanged ( ImageKnob* knob, float value )
-{
-  int KnobID = knob->getId();
-
-  setParameterValue ( KnobID,value );
-
-  switch ( KnobID )
-    {
-    case paramNumberOfSlices:
-      slices = value;
-      if ( !slicemethod )
-        {
-          createSlicesRaw ();
-        }
-      else
-        {
-          createSlicesOnsets ();
-        }
-      break;
-
-    case paramAttack:
-      p_Attack[currentSlice]=value;
-      break;
-    case paramDecay:
-      p_Decay[currentSlice]=value;
-      break;
-    case  paramSustain:
-      p_Sustain[currentSlice]=value;
-      break;
-    case paramRelease:
-      p_Release[currentSlice]=value;
-      break;
-    default:
-      setParameterValue ( KnobID,value );
-
-    }
-}
-
-*/
-
-void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
-{
-  int KnobID = knob->getId();  
-
-  setParameterValue ( KnobID,value );
-
-  switch ( KnobID )
-    {
-    case paramNumberOfSlices:
-      slices = value;
-      if ( !slicemethod )
-        {
-          createSlicesRaw ();
-        }
-      else
-        {
-          createSlicesOnsets ();
-        }
-      break;
-
-    case paramAttack:
-      p_Attack[currentSlice]=value;
-      break;
-    case paramDecay:
-      p_Decay[currentSlice]=value;
-      break;
-    case  paramSustain:
-      p_Sustain[currentSlice]=value;
-      break;
-    case paramRelease:
-      p_Release[currentSlice]=value;
-      break;
-    default:
-      setParameterValue ( KnobID,value );
-
-    }
-}
-
-/*
-void  NinjasUI::imageSliderDragStarted ( ImageSlider* slider )
-{
-  editParameter ( slider->getId(), true );
-}
-void  NinjasUI::imageSliderDragFinished ( ImageSlider* slider )
-{
-  editParameter ( slider->getId(), false );
-}
-void  NinjasUI::imageSliderValueChanged ( ImageSlider* slider, float value )
-{
-  setParameterValue ( slider->getId(), value );
   slicemethod = value;
+
   if ( !slicemethod )
     {
       createSlicesRaw ();
@@ -543,9 +485,9 @@ void  NinjasUI::imageSliderValueChanged ( ImageSlider* slider, float value )
       createSlicesOnsets ();
     }
 
+  repaint();
 }
 
-*/
 void NinjasUI::onNanoDisplay()
 {
   const float width = getWidth();
@@ -679,7 +621,6 @@ void NinjasUI::calcWaveform ( String fp, std::vector<float> & sampleVector )
   sampleVector.resize ( sampleSize * sampleChannels );
   fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
 
-
   for ( uint32_t i = 0, j =0 ; i < lcd_length ; i++ )
     {
       fIndex = i * samples_per_pixel;
@@ -765,14 +706,15 @@ void NinjasUI::recallSliceSettings ( int slice )
   fKnobSustain->setValue ( p_Sustain[slice] );
   setParameterValue ( paramRelease, p_Release[slice] );
   fKnobRelease->setValue ( p_Release[slice] );
-  /*setParameterValue ( paramOneShotFwd, p_OneShotFwd[slice] );
+  setParameterValue ( paramOneShotFwd, p_OneShotFwd[slice] );
   fSwitchFwd->setDown ( p_OneShotFwd[slice] == 1.0f );
   setParameterValue ( paramOneShotRev,  p_OneShotRev[slice] );
   fSwitchRev->setDown ( p_OneShotRev[slice] == 1.0f );
   setParameterValue ( paramLoopFwd, p_LoopFwd[slice] );
   fSwitchLoopFwd->setDown ( p_LoopFwd[slice] == 1.0f );
   setParameterValue ( paramLoopRev, p_LoopRev[slice] );
-  fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );*/
+  fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );
+
   repaint();
 }
 

@@ -29,20 +29,24 @@
 
 //Wolf Widgets
 #include "VolumeKnob.hpp"
+#include "BipolarModeSwitch.hpp"
+#include "GlowingLabelsBox.hpp"
+#include "RemoveDCSwitch.hpp"
 
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
 
 class NinjasUI : public UI,
-                 public NanoKnob::Callback
+                 public NanoKnob::Callback,
+                 public NanoSwitch::Callback
 {
 public:
   NinjasUI();
 
 protected:
   void positionWidgets();
-  
+
   // -------------------------------------------------------------------
   // DSP Callbacks
 
@@ -55,9 +59,14 @@ protected:
 
   void onNanoDisplay() override;
   void nanoKnobValueChanged(NanoKnob* nanoKnob, const float value) override;
+  void nanoSwitchClicked(NanoSwitch* nanoSwitch) override;
 
 private:
   ScopedPointer<VolumeKnob> fKnobSlices, fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
+  ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
+  ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider;
+  ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
+  ScopedPointer<RemoveDCSwitch> fGrid[16];
 
   void calcWaveform ( String fp, std::vector<float> & sampleVector );
   void recallSliceSettings ( int slice );
