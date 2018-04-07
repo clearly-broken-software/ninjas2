@@ -1,6 +1,6 @@
 /*
  * Ninjas 2
- * 
+ *
  * Copyright (C) 2018 Clearly Broken Software
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -24,20 +24,35 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 NinjasUI::NinjasUI()
-  : UI (1276, 350)
+  : UI ( 1200, 600 )
 {
-  // init lcd
-  waveform.fill ( lcd_center );
-
-  // knobs
-  slicemethod = false;
+  // init parameters
+  
+  // adsr
+  std::fill_n ( p_Attack, 128, 0.05f );
+  std::fill_n ( p_Decay, 128, 0.05f );
+  std::fill_n ( p_Sustain, 128, 1.0f );
+  std::fill_n ( p_Release, 128, 0.05f );
+  
+  // play modes
+  std::fill_n ( p_OneShotFwd, 128, 1.0f );
+  std::fill_n ( p_OneShotRev, 128, 0.0f );
+  std::fill_n ( p_LoopFwd, 128, 0.0f );
+  std::fill_n ( p_LoopRev, 128, 0.0f );
+  
+  // slices
+  enum_slicemode = RAW;
+  slicemethod = false; // TODO remove the bool and use the enum
   currentSlice = 0;
   slices = 1;
   std::fill_n ( a_slices,128, Slice() );
+  
+  // sample
   sampleSize = 0;
   sampleChannels = 1;
   sample_is_loaded = false;
-
+  
+  // knobs
   const Size<uint> knobSize = Size<uint> ( 54, 54 );
 
   fKnobSlices = new VolumeKnob ( this, knobSize );
@@ -47,63 +62,63 @@ NinjasUI::NinjasUI()
   fKnobSlices->setStep ( 1.0f );
   fKnobSlices->setCallback ( this );
 
-  fKnobAttack = new VolumeKnob (this, knobSize );
+  fKnobAttack = new VolumeKnob ( this, knobSize );
   fKnobAttack->setId ( paramAttack );
   fKnobAttack->setRange ( 0.05f, 1.0f );
-  fKnobAttack->setColor (Color ( 0,200,255,255 ) );
-  fKnobAttack->setCallback( this );
+  fKnobAttack->setColor ( Color ( 0,200,255,255 ) );
+  fKnobAttack->setCallback ( this );
 
-  fKnobDecay = new VolumeKnob (this, knobSize );
+  fKnobDecay = new VolumeKnob ( this, knobSize );
   fKnobDecay->setId ( paramDecay );
   fKnobDecay->setRange ( 0.05f, 1.0f );
-  fKnobDecay->setColor(Color(0,200,255,255));
+  fKnobDecay->setColor ( Color ( 0,200,255,255 ) );
   fKnobDecay->setCallback ( this );
 
-  fKnobSustain = new VolumeKnob (this, knobSize );
+  fKnobSustain = new VolumeKnob ( this, knobSize );
   fKnobSustain->setId ( paramSustain );
   fKnobSustain->setRange ( 0.0f, 1.0f );
-  fKnobSustain->setColor(Color(0,200,255,255));
-  fKnobSustain->setCallback ( this ); 
+  fKnobSustain->setColor ( Color ( 0,200,255,255 ) );
+  fKnobSustain->setCallback ( this );
 
-  fKnobRelease = new VolumeKnob (this, knobSize );
+  fKnobRelease = new VolumeKnob ( this, knobSize );
   fKnobRelease->setId ( paramRelease );
   fKnobRelease->setRange ( 0.05f, 1.0f );
-  fKnobRelease->setColor(Color(0,200,255,255));
-  fKnobRelease->setCallback ( this ); 
+  fKnobRelease->setColor ( Color ( 0,200,255,255 ) );
+  fKnobRelease->setCallback ( this );
 
-  //slider
+  //slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
 
-  fSliceModeSlider = new BipolarModeSwitch(this, Size<uint>(16, 34));
-  fSliceModeSlider->setCallback(this);
-  fSliceModeSlider->setId(paramSliceMode);
+  fSliceModeSlider = new BipolarModeSwitch ( this, Size<uint> ( 16, 34 ) );
+  fSliceModeSlider->setCallback ( this );
+  fSliceModeSlider->setId ( paramSliceMode );
 
-  fLabelsBoxSliceModeSlider = new GlowingLabelsBox(this, Size<uint>(58, 42));
-  fLabelsBoxSliceModeSlider->setLabels({"RAW", "ONSETS"});
+  fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( this, Size<uint> ( 58, 42 ) );
+  fLabelsBoxSliceModeSlider->setLabels ( {"RAW", "ONSETS"} );
 
   // switches
 
   // play modes
 
-  const Size<uint> switchSize = Size<uint>(30,29);
+  const Size<uint> switchSize = Size<uint> ( 30,29 );
 
-  fSwitchFwd = new RemoveDCSwitch(this, switchSize);
+  fSwitchFwd = new RemoveDCSwitch ( this, switchSize );
   fSwitchFwd->setId ( paramOneShotFwd );
   fSwitchFwd->setCallback ( this );
 
-  fSwitchRev = new RemoveDCSwitch(this, switchSize);
+  fSwitchRev = new RemoveDCSwitch ( this, switchSize );
   fSwitchRev->setId ( paramOneShotRev );
   fSwitchRev->setCallback ( this );
 
-  fSwitchLoopFwd = new RemoveDCSwitch(this, switchSize);
+  fSwitchLoopFwd = new RemoveDCSwitch ( this, switchSize );
   fSwitchLoopFwd->setId ( paramLoopFwd );
   fSwitchLoopFwd->setCallback ( this );
 
-  fSwitchLoopRev = new RemoveDCSwitch(this, switchSize);
+  fSwitchLoopRev = new RemoveDCSwitch ( this, switchSize );
   fSwitchLoopRev->setId ( paramLoopRev );
   fSwitchLoopRev->setCallback ( this );
 
   /*
-  // floppy
+  // floppy TODO sample load button
 
   fSwitchFloppy = new ImageSwitch ( this,
                                     Image ( Art::floppy_offData, Art::floppy_offWidth, Art::floppy_offHeight, GL_BGR ),
@@ -124,7 +139,7 @@ NinjasUI::NinjasUI()
     }
 
   fGrid[0]->setDown ( true );
-  
+
   positionWidgets();
 }
 
@@ -152,13 +167,13 @@ void NinjasUI::positionWidgets()
   // x = 980, y = 90
 
   for ( int y = 0 ; y < 4 ; ++y )
-  {
-    for ( int x = 0 ; x < 4 ; ++x )
     {
-        int index = y * 4 + x;
-        fGrid[index]->setAbsolutePos ( 981+x*41,89+y*46 );
-    } // for x
-  } // for y
+      for ( int x = 0 ; x < 4 ; ++x )
+        {
+          int index = y * 4 + x;
+          fGrid[index]->setAbsolutePos ( 981+x*41,89+y*46 );
+        } // for x
+    } // for y
 }
 
 /**
@@ -210,7 +225,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       break;
       /*
       // floppy
-    case paramFloppy:
+      case paramFloppy:
       if ( sample_is_loaded )
         {
           fSwitchFloppy->setDown ( 1 );
@@ -220,14 +235,14 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSwitchFloppy->setDown ( 0 );
         }
       break;
-    */
+      */
     case paramSliceMode:
       fSliceModeSlider->setDown ( value > 0.5f );
       break;
     }
 
   // selector grid
-  
+
   if ( index >= paramSwitch01 && index <= paramSwitch16 )
     {
       int slice = index - paramSwitch01;
@@ -237,7 +252,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           currentSlice = slice;
           recallSliceSettings ( slice );
         }
-      }
+    }
 
   repaint();
 }
@@ -246,7 +261,7 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
 {
   if ( std::strcmp ( key, "filepath" ) == 0 )
     {
-      calcWaveform ( String ( value ), NinjasUI::sampleVector );
+      loadSample ( String ( value ));
     }
 }
 
@@ -258,7 +273,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
       // if a file was selected, tell DSP
       directory = dirnameOf ( filename );
       setState ( "filepath", filename );
-      calcWaveform ( String ( filename ) , sampleVector );
+      loadSample ( String ( filename ));
     }
 }
 /* ----------------------------------------------------------------------------------------------------------
@@ -289,7 +304,7 @@ void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
 
 void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
 {
-  int KnobID = knob->getId();  
+  int KnobID = knob->getId();
 
   setParameterValue ( KnobID,value );
 
@@ -324,15 +339,15 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
 
     }
 
-    repaint();
-  }
-  
-void NinjasUI::nanoSwitchClicked(NanoSwitch* nanoSwitch)
+  repaint();
+}
+
+void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
 {
   const float value = nanoSwitch->isDown() ? 1.0f : 0.0f;
   const uint buttonId = nanoSwitch->getId();
 
-   switch ( buttonId )
+  switch ( buttonId )
     {
     case paramOneShotFwd:
     {
@@ -448,7 +463,7 @@ void NinjasUI::nanoSwitchClicked(NanoSwitch* nanoSwitch)
     }
     case paramSliceMode:
     {
-      fLabelsBoxSliceModeSlider->setSelectedIndex((int)value);
+      fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
       setParameterValue ( paramSliceMode, value );
       break;
     }
@@ -472,7 +487,7 @@ void NinjasUI::nanoSwitchClicked(NanoSwitch* nanoSwitch)
             }
           editParameter ( i, false );
         }
-      }
+    }
 
   slicemethod = value;
 
@@ -495,9 +510,9 @@ void NinjasUI::onNanoDisplay()
 
   beginPath();
 
-  fillColor(Color(150,150,150, 255));
+  fillColor ( Color ( 150,150,150, 255 ) );
 
-  rect(0, 0, width, height);
+  rect ( 0, 0, width, height );
   fill();
 
   closePath();
@@ -600,7 +615,7 @@ void NinjasUI::onNanoDisplay()
   //fImgFrame.drawAt ( 355,45 );
 }
 
-void NinjasUI::calcWaveform ( String fp, std::vector<float> & sampleVector )
+void NinjasUI::loadSample ( String fp )
 {
   int  iIndex {0};
   float fIndex {0};
@@ -616,24 +631,34 @@ void NinjasUI::calcWaveform ( String fp, std::vector<float> & sampleVector )
     }
   sample_is_loaded =true;
   //fSwitchFloppy->setDown ( true );
-  float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
+  //float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
 
   sampleVector.resize ( sampleSize * sampleChannels );
+  waveform.resize ( sampleSize * sampleChannels );
   fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
-
-  for ( uint32_t i = 0, j =0 ; i < lcd_length ; i++ )
+  
+  // display height = 350
+  // store waveform as -175 to  175 integer
+    
+  for ( int i; i < sampleVector.size(); i++ )
     {
-      fIndex = i * samples_per_pixel;
-      iIndex = fIndex;
-      auto minmax = std::minmax_element ( sampleVector.begin() + iIndex, sampleVector.begin() + iIndex+samples_per_pixel );
-      float min = *minmax.first;
-      float max = *minmax.second;
-      // convert 0.0 - 1.0 to 0 - 107
-      waveform[j] = min * ( float ) lcd_height  + lcd_center;
-      j++;
-      waveform[j] = max * ( float ) lcd_height + lcd_center;
-      j++;
+        waveform[i] = int ( sampleVector[i] * 175.0f );
     }
+
+
+//   for ( uint32_t i = 0, j =0 ; i < lcd_length ; i++ )
+//     {
+//       fIndex = i * samples_per_pixel;
+//       iIndex = fIndex;
+//       auto minmax = std::minmax_element ( sampleVector.begin() + iIndex, sampleVector.begin() + iIndex+samples_per_pixel );
+//       float min = *minmax.first;
+//       float max = *minmax.second;
+//       // convert 0.0 - 1.0 to 0 - 107
+//       waveform[j] = min * ( float ) lcd_height  + lcd_center;
+//       j++;
+//       waveform[j] = max * ( float ) lcd_height + lcd_center;
+//       j++;
+//     }
 
   getOnsets ( sampleSize ,sampleChannels, sampleVector, onsets );
   if ( !slicemethod )
@@ -667,7 +692,7 @@ void NinjasUI::createSlicesOnsets ()
       int64_t onset_start = find_nearest ( onsets,start );
       int64_t onset_end = find_nearest ( onsets,end )-1;
 
-      a_slices[i].sliceStart = onset_start * sampleChannels; 
+      a_slices[i].sliceStart = onset_start * sampleChannels;
       a_slices[i].sliceEnd = onset_end * sampleChannels;
       // set end of last slice to end of sample
       if ( i == slices -1 )
@@ -772,7 +797,7 @@ void NinjasUI::createSlicesRaw ()
   for ( int i = 0 ; i < slices; i++ )
     {
       a_slices[i].sliceStart = ( int ) i * sliceSize;
-      a_slices[i].sliceEnd =   (( int ) ( i+1 ) * sliceSize ) - 1 ;
+      a_slices[i].sliceEnd = ( ( int ) ( i+1 ) * sliceSize ) - 1 ;
     }
 }
 

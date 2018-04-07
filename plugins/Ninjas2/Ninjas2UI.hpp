@@ -68,22 +68,16 @@ private:
   ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
   ScopedPointer<RemoveDCSwitch> fGrid[16];
 
-  void calcWaveform ( String fp, std::vector<float> & sampleVector );
-  void recallSliceSettings ( int slice );
+  void loadSample ( String fp);
+  std::vector<short int> waveform;
   void getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets );
   void createSlicesRaw ();
   void createSlicesOnsets ();
   int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
-  std::string dirnameOf ( const std::string& fp );
-
-  float p_Attack[128] { 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05 };
-  float p_Decay[128] { 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05 };
-  float p_Sustain[128] { 1,1,1,1, 1,1,1,1, 1,1,1,1 ,1,1,1,1 };
-  float p_Release[128] { 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05, 0.05,0.05,0.05,0.05 };
-  float p_OneShotFwd[128] { 1,1,1,1, 1,1,1,1, 1,1,1,1 ,1,1,1,1 };
-  float p_OneShotRev[128];
-  float p_LoopFwd[128];
-  float p_LoopRev[128];
+  void recallSliceSettings ( int slice );
+  float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
+  float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
+  std::string dirnameOf ( const std::string& fname );
 
   // slices
   float sliceStart[128], sliceEnd[128];
@@ -130,7 +124,7 @@ private:
   static constexpr unsigned int lcd_length = lcd_right - lcd_left;
   static constexpr unsigned int lcd_height = ( lcd_bottom - lcd_top ) /2;
   static constexpr unsigned int waveform_length = lcd_length * 2;
-  std::array<int, waveform_length> waveform;
+  
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
 };
