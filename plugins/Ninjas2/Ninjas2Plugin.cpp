@@ -176,7 +176,7 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
       parameter.midiCC = 110;
       break;
     }
-    case paramLoad:
+    case paramLoadSample:
     {
       parameter.hints = kParameterIsAutomable|kParameterIsBoolean;
       parameter.ranges.def = 0.0f;
@@ -246,12 +246,12 @@ void NinjasPlugin::setState ( const char* key, const char* value )
             createSlicesOnsets ();
 
           bypass = false;
-          setParameterValue ( paramLoad, 1.0f );
+          setParameterValue ( paramLoadSample, 1.0f );
         }
       else
         {
           bypass = true;
-          setParameterValue ( paramLoad, 0.0f );
+          setParameterValue ( paramLoadSample, 0.0f );
         }
     }
 }

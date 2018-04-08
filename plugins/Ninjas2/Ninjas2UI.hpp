@@ -64,8 +64,8 @@ protected:
 private:
   ScopedPointer<VolumeKnob> fKnobSlices, fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
   ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
-  ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider;
-  ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
+  ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxLoadSample;
+  ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev,fSwitchLoadSample;
   ScopedPointer<RemoveDCSwitch> fGrid[16];
 
   void loadSample ( String fp);

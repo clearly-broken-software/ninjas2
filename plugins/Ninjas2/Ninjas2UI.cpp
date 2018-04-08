@@ -94,6 +94,8 @@ NinjasUI::NinjasUI()
 
   fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( this, Size<uint> ( 58, 42 ) );
   fLabelsBoxSliceModeSlider->setLabels ( {"RAW", "ONSETS"} );
+  fLabelsBoxLoadSample = new GlowingLabelsBox (this, Size<uint> ( 100, 50) );
+  fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
   // switches
 
@@ -117,22 +119,16 @@ NinjasUI::NinjasUI()
   fSwitchLoopRev->setId ( paramLoopRev );
   fSwitchLoopRev->setCallback ( this );
 
-  /*
-  // floppy TODO sample load button
+  // sample load button
 
-  fSwitchFloppy = new ImageSwitch ( this,
-                                    Image ( Art::floppy_offData, Art::floppy_offWidth, Art::floppy_offHeight, GL_BGR ),
-                                    Image ( Art::floppy_onData, Art::floppy_onWidth, Art::floppy_onHeight, GL_BGR ) );
-  fSwitchFloppy->setId ( paramFloppy );
-  fSwitchFloppy->setAbsolutePos ( 92,220 );
-  fSwitchFloppy->setCallback ( this );
-  */
-
+  fSwitchLoadSample = new RemoveDCSwitch ( this, switchSize);
+  fSwitchLoadSample->setId ( paramLoadSample );
+  fSwitchLoadSample->setCallback ( this );
+ 
   // grid
 
   for ( int i = paramSwitch01, j = 0 ; i <= paramSwitch16; ++i , ++j )
     {
-
       fGrid[j] = new RemoveDCSwitch ( this, switchSize );
       fGrid[j]->setId ( i );
       fGrid[j]->setCallback ( this );
@@ -161,6 +157,8 @@ void NinjasUI::positionWidgets()
   fSwitchRev->setAbsolutePos ( 479, 242 );
   fSwitchLoopFwd->setAbsolutePos ( 441, 291 );
   fSwitchLoopRev->setAbsolutePos ( 479, 291 );
+  fSwitchLoadSample->setAbsolutePos( 100, 420);
+  fLabelsBoxLoadSample->setAbsolutePos(290,400);
 
   // set coordinates for grid
 
@@ -223,19 +221,17 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       fKnobRelease->setValue ( value );
       p_Release[currentSlice] = value;
       break;
-      /*
-      // floppy
-      case paramFloppy:
+     case paramLoadSample:
       if ( sample_is_loaded )
         {
-          fSwitchFloppy->setDown ( 1 );
+          fSwitchLoadSample->setDown ( 1 );
         }
       else
         {
-          fSwitchFloppy->setDown ( 0 );
+          fSwitchLoadSample->setDown ( 0 );
         }
       break;
-      */
+     
     case paramSliceMode:
       fSliceModeSlider->setDown ( value > 0.5f );
       break;
@@ -290,12 +286,12 @@ void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
       getParentWindow().openFileBrowser ( filebrowseropts );
       if ( sample_is_loaded )
         {
-          fSwitchFloppy->setDown ( true );
+          fSwitchLoadSample->setDown ( true );
 
         }
       else
         {
-          fSwitchFloppy->setDown ( false );
+          fSwitchLoadSample->setDown ( false );
         }
 
     }
@@ -467,7 +463,24 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
       setParameterValue ( paramSliceMode, value );
       break;
     }
-
+    case paramLoadSample:
+    {
+      std::cout << "load sample clicked" << std::endl;
+      filebrowseropts.title = "Load audio file";
+      filebrowseropts.startDir = directory.c_str();
+      getParentWindow().openFileBrowser ( filebrowseropts );
+      
+      if ( sample_is_loaded )
+        {
+          fSwitchLoadSample->setDown ( true );
+        }
+      else
+        {
+          fSwitchLoadSample->setDown ( false );
+        }
+        break;
+    }
+   
 
     } // switch (buttonId)
 
@@ -499,7 +512,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
     {
       createSlicesOnsets ();
     }
-
+  
   repaint();
 }
 
@@ -630,7 +643,7 @@ void NinjasUI::loadSample ( String fp )
       return;
     }
   sample_is_loaded =true;
-  //fSwitchFloppy->setDown ( true );
+  //fSwitchLoadSample->setDown ( true );
   //float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
 
   sampleVector.resize ( sampleSize * sampleChannels );

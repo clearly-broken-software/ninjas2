@@ -43,7 +43,7 @@ enum Parameters
     paramOneShotRev,
     paramLoopFwd,
     paramLoopRev,
-    paramLoad,
+    paramLoadSample,
     paramSliceMode,
    
     paramSwitch01,
