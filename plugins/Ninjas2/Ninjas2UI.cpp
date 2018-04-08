@@ -53,37 +53,38 @@ NinjasUI::NinjasUI()
   sample_is_loaded = false;
   
   // knobs
-  const Size<uint> knobSize = Size<uint> ( 54, 54 );
+  const Size<uint> knobSize = Size<uint> ( 80, 80 );
+  const Color ninjasColor = Color (222,205,135,255);
 
   fKnobSlices = new VolumeKnob ( this, knobSize );
   fKnobSlices->setId ( paramNumberOfSlices );
   fKnobSlices->setRange ( 1.0f, 128.0f );
-  fKnobSlices->setColor ( Color ( 0,200,255,255 ) );
+  fKnobSlices->setColor (ninjasColor );
   fKnobSlices->setStep ( 1.0f );
   fKnobSlices->setCallback ( this );
 
   fKnobAttack = new VolumeKnob ( this, knobSize );
   fKnobAttack->setId ( paramAttack );
   fKnobAttack->setRange ( 0.05f, 1.0f );
-  fKnobAttack->setColor ( Color ( 0,200,255,255 ) );
+  fKnobAttack->setColor ( ninjasColor );
   fKnobAttack->setCallback ( this );
 
   fKnobDecay = new VolumeKnob ( this, knobSize );
   fKnobDecay->setId ( paramDecay );
   fKnobDecay->setRange ( 0.05f, 1.0f );
-  fKnobDecay->setColor ( Color ( 0,200,255,255 ) );
+  fKnobDecay->setColor ( ninjasColor ); 
   fKnobDecay->setCallback ( this );
 
   fKnobSustain = new VolumeKnob ( this, knobSize );
   fKnobSustain->setId ( paramSustain );
   fKnobSustain->setRange ( 0.0f, 1.0f );
-  fKnobSustain->setColor ( Color ( 0,200,255,255 ) );
+  fKnobSustain->setColor (ninjasColor );
   fKnobSustain->setCallback ( this );
 
   fKnobRelease = new VolumeKnob ( this, knobSize );
   fKnobRelease->setId ( paramRelease );
   fKnobRelease->setRange ( 0.05f, 1.0f );
-  fKnobRelease->setColor ( Color ( 0,200,255,255 ) );
+  fKnobRelease->setColor (ninjasColor );
   fKnobRelease->setCallback ( this );
 
   //slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
@@ -94,14 +95,16 @@ NinjasUI::NinjasUI()
 
   fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( this, Size<uint> ( 58, 42 ) );
   fLabelsBoxSliceModeSlider->setLabels ( {"RAW", "ONSETS"} );
-  fLabelsBoxLoadSample = new GlowingLabelsBox (this, Size<uint> ( 100, 50) );
+  fLabelsBoxLoadSample = new GlowingLabelsBox (this, Size<uint> ( 90, 70) );
   fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
   // switches
 
   // play modes
 
-  const Size<uint> switchSize = Size<uint> ( 30,29 );
+  const Size<uint> switchSize = Size<uint> ( 50, 50 );
+  const Size<uint> gridSize = Size<uint> ( 25, 25 );
+  
 
   fSwitchFwd = new RemoveDCSwitch ( this, switchSize );
   fSwitchFwd->setId ( paramOneShotFwd );
@@ -129,7 +132,7 @@ NinjasUI::NinjasUI()
 
   for ( int i = paramSwitch01, j = 0 ; i <= paramSwitch16; ++i , ++j )
     {
-      fGrid[j] = new RemoveDCSwitch ( this, switchSize );
+      fGrid[j] = new RemoveDCSwitch ( this, gridSize );
       fGrid[j]->setId ( i );
       fGrid[j]->setCallback ( this );
     }
@@ -144,21 +147,21 @@ void NinjasUI::positionWidgets()
   const float width = getWidth();
   const float height = getHeight();
 
-  fKnobSlices->setAbsolutePos ( 279, 79 );
-  fKnobAttack->setAbsolutePos ( 560, 255 );
-  fKnobDecay->setAbsolutePos ( 637, 255 );
-  fKnobSustain->setAbsolutePos ( 715, 255 );
-  fKnobRelease->setAbsolutePos ( 792, 255 );
+  fKnobSlices->setAbsolutePos ( 200, 440 );
+  fKnobAttack->setAbsolutePos ( 660, 465 );
+  fKnobDecay->setAbsolutePos ( 760, 465 );
+  fKnobSustain->setAbsolutePos ( 860, 465 );
+  fKnobRelease->setAbsolutePos ( 960, 465 );
 
-  fSliceModeSlider->setAbsolutePos ( 265, 150 );
-  fLabelsBoxSliceModeSlider->setAbsolutePos ( 290, 146 );
+  fSliceModeSlider->setAbsolutePos ( 200, 540 );
+  fLabelsBoxSliceModeSlider->setAbsolutePos ( 230, 540 );
 
-  fSwitchFwd->setAbsolutePos ( 441,242 );
-  fSwitchRev->setAbsolutePos ( 479, 242 );
-  fSwitchLoopFwd->setAbsolutePos ( 441, 291 );
-  fSwitchLoopRev->setAbsolutePos ( 479, 291 );
-  fSwitchLoadSample->setAbsolutePos( 100, 420);
-  fLabelsBoxLoadSample->setAbsolutePos(290,400);
+  fSwitchFwd->setAbsolutePos ( 490, 450 );
+  fSwitchRev->setAbsolutePos ( 560, 450 );
+  fSwitchLoopFwd->setAbsolutePos ( 490, 510 );
+  fSwitchLoopRev->setAbsolutePos ( 560, 510 );
+  fSwitchLoadSample->setAbsolutePos( 50, 495 );
+  fLabelsBoxLoadSample->setAbsolutePos( 30, 480 );
 
   // set coordinates for grid
 
@@ -169,7 +172,7 @@ void NinjasUI::positionWidgets()
       for ( int x = 0 ; x < 4 ; ++x )
         {
           int index = y * 4 + x;
-          fGrid[index]->setAbsolutePos ( 981+x*41,89+y*46 );
+          fGrid[index]->setAbsolutePos ( 330+x*30,450+y*30 );
         } // for x
     } // for y
 }
@@ -523,7 +526,7 @@ void NinjasUI::onNanoDisplay()
 
   beginPath();
 
-  fillColor ( Color ( 150,150,150, 255 ) );
+  fillColor ( Color ( 227,222,219, 255 ) );
 
   rect ( 0, 0, width, height );
   fill();
@@ -630,6 +633,7 @@ void NinjasUI::onNanoDisplay()
 
 void NinjasUI::loadSample ( String fp )
 {
+  std::cout << "loading sample " << fp << std::endl;
   int  iIndex {0};
   float fIndex {0};
   double samplerate = getSampleRate();
@@ -653,7 +657,7 @@ void NinjasUI::loadSample ( String fp )
   // display height = 350
   // store waveform as -175 to  175 integer
     
-  for ( int i; i < sampleVector.size(); i++ )
+  for ( int i=0; i < sampleVector.size(); i++ )
     {
         waveform[i] = int ( sampleVector[i] * 175.0f );
     }
