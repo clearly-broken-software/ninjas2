@@ -16,3 +16,5 @@ bin/*-dssi/
 bin/*.lv2/
 bin/d_*
 bin/ninjas2
+
+plugins/Ninjas2/Art working directory/
