@@ -75,6 +75,8 @@ private:
   void createSlicesOnsets ();
   int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
   void recallSliceSettings ( int slice );
+  void drawWaveform();
+  
   float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
   float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
   std::string dirnameOf ( const std::string& fname );
@@ -106,6 +108,14 @@ private:
   Slice a_slices[128];
   std::vector<uint_t>onsets;
 
+  struct WaveView
+  {
+    int start;
+    int end;
+    float zoom; // 1.0f = zoomed in max
+  };
+  
+  WaveView waveView;
   uint64_t sampleSize;
   int sampleChannels;
   std::vector<float>sampleVector;
@@ -116,14 +126,14 @@ private:
 
   // need static constexpr apparently because of std::array ..
   
-  static constexpr unsigned int lcd_left = 363;
-  static constexpr unsigned int lcd_right = 922;
-  static constexpr unsigned int lcd_top = 54;
-  static constexpr unsigned int lcd_bottom = 163;
-  static constexpr unsigned int lcd_center = lcd_bottom - lcd_top;
-  static constexpr unsigned int lcd_length = lcd_right - lcd_left;
-  static constexpr unsigned int lcd_height = ( lcd_bottom - lcd_top ) /2;
-  static constexpr unsigned int waveform_length = lcd_length * 2;
+  static constexpr unsigned int display_left = 30;
+  static constexpr unsigned int display_right = 30 + 1140;
+  static constexpr unsigned int display_top = 600 - 200 - 350;
+  static constexpr unsigned int display_bottom = 600-200 ;
+  static constexpr unsigned int display_center = (display_bottom - display_top) / 2 + display_top;
+  static constexpr unsigned int display_length = display_right - display_left;
+  static constexpr unsigned int display_height = ( display_bottom - display_top ) /2;
+  //static constexpr unsigned int waveform_length = display_length * 2;
   
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )

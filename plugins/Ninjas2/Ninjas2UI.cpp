@@ -27,39 +27,45 @@ NinjasUI::NinjasUI()
   : UI ( 1200, 600 )
 {
   // init parameters
-  
+
   // adsr
   std::fill_n ( p_Attack, 128, 0.05f );
   std::fill_n ( p_Decay, 128, 0.05f );
   std::fill_n ( p_Sustain, 128, 1.0f );
   std::fill_n ( p_Release, 128, 0.05f );
-  
+
   // play modes
   std::fill_n ( p_OneShotFwd, 128, 1.0f );
   std::fill_n ( p_OneShotRev, 128, 0.0f );
   std::fill_n ( p_LoopFwd, 128, 0.0f );
   std::fill_n ( p_LoopRev, 128, 0.0f );
-  
+
   // slices
   enum_slicemode = RAW;
   slicemethod = false; // TODO remove the bool and use the enum
   currentSlice = 0;
   slices = 1;
   std::fill_n ( a_slices,128, Slice() );
-  
+
   // sample
   sampleSize = 0;
   sampleChannels = 1;
   sample_is_loaded = false;
-  
+
+  // waveform
+  waveView.start = 0;
+  waveView.end = 0;
+  waveView.zoom = 1.0f; //
+
+
   // knobs
   const Size<uint> knobSize = Size<uint> ( 80, 80 );
-  const Color ninjasColor = Color (222,205,135,255);
+  const Color ninjasColor = Color ( 222,205,135,255 );
 
   fKnobSlices = new VolumeKnob ( this, knobSize );
   fKnobSlices->setId ( paramNumberOfSlices );
   fKnobSlices->setRange ( 1.0f, 128.0f );
-  fKnobSlices->setColor (ninjasColor );
+  fKnobSlices->setColor ( ninjasColor );
   fKnobSlices->setStep ( 1.0f );
   fKnobSlices->setCallback ( this );
 
@@ -72,19 +78,19 @@ NinjasUI::NinjasUI()
   fKnobDecay = new VolumeKnob ( this, knobSize );
   fKnobDecay->setId ( paramDecay );
   fKnobDecay->setRange ( 0.05f, 1.0f );
-  fKnobDecay->setColor ( ninjasColor ); 
+  fKnobDecay->setColor ( ninjasColor );
   fKnobDecay->setCallback ( this );
 
   fKnobSustain = new VolumeKnob ( this, knobSize );
   fKnobSustain->setId ( paramSustain );
   fKnobSustain->setRange ( 0.0f, 1.0f );
-  fKnobSustain->setColor (ninjasColor );
+  fKnobSustain->setColor ( ninjasColor );
   fKnobSustain->setCallback ( this );
 
   fKnobRelease = new VolumeKnob ( this, knobSize );
   fKnobRelease->setId ( paramRelease );
   fKnobRelease->setRange ( 0.05f, 1.0f );
-  fKnobRelease->setColor (ninjasColor );
+  fKnobRelease->setColor ( ninjasColor );
   fKnobRelease->setCallback ( this );
 
   //slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
@@ -95,7 +101,7 @@ NinjasUI::NinjasUI()
 
   fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( this, Size<uint> ( 58, 42 ) );
   fLabelsBoxSliceModeSlider->setLabels ( {"RAW", "ONSETS"} );
-  fLabelsBoxLoadSample = new GlowingLabelsBox (this, Size<uint> ( 90, 70) );
+  fLabelsBoxLoadSample = new GlowingLabelsBox ( this, Size<uint> ( 90, 70 ) );
   fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
   // switches
@@ -104,7 +110,7 @@ NinjasUI::NinjasUI()
 
   const Size<uint> switchSize = Size<uint> ( 50, 50 );
   const Size<uint> gridSize = Size<uint> ( 25, 25 );
-  
+
 
   fSwitchFwd = new RemoveDCSwitch ( this, switchSize );
   fSwitchFwd->setId ( paramOneShotFwd );
@@ -124,10 +130,10 @@ NinjasUI::NinjasUI()
 
   // sample load button
 
-  fSwitchLoadSample = new RemoveDCSwitch ( this, switchSize);
+  fSwitchLoadSample = new RemoveDCSwitch ( this, switchSize );
   fSwitchLoadSample->setId ( paramLoadSample );
   fSwitchLoadSample->setCallback ( this );
- 
+
   // grid
 
   for ( int i = paramSwitch01, j = 0 ; i <= paramSwitch16; ++i , ++j )
@@ -160,8 +166,8 @@ void NinjasUI::positionWidgets()
   fSwitchRev->setAbsolutePos ( 560, 450 );
   fSwitchLoopFwd->setAbsolutePos ( 490, 510 );
   fSwitchLoopRev->setAbsolutePos ( 560, 510 );
-  fSwitchLoadSample->setAbsolutePos( 50, 495 );
-  fLabelsBoxLoadSample->setAbsolutePos( 30, 480 );
+  fSwitchLoadSample->setAbsolutePos ( 50, 495 );
+  fLabelsBoxLoadSample->setAbsolutePos ( 30, 480 );
 
   // set coordinates for grid
 
@@ -224,7 +230,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       fKnobRelease->setValue ( value );
       p_Release[currentSlice] = value;
       break;
-     case paramLoadSample:
+    case paramLoadSample:
       if ( sample_is_loaded )
         {
           fSwitchLoadSample->setDown ( 1 );
@@ -234,7 +240,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSwitchLoadSample->setDown ( 0 );
         }
       break;
-     
+
     case paramSliceMode:
       fSliceModeSlider->setDown ( value > 0.5f );
       break;
@@ -260,7 +266,7 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
 {
   if ( std::strcmp ( key, "filepath" ) == 0 )
     {
-      loadSample ( String ( value ));
+      loadSample ( String ( value ) );
     }
 }
 
@@ -272,7 +278,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
       // if a file was selected, tell DSP
       directory = dirnameOf ( filename );
       setState ( "filepath", filename );
-      loadSample ( String ( filename ));
+      loadSample ( String ( filename ) );
     }
 }
 /* ----------------------------------------------------------------------------------------------------------
@@ -472,7 +478,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
       filebrowseropts.title = "Load audio file";
       filebrowseropts.startDir = directory.c_str();
       getParentWindow().openFileBrowser ( filebrowseropts );
-      
+
       if ( sample_is_loaded )
         {
           fSwitchLoadSample->setDown ( true );
@@ -481,9 +487,9 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
         {
           fSwitchLoadSample->setDown ( false );
         }
-        break;
+      break;
     }
-   
+
 
     } // switch (buttonId)
 
@@ -515,7 +521,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
     {
       createSlicesOnsets ();
     }
-  
+
   repaint();
 }
 
@@ -533,7 +539,23 @@ void NinjasUI::onNanoDisplay()
 
   closePath();
 
+  // waveform display back
+
+  beginPath();
+
+  fillColor ( Color ( 179,179,179, 255 ) );
+
+  rect ( 30, 50, 1140, 350 );
+  fill();
+
+  closePath();
+
+  if ( sample_is_loaded ) drawWaveform();
+
+
   return;
+
+  std::cout << "after return" << std::endl;
 
   //fImgBackground.draw();
   glEnable ( GL_BLEND );
@@ -545,7 +567,7 @@ void NinjasUI::onNanoDisplay()
 
   float r, g, b;
   bool colorflip {true};
-  float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
+  float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) display_length;
   for ( int i = 0 ; i < slices ; i ++ )
     {
       int start = a_slices[i].sliceStart / samples_per_pixel;
@@ -566,8 +588,8 @@ void NinjasUI::onNanoDisplay()
           glColor4f ( r, g, b, 1.0f );
         }
 
-      boxes[i].setPos ( start + lcd_left,lcd_top );
-      boxes[i].setSize ( end - start, lcd_center );
+      boxes[i].setPos ( start + display_left,display_top );
+      boxes[i].setSize ( end - start, display_center );
       boxes[i].draw();
       colorflip = !colorflip;
 //
@@ -591,15 +613,15 @@ void NinjasUI::onNanoDisplay()
   b = 0x0d/255.f;
   glColor4f ( r, g, b, 1.0f );
 
-  for ( uint32_t i =0,j=0 ; i < lcd_length ; i++ )
+  for ( uint32_t i =0,j=0 ; i < display_length ; i++ )
     {
       glBegin ( GL_LINES );
-      glVertex2i ( i+lcd_left,lcd_center );
-      glVertex2i ( i+lcd_left,waveform[j] );
+      glVertex2i ( i+display_left,display_center );
+      glVertex2i ( i+display_left,waveform[j] );
       j++;
 
-      glVertex2i ( i+lcd_left,lcd_center );
-      glVertex2i ( i+lcd_left,waveform[j] );
+      glVertex2i ( i+display_left,display_center );
+      glVertex2i ( i+display_left,waveform[j] );
       j++;
       glEnd();
 
@@ -614,14 +636,14 @@ void NinjasUI::onNanoDisplay()
       glColor4f ( r, g, b, 1.0f );
       for ( std::vector<uint_t>::iterator it = onsets.begin() ; it != onsets.end(); ++it )
         {
-          int lcd_onset_x = ( ( double ) *it / ( double ) sampleSize ) * ( float ) lcd_length;
+          int display_onset_x = ( ( double ) *it / ( double ) sampleSize ) * ( float ) display_length;
 
           glLineWidth ( 0.5f );
           glLineStipple ( 1,0xAAAA );
           glEnable ( GL_LINE_STIPPLE );
           glBegin ( GL_LINES );
-          glVertex2i ( lcd_onset_x+lcd_left,lcd_top );
-          glVertex2i ( lcd_onset_x+lcd_left,lcd_bottom );
+          glVertex2i ( display_onset_x+display_left,display_top );
+          glVertex2i ( display_onset_x+display_left,display_bottom );
           glEnd();
         }
       glDisable ( GL_LINE_STIPPLE );
@@ -651,16 +673,35 @@ void NinjasUI::loadSample ( String fp )
   //float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
 
   sampleVector.resize ( sampleSize * sampleChannels );
-  waveform.resize ( sampleSize * sampleChannels );
   fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
-  
+
   // display height = 350
   // store waveform as -175 to  175 integer
-    
-  for ( int i=0; i < sampleVector.size(); i++ )
+
+  if ( sampleChannels == 2 ) // sum to mono
     {
-        waveform[i] = int ( sampleVector[i] * 175.0f );
+       std::cout << "stereo sample" << std::endl;
+   
+      for ( int i=0, j=0 ; i <= sampleSize; i++ )
+        {
+          float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
+          waveform.push_back ( uint16_t ( sum_mono * 175.0f ) );
+          j+=2;
+        }
     }
+  else
+    {
+      std::cout << "mono sample" << std::endl;
+      waveform.resize ( sampleSize );
+      for ( int i=0; i < sampleVector.size(); i++ )
+        {
+          waveform[i] = uint16_t ( sampleVector[i] * 175.0f );
+        }
+    }
+
+  waveView.start = 0;
+  waveView.end = sampleSize;
+  std::cout << sampleSize << " | " << waveform.size() << " | " << waveView.end <<  std::endl;
 
 
 //   for ( uint32_t i = 0, j =0 ; i < lcd_length ; i++ )
@@ -818,6 +859,36 @@ void NinjasUI::createSlicesRaw ()
     }
 }
 
+void NinjasUI::drawWaveform()
+{
+ //  waveView.end = 1140;
+  uint view = waveView.end - waveView.start; // set these when zooming in
+
+  float samples_per_pixel = ( float ) view / ( float ) display_length;
+  float fIndex;
+  int iIndex;
+  beginPath();
+  strokeColor ( 80,45,22,255 );
+  for ( uint16_t i = 0 ; i < display_length ; i++ )
+    {
+      fIndex = float ( waveView.start + i ) * samples_per_pixel;
+      iIndex = fIndex;
+      auto minmax = std::minmax_element ( waveform.begin() + iIndex, waveform.begin() + iIndex + int ( samples_per_pixel ) );
+      uint16_t min = *minmax.first + display_center;
+      uint16_t max = *minmax.second + display_center;
+
+      moveTo ( i+display_left,display_center );
+      lineTo ( i+display_left,min );
+      moveTo ( i+display_left,display_center );
+      lineTo ( i+display_left,max );
+      
+      //  std::cout << i << "," << min << "," << max << std::endl;
+    }
+  stroke();
+  closePath();
+
+
+}
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */
 
