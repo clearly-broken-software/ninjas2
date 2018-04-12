@@ -25,7 +25,8 @@
 #include "algorithm"
 #include "array"
 #include "aubio.h"
-//#include "Slice.h"
+#include <math.h>
+
 
 //Wolf Widgets
 #include "VolumeKnob.hpp"
@@ -60,6 +61,8 @@ protected:
   void onNanoDisplay() override;
   void nanoKnobValueChanged(NanoKnob* nanoKnob, const float value) override;
   void nanoSwitchClicked(NanoSwitch* nanoSwitch) override;
+  bool onMouse(const MouseEvent&) override;
+  bool onScroll(const ScrollEvent&) override;
 
 private:
   ScopedPointer<VolumeKnob> fKnobSlices, fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
@@ -112,7 +115,8 @@ private:
   {
     int start;
     int end;
-    float zoom; // 1.0f = zoomed in max
+    float zoom; // sample lenght / display width
+    float max_zoom;
   };
   
   WaveView waveView;
@@ -123,17 +127,19 @@ private:
   Window::FileBrowserOptions filebrowseropts;
   std::string directory;
   Rectangle<int> boxes[128];
+  Rectangle<int> display;
 
   // need static constexpr apparently because of std::array ..
   
   static constexpr unsigned int display_left = 30;
-  static constexpr unsigned int display_right = 30 + 1140;
+  static constexpr unsigned int display_width = 1140;
+  static constexpr unsigned int display_right = 30 + display_width;
   static constexpr unsigned int display_top = 600 - 200 - 350;
   static constexpr unsigned int display_bottom = 600-200 ;
   static constexpr unsigned int display_center = (display_bottom - display_top) / 2 + display_top;
   static constexpr unsigned int display_length = display_right - display_left;
   static constexpr unsigned int display_height = ( display_bottom - display_top ) /2;
-  //static constexpr unsigned int waveform_length = display_length * 2;
+    //static constexpr unsigned int waveform_length = display_length * 2;
   
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )

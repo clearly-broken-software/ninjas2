@@ -55,7 +55,10 @@ NinjasUI::NinjasUI()
   // waveform
   waveView.start = 0;
   waveView.end = 0;
-  waveView.zoom = 1.0f; //
+  waveView.zoom = 1.0f; 
+  display.setSize(1140,350);
+  display.setPos(30,50);
+  
 
 
   // knobs
@@ -701,22 +704,10 @@ void NinjasUI::loadSample ( String fp )
 
   waveView.start = 0;
   waveView.end = sampleSize;
-  std::cout << sampleSize << " | " << waveform.size() << " | " << waveView.end <<  std::endl;
-
-
-//   for ( uint32_t i = 0, j =0 ; i < lcd_length ; i++ )
-//     {
-//       fIndex = i * samples_per_pixel;
-//       iIndex = fIndex;
-//       auto minmax = std::minmax_element ( sampleVector.begin() + iIndex, sampleVector.begin() + iIndex+samples_per_pixel );
-//       float min = *minmax.first;
-//       float max = *minmax.second;
-//       // convert 0.0 - 1.0 to 0 - 107
-//       waveform[j] = min * ( float ) lcd_height  + lcd_center;
-//       j++;
-//       waveform[j] = max * ( float ) lcd_height + lcd_center;
-//       j++;
-//     }
+  waveView.zoom = 1.0f;
+  waveView.max_zoom = float (sampleSize) / float (display_width);
+  
+  //std::cout << sampleSize << " | " << waveform.size() << " | " << waveView.end <<  std::endl;
 
   getOnsets ( sampleSize ,sampleChannels, sampleVector, onsets );
   if ( !slicemethod )
@@ -863,15 +854,14 @@ void NinjasUI::drawWaveform()
 {
  //  waveView.end = 1140;
   uint view = waveView.end - waveView.start; // set these when zooming in
-
   float samples_per_pixel = ( float ) view / ( float ) display_length;
   float fIndex;
-  int iIndex;
+  uint iIndex;
   beginPath();
   strokeColor ( 80,45,22,255 );
   for ( uint16_t i = 0 ; i < display_length ; i++ )
     {
-      fIndex = float ( waveView.start + i ) * samples_per_pixel;
+      fIndex = float ( waveView.start) + (float(i) * samples_per_pixel);
       iIndex = fIndex;
       auto minmax = std::minmax_element ( waveform.begin() + iIndex, waveform.begin() + iIndex + int ( samples_per_pixel ) );
       uint16_t min = *minmax.first + display_center;
@@ -886,9 +876,46 @@ void NinjasUI::drawWaveform()
     }
   stroke();
   closePath();
-
-
 }
+
+bool NinjasUI::onMouse (const MouseEvent& ev)
+{
+//   std::cout << "onMouse" << std::endl;
+//   std::cout << "button" <<ev.button << std::endl;
+//   //std::cout << ev.pos << std::endl;
+//   std::cout << "press" << ev.press << std::endl;
+//   std::cout << "mod" << ev.mod << std::endl;
+//   std::cout << "time" << ev.time << std::endl;
+
+  
+}
+
+bool NinjasUI::onScroll(const ScrollEvent& ev)
+{
+  int x = ev.pos.getX();
+  int y = ev.pos.getY();
+  if (!display.contains(x,y))
+    return false;
+  float delta = -ev.delta.getY()*0.05f;
+  waveView.zoom += delta;    
+  if (waveView.zoom < 0.0f)
+    waveView.zoom = 0.0f;
+  if (waveView.zoom > 1.0f)
+    waveView.zoom = 1.0f;
+  
+  uint center = (waveView.end - waveView.start) / 2;
+  uint length = pow(waveView.max_zoom,waveView.zoom) * display_width;
+
+  waveView.start = center - (length /2);
+  if (waveView.start < 0) 
+    waveView.start = 0;
+  waveView.end = waveView.start+length;
+  repaint();
+ 
+}
+
+
+
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */
 

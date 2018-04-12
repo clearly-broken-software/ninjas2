@@ -815,8 +815,6 @@ int NinjasPlugin::loadSample ( std::string fp )
   return 0;
 }
 
-
-
 /* ------------------------------------------------------------------------------------------------------------
 * Plugin entry point, called by DPF to create a new plugin instance. */
 
