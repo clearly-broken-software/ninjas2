@@ -892,24 +892,38 @@ bool NinjasUI::onMouse (const MouseEvent& ev)
 
 bool NinjasUI::onScroll(const ScrollEvent& ev)
 {
+  // is the pointer in the display
   int x = ev.pos.getX();
   int y = ev.pos.getY();
   if (!display.contains(x,y))
-    return false;
+    return false; // get outta here 
+    
+  x -= display_left; // off set in pixels
+  std::cout << "x = " << x << std::endl;
+  
+  // find sample index mouse is hovering at
+  // old zoom factor
+  uint center = pow(waveView.max_zoom,waveView.zoom) * (float( x ))+ float (waveView.start);
+  std::cout << "center = " << center << std::endl;
+  
+  // new zoom factor
   float delta = -ev.delta.getY()*0.05f;
+  
   waveView.zoom += delta;    
   if (waveView.zoom < 0.0f)
     waveView.zoom = 0.0f;
   if (waveView.zoom > 1.0f)
     waveView.zoom = 1.0f;
   
-  uint center = (waveView.end - waveView.start) / 2;
   uint length = pow(waveView.max_zoom,waveView.zoom) * display_width;
-
-  waveView.start = center - (length /2);
+  std::cout << "length = " << length << std::endl;
+  float samples_per_pixel = ( float ) length / ( float ) display_length;
+  //uint center = (waveView.end - waveView.start) / 2;
+  waveView.start = int( float (center)  - ( float(x)  *  samples_per_pixel ));
   if (waveView.start < 0) 
     waveView.start = 0;
   waveView.end = waveView.start+length;
+  std::cout << waveView.start << "," << waveView.end << std::endl;
   repaint();
  
 }
