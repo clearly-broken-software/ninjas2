@@ -681,6 +681,8 @@ void NinjasUI::loadSample ( String fp )
 
   // display height = 350
   // store waveform as -175 to  175 integer
+  
+  waveform.resize(0); // clear waveform
 
   if ( sampleChannels == 2 ) // sum to mono
     {
