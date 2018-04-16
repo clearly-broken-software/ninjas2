@@ -63,6 +63,7 @@ protected:
   void nanoSwitchClicked(NanoSwitch* nanoSwitch) override;
   bool onMouse(const MouseEvent&) override;
   bool onScroll(const ScrollEvent&) override;
+  bool onMotion(const MotionEvent&) override;
 
 private:
   ScopedPointer<VolumeKnob> fKnobSlices, fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
@@ -86,6 +87,11 @@ private:
 
   // slices
   float sliceStart[128], sliceEnd[128];
+  //
+  bool mouseDragging;
+  uint mouseX;
+  int mouseDistance;
+  
 
   enum SLICEMODE
   {

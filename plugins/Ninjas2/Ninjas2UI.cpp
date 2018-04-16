@@ -59,8 +59,9 @@ NinjasUI::NinjasUI()
   display.setSize(1140,350);
   display.setPos(30,50);
   
-
-
+  // mouse
+  mouseDragging = false;
+  
   // knobs
   const Size<uint> knobSize = Size<uint> ( 80, 80 );
   const Color ninjasColor = Color ( 222,205,135,255 );
@@ -880,12 +881,17 @@ void NinjasUI::drawWaveform()
 
 bool NinjasUI::onMouse (const MouseEvent& ev)
 {
-//   std::cout << "onMouse" << std::endl;
-//   std::cout << "button" <<ev.button << std::endl;
-//   //std::cout << ev.pos << std::endl;
-//   std::cout << "press" << ev.press << std::endl;
-//   std::cout << "mod" << ev.mod << std::endl;
-//   std::cout << "time" << ev.time << std::endl;
+ /*  std::cout << "onMouse " << std::endl;
+   std::cout << "button " <<ev.button << std::endl;
+   std::cout << "press" << ev.press << std::endl;
+ */  if (!mouseDragging)
+      if (ev.press){
+	mouseDragging = true;
+	mouseX = ev.pos.getX()-display_left;
+	}
+  if (!ev.press)
+    mouseDragging = false;
+//   std::cout << "mod " << ev.mod << std::endl;
 
   
 }
@@ -916,20 +922,62 @@ bool NinjasUI::onScroll(const ScrollEvent& ev)
     waveView.zoom = 0.0f;
   if (waveView.zoom > 1.0f)
     waveView.zoom = 1.0f;
+  std::cout << "zoom = " << waveView.zoom << std::endl;
 
   float samples_per_pixel =  pow(waveView.max_zoom,waveView.zoom);
+  std::cout << "samples_per_pixel = " << samples_per_pixel << std::endl;
   uint length = int( samples_per_pixel * float(display_width));
+  std::cout << "length =  " << length << std::endl;
   waveView.start = int( float (center)  - ( float(x)  *  samples_per_pixel ));
   if (waveView.start < 0) 
     waveView.start = 0;
   waveView.end = waveView.start+length;
   if (waveView.end > waveform.size())
+  {
     waveView.end = waveform.size();
+    waveView.start = waveView.end-length;
+  }
+    
   std::cout << waveView.start << "," << waveView.end << std::endl;
   repaint();
- 
 }
 
+
+
+bool NinjasUI::onMotion(const MotionEvent& ev)
+{
+  if (!mouseDragging)
+  {
+    //std::cout << "not dragging" << std::endl;
+    return false;
+  }
+  if (waveform.size() <= display_length)
+    return false; // can't move anyway  
+  if (waveView.zoom == 1.0f)
+    return false;
+  //std::cout << "zoom factor" << waveView.zoom << std::endl;
+  int x = ev.pos.getX();
+  int y = ev.pos.getY();
+  if (!display.contains(x,y))
+    return false; // get outta here 
+  
+  x -= display_left; // off set in pixels
+  mouseDistance = x - mouseX;
+  mouseX = x;
+  std::cout << "mouseDistance = " << mouseDistance << std::endl;
+  if ( (mouseDistance < 0) & (waveView.end == waveform.size()) )
+    return false;
+  
+  float samples_per_pixel =  pow(waveView.max_zoom,waveView.zoom);
+  uint length = int( samples_per_pixel * float(display_width));
+  waveView.start = waveView.start - int ( float(mouseDistance)  *  samples_per_pixel );
+  if (waveView.start < 0) 
+    waveView.start = 0;
+  waveView.end = waveView.start+length;
+  if (waveView.end > waveform.size())
+    waveView.end = waveform.size();
+   repaint();
+}
 
 
 /* ------------------------------------------------------------------------------------------------------------
