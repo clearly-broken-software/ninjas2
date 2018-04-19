@@ -63,12 +63,18 @@ NinjasPlugin::NinjasPlugin()
   // slices
   slices       = 1;
   currentSlice = 1;
+  slicemode    = 0;
 
   samplerate = getSampleRate();
   sampleChannels = 1;
-
+  sampleSize = 0;
+  
   std::fill_n ( voices,128,Voice() );
   std::fill_n ( a_slices,128,Slice() );
+
+  // grid
+  std::fill_n ( p_Grid, 16, 0 );
+  p_Grid[0] = 1;
 }
 
 // Init
@@ -316,7 +322,7 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
       return_Value = slicemode;
       break;
     }
-  if ( index >= paramSwitch01 )
+  if ( index >= paramSwitch01 && index <= paramSwitch16 )
     {
       return_Value = p_Grid[index - paramSwitch01];
     }
