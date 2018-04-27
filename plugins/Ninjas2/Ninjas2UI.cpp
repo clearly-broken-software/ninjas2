@@ -27,7 +27,7 @@ NinjasUI::NinjasUI()
   : UI ( 1200, 600 )
 {
   // init parameters
-
+  samplerate = getSampleRate();
   // adsr
   std::fill_n ( p_Attack, 128, 0.05f );
   std::fill_n ( p_Decay, 128, 0.05f );
@@ -55,13 +55,13 @@ NinjasUI::NinjasUI()
   // waveform
   waveView.start = 0;
   waveView.end = 0;
-  waveView.zoom = 1.0f; 
-  display.setSize(1140,350);
-  display.setPos(30,50);
-  
+  waveView.zoom = 1.0f;
+  display.setSize ( 1140,350 );
+  display.setPos ( 30,50 );
+
   // mouse
   mouseDragging = false;
-  
+
   // knobs
   const Size<uint> knobSize = Size<uint> ( 80, 80 );
   const Color ninjasColor = Color ( 222,205,135,255 );
@@ -554,7 +554,19 @@ void NinjasUI::onNanoDisplay()
 
   closePath();
 
-  if ( sample_is_loaded ) drawWaveform();
+  if ( sample_is_loaded )
+    {
+      drawWaveform();
+      drawRuler();
+    }
+
+  // time ruler
+
+  // seconds
+
+
+  // beats
+
 
 
   return;
@@ -596,13 +608,7 @@ void NinjasUI::onNanoDisplay()
       boxes[i].setSize ( end - start, display_center );
       boxes[i].draw();
       colorflip = !colorflip;
-//
-//         glBegin ( GL_LINES );
-//         glVertex2i ( start+lcd_left,lcd_top );
-//         glVertex2i ( start+lcd_left,lcd_bottom);
-//         glVertex2i ( end+lcd_left,lcd_top );
-//         glVertex2i ( end+lcd_left,lcd_bottom);
-//     	glEnd();
+
     }
 
   // draw waveform
@@ -681,13 +687,13 @@ void NinjasUI::loadSample ( String fp )
 
   // display height = 350
   // store waveform as -175 to  175 integer
-  
-  waveform.resize(0); // clear waveform
+
+  waveform.resize ( 0 ); // clear waveform
 
   if ( sampleChannels == 2 ) // sum to mono
     {
-       std::cout << "stereo sample" << std::endl;
-   
+      std::cout << "stereo sample" << std::endl;
+
       for ( int i=0, j=0 ; i <= sampleSize; i++ )
         {
           float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
@@ -708,8 +714,8 @@ void NinjasUI::loadSample ( String fp )
   waveView.start = 0;
   waveView.end = sampleSize;
   waveView.zoom = 1.0f;
-  waveView.max_zoom = float (sampleSize) / float (display_width);
-  
+  waveView.max_zoom = float ( sampleSize ) / float ( display_width );
+
   //std::cout << sampleSize << " | " << waveform.size() << " | " << waveView.end <<  std::endl;
 
   getOnsets ( sampleSize ,sampleChannels, sampleVector, onsets );
@@ -855,7 +861,7 @@ void NinjasUI::createSlicesRaw ()
 
 void NinjasUI::drawWaveform()
 {
- //  waveView.end = 1140;
+//  waveView.end = 1140;
   uint view = waveView.end - waveView.start; // set these when zooming in
   float samples_per_pixel = ( float ) view / ( float ) display_length;
   float fIndex;
@@ -864,7 +870,7 @@ void NinjasUI::drawWaveform()
   strokeColor ( 80,45,22,255 );
   for ( uint16_t i = 0 ; i < display_length ; i++ )
     {
-      fIndex = float ( waveView.start) + (float(i) * samples_per_pixel);
+      fIndex = float ( waveView.start ) + ( float ( i ) * samples_per_pixel );
       iIndex = fIndex;
       auto minmax = std::minmax_element ( waveform.begin() + iIndex, waveform.begin() + iIndex + int ( samples_per_pixel ) );
       uint16_t min = *minmax.first + display_center;
@@ -874,111 +880,142 @@ void NinjasUI::drawWaveform()
       lineTo ( i+display_left,min );
       moveTo ( i+display_left,display_center );
       lineTo ( i+display_left,max );
-      
+
       //  std::cout << i << "," << min << "," << max << std::endl;
     }
   stroke();
   closePath();
 }
 
-bool NinjasUI::onMouse (const MouseEvent& ev)
+void NinjasUI::drawRuler()
 {
- /*  std::cout << "onMouse " << std::endl;
-   std::cout << "button " <<ev.button << std::endl;
-   std::cout << "press" << ev.press << std::endl;
- */  if (!mouseDragging)
-      if (ev.press){
-	mouseDragging = true;
-	mouseX = ev.pos.getX()-display_left;
-	}
-  if (!ev.press)
+  uint view = waveView.end - waveView.start; // set these when zooming in
+  double samples_per_pixel = double ( view ) / double ( display_length );
+  double time_per_pixel = samples_per_pixel / samplerate;
+  double round_up = 1.0; // do something clever here
+  // start time
+  double wave_start_time = double(waveView.start) / samplerate;
+  double time = ceil ( ( 1.0 / round_up ) * wave_start_time);
+  time= time / ( 1.0 / round_up );
+  // end time
+  double wave_end_time = double ( waveView.end ) / samplerate;
+  
+  double timeX = display_left;
+
+  beginPath();
+  strokeColor ( 255,0,0,255 );
+  while ( time < wave_end_time )
+    { 
+      timeX = (time-wave_start_time) / time_per_pixel + display_left;
+      std::cout << "time = " << time << ", pixel = " << timeX << "\n";
+     
+      moveTo ( timeX,display_top );
+      lineTo ( timeX,display_bottom );
+      time = time + round_up;
+    }
+  stroke();
+  closePath();
+}
+
+bool NinjasUI::onMouse ( const MouseEvent& ev )
+{
+  /*  std::cout << "onMouse " << std::endl;
+    std::cout << "button " <<ev.button << std::endl;
+    std::cout << "press" << ev.press << std::endl;
+  */  if ( !mouseDragging )
+    if ( ev.press )
+      {
+        mouseDragging = true;
+        mouseX = ev.pos.getX()-display_left;
+      }
+  if ( !ev.press )
     mouseDragging = false;
 //   std::cout << "mod " << ev.mod << std::endl;
 
-  
+
 }
 
-bool NinjasUI::onScroll(const ScrollEvent& ev)
+bool NinjasUI::onScroll ( const ScrollEvent& ev )
 {
   // is the pointer in the display
   int x = ev.pos.getX();
   int y = ev.pos.getY();
-  if (!display.contains(x,y))
+  if ( !display.contains ( x,y ) )
     return false; // get outta here
-    
-  if (waveform.size() <= display_length)
+
+  if ( waveform.size() <= display_length )
     return false; // can't zoom anyway
-    
+
   x -= display_left; // off set in pixels
   std::cout << "x = " << x << std::endl;
-  
+
   // find sample index mouse is hovering at
   // old zoom factor
-  uint center = int( pow(waveView.max_zoom,waveView.zoom) * (float( x ))+ float (waveView.start));
+  uint center = int ( pow ( waveView.max_zoom,waveView.zoom ) * ( float ( x ) ) + float ( waveView.start ) );
   std::cout << "center = " << center << std::endl;
   // new zoom factor
-  float delta = -ev.delta.getY()*0.05f;
-  
-  waveView.zoom += delta;    
-  if (waveView.zoom < 0.0f)
+  float delta = -ev.delta.getY() *0.05f;
+
+  waveView.zoom += delta;
+  if ( waveView.zoom < 0.0f )
     waveView.zoom = 0.0f;
-  if (waveView.zoom > 1.0f)
+  if ( waveView.zoom > 1.0f )
     waveView.zoom = 1.0f;
   std::cout << "zoom = " << waveView.zoom << std::endl;
 
-  float samples_per_pixel =  pow(waveView.max_zoom,waveView.zoom);
+  float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
   std::cout << "samples_per_pixel = " << samples_per_pixel << std::endl;
-  uint length = int( samples_per_pixel * float(display_width));
+  uint length = int ( samples_per_pixel * float ( display_width ) );
   std::cout << "length =  " << length << std::endl;
-  waveView.start = int( float (center)  - ( float(x)  *  samples_per_pixel ));
-  if (waveView.start < 0) 
+  waveView.start = int ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
+  if ( waveView.start < 0 )
     waveView.start = 0;
   waveView.end = waveView.start+length;
-  if (waveView.end > waveform.size())
-  {
-    waveView.end = waveform.size();
-    waveView.start = waveView.end-length;
-  }
-    
+  if ( waveView.end > waveform.size() )
+    {
+      waveView.end = waveform.size();
+      waveView.start = waveView.end-length;
+    }
+
   std::cout << waveView.start << "," << waveView.end << std::endl;
   repaint();
 }
 
 
 
-bool NinjasUI::onMotion(const MotionEvent& ev)
+bool NinjasUI::onMotion ( const MotionEvent& ev )
 {
-  if (!mouseDragging)
-  {
-    //std::cout << "not dragging" << std::endl;
-    return false;
-  }
-  if (waveform.size() <= display_length)
-    return false; // can't move anyway  
-  if (waveView.zoom == 1.0f)
+  if ( !mouseDragging )
+    {
+      //std::cout << "not dragging" << std::endl;
+      return false;
+    }
+  if ( waveform.size() <= display_length )
+    return false; // can't move anyway
+  if ( waveView.zoom == 1.0f )
     return false;
   //std::cout << "zoom factor" << waveView.zoom << std::endl;
   int x = ev.pos.getX();
   int y = ev.pos.getY();
-  if (!display.contains(x,y))
-    return false; // get outta here 
-  
+  if ( !display.contains ( x,y ) )
+    return false; // get outta here
+
   x -= display_left; // off set in pixels
   mouseDistance = x - mouseX;
   mouseX = x;
   std::cout << "mouseDistance = " << mouseDistance << std::endl;
-  if ( (mouseDistance < 0) & (waveView.end == waveform.size()) )
+  if ( ( mouseDistance < 0 ) & ( waveView.end == waveform.size() ) )
     return false;
-  
-  float samples_per_pixel =  pow(waveView.max_zoom,waveView.zoom);
-  uint length = int( samples_per_pixel * float(display_width));
-  waveView.start = waveView.start - int ( float(mouseDistance)  *  samples_per_pixel );
-  if (waveView.start < 0) 
+
+  float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
+  uint length = int ( samples_per_pixel * float ( display_width ) );
+  waveView.start = waveView.start - int ( float ( mouseDistance )  *  samples_per_pixel );
+  if ( waveView.start < 0 )
     waveView.start = 0;
   waveView.end = waveView.start+length;
-  if (waveView.end > waveform.size())
+  if ( waveView.end > waveform.size() )
     waveView.end = waveform.size();
-   repaint();
+  repaint();
 }
 
 

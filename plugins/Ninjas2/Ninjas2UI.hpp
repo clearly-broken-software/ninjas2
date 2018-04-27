@@ -27,7 +27,6 @@
 #include "aubio.h"
 #include <math.h>
 
-
 //Wolf Widgets
 #include "VolumeKnob.hpp"
 #include "BipolarModeSwitch.hpp"
@@ -80,6 +79,7 @@ private:
   int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
   void recallSliceSettings ( int slice );
   void drawWaveform();
+  void drawRuler();
   
   float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
   float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
@@ -130,6 +130,7 @@ private:
   int sampleChannels;
   std::vector<float>sampleVector;
   bool sample_is_loaded;
+  double samplerate;
   Window::FileBrowserOptions filebrowseropts;
   std::string directory;
   Rectangle<int> boxes[128];
