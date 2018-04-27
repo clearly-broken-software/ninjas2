@@ -864,8 +864,20 @@ void NinjasUI::drawWaveform()
   float samples_per_pixel = ( float ) view / ( float ) display_length;
   float fIndex;
   uint iIndex;
+  
+  // draw center line
+  beginPath();
+  strokeColor ( 0,0,0,255 );
+  moveTo (display_left,display_center);
+  lineTo (display_right,display_center);
+  stroke();
+  closePath();
+  
   beginPath();
   strokeColor ( 80,45,22,255 );
+  strokeWidth (1.0f);
+ 
+  moveTo (display_left,display_center);
   for ( uint16_t i = 0 ; i < display_length ; i++ )
     {
       fIndex = float ( waveView.start ) + ( float ( i ) * samples_per_pixel );
@@ -874,15 +886,15 @@ void NinjasUI::drawWaveform()
       uint16_t min = *minmax.first + display_center;
       uint16_t max = *minmax.second + display_center;
 
-      moveTo ( i+display_left,display_center );
       lineTo ( i+display_left,min );
-      moveTo ( i+display_left,display_center );
       lineTo ( i+display_left,max );
 
       //  std::cout << i << "," << min << "," << max << std::endl;
     }
   stroke();
   closePath();
+  
+ 
 }
 
 void NinjasUI::drawRuler()
