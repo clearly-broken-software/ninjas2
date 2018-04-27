@@ -147,8 +147,6 @@ NinjasUI::NinjasUI()
       fGrid[j]->setCallback ( this );
     }
 
-  fGrid[0]->setDown ( true );
-
   positionWidgets();
 }
 
@@ -237,11 +235,11 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
     case paramLoadSample:
       if ( sample_is_loaded )
         {
-          fSwitchLoadSample->setDown ( 1 );
+          fSwitchLoadSample->setDown ( true );
         }
       else
         {
-          fSwitchLoadSample->setDown ( 0 );
+          fSwitchLoadSample->setDown ( false );
         }
       break;
 
