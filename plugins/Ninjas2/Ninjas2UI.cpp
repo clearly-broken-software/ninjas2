@@ -902,25 +902,57 @@ void NinjasUI::drawRuler()
   uint view = waveView.end - waveView.start; // set these when zooming in
   double samples_per_pixel = double ( view ) / double ( display_length );
   double time_per_pixel = samples_per_pixel / samplerate;
-  double round_up = 1.0; // do something clever here
-  // start time
+  
+  double round_up = 0.1; // do something clever here
+
+
   double wave_start_time = double(waveView.start) / samplerate;
+  double wave_end_time = double ( waveView.end ) / samplerate;
+  double wave_length_time = wave_end_time - wave_start_time;
+  int gap = wave_length_time / 10;
+  std::cout << "gap = " << gap << std::endl;
+  std::cout <<  "wave_length_time / 10 =" << wave_length_time / 10 << std::endl;
+  int incms;
+  if (int(wave_length_time / 10) > 0)
+  {
+    incms = 1000;
+	if (gap > 0) { incms *= 5; gap /= 5; }
+	if (gap > 0) { incms *= 2; gap /= 2; }
+	if (gap > 0) { incms *= 6; gap /= 6; }
+	if (gap > 0) { incms *= 5; gap /= 5; }
+	if (gap > 0) { incms *= 2; gap /= 2; }
+	if (gap > 0) { incms *= 6; gap /= 6; }
+	while (gap > 0) {
+	    incms *= 10;
+	    gap /= 10;
+	}
+	round_up = double(incms/1000);
+    }
+    else {
+      incms = 1;
+      int ms = (wave_length_time/10) * 1000;
+      std::cout << "ms = " << ms << std::endl;
+      if (ms > 0) { incms *= 10; ms /= 10; }
+      if (ms > 0) { incms *= 10; ms /= 10; }
+      if (ms > 0) { incms *= 5; ms /= 5; }
+      if (ms > 0) { incms *= 2; ms /= 2; }
+      round_up = double(incms/1000.0);
+      std::cout << "round_up = " << round_up << std::endl;
+      }
+      
   double time = ceil ( ( 1.0 / round_up ) * wave_start_time);
   time= time / ( 1.0 / round_up );
-  // end time
-  double wave_end_time = double ( waveView.end ) / samplerate;
-  
   double timeX = display_left;
 
   beginPath();
-  strokeColor ( 255,0,0,255 );
+  strokeColor ( 0,0,0,255 );
   while ( time < wave_end_time )
     { 
       timeX = (time-wave_start_time) / time_per_pixel + display_left;
       std::cout << "time = " << time << ", pixel = " << timeX << "\n";
      
       moveTo ( timeX,display_top );
-      lineTo ( timeX,display_bottom );
+      lineTo ( timeX,display_top + 10);
       time = time + round_up;
     }
   stroke();
@@ -1040,5 +1072,6 @@ UI* createUI()
 // -----------------------------------------------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO
+
 
 
