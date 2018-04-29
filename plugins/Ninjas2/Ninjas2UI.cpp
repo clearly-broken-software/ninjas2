@@ -148,6 +148,9 @@ NinjasUI::NinjasUI()
     }
 
   positionWidgets();
+  // text
+  loadSharedResources();
+  fNanoFont = findFont(NANOVG_DEJAVU_SANS_TTF);
 }
 
 void NinjasUI::positionWidgets()
@@ -909,11 +912,11 @@ void NinjasUI::drawRuler()
   double wave_start_time = double(waveView.start) / samplerate;
   double wave_end_time = double ( waveView.end ) / samplerate;
   double wave_length_time = wave_end_time - wave_start_time;
-  int gap = wave_length_time / 10;
+  int gap = wave_length_time / 15;
   std::cout << "gap = " << gap << std::endl;
   std::cout <<  "wave_length_time / 10 =" << wave_length_time / 10 << std::endl;
   int incms;
-  if (int(wave_length_time / 10) > 0)
+  if (int(wave_length_time / 15) > 0)
   {
     incms = 1000;
 	if (gap > 0) { incms *= 5; gap /= 5; }
@@ -930,7 +933,7 @@ void NinjasUI::drawRuler()
     }
     else {
       incms = 1;
-      int ms = (wave_length_time/10) * 1000;
+      int ms = (wave_length_time/15) * 1000;
       std::cout << "ms = " << ms << std::endl;
       if (ms > 0) { incms *= 10; ms /= 10; }
       if (ms > 0) { incms *= 10; ms /= 10; }
@@ -943,16 +946,24 @@ void NinjasUI::drawRuler()
   double time = ceil ( ( 1.0 / round_up ) * wave_start_time);
   time= time / ( 1.0 / round_up );
   double timeX = display_left;
-
+  char strBuf[32+1];
+  strBuf[32] = '\0';
+  fontFaceId(fNanoFont);
+  textAlign(ALIGN_CENTER|ALIGN_TOP);
+  fillColor(Color(0.0f, 0.0f, 1.0f));
+  fontSize(9);
   beginPath();
   strokeColor ( 0,0,0,255 );
   while ( time < wave_end_time )
     { 
       timeX = (time-wave_start_time) / time_per_pixel + display_left;
       std::cout << "time = " << time << ", pixel = " << timeX << "\n";
-     
-      moveTo ( timeX,display_top );
-      lineTo ( timeX,display_top + 10);
+      std::snprintf(strBuf, 32, "%4.2f", time);
+      if ((timeX - 10)>= display_left && (timeX+10) <= display_right)
+	textBox( timeX - 10 , display_top + 10 , 20.0f, strBuf, nullptr);
+      
+      moveTo ( timeX, display_top );
+      lineTo ( timeX, display_top + 10);
       time = time + round_up;
     }
   stroke();
@@ -1058,6 +1069,7 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
   if ( waveView.end > waveform.size() )
     waveView.end = waveform.size();
   repaint();
+  
 }
 
 

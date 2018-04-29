@@ -148,6 +148,9 @@ private:
   static constexpr unsigned int display_height = ( display_bottom - display_top ) /2;
     //static constexpr unsigned int waveform_length = display_length * 2;
   
+  // font
+ FontId fNanoFont;
+  
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
 };
