@@ -26,6 +26,7 @@
 #include "array"
 #include "aubio.h"
 #include <math.h>
+#include <string>
 
 //Wolf Widgets
 #include "VolumeKnob.hpp"
@@ -84,6 +85,7 @@ private:
   float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
   float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
   std::string dirnameOf ( const std::string& fname );
+  std::string toTime(double time, double round_up);
 
   // slices
   float sliceStart[128], sliceEnd[128];

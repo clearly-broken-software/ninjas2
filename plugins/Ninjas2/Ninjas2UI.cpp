@@ -150,7 +150,7 @@ NinjasUI::NinjasUI()
   positionWidgets();
   // text
   loadSharedResources();
-  fNanoFont = findFont(NANOVG_DEJAVU_SANS_TTF);
+  fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
 }
 
 void NinjasUI::positionWidgets()
@@ -867,20 +867,20 @@ void NinjasUI::drawWaveform()
   float samples_per_pixel = ( float ) view / ( float ) display_length;
   float fIndex;
   uint iIndex;
-  
+
   // draw center line
   beginPath();
   strokeColor ( 0,0,0,255 );
-  moveTo (display_left,display_center);
-  lineTo (display_right,display_center);
+  moveTo ( display_left,display_center );
+  lineTo ( display_right,display_center );
   stroke();
   closePath();
-  
+
   beginPath();
   strokeColor ( 80,45,22,255 );
-  strokeWidth (1.0f);
- 
-  moveTo (display_left,display_center);
+  strokeWidth ( 1.0f );
+
+  moveTo ( display_left,display_center );
   for ( uint16_t i = 0 ; i < display_length ; i++ )
     {
       fIndex = float ( waveView.start ) + ( float ( i ) * samples_per_pixel );
@@ -896,8 +896,8 @@ void NinjasUI::drawWaveform()
     }
   stroke();
   closePath();
-  
- 
+
+
 }
 
 void NinjasUI::drawRuler()
@@ -905,70 +905,149 @@ void NinjasUI::drawRuler()
   uint view = waveView.end - waveView.start; // set these when zooming in
   double samples_per_pixel = double ( view ) / double ( display_length );
   double time_per_pixel = samples_per_pixel / samplerate;
-  
+
   double round_up = 0.1; // do something clever here
 
 
-  double wave_start_time = double(waveView.start) / samplerate;
+  double wave_start_time = double ( waveView.start ) / samplerate;
   double wave_end_time = double ( waveView.end ) / samplerate;
   double wave_length_time = wave_end_time - wave_start_time;
-  int gap = wave_length_time / 15;
-  std::cout << "gap = " << gap << std::endl;
-  std::cout <<  "wave_length_time / 10 =" << wave_length_time / 10 << std::endl;
+  int gap = wave_length_time / 10;
+// std::cout << "gap = " << gap << std::endl;
+//  std::cout <<  "wave_length_time / 10 =" << wave_length_time / 10 << std::endl;
   int incms;
-  if (int(wave_length_time / 15) > 0)
-  {
-    incms = 1000;
-	if (gap > 0) { incms *= 5; gap /= 5; }
-	if (gap > 0) { incms *= 2; gap /= 2; }
-	if (gap > 0) { incms *= 6; gap /= 6; }
-	if (gap > 0) { incms *= 5; gap /= 5; }
-	if (gap > 0) { incms *= 2; gap /= 2; }
-	if (gap > 0) { incms *= 6; gap /= 6; }
-	while (gap > 0) {
-	    incms *= 10;
-	    gap /= 10;
-	}
-	round_up = double(incms/1000);
+  if ( gap > 0 )
+    {
+      incms = 1000;
+      if ( gap > 0 ){incms *= 5;gap /= 5;}
+      if ( gap > 0 ){incms *= 2;gap /= 2;}
+      if ( gap > 0 ){incms *= 6;gap /= 6;}
+      if ( gap > 0 ){incms *= 5;gap /= 5;}
+      if ( gap > 0 ){incms *= 2;gap /= 2;}
+      if ( gap > 0 ){incms *= 6;gap /= 6;}
+      while ( gap > 0 )
+        {
+          incms *= 10;
+          gap /= 10;
+        }
+      round_up = double ( incms/1000 );
+
     }
-    else {
+  else
+    {
       incms = 1;
-      int ms = (wave_length_time/15) * 1000;
-      std::cout << "ms = " << ms << std::endl;
-      if (ms > 0) { incms *= 10; ms /= 10; }
-      if (ms > 0) { incms *= 10; ms /= 10; }
-      if (ms > 0) { incms *= 5; ms /= 5; }
-      if (ms > 0) { incms *= 2; ms /= 2; }
-      round_up = double(incms/1000.0);
-      std::cout << "round_up = " << round_up << std::endl;
-      }
-      
-  double time = ceil ( ( 1.0 / round_up ) * wave_start_time);
+      int ms = ( wave_length_time/10 ) * 1000;
+      if ( ms > 0 ){incms *= 10;ms /= 10;}
+      if ( ms > 0 ){incms *= 10;ms /=10;}
+      if ( ms > 0 ){incms *= 5;ms /= 5;}
+      if ( ms > 0 ){incms *= 2;ms /= 2;}
+      round_up = double ( incms/1000.0 );
+    }
+
+  double time = ceil ( ( 1.0 / round_up ) * wave_start_time );
   time= time / ( 1.0 / round_up );
   double timeX = display_left;
-  char strBuf[32+1];
-  strBuf[32] = '\0';
-  fontFaceId(fNanoFont);
-  textAlign(ALIGN_CENTER|ALIGN_TOP);
-  fillColor(Color(0.0f, 0.0f, 1.0f));
-  fontSize(9);
+  std::string sTime;
+  fontFaceId ( fNanoFont );
+  textAlign ( ALIGN_CENTER|ALIGN_TOP );
+  fillColor ( Color ( 0.0f, 0.0f, 0.0f ) );
+  fontSize ( 9 );
   beginPath();
   strokeColor ( 0,0,0,255 );
   while ( time < wave_end_time )
-    { 
-      timeX = (time-wave_start_time) / time_per_pixel + display_left;
+    {
+      timeX = ( time-wave_start_time ) / time_per_pixel + display_left;
       std::cout << "time = " << time << ", pixel = " << timeX << "\n";
-      std::snprintf(strBuf, 32, "%4.2f", time);
-      if ((timeX - 10)>= display_left && (timeX+10) <= display_right)
-	textBox( timeX - 10 , display_top + 10 , 20.0f, strBuf, nullptr);
-      
+      sTime = toTime ( time, round_up );
+      if ( ( timeX - 15 ) >= display_left && ( timeX+15 ) <= display_right )
+        textBox ( timeX - 15 , display_top + 10 , 30.0f, sTime.c_str(), nullptr );
+
       moveTo ( timeX, display_top );
-      lineTo ( timeX, display_top + 10);
+      lineTo ( timeX, display_top + 10 );
       time = time + round_up;
     }
   stroke();
   closePath();
 }
+
+std::string NinjasUI::toTime ( double time, double round_up )
+{
+  int hour,min,sec,ms,iTime;
+  std::string sHour,sMin,sSec,sMs;
+  iTime = time;
+  hour = iTime / 3600;
+  min = iTime / 60 - hour * 60;
+  sec = iTime - hour * 3600 - min * 60 ;
+  ms = ( time-iTime ) * 100;
+  int iRound = round_up * 100;
+  switch ( iRound )
+    {
+    case 100:
+    {
+      sMs = ".0";
+      break;
+    }
+    case 50:
+    {
+      sMs = "."+ std::to_string ( ms );
+      sMs = sMs.substr ( 0,2 );
+      std::cout << "round_up == 0.5 , ms = " << ms << "," << sMs << std::endl;
+      break;
+    }
+
+    case 10:
+    {
+      std::cout << "round_up == 0.1" <<std::endl;
+      sMs = std::to_string ( ms );
+      sMs = "." + sMs.substr ( 0,2 );
+      break;
+    }
+
+    case 1:
+    {
+      std::cout << "round_up == 0.01" <<std::endl;
+      sMs= "00" + std::to_string ( ms );
+      sMs = "." + sMs.substr(sMs.size()-2,3);
+      break;
+    }
+
+    }
+
+  if ( hour )
+    {
+      sHour = std::to_string ( hour ) +":";
+
+      sMin = "0" + std::to_string ( min );
+      sMin = sMin.substr ( sMin.size()-2,2 ) + ":";
+
+      sSec = "0" + std::to_string ( sec );
+      sSec = sSec.substr ( sSec.size()-2,2 ) + ":";
+      return sHour+sMin+sSec+sMs;
+    }
+
+  if ( min )
+    {
+      sMin = std::to_string ( min ) + ":";
+
+      sSec = "0" + std::to_string ( sec );
+      sSec = sSec.substr ( sSec.size()-2,2 );
+      return sMin+sSec+sMs;
+    }
+
+  if ( sec )
+    {
+      sSec = std::to_string ( sec );
+      return sSec+sMs;
+    }
+
+  if ( ms )
+    {
+     return "0" + sMs;
+    }
+
+  return "0.000";
+}
+
 
 bool NinjasUI::onMouse ( const MouseEvent& ev )
 {
@@ -1069,7 +1148,7 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
   if ( waveView.end > waveform.size() )
     waveView.end = waveform.size();
   repaint();
-  
+
 }
 
 
