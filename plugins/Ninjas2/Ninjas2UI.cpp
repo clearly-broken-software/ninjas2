@@ -691,12 +691,12 @@ void NinjasUI::createSlicesOnsets ()
       int64_t onset_start = find_nearest ( onsets,start );
       int64_t onset_end = find_nearest ( onsets,end )-1;
 
-      a_slices[i].sliceStart = onset_start * sampleChannels;
-      a_slices[i].sliceEnd = onset_end * sampleChannels;
+      a_slices[i].sliceStart = onset_start;
+      a_slices[i].sliceEnd = onset_end;
       // set end of last slice to end of sample
       if ( i == slices -1 )
         {
-          a_slices[i].sliceEnd = end * sampleChannels;
+          a_slices[i].sliceEnd = end;
         }
 
     }
@@ -1031,8 +1031,20 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
         mouseMoveWaveform = true;
         mouseX = ev.pos.getX()-display_left;
       }
+  if ( ev.press && ev.button == 1)
+  {
+    mouseDragging = true;
+    mouseMoveWaveform = false;
+    mouseX = ev.pos.getX()-display_left;
+  }
+  
+  
   if ( !ev.press )
+  {
     mouseDragging = false;
+    mouseMoveWaveform = false;
+  }
+  
 
   return false;
 }
