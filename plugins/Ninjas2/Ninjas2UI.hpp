@@ -86,7 +86,7 @@ private:
   float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
   std::string dirnameOf ( const std::string& fname );
   std::string toTime(double time, double round_up);
-
+  
   // slices
   float sliceStart[128], sliceEnd[128];
   //
@@ -109,6 +109,7 @@ private:
   {
     unsigned long int sliceStart;
     unsigned long int sliceEnd;
+    bool color;
   //  slicePlayMode playmode;
   //  bool sliceActive;
   };
@@ -121,8 +122,8 @@ private:
 
   struct WaveView
   {
-    int start;
-    int end;
+    long int start;
+    long int end;
     float zoom; // sample lenght / display width
     float max_zoom;
   };

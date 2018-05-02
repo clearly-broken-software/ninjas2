@@ -155,8 +155,8 @@ NinjasUI::NinjasUI()
 
 void NinjasUI::positionWidgets()
 {
-  const float width = getWidth();
-  const float height = getHeight();
+  //const float width = getWidth();
+  //const float height = getHeight();
 
   fKnobSlices->setAbsolutePos ( 200, 440 );
   fKnobAttack->setAbsolutePos ( 660, 465 );
@@ -289,28 +289,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
 /* ----------------------------------------------------------------------------------------------------------
  * Widget Callbacks
  *----------------------------------------------------------------------------------------------------------*/
-/*
-void NinjasUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
-{
-  const uint buttonId ( imageSwitch->getId() );
-  if ( buttonId ==  paramFloppy )
-    {
-      filebrowseropts.title = "Load audio file";
-      filebrowseropts.startDir = directory.c_str();
-      getParentWindow().openFileBrowser ( filebrowseropts );
-      if ( sample_is_loaded )
-        {
-          fSwitchLoadSample->setDown ( true );
 
-        }
-      else
-        {
-          fSwitchLoadSample->setDown ( false );
-        }
-
-    }
-}
-*/
 
 void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
 {
@@ -322,7 +301,7 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
     {
     case paramNumberOfSlices:
       slices = value;
-      if ( !slicemethod )
+        if ( !slicemethod )
         {
           createSlicesRaw ();
         }
@@ -475,12 +454,21 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
     {
       fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
       setParameterValue ( paramSliceMode, value );
+      slicemethod = value;
+      if ( !slicemethod )
+        {
+          createSlicesRaw ();
+        }
+      else
+        {
+          createSlicesOnsets ();
+        }
+
       break;
     }
     case paramLoadSample:
     {
-      std::cout << "load sample clicked" << std::endl;
-      filebrowseropts.title = "Load audio file";
+     filebrowseropts.title = "Load audio file";
       filebrowseropts.startDir = directory.c_str();
       getParentWindow().openFileBrowser ( filebrowseropts );
 
@@ -516,17 +504,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
         }
     }
 
-  slicemethod = value;
-
-  if ( !slicemethod )
-    {
-      createSlicesRaw ();
-    }
-  else
-    {
-      createSlicesOnsets ();
-    }
-
+//
   repaint();
 }
 
@@ -557,118 +535,82 @@ void NinjasUI::onNanoDisplay()
 
   if ( sample_is_loaded )
     {
+
+// draw slices
+      double view = waveView.end - waveView.start; // set these when zooming in
+      double foo =  display_length / view;
+    // find 1st slice
+      int firstSlice = 0, lastSlice = 0;
+      while ( a_slices[firstSlice].sliceEnd < waveView.start )
+        {
+          firstSlice++;
+       }
+      // find last slice
+      for (int i = 0; i < slices ; i++)
+      {
+	if (a_slices[lastSlice].sliceStart < waveView.end)
+          lastSlice++;
+      }
+
+      for ( uint left,right; firstSlice < lastSlice; firstSlice++ )
+        {
+          beginPath();
+
+          if ( a_slices[firstSlice].sliceStart < waveView.start )
+            left = 0;
+          else
+            left = ( a_slices[firstSlice].sliceStart - waveView.start ) * foo;
+          if ( a_slices[firstSlice].sliceEnd > waveView.end )
+            right = 1140;
+          else
+            right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * foo;
+          rect ( left+display_left,display_top,right - left,display_height*2 );
+          if ( a_slices[firstSlice].color )
+	    fillColor ( 179,179,179,255 );
+                      else
+            fillColor ( 150,150,150,255 );
+          fill();
+          closePath();
+        }
+
+
+      //
+
       drawWaveform();
+
+
+// onsets
+//       if ( slicemethod )
+//         {
+//
+//           for ( std::vector<uint_t>::iterator it = onsets.begin() ; it != onsets.end(); ++it )
+//             {
+//               int display_onset_x = ( ( double ) *it / ( double ) sampleSize ) * ( float ) display_length;
+//
+//               glLineWidth ( 0.5f );
+//               glLineStipple ( 1,0xAAAA );
+//               glEnable ( GL_LINE_STIPPLE );
+//               glBegin ( GL_LINES );
+//               glVertex2i ( display_onset_x+display_left,display_top );
+//               glVertex2i ( display_onset_x+display_left,display_bottom );
+//               glEnd();
+//             }
+//           glDisable ( GL_LINE_STIPPLE );
+//         }
+//       glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );
+
+// Ruler
       drawRuler();
     }
 
-  // time ruler
 
-  // seconds
-
-
-  // beats
-
-
-
-  return;
-
-  std::cout << "after return" << std::endl;
-
-  //fImgBackground.draw();
-  glEnable ( GL_BLEND );
-  glEnable ( GL_LINE_SMOOTH );
-  glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-  glHint ( GL_LINE_SMOOTH_HINT, GL_NICEST );
-  glLineWidth ( 2 );
-  // draw slices
-
-  float r, g, b;
-  bool colorflip {true};
-  float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) display_length;
-  for ( int i = 0 ; i < slices ; i ++ )
-    {
-      int start = a_slices[i].sliceStart / samples_per_pixel;
-      int end = a_slices[i].sliceEnd / samples_per_pixel;
-      if ( colorflip )
-        {
-          r = 0x3c/255.f;
-          g = 0x94/255.f;
-          b = 0x1e/255.f;
-
-          glColor4f ( r, g, b, 1.0f );
-        }
-      else
-        {
-          r = 0x4f/255.f;
-          g = 0xc2/255.f;
-          b = 0x27/255.f;
-          glColor4f ( r, g, b, 1.0f );
-        }
-
-      boxes[i].setPos ( start + display_left,display_top );
-      boxes[i].setSize ( end - start, display_center );
-      boxes[i].draw();
-      colorflip = !colorflip;
-
-    }
-
-  // draw waveform
-  glEnable ( GL_BLEND );
-  glEnable ( GL_LINE_SMOOTH );
-  glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-  glHint ( GL_LINE_SMOOTH_HINT, GL_NICEST );
-  glLineWidth ( 2 );
-
-  r = 0x1b/255.f;
-  g = 0x43/255.f;
-  b = 0x0d/255.f;
-  glColor4f ( r, g, b, 1.0f );
-
-  for ( uint32_t i =0,j=0 ; i < display_length ; i++ )
-    {
-      glBegin ( GL_LINES );
-      glVertex2i ( i+display_left,display_center );
-      glVertex2i ( i+display_left,waveform[j] );
-      j++;
-
-      glVertex2i ( i+display_left,display_center );
-      glVertex2i ( i+display_left,waveform[j] );
-      j++;
-      glEnd();
-
-    }
-
-// onsets
-  if ( slicemethod )
-    {
-      r = 0x8e/255.f;
-      g = 0xe3/255.f;
-      b = 0x71/255.f;
-      glColor4f ( r, g, b, 1.0f );
-      for ( std::vector<uint_t>::iterator it = onsets.begin() ; it != onsets.end(); ++it )
-        {
-          int display_onset_x = ( ( double ) *it / ( double ) sampleSize ) * ( float ) display_length;
-
-          glLineWidth ( 0.5f );
-          glLineStipple ( 1,0xAAAA );
-          glEnable ( GL_LINE_STIPPLE );
-          glBegin ( GL_LINES );
-          glVertex2i ( display_onset_x+display_left,display_top );
-          glVertex2i ( display_onset_x+display_left,display_bottom );
-          glEnd();
-        }
-      glDisable ( GL_LINE_STIPPLE );
-    }
-  glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );
-
-  //fImgFrame.drawAt ( 355,45 );
 }
 
 void NinjasUI::loadSample ( String fp )
 {
   std::cout << "loading sample " << fp << std::endl;
-  int  iIndex {0};
-  float fIndex {0};
+  //int  iIndex {0};
+  //float fIndex {0};
   double samplerate = getSampleRate();
 
   SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , samplerate );
@@ -693,22 +635,20 @@ void NinjasUI::loadSample ( String fp )
 
   if ( sampleChannels == 2 ) // sum to mono
     {
-      std::cout << "stereo sample" << std::endl;
-
-      for ( int i=0, j=0 ; i <= sampleSize; i++ )
+   
+      for ( uint i=0, j=0 ; i <= sampleSize; i++ )
         {
           float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
-          waveform.push_back ( uint16_t ( sum_mono * 175.0f ) );
+          waveform.push_back ( sum_mono * 175.0f );
           j+=2;
         }
     }
   else
     {
-      std::cout << "mono sample" << std::endl;
-      waveform.resize ( sampleSize );
-      for ( int i=0; i < sampleVector.size(); i++ )
+     waveform.resize ( sampleSize );
+      for ( uint i=0; i < sampleVector.size(); i++ )
         {
-          waveform[i] = uint16_t ( sampleVector[i] * 175.0f );
+          waveform[i] =  sampleVector[i] * 175.0f;
         }
     }
 
@@ -851,20 +791,24 @@ void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & samp
 
 void NinjasUI::createSlicesRaw ()
 {
-  long double sliceSize = ( long double ) ( sampleSize * sampleChannels ) / ( long double ) slices;
+  long double sliceSize = ( long double ) ( sampleSize ) / ( long double ) slices;
+  bool color {true};
 
   for ( int i = 0 ; i < slices; i++ )
     {
-      a_slices[i].sliceStart = ( int ) i * sliceSize;
-      a_slices[i].sliceEnd = ( ( int ) ( i+1 ) * sliceSize ) - 1 ;
+      a_slices[i].sliceStart = i * sliceSize;
+      a_slices[i].sliceEnd = ( i+1 ) * sliceSize  - 1 ;
+      std::cout << "Slice # "<< i << " : Start " << a_slices[i].sliceStart / samplerate << std::endl;
+      a_slices[i].color = color;
+      color = !color;
     }
 }
 
 void NinjasUI::drawWaveform()
 {
 //  waveView.end = 1140;
-  uint view = waveView.end - waveView.start; // set these when zooming in
-  float samples_per_pixel = ( float ) view / ( float ) display_length;
+  double view = waveView.end - waveView.start; // set these when zooming in
+  double samples_per_pixel =  view / display_length;
   float fIndex;
   uint iIndex;
 
@@ -891,8 +835,6 @@ void NinjasUI::drawWaveform()
 
       lineTo ( i+display_left,min );
       lineTo ( i+display_left,max );
-
-      //  std::cout << i << "," << min << "," << max << std::endl;
     }
   stroke();
   closePath();
@@ -905,42 +847,76 @@ void NinjasUI::drawRuler()
   uint view = waveView.end - waveView.start; // set these when zooming in
   double samples_per_pixel = double ( view ) / double ( display_length );
   double time_per_pixel = samples_per_pixel / samplerate;
-
   double round_up = 0.1; // do something clever here
-
-
   double wave_start_time = double ( waveView.start ) / samplerate;
   double wave_end_time = double ( waveView.end ) / samplerate;
   double wave_length_time = wave_end_time - wave_start_time;
   int gap = wave_length_time / 10;
-// std::cout << "gap = " << gap << std::endl;
-//  std::cout <<  "wave_length_time / 10 =" << wave_length_time / 10 << std::endl;
   int incms;
   if ( gap > 0 )
     {
       incms = 1000;
-      if ( gap > 0 ){incms *= 5;gap /= 5;}
-      if ( gap > 0 ){incms *= 2;gap /= 2;}
-      if ( gap > 0 ){incms *= 6;gap /= 6;}
-      if ( gap > 0 ){incms *= 5;gap /= 5;}
-      if ( gap > 0 ){incms *= 2;gap /= 2;}
-      if ( gap > 0 ){incms *= 6;gap /= 6;}
+      if ( gap > 0 )
+        {
+          incms *= 5;
+          gap /= 5;
+        }
+      if ( gap > 0 )
+        {
+          incms *= 2;
+          gap /= 2;
+        }
+      if ( gap > 0 )
+        {
+          incms *= 6;
+          gap /= 6;
+        }
+      if ( gap > 0 )
+        {
+          incms *= 5;
+          gap /= 5;
+        }
+      if ( gap > 0 )
+        {
+          incms *= 2;
+          gap /= 2;
+        }
+      if ( gap > 0 )
+        {
+          incms *= 6;
+          gap /= 6;
+        }
       while ( gap > 0 )
         {
           incms *= 10;
           gap /= 10;
         }
       round_up = double ( incms/1000 );
-
     }
   else
     {
       incms = 1;
       int ms = ( wave_length_time/10 ) * 1000;
-      if ( ms > 0 ){incms *= 10;ms /= 10;}
-      if ( ms > 0 ){incms *= 10;ms /=10;}
-      if ( ms > 0 ){incms *= 5;ms /= 5;}
-      if ( ms > 0 ){incms *= 2;ms /= 2;}
+      if ( ms > 0 )
+        {
+          incms *= 10;
+          ms /= 10;
+        }
+      if ( ms > 0 )
+        {
+          incms *= 10;
+          ms /=10;
+        }
+      if ( ms > 0 )
+        {
+          incms *= 5;
+          ms /= 5;
+        }
+      if ( ms > 0 )
+        {
+          incms *= 2;
+          ms /= 2;
+        }
       round_up = double ( incms/1000.0 );
     }
 
@@ -957,7 +933,6 @@ void NinjasUI::drawRuler()
   while ( time < wave_end_time )
     {
       timeX = ( time-wave_start_time ) / time_per_pixel + display_left;
-      std::cout << "time = " << time << ", pixel = " << timeX << "\n";
       sTime = toTime ( time, round_up );
       if ( ( timeX - 15 ) >= display_left && ( timeX+15 ) <= display_right )
         textBox ( timeX - 15 , display_top + 10 , 30.0f, sTime.c_str(), nullptr );
@@ -991,13 +966,11 @@ std::string NinjasUI::toTime ( double time, double round_up )
     {
       sMs = "."+ std::to_string ( ms );
       sMs = sMs.substr ( 0,2 );
-      std::cout << "round_up == 0.5 , ms = " << ms << "," << sMs << std::endl;
       break;
     }
 
     case 10:
     {
-      std::cout << "round_up == 0.1" <<std::endl;
       sMs = std::to_string ( ms );
       sMs = "." + sMs.substr ( 0,2 );
       break;
@@ -1005,9 +978,8 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
     case 1:
     {
-      std::cout << "round_up == 0.01" <<std::endl;
-      sMs= "00" + std::to_string ( ms );
-      sMs = "." + sMs.substr(sMs.size()-2,3);
+     sMs= "00" + std::to_string ( ms );
+      sMs = "." + sMs.substr ( sMs.size()-2,3 );
       break;
     }
 
@@ -1042,7 +1014,7 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
   if ( ms )
     {
-     return "0" + sMs;
+      return "0" + sMs;
     }
 
   return "0.000";
@@ -1051,10 +1023,7 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
 bool NinjasUI::onMouse ( const MouseEvent& ev )
 {
-  /*  std::cout << "onMouse " << std::endl;
-    std::cout << "button " <<ev.button << std::endl;
-    std::cout << "press" << ev.press << std::endl;
-  */  if ( !mouseDragging )
+ if ( !mouseDragging )
     if ( ev.press )
       {
         mouseDragging = true;
@@ -1062,9 +1031,8 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
       }
   if ( !ev.press )
     mouseDragging = false;
-//   std::cout << "mod " << ev.mod << std::endl;
 
-
+  return false;
 }
 
 bool NinjasUI::onScroll ( const ScrollEvent& ev )
@@ -1079,12 +1047,9 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
     return false; // can't zoom anyway
 
   x -= display_left; // off set in pixels
-  std::cout << "x = " << x << std::endl;
-
   // find sample index mouse is hovering at
   // old zoom factor
   uint center = int ( pow ( waveView.max_zoom,waveView.zoom ) * ( float ( x ) ) + float ( waveView.start ) );
-  std::cout << "center = " << center << std::endl;
   // new zoom factor
   float delta = -ev.delta.getY() *0.05f;
 
@@ -1093,12 +1058,8 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
     waveView.zoom = 0.0f;
   if ( waveView.zoom > 1.0f )
     waveView.zoom = 1.0f;
-  std::cout << "zoom = " << waveView.zoom << std::endl;
-
   float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
-  std::cout << "samples_per_pixel = " << samples_per_pixel << std::endl;
   uint length = int ( samples_per_pixel * float ( display_width ) );
-  std::cout << "length =  " << length << std::endl;
   waveView.start = int ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
   if ( waveView.start < 0 )
     waveView.start = 0;
@@ -1108,12 +1069,9 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
       waveView.end = waveform.size();
       waveView.start = waveView.end-length;
     }
-
-  std::cout << waveView.start << "," << waveView.end << std::endl;
   repaint();
+  return true;
 }
-
-
 
 bool NinjasUI::onMotion ( const MotionEvent& ev )
 {
@@ -1126,7 +1084,6 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
     return false; // can't move anyway
   if ( waveView.zoom == 1.0f )
     return false;
-  //std::cout << "zoom factor" << waveView.zoom << std::endl;
   int x = ev.pos.getX();
   int y = ev.pos.getY();
   if ( !display.contains ( x,y ) )
@@ -1135,7 +1092,6 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
   x -= display_left; // off set in pixels
   mouseDistance = x - mouseX;
   mouseX = x;
-  std::cout << "mouseDistance = " << mouseDistance << std::endl;
   if ( ( mouseDistance < 0 ) & ( waveView.end == waveform.size() ) )
     return false;
 
@@ -1149,6 +1105,7 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
     waveView.end = waveform.size();
   repaint();
 
+  return false;
 }
 
 
