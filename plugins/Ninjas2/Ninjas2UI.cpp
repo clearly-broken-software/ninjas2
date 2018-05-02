@@ -301,7 +301,7 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
     {
     case paramNumberOfSlices:
       slices = value;
-        if ( !slicemethod )
+      if ( !slicemethod )
         {
           createSlicesRaw ();
         }
@@ -468,7 +468,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
     }
     case paramLoadSample:
     {
-     filebrowseropts.title = "Load audio file";
+      filebrowseropts.title = "Load audio file";
       filebrowseropts.startDir = directory.c_str();
       getParentWindow().openFileBrowser ( filebrowseropts );
 
@@ -539,18 +539,18 @@ void NinjasUI::onNanoDisplay()
 // draw slices
       double view = waveView.end - waveView.start; // set these when zooming in
       double foo =  display_length / view;
-    // find 1st slice
+      // find 1st slice
       int firstSlice = 0, lastSlice = 0;
       while ( a_slices[firstSlice].sliceEnd < waveView.start )
         {
           firstSlice++;
-       }
+        }
       // find last slice
-      for (int i = 0; i < slices ; i++)
-      {
-	if (a_slices[lastSlice].sliceStart < waveView.end)
-          lastSlice++;
-      }
+      for ( int i = 0; i < slices ; i++ )
+        {
+          if ( a_slices[lastSlice].sliceStart < waveView.end )
+            lastSlice++;
+        }
 
       for ( uint left,right; firstSlice < lastSlice; firstSlice++ )
         {
@@ -566,8 +566,8 @@ void NinjasUI::onNanoDisplay()
             right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * foo;
           rect ( left+display_left,display_top,right - left,display_height*2 );
           if ( a_slices[firstSlice].color )
-	    fillColor ( 179,179,179,255 );
-                      else
+            fillColor ( 179,179,179,255 );
+          else
             fillColor ( 150,150,150,255 );
           fill();
           closePath();
@@ -635,7 +635,7 @@ void NinjasUI::loadSample ( String fp )
 
   if ( sampleChannels == 2 ) // sum to mono
     {
-   
+
       for ( uint i=0, j=0 ; i <= sampleSize; i++ )
         {
           float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
@@ -645,7 +645,7 @@ void NinjasUI::loadSample ( String fp )
     }
   else
     {
-     waveform.resize ( sampleSize );
+      waveform.resize ( sampleSize );
       for ( uint i=0; i < sampleVector.size(); i++ )
         {
           waveform[i] =  sampleVector[i] * 175.0f;
@@ -978,7 +978,7 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
     case 1:
     {
-     sMs= "00" + std::to_string ( ms );
+      sMs= "00" + std::to_string ( ms );
       sMs = "." + sMs.substr ( sMs.size()-2,3 );
       break;
     }
@@ -1023,10 +1023,12 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
 bool NinjasUI::onMouse ( const MouseEvent& ev )
 {
- if ( !mouseDragging )
-    if ( ev.press )
+  if ( !mouseDragging )
+
+    if ( ev.press && ev.button == 2 )
       {
         mouseDragging = true;
+        mouseMoveWaveform = true;
         mouseX = ev.pos.getX()-display_left;
       }
   if ( !ev.press )
@@ -1080,30 +1082,36 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
       //std::cout << "not dragging" << std::endl;
       return false;
     }
-  if ( waveform.size() <= display_length )
-    return false; // can't move anyway
-  if ( waveView.zoom == 1.0f )
-    return false;
-  int x = ev.pos.getX();
-  int y = ev.pos.getY();
-  if ( !display.contains ( x,y ) )
-    return false; // get outta here
+  if ( mouseMoveWaveform )
+    {
+      if ( waveform.size() <= display_length )
+        return false; // can't move anyway
+      
+      if ( waveView.zoom == 1.0f )
+        return false;
+      
+      int x = ev.pos.getX();
+      int y = ev.pos.getY();
+      if ( !display.contains ( x,y ) )
+        return false; // get outta here
 
-  x -= display_left; // off set in pixels
-  mouseDistance = x - mouseX;
-  mouseX = x;
-  if ( ( mouseDistance < 0 ) & ( waveView.end == waveform.size() ) )
-    return false;
+      x -= display_left; // off set in pixels
+      mouseDistance = x - mouseX;
+      mouseX = x;
+      if ( ( mouseDistance < 0 ) & ( waveView.end == waveform.size() ) )
+        return false;
 
-  float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
-  uint length = int ( samples_per_pixel * float ( display_width ) );
-  waveView.start = waveView.start - int ( float ( mouseDistance )  *  samples_per_pixel );
-  if ( waveView.start < 0 )
-    waveView.start = 0;
-  waveView.end = waveView.start+length;
-  if ( waveView.end > waveform.size() )
-    waveView.end = waveform.size();
-  repaint();
+      float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
+      uint length = int ( samples_per_pixel * float ( display_width ) );
+      waveView.start = waveView.start - int ( float ( mouseDistance )  *  samples_per_pixel );
+      if ( waveView.start < 0 )
+        waveView.start = 0;
+      waveView.end = waveView.start+length;
+      if ( waveView.end > waveform.size() )
+        waveView.end = waveform.size();
+      repaint();
+    }
+
 
   return false;
 }

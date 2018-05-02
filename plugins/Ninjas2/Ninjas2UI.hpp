@@ -138,7 +138,7 @@ private:
   std::string directory;
   Rectangle<int> boxes[128];
   Rectangle<int> display;
-
+  bool mouseMoveWaveform;
   // need static constexpr apparently because of std::array ..
   
   static constexpr unsigned int display_left = 30;
@@ -153,6 +153,7 @@ private:
   
   // font
  FontId fNanoFont;
+  
   
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
