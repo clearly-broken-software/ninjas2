@@ -535,76 +535,84 @@ void NinjasUI::onNanoDisplay()
 
   if ( sample_is_loaded )
     {
-
-// draw slices
-      double view = waveView.end - waveView.start; // set these when zooming in
-      double foo =  display_length / view;
-      // find 1st slice
-      int firstSlice = 0, lastSlice = 0;
-      while ( a_slices[firstSlice].sliceEnd < waveView.start )
-        {
-          firstSlice++;
-        }
-      // find last slice
-      for ( int i = 0; i < slices ; i++ )
-        {
-          if ( a_slices[lastSlice].sliceStart < waveView.end )
-            lastSlice++;
-        }
-
-      for ( uint left,right; firstSlice < lastSlice; firstSlice++ )
-        {
-          beginPath();
-
-          if ( a_slices[firstSlice].sliceStart < waveView.start )
-            left = 0;
-          else
-            left = ( a_slices[firstSlice].sliceStart - waveView.start ) * foo;
-          if ( a_slices[firstSlice].sliceEnd > waveView.end )
-            right = 1140;
-          else
-            right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * foo;
-          rect ( left+display_left,display_top,right - left,display_height*2 );
-          if ( a_slices[firstSlice].color )
-            fillColor ( 179,179,179,255 );
-          else
-            fillColor ( 150,150,150,255 );
-          fill();
-          closePath();
-        }
-
-
-      //
-
+      drawSlices();
       drawWaveform();
-
-
-// onsets
-//       if ( slicemethod )
-//         {
-//
-//           for ( std::vector<uint_t>::iterator it = onsets.begin() ; it != onsets.end(); ++it )
-//             {
-//               int display_onset_x = ( ( double ) *it / ( double ) sampleSize ) * ( float ) display_length;
-//
-//               glLineWidth ( 0.5f );
-//               glLineStipple ( 1,0xAAAA );
-//               glEnable ( GL_LINE_STIPPLE );
-//               glBegin ( GL_LINES );
-//               glVertex2i ( display_onset_x+display_left,display_top );
-//               glVertex2i ( display_onset_x+display_left,display_bottom );
-//               glEnd();
-//             }
-//           glDisable ( GL_LINE_STIPPLE );
-//         }
-//       glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );
-
-// Ruler
+      drawOnsets();
       drawRuler();
     }
-
-
 }
+
+void NinjasUI::drawSlices()
+{
+  double view = waveView.end - waveView.start; // set these when zooming in
+  double foo =  display_length / view;
+
+  int firstSlice = 0, lastSlice = 0;
+  while ( a_slices[firstSlice].sliceEnd < waveView.start )
+    {
+      firstSlice++;
+    }
+
+  for ( int i = 0; i < slices ; i++ )
+    {
+      if ( a_slices[lastSlice].sliceStart < waveView.end )
+        lastSlice++;
+    }
+
+  for ( uint left,right; firstSlice < lastSlice; firstSlice++ )
+    {
+      beginPath();
+
+      if ( a_slices[firstSlice].sliceStart < waveView.start )
+        left = 0;
+      else
+        left = ( a_slices[firstSlice].sliceStart - waveView.start ) * foo;
+      
+      if ( a_slices[firstSlice].sliceEnd > waveView.end )
+        right = 1140;
+      else
+        right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * foo;
+      
+      rect ( left+display_left,display_top,right - left,display_height*2 );
+      if ( a_slices[firstSlice].color )
+        fillColor ( 179,179,179,255 );
+      else
+        fillColor ( 150,150,150,255 );
+      fill();
+      closePath();
+    }
+}
+
+
+void NinjasUI::drawOnsets()
+{
+  double view = waveView.end - waveView.start;
+  double foo =  display_length / view;
+  beginPath();
+  strokeColor ( 255,127,0,255 );
+  strokeWidth ( 0.8f );
+  for ( std::vector<uint_t>::iterator it = onsets.begin() ; it != onsets.end(); ++it )
+    {
+      auto onset = *it;
+      if ( onset >= waveView.start && onset <= waveView.end )
+        {
+          int display_onset_x = ( double ) ( onset - waveView.start ) * foo;
+          std::cout << "display_onset_x =" << display_onset_x << std::endl;
+          display_onset_x += display_left;
+          for ( int i = display_top; i < display_bottom; i +=10 )
+            {
+              moveTo ( display_onset_x, i );
+              lineTo ( display_onset_x, i+4 );
+              moveTo ( display_onset_x, i+6 );
+              lineTo ( display_onset_x, i+10 );
+            }
+        }
+    }
+  stroke();
+  closePath();
+}
+
+
 
 void NinjasUI::loadSample ( String fp )
 {
@@ -930,6 +938,7 @@ void NinjasUI::drawRuler()
   fontSize ( 9 );
   beginPath();
   strokeColor ( 0,0,0,255 );
+  strokeWidth ( 1.0f );
   while ( time < wave_end_time )
     {
       timeX = ( time-wave_start_time ) / time_per_pixel + display_left;
@@ -1031,20 +1040,20 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
         mouseMoveWaveform = true;
         mouseX = ev.pos.getX()-display_left;
       }
-  if ( ev.press && ev.button == 1)
-  {
-    mouseDragging = true;
-    mouseMoveWaveform = false;
-    mouseX = ev.pos.getX()-display_left;
-  }
-  
-  
+  if ( ev.press && ev.button == 1 )
+    {
+      mouseDragging = true;
+      mouseMoveWaveform = false;
+      mouseX = ev.pos.getX()-display_left;
+    }
+
+
   if ( !ev.press )
-  {
-    mouseDragging = false;
-    mouseMoveWaveform = false;
-  }
-  
+    {
+      mouseDragging = false;
+      mouseMoveWaveform = false;
+    }
+
 
   return false;
 }
@@ -1098,10 +1107,10 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
     {
       if ( waveform.size() <= display_length )
         return false; // can't move anyway
-      
+
       if ( waveView.zoom == 1.0f )
         return false;
-      
+
       int x = ev.pos.getX();
       int y = ev.pos.getY();
       if ( !display.contains ( x,y ) )
