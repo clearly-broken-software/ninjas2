@@ -35,7 +35,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-  : Plugin ( paramCount, 0, 1 ) //1 parameter, 0 programs (presets) , 1 states
+  : Plugin ( paramCount, 0, 2 ) //1 parameter, 0 programs (presets) , 1 states
 {
   // init parameters
 
@@ -222,12 +222,21 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
 
 void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& defaultStateValue )
 {
-  if ( index == 0 )
-    {
+  switch (index)
+  {
+   case 0:
+      {
       stateKey ="filepath";
       defaultStateValue = "empty";
-    }
-
+      break;
+      }
+   case 1:
+     {
+       stateKey = "slice";
+       defaultStateValue = "empty";
+       break;
+     }
+ }
 }
 
 String NinjasPlugin::getState ( const char* ) const
@@ -260,6 +269,12 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           setParameterValue ( paramLoadSample, 0.0f );
         }
     }
+    
+    if ( strcmp (key, "slice" ) == 0)
+    {
+      std::cout << "Do something clever with " << std::string(value)<< std::endl;
+    }
+    
 }
 
 /* --------------------------------------------------------------------------------------------------------
@@ -423,9 +438,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
               int data1 = midiEvents[curEventIndex].data[1];// note number
               int data2 = midiEvents[curEventIndex].data[2]; //
               
-#ifdef DEBUG
-      std::cout << "message" << message << "data1" << data1 << std::endl;
-#endif
+
      
      
               switch ( message )
@@ -448,9 +461,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 		  int index = data1-60;
 		  if (index < 0 || index > slices -1 )
 		  {
-#ifdef DEBUG
-		    std::cout << "out of range" << std::endl;
-#endif
 		    break;
 		  }
                   // new note .. let's activate
