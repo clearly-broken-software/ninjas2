@@ -6,7 +6,7 @@
 # Modified by Clearly Broken Software
 #
 
-include Makefile.mk
+include dpf/Makefile.base.mk
 
 all: libs plugins gen
 
