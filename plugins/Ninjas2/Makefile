@@ -29,6 +29,7 @@ FILES_DSP = \
 FILES_UI  = \
 	Utils/src/Mathf.cpp \
 	Structures/src/Animation.cpp \
+	Structures/src/Layout.cpp \
 	Widgets/src/WolfWidget.cpp \
 	Widgets/src/NanoSwitch.cpp \
 	Widgets/src/RemoveDCSwitch.cpp \
