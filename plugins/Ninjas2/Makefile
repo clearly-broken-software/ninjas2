@@ -27,22 +27,21 @@ FILES_DSP = \
 	Ninjas2Plugin.cpp
 
 FILES_UI  = \
-	Common/Utils/src/Mathf.cpp \
-	Common/Structures/src/Graph.cpp \
-	Common/Structures/src/Layout.cpp \
-	Common/Structures/src/Animation.cpp \
-	Common/Widgets/src/NanoSwitch.cpp \
-	Common/Widgets/src/RemoveDCSwitch.cpp \
-	Common/Widgets/src/NanoButton.cpp \
-	Common/Widgets/src/ResetGraphButton.cpp \
-	Common/Widgets/src/NanoWheel.cpp \
-	Common/Widgets/src/NanoKnob.cpp \
-	Common/Widgets/src/VolumeKnob.cpp \
-	Common/Widgets/src/ResizeHandle.cpp \
-	Common/Widgets/src/LabelBox.cpp \
-	Common/Widgets/src/BipolarModeSwitch.cpp \
-	Common/Widgets/src/GlowingLabelsBox.cpp \
-	Common/Widgets/src/NanoLabel.cpp \
+	Utils/src/Mathf.cpp \
+	Structures/src/Animation.cpp \
+	Widgets/src/WolfWidget.cpp \
+	Widgets/src/NanoSwitch.cpp \
+	Widgets/src/RemoveDCSwitch.cpp \
+	Widgets/src/NanoButton.cpp \
+	Widgets/src/NanoWheel.cpp \
+	Widgets/src/NanoKnob.cpp \
+	Widgets/src/VolumeKnob.cpp \
+	Widgets/src/ResizeHandle.cpp \
+	Widgets/src/LabelBox.cpp \
+	Widgets/src/LabelContainer.cpp \
+	Widgets/src/BipolarModeSwitch.cpp \
+	Widgets/src/GlowingLabelsBox.cpp \
+	Widgets/src/NanoLabel.cpp \
 	Ninjas2UI.cpp
 
 # --------------------------------------------------------------
@@ -53,7 +52,7 @@ include ../../dpf/Makefile.plugins.mk
 # --------------------------------------------------------------
 # Extra flags
 
-BASE_FLAGS += -I. -I../../aubio/src -I./Widgets -I./Utils
+BASE_FLAGS += -I. -I../../aubio/src -I./Widgets -I./Utils -I./Structures -laubio
 BASE_FLAGS += $(shell pkg-config --cflags sndfile samplerate)
 LINK_FLAGS += $(shell pkg-config --libs sndfile samplerate)
 
