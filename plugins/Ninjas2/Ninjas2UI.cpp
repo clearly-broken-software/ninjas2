@@ -69,32 +69,34 @@ NinjasUI::NinjasUI()
   const Size<uint> knobSize = Size<uint> ( 80, 80 );
   const Color ninjasColor = Color ( 222,205,135,255 );
 
-  fKnobSlices = new VolumeKnob ( this, knobSize );
+  Window &window = getParentWindow();
+
+  fKnobSlices = new VolumeKnob ( window, knobSize );
   fKnobSlices->setId ( paramNumberOfSlices );
   fKnobSlices->setRange ( 1.0f, 128.0f );
   fKnobSlices->setColor ( ninjasColor );
   fKnobSlices->setStep ( 1.0f );
   fKnobSlices->setCallback ( this );
 
-  fKnobAttack = new VolumeKnob ( this, knobSize );
+  fKnobAttack = new VolumeKnob ( window, knobSize );
   fKnobAttack->setId ( paramAttack );
   fKnobAttack->setRange ( 0.05f, 1.0f );
   fKnobAttack->setColor ( ninjasColor );
   fKnobAttack->setCallback ( this );
 
-  fKnobDecay = new VolumeKnob ( this, knobSize );
+  fKnobDecay = new VolumeKnob ( window, knobSize );
   fKnobDecay->setId ( paramDecay );
   fKnobDecay->setRange ( 0.05f, 1.0f );
   fKnobDecay->setColor ( ninjasColor );
   fKnobDecay->setCallback ( this );
 
-  fKnobSustain = new VolumeKnob ( this, knobSize );
+  fKnobSustain = new VolumeKnob ( window, knobSize );
   fKnobSustain->setId ( paramSustain );
   fKnobSustain->setRange ( 0.0f, 1.0f );
   fKnobSustain->setColor ( ninjasColor );
   fKnobSustain->setCallback ( this );
 
-  fKnobRelease = new VolumeKnob ( this, knobSize );
+  fKnobRelease = new VolumeKnob ( window, knobSize );
   fKnobRelease->setId ( paramRelease );
   fKnobRelease->setRange ( 0.05f, 1.0f );
   fKnobRelease->setColor ( ninjasColor );
@@ -102,13 +104,13 @@ NinjasUI::NinjasUI()
 
   //slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
 
-  fSliceModeSlider = new BipolarModeSwitch ( this, Size<uint> ( 16, 34 ) );
+  fSliceModeSlider = new BipolarModeSwitch ( window, Size<uint> ( 16, 34 ) );
   fSliceModeSlider->setCallback ( this );
   fSliceModeSlider->setId ( paramSliceMode );
 
-  fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( this, Size<uint> ( 58, 42 ) );
+  fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( window, Size<uint> ( 58, 42 ) );
   fLabelsBoxSliceModeSlider->setLabels ( {"RAW", "ONSETS"} );
-  fLabelsBoxLoadSample = new GlowingLabelsBox ( this, Size<uint> ( 90, 70 ) );
+  fLabelsBoxLoadSample = new GlowingLabelsBox ( window, Size<uint> ( 90, 70 ) );
   fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
   // switches
@@ -119,25 +121,25 @@ NinjasUI::NinjasUI()
   const Size<uint> gridSize = Size<uint> ( 25, 25 );
 
 
-  fSwitchFwd = new RemoveDCSwitch ( this, switchSize );
+  fSwitchFwd = new RemoveDCSwitch ( window, switchSize );
   fSwitchFwd->setId ( paramOneShotFwd );
   fSwitchFwd->setCallback ( this );
 
-  fSwitchRev = new RemoveDCSwitch ( this, switchSize );
+  fSwitchRev = new RemoveDCSwitch ( window, switchSize );
   fSwitchRev->setId ( paramOneShotRev );
   fSwitchRev->setCallback ( this );
 
-  fSwitchLoopFwd = new RemoveDCSwitch ( this, switchSize );
+  fSwitchLoopFwd = new RemoveDCSwitch ( window, switchSize );
   fSwitchLoopFwd->setId ( paramLoopFwd );
   fSwitchLoopFwd->setCallback ( this );
 
-  fSwitchLoopRev = new RemoveDCSwitch ( this, switchSize );
+  fSwitchLoopRev = new RemoveDCSwitch ( window, switchSize );
   fSwitchLoopRev->setId ( paramLoopRev );
   fSwitchLoopRev->setCallback ( this );
 
   // sample load button
 
-  fSwitchLoadSample = new RemoveDCSwitch ( this, switchSize );
+  fSwitchLoadSample = new RemoveDCSwitch ( window, switchSize );
   fSwitchLoadSample->setId ( paramLoadSample );
   fSwitchLoadSample->setCallback ( this );
 
@@ -145,7 +147,7 @@ NinjasUI::NinjasUI()
 
   for ( int i = paramSwitch01, j = 0 ; i <= paramSwitch16; ++i , ++j )
     {
-      fGrid[j] = new RemoveDCSwitch ( this, gridSize );
+      fGrid[j] = new RemoveDCSwitch ( window, gridSize );
       fGrid[j]->setId ( i );
       fGrid[j]->setCallback ( this );
     }
@@ -1204,7 +1206,7 @@ void NinjasUI::initEditSlice()
           if ( a_slices[i].sliceStart == nearest_start )
             {
               int pixel = ( nearest_start - waveView.start ) / samples_per_pixel;
-              int distance = abs ( mouseX - pixel );
+              int distance = std::abs ( (int)mouseX - pixel );
               
               currentSlice = i;
               if ( distance <= 15 ) // let's start dragging
@@ -1223,7 +1225,7 @@ void NinjasUI::initEditSlice()
           if ( a_slices[i].sliceEnd == nearest_end )
             {
               int pixel = ( nearest_end - waveView.start ) / samples_per_pixel;
-              int distance = abs ( mouseX - pixel );
+              int distance = std::abs ( (int)mouseX - pixel );
               currentSlice = i;
               if ( distance <= 15 ) // let's start dragging
                 {
