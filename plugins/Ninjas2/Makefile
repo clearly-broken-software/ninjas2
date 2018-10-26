@@ -53,9 +53,10 @@ include ../../dpf/Makefile.plugins.mk
 # --------------------------------------------------------------
 # Extra flags
 
-BASE_FLAGS += -I. -I../../aubio/src -I./Widgets -I./Utils -I./Structures -laubio
+BASE_FLAGS += -I. -I../../aubio/src -I./Widgets -I./Utils -I./Structures
 BASE_FLAGS += $(shell pkg-config --cflags sndfile samplerate)
 LINK_FLAGS += $(shell pkg-config --libs sndfile samplerate)
+LINK_FLAGS += -L../../aubio/ -l:libaubio.a
 
 # --------------------------------------------------------------
 # Enable all possible plugin types
