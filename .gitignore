@@ -24,3 +24,5 @@ plugins/Ninjas2/Art working directory/
 *.ods
 
 plugins/Ninjas2/Resources/
+
+\.vscode/
