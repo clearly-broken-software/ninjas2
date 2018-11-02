@@ -525,7 +525,7 @@ void NinjasUI::onNanoDisplay()
 
   beginPath();
 
-  fillColor ( Color ( 227,222,219, 255 ) );
+  fillColor ( Color ( 40,40,40, 255 ) );
 
   rect ( 0, 0, width, height );
   fill();
@@ -535,18 +535,27 @@ void NinjasUI::onNanoDisplay()
   // waveform display back
 
   beginPath();
+  fillPaint(
+    linearGradient
+    (
+    display_top + display_length / 2 , display_top ,
+    display_top + display_length / 2 , display_bottom ,
+    Color(100,100,100,255) , 
+    Color(60,60,60,255)
+  )
+  );
+    
+//  fillColor ( Color ( 100,100,100, 255 ) );
 
-  fillColor ( Color ( 100,100,100, 255 ) );
-
-  rect ( 30, 50, 1140, 350 );
+  rect ( display_left, display_top, display_length, display_bottom - display_top );
   fill();
 
   closePath();
 
   if ( sample_is_loaded )
     {
-      drawSlices();
       drawWaveform();
+      drawSlices();
       drawOnsets();
       drawRuler();
     }
@@ -569,7 +578,7 @@ void NinjasUI::drawWaveform()
   closePath();
 
   beginPath();
-  strokeColor ( 80,45,22,255 );
+  strokeColor ( 103,208,240,255 );
   strokeWidth ( 1.0f );
 
   moveTo ( display_left,display_center );
@@ -672,10 +681,10 @@ void NinjasUI::drawRuler()
   std::string sTime;
   fontFaceId ( fNanoFont );
   textAlign ( ALIGN_CENTER|ALIGN_TOP );
-  fillColor ( Color ( 0.0f, 0.0f, 0.0f ) );
+  fillColor ( Color ( 1.0f, 1.0f, 1.0f ) );
   fontSize ( 9 );
   beginPath();
-  strokeColor ( 0,0,0,255 );
+  strokeColor ( 255,255,255,255 );
   strokeWidth ( 1.0f );
   while ( time < wave_end_time )
     {
@@ -698,11 +707,13 @@ void NinjasUI::drawSlices()
   double pixels_per_sample =  display_length / view;
 
   int firstSlice = 0, lastSlice = 0;
+  // find first slice in view
   while ( a_slices[firstSlice].sliceEnd < waveView.start )
     {
       firstSlice++;
     }
 
+    // find last slice in view
   for ( int i = 0; i < slices ; i++ )
     {
       if ( a_slices[lastSlice].sliceStart < waveView.end )
@@ -711,7 +722,7 @@ void NinjasUI::drawSlices()
 
   for ( uint left,right; firstSlice < lastSlice; firstSlice++ )
     {
-      beginPath();
+      
 
       if ( a_slices[firstSlice].sliceStart < waveView.start )
         left = 0;
@@ -722,17 +733,46 @@ void NinjasUI::drawSlices()
         right = 1140;
       else
         right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * pixels_per_sample;
-
+   /*   beginPath();
       rect ( left+display_left,display_top,right - left,display_height*2 );
       if ( a_slices[firstSlice].color )
-        fillColor ( 179,179,179,255 );
+        fillColor ( 179,179,179,64 );
       else
-        fillColor ( 150,150,150,255 );
+        fillColor ( 150,150,150,64 );
       if ( firstSlice == currentSlice && slices > 1 )
-        fillColor ( 255,179,0,255 );
+        fillColor ( 255,179,0,64 );
       fill();
       closePath();
+     */
+      // draw marker
+      beginPath();
+      
+      fillColor (146,232,147);
+      // top triangle
+      moveTo(left + display_left - 10, display_top);
+      lineTo(left + display_left + 10, display_top);
+      lineTo(left + display_left     , display_top + 10);
+      lineTo(left + display_left - 10, display_top);
+      fill();
+      closePath();
+      // bottom triangle
+      beginPath();
+      moveTo(left + display_left - 10, display_bottom);
+      lineTo(left + display_left + 10, display_bottom);
+      lineTo(left + display_left     , display_bottom - 10);
+      lineTo(left + display_left - 10, display_bottom);
+      fill();
+      closePath();
+      
+      // draw center line
+      beginPath();
+      strokeColor (25,25,25,255);
+      moveTo(left + display_left , display_top + 10 );
+      lineTo(left + display_left , display_bottom);
+      stroke();
+      closePath();
     }
+    
 }
 
 void NinjasUI::drawOnsets()
@@ -740,7 +780,7 @@ void NinjasUI::drawOnsets()
   double view = waveView.end - waveView.start;
   double pixels_per_sample =  display_length / view;
   beginPath();
-  strokeColor ( 255,127,0,255 );
+  strokeColor ( 30,30,30,255 );
   strokeWidth ( 0.8f );
   for ( std::vector<uint_t>::iterator it = onsets.begin() ; it != onsets.end(); ++it )
     {
