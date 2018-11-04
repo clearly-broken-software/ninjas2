@@ -725,7 +725,11 @@ void NinjasUI::drawSlices()
       
 
       if ( a_slices[firstSlice].sliceStart < waveView.start )
+	// don't draw 
+      {
         left = 0;
+      continue;
+      }
       else
         left = ( a_slices[firstSlice].sliceStart - waveView.start ) * pixels_per_sample;
 
