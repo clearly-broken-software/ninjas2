@@ -1084,18 +1084,8 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
   // check if mouse in waveform display 
   mouseX = ev.pos.getX();
   mouseY = ev.pos.getY();
-  if (ev.press)
-  {
-  if ( hitBox (mouseX,mouseY,display_left,display_top,display_right,display_bottom) )
-  {
-    std::cout << "mouse is in display" << std::endl;
-  }
-  else
-  {
-    std::cout << "mouse is NOT in display" << std::endl;
-  }
-  }
-  
+  if (ev.press && !display.contains(mouseX,mouseY))
+    return false;
 
   if ( !mouseDragging )
     {
@@ -1354,15 +1344,6 @@ void NinjasUI::editCurrentSlice()
 void NinjasUI::editSlice()
 {
   ;
-}
-
-bool NinjasUI::hitBox(uint mx, uint my , uint x1 , uint y1 , uint x2 , uint y2)
- {
-   if (mx < x1) return false;
-   if (mx > x2) return false;
-   if (my < y1) return false;
-   if (my > y2) return false;
-   return true;
 }
 
 /* ------------------------------------------------------------------------------------------------------------
