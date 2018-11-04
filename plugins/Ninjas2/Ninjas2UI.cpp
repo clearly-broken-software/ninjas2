@@ -1077,6 +1077,22 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
 bool NinjasUI::onMouse ( const MouseEvent& ev )
 {
+  // check if mouse in waveform display 
+  mouseX = ev.pos.getX();
+  mouseY = ev.pos.getY();
+  if (ev.press)
+  {
+  if ( hitBox (mouseX,mouseY,display_left,display_top,display_right,display_bottom) )
+  {
+    std::cout << "mouse is in display" << std::endl;
+  }
+  else
+  {
+    std::cout << "mouse is NOT in display" << std::endl;
+  }
+  }
+  
+
   if ( !mouseDragging )
     {
       if ( ev.press && ev.button == 2 ) // middle click
@@ -1087,6 +1103,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
         }
       if ( ev.press && ev.button == 1 && sample_is_loaded )
         {
+	  std::cout << "left button pressed" << std::endl;
           mouseDragging = true;
           mouseMoveWaveform = false;
           mouseX = ev.pos.getX()-display_left;
@@ -1202,6 +1219,7 @@ void NinjasUI::initEditSlice()
   if ( mouseEditSlice )
     return;
   // MouseX is nearest to which slice start/end ?
+  
   // find all slices shown
   int firstSlice = 0, lastSlice = 0;
   while ( a_slices[firstSlice].sliceEnd < waveView.start )
@@ -1214,6 +1232,8 @@ void NinjasUI::initEditSlice()
       if ( a_slices[lastSlice].sliceStart < waveView.end )
         lastSlice++;
     }
+    
+    
 // convert mouseX to sample
   double view = waveView.end - waveView.start;
   double samples_per_pixel =  view / display_length ;
@@ -1239,7 +1259,7 @@ void NinjasUI::initEditSlice()
   
   int64_t nearest_start = find_nearest ( sliceStarts,mouseSample );
   int64_t nearest_end = find_nearest ( sliceEnds,mouseSample );
-  if ( abs ( mouseSample - nearest_start ) <= abs ( mouseSample - nearest_end ) )
+/*   if ( abs ( mouseSample - nearest_start ) <= abs ( mouseSample - nearest_end ) )
     {
        for ( int i = firstSlice; i < lastSlice; i++ )
         {
@@ -1276,6 +1296,7 @@ void NinjasUI::initEditSlice()
             }
         }
     }
+*/
   repaint();
 }
 void NinjasUI::editCurrentSlice()
@@ -1330,6 +1351,16 @@ void NinjasUI::editSlice()
 {
   ;
 }
+
+bool NinjasUI::hitBox(uint mx, uint my , uint x1 , uint y1 , uint x2 , uint y2)
+ {
+   if (mx < x1) return false;
+   if (mx > x2) return false;
+   if (my < y1) return false;
+   if (my > y2) return false;
+   return true;
+}
+
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */
 
