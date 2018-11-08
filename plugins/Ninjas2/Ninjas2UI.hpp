@@ -83,7 +83,7 @@ private:
   void drawRuler();
   void drawOnsets();
   void drawSlices();
-  void initEditSlice();
+  void selectSlice();
   void editCurrentSlice();
   void editSlice();
   
@@ -115,9 +115,8 @@ private:
   {
     unsigned long int sliceStart;
     unsigned long int sliceEnd;
-    bool color;
-  //  slicePlayMode playmode;
-  //  bool sliceActive;
+    Rectangle<int> startHitBox;
+    Rectangle<int> endHitBox;
   };
 
   bool slicemethod;
@@ -146,7 +145,7 @@ private:
   Window::FileBrowserOptions filebrowseropts;
   std::string directory;
   std::string stateSlice;
-  Rectangle<int> boxes[128];
+  // Rectangle<int> boxes[128];
   Rectangle<int> display;
   bool mouseMoveWaveform;
   
