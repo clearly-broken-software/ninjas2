@@ -92,8 +92,6 @@ private:
   std::string dirnameOf ( const std::string& fname );
   std::string toTime(double time, double round_up);
   
-  // slices
-  float sliceStart[128], sliceEnd[128];
   //
   bool mouseDragging;
   uint mouseX;
