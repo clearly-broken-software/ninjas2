@@ -83,6 +83,7 @@ private:
   void drawRuler();
   void drawOnsets();
   void drawSlices();
+  void getVisibleSlices( int &firstSice, int &lastSlice);
   void selectSlice();
   void editCurrentSlice();
   void editSlice();

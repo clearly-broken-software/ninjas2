@@ -203,8 +203,7 @@ private:
   bool bypass; // {true};
   std::vector<uint_t>onsets;
   double samplerate;
-  
- 
+   
   /*
    * Set our plugin class as non-copyable and add a leak detector just in case.
   */

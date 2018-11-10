@@ -1,6 +1,6 @@
 /*
  * Ninjas 2
- * 
+ *
  * Copyright (C) 2018 Clearly Broken Software
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -25,6 +25,9 @@
 #include <samplerate.h>
 #include "aubio.h"
 #include <stdio.h>
+#include <cstdlib>
+#include <cerrno>
+// #include <sstream>
 
 #include "DistrhoPluginInfo.h"
 
@@ -68,7 +71,7 @@ NinjasPlugin::NinjasPlugin()
   samplerate = getSampleRate();
   sampleChannels = 1;
   sampleSize = 0;
-  
+
   std::fill_n ( voices,128,Voice() );
   std::fill_n ( a_slices,128,Slice() );
 
@@ -222,26 +225,33 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
 
 void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& defaultStateValue )
 {
-  switch (index)
-  {
-   case 0:
-      {
+  switch ( index )
+    {
+    case 0:
+    {
       stateKey ="filepath";
       defaultStateValue = "empty";
       break;
-      }
-   case 1:
-     {
-       stateKey = "slice";
-       defaultStateValue = "empty";
-       break;
-     }
- }
+    }
+    case 1:
+    {
+      stateKey = "slice";
+      defaultStateValue = "empty";
+      break;
+    }
+    }
 }
 
-String NinjasPlugin::getState ( const char* ) const
+String NinjasPlugin::getState ( const char* key ) const
 {
-  return String ( "filepath" );
+  if ( std::strcmp ( key, "filepath" ) )
+    return String ( "filepath" );
+
+  if ( std::strcmp ( key, "slices" ) )
+    return String ( "slices" );
+
+  return String ( "something went wrong" );
+
 }
 
 void NinjasPlugin::setState ( const char* key, const char* value )
@@ -269,12 +279,34 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           setParameterValue ( paramLoadSample, 0.0f );
         }
     }
-    
-    if ( strcmp (key, "slice" ) == 0)
+
+  if ( strcmp ( key, "slice" ) == 0 )
     {
-      std::cout << "Do something clever with " << std::string(value)<< std::endl;
+      const char* p = value;
+      char * end;
+      bool start = true;
+     // std::cout << "Do something clever with " << std::string ( value ) << std::endl;
+      for ( int l = std::strtol ( p, &end,10 ), index = 0; p != end; l = std::strtol ( p, &end, 10 ) )
+        {
+          p = end;
+          if ( errno == ERANGE )
+            {
+              std::cout << "range error, got ";
+              errno = 0;
+            }
+
+          if ( start )
+            {
+              a_slices[index].sliceStart = l;
+            }
+          else
+            {
+              a_slices[index].sliceEnd = l;
+              index++;
+            }
+        }
     }
-    
+
 }
 
 /* --------------------------------------------------------------------------------------------------------
@@ -437,10 +469,10 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
               int message = status & 0xF0 ; // get midi message
               int data1 = midiEvents[curEventIndex].data[1];// note number
               int data2 = midiEvents[curEventIndex].data[2]; //
-              
 
-     
-     
+
+
+
               switch ( message )
                 {
                 case 0x80 :   // note off
@@ -457,12 +489,12 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                 case 0x90 :
                 {
-		  //c4 is 60
-		  int index = data1-60;
-		  if (index < 0 || index > slices -1 )
-		  {
-		    break;
-		  }
+                  //c4 is 60
+                  int index = data1-60;
+                  if ( index < 0 || index > slices -1 )
+                    {
+                      break;
+                    }
                   // new note .. let's activate
                   voices[index].active = true;
                   voices[index].velocity = data2;
