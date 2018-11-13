@@ -480,8 +480,9 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   int index = data1;
                   bool voice_playing = voices[index].active;
                   if ( voice_playing == false )
-
+		  {
                     break; // note wasn't playing anyway .. ignore
+		  }
                   if ( voice_playing )
                     voices[index].adsr.adsr_stage = stage_of_ADSR::RELEASE;
                   break;
@@ -697,7 +698,11 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
           float left = mixer.leftChannel / ( float ) mixer.channels;
           float right = mixer.rightChannel / ( float ) mixer.channels;
-          mixer.channels = 0;
+          // reset mixer
+	  mixer.channels = 0;
+	  mixer.leftChannel = 0.0f;
+	  mixer.rightChannel = 0.0f;
+	  
           outL[framesDone] = left;
           outR[framesDone] = right;
         }
