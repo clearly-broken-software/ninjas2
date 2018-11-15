@@ -173,7 +173,7 @@ private:
   {
     float leftChannel;
     float rightChannel;
-    int channels;
+    int samples;
   };
 
   Mixer mixer;
