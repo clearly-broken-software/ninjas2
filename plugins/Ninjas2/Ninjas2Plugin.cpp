@@ -78,6 +78,14 @@ NinjasPlugin::NinjasPlugin()
   // grid
   std::fill_n ( p_Grid, 16, 0 );
   p_Grid[0] = 1;
+  
+  //for debugging , autoload sample
+  loadSample( std::string("/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg"));
+  getOnsets ();
+  createSlicesRaw();
+  bypass = false;
+  
+  
 }
 
 // Init

@@ -162,6 +162,9 @@ NinjasUI::NinjasUI()
   // text
   loadSharedResources();
   fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
+  
+   //for debugging , autoload sample
+  loadSample(String("/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg"));
 }
 
 void NinjasUI::positionWidgets()
