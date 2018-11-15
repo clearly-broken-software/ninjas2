@@ -65,7 +65,7 @@ NinjasPlugin::NinjasPlugin()
 
   // slices
   slices       = 1;
-  currentSlice = 1;
+  currentSlice = 0;
   slicemode    = 0;
 
   samplerate = getSampleRate();
@@ -330,7 +330,7 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
 {
   float return_Value = 0;
 
-  int ch = currentSlice;
+  int ch = currentSlice + 60;
 
   switch ( index )
     {
@@ -350,25 +350,25 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
       return_Value = p_Release[ch];
       break;
     case paramOneShotFwd: // one shot forward
-      if ( a_slices[ch].playmode == ONE_SHOT_FWD )
+      if ( a_slices[currentSlice].playmode == ONE_SHOT_FWD )
         return_Value = 1.0f;
       else
         return_Value = 0.0f;
       break;
     case paramOneShotRev: // one shot Reverse
-      if ( a_slices[ch].playmode == ONE_SHOT_REV )
+      if ( a_slices[currentSlice].playmode == ONE_SHOT_REV )
         return_Value = 1.0f;
       else
         return_Value = 0.0f;
       break;
     case paramLoopFwd: // Loop Fwd
-      if ( a_slices[ch].playmode == LOOP_FWD )
+      if ( a_slices[currentSlice].playmode == LOOP_FWD )
         return_Value = 1.0f;
       else
         return_Value = 0.0f;
       break;
     case paramLoopRev: // Loop Rev
-      if ( a_slices[ch].playmode == LOOP_REV )
+      if ( a_slices[currentSlice].playmode == LOOP_REV )
         return_Value = 1.0f;
       else
         return_Value = 0.0f;
@@ -393,6 +393,9 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
+  std::cout <<"setParameterValue" << index << "," << value << std::endl;
+  std::cout <<"currentSlice = "<< currentSlice << std::endl;
+  int voice = currentSlice + 60;
 
   switch ( index )
     {
@@ -404,16 +407,16 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
         createSlicesOnsets ();
       break;
     case paramAttack:
-      p_Attack[currentSlice] = value;
+      p_Attack[voice] = value;
       break;
     case paramDecay:
-      p_Decay[currentSlice] = value;
+      p_Decay[voice] = value;
       break;
     case paramSustain:
-      p_Sustain[currentSlice] = value;
+      p_Sustain[voice] = value;
       break;
     case paramRelease:
-      p_Release[currentSlice] = value;
+      p_Release[voice] = value;
       break;
     case paramOneShotFwd: // one shot forward
       if ( value == 1 )
@@ -446,6 +449,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
       if ( value == 1 )
         {
           currentSlice = index - paramSwitch01;
+	  std::cout << "currentSlice =" << currentSlice << std::endl;
         }
     }
 } // setParameterValue
@@ -523,12 +527,14 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                   // check playmode
                   // if LOOP_REV or ONE_SHOT_REV set playback indici to end of slice
-
-                  if ( a_slices[index].playmode == LOOP_REV || a_slices[index].playmode == ONE_SHOT_REV )
+	         if ( a_slices[index].playmode == LOOP_REV || a_slices[index].playmode == ONE_SHOT_REV )
                     {
+		      std::cout << "a_slices[" << index << "].playmode =" << a_slices[index].playmode << std::endl;
                       voices[data1].playbackIndex = a_slices[index].sliceEnd - a_slices[index].sliceStart;
                       voices[data1].multiplierIndex = ( a_slices[index].sliceEnd - a_slices[index].sliceStart ) / sampleChannels;
+		      std::cout << "voice[" << data1 << "].playbackIndex =" << voices[data1].playbackIndex   << std::endl;                
                     }
+                    
                   else     // playmode is forward .. playback indici to start
                     {
                       voices[data1].playbackIndex = 0;
@@ -642,10 +648,10 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   float multiplier = voices[i].multiplier;
 
                   // set multiplier to negative if direction is reverse
-
-                  if ( a_slices[i].playmode == LOOP_REV || a_slices[i].playmode == ONE_SHOT_REV )
-                    multiplier=-multiplier;
-
+		  
+                  if ( a_slices[i-60].playmode == LOOP_REV || a_slices[i-60].playmode == ONE_SHOT_REV )
+	          multiplier=-multiplier;
+	
                   // add the multiplier, when it's negative this should substract
 
                   voices[i].multiplierIndex += multiplier;
@@ -653,7 +659,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   tmp = tmp * sampleChannels;
 
                   // check bounderies according to playmode: loop or oneshot.
-                  switch ( a_slices[i].playmode )
+                  switch ( a_slices[i-60].playmode )
                     {
                     case LOOP_FWD:
                     {
