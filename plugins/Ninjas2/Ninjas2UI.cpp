@@ -1285,17 +1285,16 @@ void NinjasUI::selectSlice()
         {
           sample_is_in_slice = i;
           currentSlice = i;
-
-          std::cout << "sample_is_in_slice " << sample_is_in_slice << std::endl;
         }
     }
   if ( sample_is_in_slice == -1 )
     return;
-
+  setState ( "currentslice",std::to_string ( currentSlice ).c_str() );
+  recallSliceSettings ( currentSlice );
   //std::cout << "sample_is_in_slice " << sample_is_in_slice << std::endl;
 
-
   /*  int64_t nearest_start = find_nearest ( sliceStarts,mouseSample );
+
     int64_t nearest_end = find_nearest ( sliceEnds,mouseSample );
      if ( abs ( mouseSample - nearest_start ) <= abs ( mouseSample - nearest_end ) )
       {

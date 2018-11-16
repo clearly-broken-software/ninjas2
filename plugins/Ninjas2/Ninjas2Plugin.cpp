@@ -38,7 +38,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-  : Plugin ( paramCount, 0, 2 ) //1 parameter, 0 programs (presets) , 1 states
+  : Plugin ( paramCount, 0, 3 ) //1 parameter, 0 programs (presets) , 3 states
 {
   // init parameters
 
@@ -247,6 +247,13 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
       defaultStateValue = "empty";
       break;
     }
+    case 2:
+    {
+      stateKey = "currentslice";
+      defaultStateValue = "0";
+      break;
+    }
+
     }
 }
 
@@ -257,6 +264,9 @@ String NinjasPlugin::getState ( const char* key ) const
 
   if ( std::strcmp ( key, "slices" ) )
     return String ( "slices" );
+
+  if ( std::strcmp ( key, "currenslice" ) )
+    return String ( "currentslice" );
 
   return String ( "something went wrong" );
 
@@ -306,17 +316,22 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           if ( start )
             {
               a_slices[index].sliceStart = l;
-//               std::cout << "a_slices["<<index<<"].sliceStart="<<l<<std::endl;
             }
           else
             {
               a_slices[index].sliceEnd = l;
               index++;
-//               std::cout << "a_slices["<<index<<"].sliceEnd="<<l<<std::endl;
             }
           start = !start;
         }
     }
+  if ( strcmp ( key, "currentslice" ) == 0 )
+    {
+      // set currentSlice
+      currentSlice = std::stoi ( std::string ( value ) );
+
+    }
+
 
 }
 
