@@ -306,12 +306,15 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           if ( start )
             {
               a_slices[index].sliceStart = l;
+//               std::cout << "a_slices["<<index<<"].sliceStart="<<l<<std::endl;
             }
           else
             {
               a_slices[index].sliceEnd = l;
               index++;
+//               std::cout << "a_slices["<<index<<"].sliceEnd="<<l<<std::endl;
             }
+          start = !start;
         }
     }
 
