@@ -78,14 +78,14 @@ NinjasPlugin::NinjasPlugin()
   // grid
   std::fill_n ( p_Grid, 16, 0 );
   p_Grid[0] = 1;
-  
+
   //for debugging , autoload sample
-  loadSample( std::string("/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg"));
+  loadSample ( std::string ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
   getOnsets ();
   createSlicesRaw();
   bypass = false;
-  
-  
+
+
 }
 
 // Init
@@ -293,7 +293,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
       const char* p = value;
       char * end;
       bool start = true;
-      // std::cout << "Do something clever with " << std::string ( value ) << std::endl;
+      std::cout << "Do something clever with " << std::string ( value ) << std::endl;
       for ( int l = std::strtol ( p, &end,10 ), index = 0; p != end; l = std::strtol ( p, &end, 10 ) )
         {
           p = end;
@@ -452,7 +452,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
       if ( value == 1 )
         {
           currentSlice = index - paramSwitch01;
-	  std::cout << "currentSlice =" << currentSlice << std::endl;
+          std::cout << "currentSlice =" << currentSlice << std::endl;
         }
     }
 } // setParameterValue
@@ -530,14 +530,14 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                   // check playmode
                   // if LOOP_REV or ONE_SHOT_REV set playback indici to end of slice
-	         if ( a_slices[index].playmode == LOOP_REV || a_slices[index].playmode == ONE_SHOT_REV )
+                  if ( a_slices[index].playmode == LOOP_REV || a_slices[index].playmode == ONE_SHOT_REV )
                     {
-		      std::cout << "a_slices[" << index << "].playmode =" << a_slices[index].playmode << std::endl;
+                      std::cout << "a_slices[" << index << "].playmode =" << a_slices[index].playmode << std::endl;
                       voices[data1].playbackIndex = a_slices[index].sliceEnd - a_slices[index].sliceStart;
                       voices[data1].multiplierIndex = ( a_slices[index].sliceEnd - a_slices[index].sliceStart ) / sampleChannels;
-		      std::cout << "voice[" << data1 << "].playbackIndex =" << voices[data1].playbackIndex   << std::endl;                
+                      std::cout << "voice[" << data1 << "].playbackIndex =" << voices[data1].playbackIndex   << std::endl;
                     }
-                    
+
                   else     // playmode is forward .. playback indici to start
                     {
                       voices[data1].playbackIndex = 0;
@@ -651,10 +651,10 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   float multiplier = voices[i].multiplier;
 
                   // set multiplier to negative if direction is reverse
-		  
+
                   if ( a_slices[i-60].playmode == LOOP_REV || a_slices[i-60].playmode == ONE_SHOT_REV )
-	          multiplier=-multiplier;
-	
+                    multiplier=-multiplier;
+
                   // add the multiplier, when it's negative this should substract
 
                   voices[i].multiplierIndex += multiplier;
