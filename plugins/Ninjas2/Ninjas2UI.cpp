@@ -162,9 +162,9 @@ NinjasUI::NinjasUI()
   // text
   loadSharedResources();
   fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
-  
-   //for debugging , autoload sample
-  loadSample(String("/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg"));
+
+  //for debugging , autoload sample
+  loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 }
 
 void NinjasUI::positionWidgets()
@@ -818,7 +818,6 @@ void NinjasUI::drawOnsets()
 
 void NinjasUI::loadSample ( String fp )
 {
-  std::cout << "loading sample " << fp << std::endl;
   //int  iIndex {0};
   //float fIndex {0};
   double samplerate = getSampleRate();
@@ -867,8 +866,6 @@ void NinjasUI::loadSample ( String fp )
   waveView.zoom = 1.0f;
   waveView.max_zoom = float ( sampleSize ) / float ( display_width );
 
-  //std::cout << sampleSize << " | " << waveform.size() << " | " << waveView.end <<  std::endl;
-
   getOnsets ( sampleSize ,sampleChannels, sampleVector, onsets );
   if ( !slicemethod )
     {
@@ -905,7 +902,6 @@ void NinjasUI::createSlicesOnsets ()
 {
   if ( sampleSize == 0 )
     {
-//         std::cout << "no sample loaded" << std::endl;
       return;
     }
   long double sliceSize = ( long double ) sampleSize / ( long double ) slices;
@@ -1026,9 +1022,6 @@ void NinjasUI::createSlicesRaw ()
     {
       a_slices[i].sliceStart = i * sliceSize;
       a_slices[i].sliceEnd = ( i+1 ) * sliceSize  - 1 ;
-      //  std::cout << "Slice # "<< i << " : Start " << a_slices[i].sliceStart / samplerate << std::endl;
-      //  a_slices[i].color = color;
-      // color = !color;
     }
 }
 
@@ -1125,12 +1118,10 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
         }
       if ( ev.press && ev.button == 1 && sample_is_loaded )
         {
-          std::cout << "left button pressed" << std::endl;
           mouseDragging = true;
           mouseMoveWaveform = false;
           mouseX = ev.pos.getX()-display_left;
           mouseY = ev.pos.getY()-display_top;
-          std::cout << "mouseX = " << mouseX << " mouseY = " << mouseY << std::endl;
           selectSlice();
         }
       return false;
@@ -1142,7 +1133,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
       mouseDragging = false;
       mouseMoveWaveform = false;
       if ( mouseEditSlice ) // only edit slice boundaries when finished dragging
-           editSlice();
+        editSlice();
       mouseEditSlice = false;
     }
 
@@ -1192,7 +1183,6 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
 {
   if ( !mouseDragging )
     {
-      //std::cout << "not dragging" << std::endl;
       return false;
     }
   if ( mouseMoveWaveform )
@@ -1250,9 +1240,6 @@ void NinjasUI::selectSlice()
 
       for ( int i = firstSlice; i < lastSlice; i++ )
         {
-          std::cout << a_slices[i].startHitBox.getX() << std::endl;
-          std::cout << a_slices[i].startHitBox.getY() << std::endl;
-          std::cout << a_slices[i].startHitBox.contains ( mouseX + display_left, mouseY + display_top ) << std::endl;
           if ( a_slices[i].startHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
             {
               currentEditSlice = a_slices[i];
@@ -1263,8 +1250,6 @@ void NinjasUI::selectSlice()
             }
         }
     }
-
-
 
 // convert mouseX to sample
   double view = waveView.end - waveView.start;
@@ -1346,10 +1331,10 @@ void NinjasUI::editCurrentSlice()
       mouseSample = a_slices[currentSlice].sliceEnd - 1;
     }
   a_slices[currentSlice].sliceStart = mouseSample;
- 
+
   if ( currentSlice > 0 )
     {
-         a_slices[currentSlice-1].sliceEnd = mouseSample -1;
+      a_slices[currentSlice-1].sliceEnd = mouseSample -1;
     }
   repaint();
   return;
@@ -1381,16 +1366,16 @@ return;
 void NinjasUI::editSlice()
 {
   stateSlice.clear();
-  
-  for (int i=0; i < 128 ; i++)
-  {
-    stateSlice.append(std::to_string(a_slices[i].sliceStart));
-    stateSlice.append(" ");
-    stateSlice.append(std::to_string(a_slices[i].sliceEnd));
-    stateSlice.append(" ");
-  }
-  setState("slice", stateSlice.c_str());
-    
+
+  for ( int i=0; i < 128 ; i++ )
+    {
+      stateSlice.append ( std::to_string ( a_slices[i].sliceStart ) );
+      stateSlice.append ( " " );
+      stateSlice.append ( std::to_string ( a_slices[i].sliceEnd ) );
+      stateSlice.append ( " " );
+    }
+  setState ( "slice", stateSlice.c_str() );
+
 }
 
 /* ------------------------------------------------------------------------------------------------------------

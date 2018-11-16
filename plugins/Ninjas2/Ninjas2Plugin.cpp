@@ -303,7 +303,6 @@ void NinjasPlugin::setState ( const char* key, const char* value )
       const char* p = value;
       char * end;
       bool start = true;
-      std::cout << "Do something clever with " << std::string ( value ) << std::endl;
       for ( int l = std::strtol ( p, &end,10 ), index = 0; p != end; l = std::strtol ( p, &end, 10 ) )
         {
           p = end;
@@ -411,8 +410,6 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
-  std::cout <<"setParameterValue" << index << "," << value << std::endl;
-  std::cout <<"currentSlice = "<< currentSlice << std::endl;
   int voice = currentSlice + 60;
 
   switch ( index )
@@ -467,7 +464,6 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
       if ( value == 1 )
         {
           currentSlice = index - paramSwitch01;
-          std::cout << "currentSlice =" << currentSlice << std::endl;
         }
     }
 } // setParameterValue
@@ -498,7 +494,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
               int message = status & 0xF0 ; // get midi message
               int data1 = midiEvents[curEventIndex].data[1];// note number
               int data2 = midiEvents[curEventIndex].data[2]; //
-              std::cout << message << std::endl;
 
               switch ( message )
                 {
@@ -547,10 +542,9 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   // if LOOP_REV or ONE_SHOT_REV set playback indici to end of slice
                   if ( a_slices[index].playmode == LOOP_REV || a_slices[index].playmode == ONE_SHOT_REV )
                     {
-                      std::cout << "a_slices[" << index << "].playmode =" << a_slices[index].playmode << std::endl;
                       voices[data1].playbackIndex = a_slices[index].sliceEnd - a_slices[index].sliceStart;
                       voices[data1].multiplierIndex = ( a_slices[index].sliceEnd - a_slices[index].sliceStart ) / sampleChannels;
-                      std::cout << "voice[" << data1 << "].playbackIndex =" << voices[data1].playbackIndex   << std::endl;
+
                     }
 
                   else     // playmode is forward .. playback indici to start
@@ -561,9 +555,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                   float transpose = ( pitchbend/pitchbend_step ) -12;
                   voices[data1].multiplier=pow ( 2.0, transpose / 12.0 );
-                  // all set . add to stack
-                  //stack.add_Voice(&voices[data1]);
-                  //
                   break;
 
                 } // case 0x90
@@ -582,12 +573,9 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
           int voice_count {0};
           for ( int i = 0 ; i < 128 ; i++ )
             {
-              //          std::cout << "voice " << i << "active = " << voices[i].active << std::endl;
-
               if ( voices[i].active )
                 {
                   voice_count++;
-                  //        std::cout << "active voice " << i << std::endl;
                   // get the raw samples from the voice
                   // float* pointer will allow any amount of samples to be pulled in
                   //
@@ -598,9 +586,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   float sampleL { *sample };
                   float sampleR { * ( sample + ( sampleChannels -1 ) ) };
                   // process adsr to get the gain back
-
-                  // float adsr_gain = voices[i].adsr.ADSRrun ( &voices[i].active );
-                  //  std::cout << voices[i].adsr.adsr_stage << std::endl;
                   switch ( voices[i].adsr.adsr_stage )
                     {
                     case ATTACK:
@@ -635,7 +620,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                     // release phase ; should be triggered by note off
                     case RELEASE:
                     {
-                      //      std::cout << "release stage_of_ADSR " << voices[i].adsr.adsr_gain << std::endl;
                       if ( voices[i].adsr.adsr_gain > 0.0f )
                         voices[i].adsr.adsr_gain += voices[i].adsr.release_gain;
                       else
@@ -824,7 +808,6 @@ void NinjasPlugin::createSlicesOnsets ()
 {
   if ( sampleSize == 0 )
     {
-//       std::cout << "no sample loaded" << std::endl;
       return;
     }
   long double sliceSize = ( long double ) sampleSize / ( long double ) slices;
