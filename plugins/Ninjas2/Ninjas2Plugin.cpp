@@ -75,6 +75,11 @@ NinjasPlugin::NinjasPlugin()
   std::fill_n ( voices,128,Voice() );
   std::fill_n ( a_slices,128,Slice() );
 
+//   for ( int i = 0 ; i < 128; i++ )
+//     {
+//       voices[i].slice = ( i+68 ) % 128;
+//     }
+
   // grid
   std::fill_n ( p_Grid, 16, 0 );
   p_Grid[0] = 1;
@@ -347,7 +352,7 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
 {
   float return_Value = 0;
 
-  int ch = currentSlice + 60;
+  int voice = (currentSlice + 60)%128;
 
   switch ( index )
     {
@@ -355,16 +360,16 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
       return_Value = ( float ) slices;
       break;
     case paramAttack:
-      return_Value = p_Attack[ch];
+      return_Value = p_Attack[voice];
       break;
     case paramDecay:
-      return_Value = p_Decay[ch];
+      return_Value = p_Decay[voice];
       break;
     case paramSustain:
-      return_Value = p_Sustain[ch];
+      return_Value = p_Sustain[voice];
       break;
     case paramRelease:
-      return_Value = p_Release[ch];
+      return_Value = p_Release[voice];
       break;
     case paramOneShotFwd: // one shot forward
       if ( a_slices[currentSlice].playmode == ONE_SHOT_FWD )
@@ -410,7 +415,7 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
-  int voice = currentSlice + 60;
+  int voice = (currentSlice + 60) % 128;
 
   switch ( index )
     {
@@ -513,7 +518,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                 case 0x90 :
                 {
                   //c4 is 60
-                  int index = data1 -60;
+	          int index = (data1 + 68) % 128;
                   if ( index < 0 || index > slices -1 )
                     {
                       break;
@@ -579,8 +584,9 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   // get the raw samples from the voice
                   // float* pointer will allow any amount of samples to be pulled in
                   //
-                  int sliceStart = a_slices[i-60].sliceStart; //fix this !
-                  int sliceEnd = a_slices[i-60].sliceEnd;
+		  int slice = (i+68)%128;
+                  int sliceStart = a_slices[slice].sliceStart; //fix this !
+                  int sliceEnd = a_slices[slice].sliceEnd;
                   int pos = voices[i].playbackIndex;
                   float* sample = &sampleVector.at ( sliceStart+pos );
                   float sampleL { *sample };
@@ -651,7 +657,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                   // set multiplier to negative if direction is reverse
 
-                  if ( a_slices[i-60].playmode == LOOP_REV || a_slices[i-60].playmode == ONE_SHOT_REV )
+                  if ( a_slices[slice].playmode == LOOP_REV || a_slices[slice].playmode == ONE_SHOT_REV )
                     multiplier=-multiplier;
 
                   // add the multiplier, when it's negative this should substract
@@ -661,7 +667,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                   tmp = tmp * sampleChannels;
 
                   // check bounderies according to playmode: loop or oneshot.
-                  switch ( a_slices[i-60].playmode )
+                  switch ( a_slices[slice].playmode )
                     {
                     case LOOP_FWD:
                     {

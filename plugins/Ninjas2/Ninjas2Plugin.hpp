@@ -155,16 +155,16 @@ private:
 
   struct Voice
   {
-    int index;
+    //int slice; // (notenumber+68)%128
     bool active;
-    int channel;  //midi channel, channel is also linked to slice
+    // int channel;  //midi channel, channel is also linked to slice
     int notenumber;
     int velocity;
     float gain; // linked to adsr
     float multiplierIndex; // frame of slice (sample) playing
     float multiplier;
     int playbackIndex;
-    ADSR adsr ;
+    ADSR adsr;
   };
   
   Voice voices[128];
