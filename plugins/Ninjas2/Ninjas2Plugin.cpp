@@ -43,10 +43,10 @@ NinjasPlugin::NinjasPlugin()
   // init parameters
 
   // adsr
-  std::fill_n ( p_Attack, 128, 0.05f );
-  std::fill_n ( p_Decay, 128, 0.05f );
+  std::fill_n ( p_Attack, 128, 0.001f );
+  std::fill_n ( p_Decay, 128, 0.001f );
   std::fill_n ( p_Sustain, 128, 1.0f );
-  std::fill_n ( p_Release, 128, 0.05f );
+  std::fill_n ( p_Release, 128, 0.001f );
   // play modes
   std::fill_n ( p_OneShotFwd, 128, 1.0f );
   std::fill_n ( p_OneShotRev, 128, 0.0f );
@@ -108,8 +108,8 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
     case paramAttack:
     {
       parameter.hints      = kParameterIsAutomable ;
-      parameter.ranges.def = 0.05f;
-      parameter.ranges.min = 0.05f;
+      parameter.ranges.def = 0.001f;
+      parameter.ranges.min = 0.001f;
       parameter.ranges.max = 1.0f;
       parameter.name   = "Attack";
       parameter.symbol = "attack";
@@ -119,8 +119,8 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
     case paramDecay:
     {
       parameter.hints      = kParameterIsAutomable ;
-      parameter.ranges.def = 0.05f;
-      parameter.ranges.min = 0.05f;
+      parameter.ranges.def = 0.001f;
+      parameter.ranges.min = 0.001f;
       parameter.ranges.max = 1.0f;
       parameter.name   = "Decay";
       parameter.symbol =  "decay";
@@ -141,8 +141,8 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
     case paramRelease:
     {
       parameter.hints      = kParameterIsAutomable ;
-      parameter.ranges.def = 0.05f;
-      parameter.ranges.min = 0.05f;
+      parameter.ranges.def = 0.001f;
+      parameter.ranges.min = 0.001f;
       parameter.ranges.max = 1.0f;
       parameter.name   = "Release";
       parameter.symbol = "release";
