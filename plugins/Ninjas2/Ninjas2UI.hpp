@@ -87,6 +87,7 @@ private:
   void selectSlice();
   void editCurrentSlice();
   void editSlice();
+  bool sampleIsInSlice( int sample);
   
   float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
   float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
@@ -114,13 +115,22 @@ private:
   {
     unsigned long int sliceStart;
     unsigned long int sliceEnd;
+    Rectangle<int> bothHitBox;
     Rectangle<int> startHitBox;
     Rectangle<int> endHitBox;
+    
   };
 
   bool slicemethod;
   int currentSlice;
-  bool editSliceStartEnd; // 0 == edit start, 1 == edit end
+  enum editslicestartend
+  {
+    start = 0,
+    end,
+    both
+  };
+  
+  editslicestartend editSliceStartEnd;
   bool mouseEditSlice;
   int slices;
   Slice a_slices[128];
@@ -144,7 +154,6 @@ private:
   Window::FileBrowserOptions filebrowseropts;
   std::string directory;
   std::string stateSlice;
-  // Rectangle<int> boxes[128];
   Rectangle<int> display;
   bool mouseMoveWaveform;
   

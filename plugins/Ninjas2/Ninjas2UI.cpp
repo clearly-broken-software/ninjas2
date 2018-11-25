@@ -48,12 +48,13 @@ NinjasUI::NinjasUI()
   std::fill_n ( a_slices,128, Slice() );
   for ( int i=0; i < 128; i++ )
     {
-      a_slices[i].startHitBox.setSize ( 20,20 );
+      a_slices[i].startHitBox.setSize ( 10,10 );
       a_slices[i].startHitBox.setPos ( 0,0 );
+      a_slices[i].endHitBox.setSize ( 10,10 );
+      a_slices[i].endHitBox.setPos ( 0,0 );
+      a_slices[i].bothHitBox.setSize ( 20,20 );
+      a_slices[i].bothHitBox.setPos ( 0,0 );
     }
-
-  // special slice for editing
-  //Slice currentEditSlice();
 
   // sample
   sampleSize = 0;
@@ -586,24 +587,65 @@ void NinjasUI::drawWaveform()
   float fIndex;
   uint iIndex;
 
+  bool colorflip = false;
+  bool oldcolor = false;
   beginPath();
-  strokeColor ( 103,208,240,255 );
+  // determine 'color' of first pixel
+  fIndex = float ( waveView.start ) +  float ( samples_per_pixel );
+  iIndex = fIndex;
+  colorflip = sampleIsInSlice ( iIndex ); //
+  oldcolor = colorflip;
+
+  beginPath();
+  moveTo ( display_left,display_center );
+  if ( colorflip )
+    strokeColor ( 103,208,240,255 );
+
+  else
+    strokeColor ( 100,100,100,255 );
+
   strokeWidth ( 1.0f );
 
-  moveTo ( display_left,display_center );
+
   for ( uint16_t i = 0 ; i < display_length ; i++ )
     {
+
       fIndex = float ( waveView.start ) + ( float ( i ) * samples_per_pixel );
       iIndex = fIndex;
+      colorflip = sampleIsInSlice ( iIndex );
       auto minmax = std::minmax_element ( waveform.begin() + iIndex, waveform.begin() + iIndex + int ( samples_per_pixel ) );
       uint16_t min = *minmax.first + display_center;
       uint16_t max = *minmax.second + display_center;
 
-      lineTo ( i+display_left,min );
-      lineTo ( i+display_left,max );
+      if ( colorflip == oldcolor )
+        {
+          lineTo ( i+display_left,min );
+          lineTo ( i+display_left,max );
+
+        }
+      else
+        {
+          //  std::cout << "new color" << std::endl;
+          stroke();
+          closePath();
+
+          beginPath();
+          moveTo ( i+display_left,max );
+          if ( colorflip )
+            strokeColor ( 103,208,240,255 );
+          else
+            strokeColor ( 64,64,64,255 );
+
+          lineTo ( i+display_left,min );
+          lineTo ( i+display_left,max );
+
+          oldcolor = colorflip;
+        }
+
     }
   stroke();
   closePath();
+
 }
 
 void NinjasUI::drawRuler()
@@ -740,7 +782,6 @@ void NinjasUI::drawSlices()
       // highlight selected slice
       if ( firstSlice == currentSlice && slices > 1 )
         {
-          a_slices[firstSlice].startHitBox.setPos ( left+display_left,display_right );
           beginPath();
 
           fillPaint ( linearGradient (
@@ -754,7 +795,7 @@ void NinjasUI::drawSlices()
           closePath();
         }
 
-      // draw marker
+      // draw marker + hitboxes
       if ( a_slices[firstSlice].sliceStart < waveView.start )
         continue; // don't draw marker
       beginPath();
@@ -767,16 +808,25 @@ void NinjasUI::drawSlices()
       lineTo ( left + display_left - 10, display_top );
       fill();
       closePath();
-      // bottom triangle
+      // bottom triangle end
       beginPath();
-      moveTo ( left + display_left - 10, display_bottom );
-      lineTo ( left + display_left + 10, display_bottom );
-      lineTo ( left + display_left     , display_bottom - 10 );
-      lineTo ( left + display_left - 10, display_bottom );
+      moveTo ( right + display_left - 10, display_bottom );
+      lineTo ( right + display_left     , display_bottom );
+      lineTo ( right + display_left     , display_bottom - 10 );
+      lineTo ( right + display_left - 10, display_bottom );
       fill();
       closePath();
 
-      // draw marker line
+      // bottom triangle start
+      beginPath();
+      moveTo ( left + display_left     , display_bottom );
+      lineTo ( left + display_left +10 , display_bottom );
+      lineTo ( left + display_left     , display_bottom - 10 );
+      lineTo ( left + display_left     , display_bottom );
+      fill();
+      closePath();
+
+      // draw marker lines
       beginPath();
       strokeColor ( 25,25,25,255 );
       moveTo ( left + display_left , display_top + 10 );
@@ -784,8 +834,19 @@ void NinjasUI::drawSlices()
       stroke();
       closePath();
 
+      beginPath();
+      strokeColor ( 25,25,25,255 );
+      moveTo ( right + display_left , display_top + 10 );
+      lineTo ( right + display_left , display_bottom );
+      stroke();
+      closePath();
+
+
       // set hitboxes
-      a_slices[firstSlice].startHitBox.setPos ( left + display_left - 10, display_top );
+      a_slices[firstSlice].bothHitBox.setPos ( left + display_left - 10, display_top );
+      a_slices[firstSlice].startHitBox.setPos ( left + display_left, display_bottom - 10 );
+      a_slices[firstSlice].endHitBox.setPos ( right + display_left - 10 , display_bottom - 10 );
+
     }
 }
 
@@ -897,6 +958,19 @@ void NinjasUI::getVisibleSlices ( int &firstSlice, int &lastSlice )
     }
 }
 
+bool NinjasUI::sampleIsInSlice ( int sample )
+{
+  for ( int i = 0 ; i < slices ; i++ )
+    {
+      //  std::cout << "slice " << i << " start : " << a_slices[i].sliceStart << " end : " << a_slices[i].sliceEnd << " sample# " << sample << std::endl;
+      if ( ( sample >= a_slices[i].sliceStart ) && ( sample <= a_slices[i].sliceEnd ) )
+        {
+          //        std::cout << "slice " << i << " start :" << a_slices[i].sliceStart << " end :" << a_slices[i].sliceEnd << " sample# " << sample << std::endl;
+          return true;
+        }
+    }
+  return false;
+}
 
 void NinjasUI::createSlicesOnsets ()
 {
@@ -1116,7 +1190,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
           mouseMoveWaveform = true;
           mouseX = ev.pos.getX()-display_left;
         }
-      if ( ev.press && ev.button == 1 && sample_is_loaded )
+      if ( ev.press && ev.button == 1 && sample_is_loaded ) // left click
         {
           mouseDragging = true;
           mouseMoveWaveform = false;
@@ -1234,24 +1308,41 @@ void NinjasUI::selectSlice()
   // find all slices shown
   int firstSlice = 0, lastSlice = 0;
   getVisibleSlices ( firstSlice, lastSlice );
-  // are we in a hitbox ?
-  if ( mouseY <= 10 )
-    {
 
-      for ( int i = firstSlice; i < lastSlice; i++ )
+  // are we in a hitbox ?
+  for ( int i = firstSlice; i < lastSlice; i++ )
+    {
+      if ( a_slices[i].bothHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
         {
-          if ( a_slices[i].startHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
-            {
-              currentEditSlice = a_slices[i];
-              currentSlice = i;
-              mouseEditSlice = true;
-              repaint();
-              return;
-            }
+          currentEditSlice = a_slices[i];
+          currentSlice = i;
+          mouseEditSlice = true;
+          editSliceStartEnd = both;
+          repaint();
+          return;
+        }
+       if ( a_slices[i].startHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
+        {
+          currentEditSlice = a_slices[i];
+          currentSlice = i;
+          mouseEditSlice = true;
+          editSliceStartEnd = start;
+          repaint();
+          return;
+        }
+         
+        
+      if ( a_slices[i].endHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
+        {
+          currentEditSlice = a_slices[i];
+          currentSlice = i;
+          mouseEditSlice = true;
+          editSliceStartEnd = end;
+          return;
         }
     }
 
-// convert mouseX to sample
+  // convert mouseX to sample
   double view = waveView.end - waveView.start;
   double samples_per_pixel =  view / display_length ;
   int mouseSample = mouseX * samples_per_pixel + waveView.start;
@@ -1276,49 +1367,7 @@ void NinjasUI::selectSlice()
     return;
   setState ( "currentslice",std::to_string ( currentSlice ).c_str() );
   recallSliceSettings ( currentSlice );
-  //std::cout << "sample_is_in_slice " << sample_is_in_slice << std::endl;
 
-  /*  int64_t nearest_start = find_nearest ( sliceStarts,mouseSample );
-
-    int64_t nearest_end = find_nearest ( sliceEnds,mouseSample );
-     if ( abs ( mouseSample - nearest_start ) <= abs ( mouseSample - nearest_end ) )
-      {
-         for ( int i = firstSlice; i < lastSlice; i++ )
-          {
-            if ( a_slices[i].sliceStart == nearest_start )
-              {
-                int pixel = ( nearest_start - waveView.start ) / samples_per_pixel;
-                int distance = std::abs ( (int)mouseX - pixel );
-
-                currentSlice = i;
-                if ( distance <= 15 ) // let's start dragging
-                  {
-                    mouseEditSlice = true;
-                    editSliceStartEnd = 0;
-                  }
-
-              }
-          }
-      }
-    else
-      {
-         for ( int i = firstSlice; i < lastSlice; i++ )
-          {
-            if ( a_slices[i].sliceEnd == nearest_end )
-              {
-                int pixel = ( nearest_end - waveView.start ) / samples_per_pixel;
-                int distance = std::abs ( (int)mouseX - pixel );
-                currentSlice = i;
-                if ( distance <= 15 ) // let's start dragging
-                  {
-                    mouseEditSlice = true;
-                    editSliceStartEnd = 1;
-                  }
-
-              }
-          }
-      }
-  */
   repaint();
 }
 void NinjasUI::editCurrentSlice()
@@ -1326,42 +1375,50 @@ void NinjasUI::editCurrentSlice()
   double view = waveView.end - waveView.start;
   double samples_per_pixel =  view / display_length ;
   int mouseSample = mouseX * samples_per_pixel + waveView.start;
-  if ( mouseSample >= a_slices[currentSlice].sliceEnd ) // can't drag past slice end
+  switch ( editSliceStartEnd )
     {
-      mouseSample = a_slices[currentSlice].sliceEnd - 1;
+    case start:
+    {
+      if ( mouseSample >= a_slices[currentSlice].sliceEnd )
+        {
+          mouseSample = a_slices[currentSlice].sliceEnd - 1;
+        }
+      a_slices[currentSlice].sliceStart = mouseSample;
+      break;
     }
-  a_slices[currentSlice].sliceStart = mouseSample;
-
-  if ( currentSlice > 0 )
+    case end:
     {
-      a_slices[currentSlice-1].sliceEnd = mouseSample -1;
+      if ( mouseSample <= a_slices[currentSlice].sliceStart )
+      {
+        mouseSample = a_slices[currentSlice].sliceStart;
+        }
+      a_slices[currentSlice].sliceEnd = mouseSample;
+
+      break;
+    }
+    case both:
+    {
+      // edit start
+      if ( mouseSample >= a_slices[currentSlice].sliceEnd )
+        {
+          mouseSample = a_slices[currentSlice].sliceEnd - 1;
+        }
+      a_slices[currentSlice].sliceStart = mouseSample;
+      // edit end
+      if ( currentSlice > 0 )
+        {
+          a_slices[currentSlice-1].sliceEnd = mouseSample -1;
+        }
+      break;
+    }
+    default:
+    {
+      std::cout << "wut happenend? " << editSliceStartEnd << std::endl;
+    }
     }
   repaint();
   return;
 }
-/*  if ( editSliceStartEnd )
-    {
-      if ( mouseSample <= currentEditSlice.sliceStart ) // can't drag past slice start;
-        mouseSample = currentEditSlice.sliceStart + 1;
-
-      a_slices[currentSlice].sliceEnd = mouseSample;
-      stateSlice = std::to_string ( currentSlice ) + ":" + std::to_string ( a_slices[currentSlice].sliceStart ) +"," + std::to_string ( a_slices[currentSlice].sliceEnd );
-
-      if ( currentSlice+1 < slices ) // check if we're not at the last slice
-        {
-          if ( mouseSample >= a_slices[currentSlice+1].sliceStart ) // we dragged past the beginning of next slice
-            {
-              a_slices[currentSlice-1].sliceStart = mouseSample + 1;
-              stateSlice += ";" + std::to_string ( currentSlice+1 ) + ":" + std::to_string ( a_slices[currentSlice+1].sliceStart ) +"," + std::to_string ( a_slices[currentSlice+1].sliceEnd );
-            }
-        }
-      setState ( "slice",stateSlice.c_str() );
-      repaint();
-    }
-
-return;
-}
-*/
 
 void NinjasUI::editSlice()
 {
