@@ -41,7 +41,7 @@ User can play the slices using midi notes and change the pitch with midi pitchbe
   + adding and removing slice points in the waveform display, currently only the control can be used for that.
     * the control should display the number of slices.
 + #### Possible features
-  + timestretch and pitch samples using [bandrubberband](https://github.com/breakfastquay/rubber)
+  + timestretch and pitch samples using [rubberband](https://github.com/breakfastquay/rubberband)
   + play marker in waveform display
   + overlay slice info on slices in waveform display
   + resizable user interface
