@@ -15,7 +15,7 @@ User can play the slices using midi notes and change the pitch with midi pitchbe
 
 #### Features:
 + #### Implemented:
-  + load samples in audio formats as provided by sndfile
+  + load samples in audio formats as provided by [libsndfile](http://www.mega-nerd.com/libsndfile/)
   + maximum of 128 slices
      * slices 0 to 67 are mapped to midi note 60 to 127
      * slices 68 to 127 are mapped to midi note 0 to 58
