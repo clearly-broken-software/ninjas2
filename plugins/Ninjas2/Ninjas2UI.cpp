@@ -350,8 +350,13 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
   repaint();
 }
 
-void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
+void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev )
 {
+  if ((ev.mod & kModifierShift) > 0)
+  {
+    fprintf(stderr, "Shift click!!\n");
+  }
+
   const float value = nanoSwitch->isDown() ? 1.0f : 0.0f;
   const uint buttonId = nanoSwitch->getId();
 

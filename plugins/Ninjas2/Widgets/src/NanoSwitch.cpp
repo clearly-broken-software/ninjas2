@@ -59,7 +59,7 @@ bool NanoSwitch::onMouse(const MouseEvent &ev)
         setDown(!fIsDown);
 
         if (fCallback != nullptr)
-            fCallback->nanoSwitchClicked(this);
+            fCallback->nanoSwitchClicked(this, ev);
 
         return true;
     }
