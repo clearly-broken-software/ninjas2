@@ -60,7 +60,7 @@ protected:
 
   void onNanoDisplay() override;
   void nanoKnobValueChanged(NanoKnob* nanoKnob, const float value) override;
-  void nanoSwitchClicked(NanoSwitch* nanoSwitch) override;
+  void nanoSwitchClicked(NanoSwitch* nanoSwitch, const MouseEvent &ev) override;
   bool onMouse(const MouseEvent&) override;
   bool onScroll(const ScrollEvent&) override;
   bool onMotion(const MotionEvent&) override;

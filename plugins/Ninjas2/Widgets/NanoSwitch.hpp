@@ -12,7 +12,7 @@ class NanoSwitch : public WolfWidget
     {
       public:
         virtual ~Callback() {}
-        virtual void nanoSwitchClicked(NanoSwitch *nanoSwitch) = 0;
+        virtual void nanoSwitchClicked(NanoSwitch *nanoSwitch, const MouseEvent &ev) = 0;
     };
 
     explicit NanoSwitch(Window &parent, Size<uint> size) noexcept;
