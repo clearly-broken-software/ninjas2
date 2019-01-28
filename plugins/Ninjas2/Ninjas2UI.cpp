@@ -495,14 +495,14 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
     // process the grid
 
     if ( buttonId >= paramSwitch01 && buttonId <= paramSwitch16 ) {
-        std::cout << "buttonId = " << buttonId - 11 << std::endl;
+    //    std::cout << "buttonId = " << buttonId - 11 << std::endl;
         if ( ( ev.mod & kModifierShift ) > 0 ) {
             fprintf ( stderr, "Shift click!!\n" );
             setProgram ( buttonId - 11 );
         } else {
             getProgram ( buttonId - 11 );
-
-            /*for ( uint32_t i = paramSwitch01, j=0; i <= paramSwitch16; ++i,++j )
+	}
+	for ( uint32_t i = paramSwitch01, j=0; i <= paramSwitch16; ++i,++j )
               {
                 editParameter ( i, true );
                 setParameterValue ( i, i == buttonId ? 1.0f : 0.0f );
@@ -514,9 +514,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                   }
                 editParameter ( i, false );
               }
-              */
+              
         }
-    }
+
+    
 //
         repaint();
     }
