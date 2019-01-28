@@ -266,17 +266,20 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
       break;
     }
 
-  // selector grid
+  // Programs grid
 
   if ( index >= paramSwitch01 && index <= paramSwitch16 )
     {
-      int slice = index - paramSwitch01;
+      std::cout << "Switch " << index << " clicked" >> std::endl;
+      /* old code
+       * int slice = index - paramSwitch01;
       fGrid[slice]->setDown ( value > 0.5f );
       if ( fGrid[slice]->isDown() )
         {
           currentSlice = slice;
           recallSliceSettings ( slice );
         }
+        */
     }
 
   repaint();
@@ -510,7 +513,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
 
   if ( buttonId >= paramSwitch01 && buttonId <= paramSwitch16 )
     {
-      for ( uint32_t i = paramSwitch01, j=0; i <= paramSwitch16; ++i,++j )
+      std::cout << "buttonId = " << buttonId << std::endl;
+      std::cout << "modifier key = " << ev.mod
+      
+      /*for ( uint32_t i = paramSwitch01, j=0; i <= paramSwitch16; ++i,++j )
         {
           editParameter ( i, true );
           setParameterValue ( i, i == buttonId ? 1.0f : 0.0f );
@@ -522,6 +528,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch )
             }
           editParameter ( i, false );
         }
+        */
     }
 
 //
@@ -796,51 +803,56 @@ void NinjasUI::drawSlices()
         }
 
       // draw marker + hitboxes
-      if ( a_slices[firstSlice].sliceStart < waveView.start )
-        continue; // don't draw marker
-      beginPath();
+//    if ( a_slices[firstSlice].sliceStart < waveView.start )
+      //     continue; // don't draw marker
+      if ( a_slices[firstSlice].sliceStart >= waveView.start )
+        {
+	  beginPath();
+	  fillColor ( 146,232,147 );
+          // top triangle
+          moveTo ( left + display_left - 10, display_top );
+          lineTo ( left + display_left + 10, display_top );
+          lineTo ( left + display_left     , display_top + 10 );
+          lineTo ( left + display_left - 10, display_top );
+          fill();
+          closePath();
+          // bottom triangle start
+	  beginPath();
+	  fillColor ( 255,67,0 );
+          moveTo ( left + display_left     , display_bottom );
+          lineTo ( left + display_left +10 , display_bottom );
+          lineTo ( left + display_left     , display_bottom - 10 );
+          lineTo ( left + display_left     , display_bottom );
+          fill();
+          closePath();
+          // draw marker lines
+          beginPath();
+          strokeColor ( 25,25,25,255 );
+          moveTo ( left + display_left , display_top + 10 );
+          lineTo ( left + display_left , display_bottom );
+          stroke();
+          closePath();
 
-      fillColor ( 146,232,147 );
-      // top triangle
-      moveTo ( left + display_left - 10, display_top );
-      lineTo ( left + display_left + 10, display_top );
-      lineTo ( left + display_left     , display_top + 10 );
-      lineTo ( left + display_left - 10, display_top );
-      fill();
-      closePath();
-      // bottom triangle end
-      beginPath();
-      moveTo ( right + display_left - 10, display_bottom );
-      lineTo ( right + display_left     , display_bottom );
-      lineTo ( right + display_left     , display_bottom - 10 );
-      lineTo ( right + display_left - 10, display_bottom );
-      fill();
-      closePath();
-
-      // bottom triangle start
-      beginPath();
-      moveTo ( left + display_left     , display_bottom );
-      lineTo ( left + display_left +10 , display_bottom );
-      lineTo ( left + display_left     , display_bottom - 10 );
-      lineTo ( left + display_left     , display_bottom );
-      fill();
-      closePath();
-
-      // draw marker lines
-      beginPath();
-      strokeColor ( 25,25,25,255 );
-      moveTo ( left + display_left , display_top + 10 );
-      lineTo ( left + display_left , display_bottom );
-      stroke();
-      closePath();
-
-      beginPath();
-      strokeColor ( 25,25,25,255 );
-      moveTo ( right + display_left , display_top + 10 );
-      lineTo ( right + display_left , display_bottom );
-      stroke();
-      closePath();
-
+        }
+      if ( a_slices[firstSlice].sliceEnd <= waveView.end )
+        {
+          // bottom triangle end
+          //std::cout << right << std::endl;
+          beginPath();
+	  fillColor ( 0,147,255 );
+          moveTo ( right + display_left - 10, display_bottom );
+          lineTo ( right + display_left     , display_bottom );
+          lineTo ( right + display_left     , display_bottom - 10 );
+          lineTo ( right + display_left - 10, display_bottom );
+          fill();
+          closePath();
+          beginPath();
+          strokeColor ( 25,25,25,255 );
+          moveTo ( right + display_left , display_top + 10 );
+          lineTo ( right + display_left , display_bottom );
+          stroke();
+          closePath();
+        }
 
       // set hitboxes
       a_slices[firstSlice].bothHitBox.setPos ( left + display_left - 10, display_top );
@@ -1321,7 +1333,7 @@ void NinjasUI::selectSlice()
           repaint();
           return;
         }
-       if ( a_slices[i].startHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
+      if ( a_slices[i].startHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
         {
           currentEditSlice = a_slices[i];
           currentSlice = i;
@@ -1330,14 +1342,15 @@ void NinjasUI::selectSlice()
           repaint();
           return;
         }
-         
-        
+
+
       if ( a_slices[i].endHitBox.contains ( mouseX + display_left, mouseY + display_top ) )
         {
           currentEditSlice = a_slices[i];
           currentSlice = i;
           mouseEditSlice = true;
           editSliceStartEnd = end;
+          std::cout << "endHitBox" << std::endl;
           return;
         }
     }
@@ -1374,24 +1387,48 @@ void NinjasUI::editCurrentSlice()
 {
   double view = waveView.end - waveView.start;
   double samples_per_pixel =  view / display_length ;
-  int mouseSample = mouseX * samples_per_pixel + waveView.start;
+  int mouseSample = double ( mouseX ) * samples_per_pixel + double ( waveView.start ) ;
   switch ( editSliceStartEnd )
     {
     case start:
     {
+      // can't drag start past end of current slice
       if ( mouseSample >= a_slices[currentSlice].sliceEnd )
         {
           mouseSample = a_slices[currentSlice].sliceEnd - 1;
         }
+      // can't drag start past end of previous slice
+      if ( currentSlice > 0 )
+        {
+          if ( mouseSample <= a_slices[currentSlice-1].sliceEnd )
+            {
+              mouseSample = a_slices[currentSlice-1].sliceEnd+1;
+            }
+        }
+
       a_slices[currentSlice].sliceStart = mouseSample;
       break;
     }
     case end:
     {
-      if ( mouseSample <= a_slices[currentSlice].sliceStart )
-      {
-        mouseSample = a_slices[currentSlice].sliceStart;
+      std::cout << "case end:" << std::endl;
+      std::cout << "current slice" << currentSlice << std::endl;
+      std::cout << "slices" << slices << std::endl;
+      std::cout << "currentSlice start =" <<  a_slices[currentSlice].sliceStart << std::endl;
+
+      if ( mouseSample <= a_slices[currentSlice].sliceStart ) // can't drag before start of current slice
+        {
+          std::cout << "dragged before start" << std::endl;
+                    mouseSample = a_slices[currentSlice].sliceStart+1;
         }
+
+      if ( ( currentSlice < 128 ) && ( currentSlice < slices - 1 ) )
+        {
+	  std::cout << "dragged past end" << std::endl;
+          if ( mouseSample >= a_slices[currentSlice+1].sliceStart )
+            mouseSample = a_slices[currentSlice+1].sliceStart-1;
+        }
+      std::cout << "mouseSample" << mouseSample << std::endl;
       a_slices[currentSlice].sliceEnd = mouseSample;
 
       break;
@@ -1399,16 +1436,30 @@ void NinjasUI::editCurrentSlice()
     case both:
     {
       // edit start
+      // don't drag past end of current slice
       if ( mouseSample >= a_slices[currentSlice].sliceEnd )
         {
-          mouseSample = a_slices[currentSlice].sliceEnd - 1;
+          mouseSample = a_slices[currentSlice].sliceEnd -1;
+          a_slices[currentSlice].sliceStart =  mouseSample ;
+          if ( currentSlice > 0 )
+            a_slices[currentSlice-1].sliceEnd = mouseSample -2 ;
         }
-      a_slices[currentSlice].sliceStart = mouseSample;
-      // edit end
+
       if ( currentSlice > 0 )
         {
-          a_slices[currentSlice-1].sliceEnd = mouseSample -1;
+          if ( mouseSample <= a_slices[currentSlice-1].sliceStart )
+            {
+              mouseSample =  a_slices[currentSlice-1].sliceStart+2;
+              a_slices[currentSlice].sliceStart = a_slices[currentSlice-1].sliceStart+2;
+              a_slices[currentSlice-1].sliceEnd = a_slices[currentSlice-1].sliceStart+1 ;
+            }
+          else
+            {
+              a_slices[currentSlice-1].sliceEnd = mouseSample -1;
+              a_slices[currentSlice].sliceStart = mouseSample;
+            }
         }
+
       break;
     }
     default:
@@ -1433,6 +1484,39 @@ void NinjasUI::editSlice()
     }
   setState ( "slice", stateSlice.c_str() );
 
+}
+
+void NinjasUI::getProgram(int state)
+{
+  
+   for (int i=0; i < 128 ; i++)
+  {
+     a_slices[i]=Programs[state].program_slices[i];
+     p_Attack[i]=Programs[state].program_Attack[i];
+     p_Decay[i]=Programs[state].program_Decay[i];
+     p_Sustain[i]=Programs[state].program_Sustain[i];
+     p_Release[i]=Programs[state].program_Release[i];
+     p_OneShotFwd[i]=Programs[state].program_OneShotFwd[i];
+     p_LoopFwd[i]=Programs[state].program_LoopFwd[i];
+     p_LoopRev[i]=Programs[state].program_LoopRev[i];
+  }
+  
+
+}
+
+void NinjasUI::setProgram(int state)
+{
+  for (int i=0; i < 128 ; i++)
+  {
+    Programs[state].program_slices[i] = a_slices[i];
+    Programs[state].program_Attack[i] = p_Attack[i];
+    Programs[state].program_Decay[i] = p_Decay[i];
+    Programs[state].program_Sustain[i] = p_Sustain[i];
+    Programs[state].program_Release[i] = p_Release[i];
+    Programs[state].program_OneShotFwd[i] = p_OneShotFwd[i];
+    Programs[state].program_LoopFwd[i] = p_LoopFwd[i];
+    Programs[state].program_LoopRev[i] = p_LoopRev[i];
+  }
 }
 
 /* ------------------------------------------------------------------------------------------------------------
