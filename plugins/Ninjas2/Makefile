@@ -58,6 +58,11 @@ BASE_FLAGS += $(shell pkg-config --cflags sndfile samplerate)
 LINK_FLAGS += $(shell pkg-config --libs sndfile samplerate)
 LINK_FLAGS += -L../../aubio/ -l:libaubio.a
 
+# Set PARANOID_MODE=true to make the build error out on warnings
+ifeq ($(PARANOID_MODE),true)
+BASE_FLAGS += -Wall -Wextra -Werror
+endif
+
 # --------------------------------------------------------------
 # Enable all possible plugin types
 
