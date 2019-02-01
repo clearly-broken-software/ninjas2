@@ -31,7 +31,6 @@ void ResizeHandle::onNanoDisplay()
     const float width = getWidth();
     const float height = getHeight();
     const float lineMarginSides = 5.0f;
-    const float lineMarginBottom = 2.0f;
 
     beginPath();
 

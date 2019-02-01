@@ -101,7 +101,6 @@ void VolumeKnob::onMouseUp()
 
 void VolumeKnob::draw()
 {
-    const float width = getWidth();
     const float height = getHeight();
     const Color color = getColor();
 

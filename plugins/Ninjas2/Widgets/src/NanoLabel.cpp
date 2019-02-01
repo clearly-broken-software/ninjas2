@@ -4,11 +4,11 @@
 START_NAMESPACE_DISTRHO
 
 NanoLabel::NanoLabel(NanoWidget *widget, Size<uint> size) noexcept : NanoWidget(widget),
-                                                                     fFontSize(12.0f),
-                                                                     fAlign(ALIGN_LEFT | ALIGN_TOP),
                                                                      fText(""),
                                                                      fMargin(Margin(0, 0, 0, 0)),
-                                                                     fColor(Color(255, 255, 255, 255))
+                                                                     fAlign(ALIGN_LEFT | ALIGN_TOP),
+                                                                     fColor(Color(255, 255, 255, 255)),
+                                                                     fFontSize(12.0f)
 {
     setSize(size);
 

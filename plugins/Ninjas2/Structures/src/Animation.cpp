@@ -10,13 +10,13 @@
 START_NAMESPACE_DISTRHO
 
 Animation::Animation(float duration, EasingFunction easingFunction) : fDuration(duration),
-																	  fEasingFunction(easingFunction),
-																	  fRepeatMode(NoRepeat),
-																	  fPlaybackDirection(Forward),
-																	  fIsPlaying(false),
 																	  fCurrentTime(0.0f),
 																	  fSpeed(1.0f),
-																	  fTimeLastRun(std::chrono::steady_clock::now())
+																	  fTimeLastRun(std::chrono::steady_clock::now()),
+																	  fPlaybackDirection(Forward),
+																	  fRepeatMode(NoRepeat),
+																	  fEasingFunction(easingFunction),
+																	  fIsPlaying(false)
 
 {
 }
@@ -133,8 +133,8 @@ FloatTransition::FloatTransition() : Animation(0.0f, noEasing)
 }
 
 FloatTransition::FloatTransition(float duration, float *initialValue, float targetValue, EasingFunction easingFunction) : Animation(duration, easingFunction),
-																														  fCurrentValue(initialValue),
 																														  fInitialValue(*initialValue),
+																														  fCurrentValue(initialValue),
 																														  fTargetValue(targetValue)
 {
 }

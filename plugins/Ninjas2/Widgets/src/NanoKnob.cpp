@@ -11,8 +11,8 @@ NanoKnob::NanoKnob(Window &parent, Size<uint> size) noexcept
       fValue(0.5f),
       fUsingLog(false),
       fLeftMouseDown(false),
-      fColor(Color(255, 0, 0, 255)),
       fIsHovered(false),
+      fColor(Color(255, 0, 0, 255)),
       fCallback(nullptr)
 {
     setSize(size);
@@ -26,8 +26,8 @@ NanoKnob::NanoKnob(NanoWidget *widget, Size<uint> size) noexcept
       fValue(0.5f),
       fUsingLog(false),
       fLeftMouseDown(false),
-      fColor(Color(255, 0, 0, 255)),
       fIsHovered(false),
+      fColor(Color(255, 0, 0, 255)),
       fCallback(nullptr)
 {
     setSize(size);
@@ -109,8 +109,6 @@ bool NanoKnob::onMouse(const MouseEvent &ev)
     if (ev.button != 1)
         return fLeftMouseDown;
 
-    Window &window = getParentWindow();
-
     if (!ev.press)
     {
         if (fLeftMouseDown == true)
@@ -170,9 +168,6 @@ bool NanoKnob::onMotion(const MotionEvent &ev)
     {
         const float resistance = 500.0f;
         const float difference = (fLeftMouseDownLocation.getY() - ev.pos.getY()) / resistance * (fMax - fMin);
-
-        Window &window = getParentWindow();
-        const uint windowHeight = window.getHeight();
 
         fLeftMouseDownLocation.setY(ev.pos.getY());
 

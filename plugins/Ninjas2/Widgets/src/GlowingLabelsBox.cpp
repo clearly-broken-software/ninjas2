@@ -18,8 +18,6 @@ void GlowingLabelsBox::onNanoDisplay()
 
     const float width = getWidth();
     const float height = getHeight();
-    const float verticalMargin = 6.0f;
-    const float boxOutlineWidth = 2.0f;
 
     //Box background
     beginPath();

@@ -6,8 +6,8 @@ START_NAMESPACE_DISTRHO
 NanoSwitch::NanoSwitch(Window &parent, Size<uint> size) noexcept
     : WolfWidget(parent),
       fIsDown(false),
-      fCallback(nullptr),
-      fIsHovered(false)
+      fIsHovered(false),
+      fCallback(nullptr)
 {
     setSize(size);
 }
@@ -15,8 +15,8 @@ NanoSwitch::NanoSwitch(Window &parent, Size<uint> size) noexcept
 NanoSwitch::NanoSwitch(NanoWidget *widget, Size<uint> size) noexcept
     : WolfWidget(widget),
       fIsDown(false),
-      fCallback(nullptr),
-      fIsHovered(false)
+      fIsHovered(false),
+      fCallback(nullptr)
 {
     setSize(size);
 }

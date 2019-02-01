@@ -26,7 +26,7 @@ bool WolfWidget::canBeFocused()
     return true;
 }
 
-void WolfWidget::setFocus(bool focus)
+void WolfWidget::setFocus(bool)
 {
 }
 

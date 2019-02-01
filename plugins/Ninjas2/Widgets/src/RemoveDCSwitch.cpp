@@ -123,8 +123,6 @@ void RemoveDCSwitch::draw()
     const float mainRectTopLeft = glowMargin + socketMargin;
     const float mainRectWidth = getWidth() - doubleGlowMargin - doubleSocketMargin;
     const float mainRectHeight = getHeight() - doubleGlowMargin - doubleSocketMargin;
-    const float mainRectHalfWidth = mainRectWidth / 2.0f;
-    const float mainRectCenter = mainRectTopLeft + mainRectHalfWidth;
 
     //glow
     beginPath();

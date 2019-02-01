@@ -75,12 +75,12 @@ bool NanoButton::leftClick(const MouseEvent &ev)
     return false;
 }
 
-bool NanoButton::middleClick(const MouseEvent &ev)
+bool NanoButton::middleClick(const MouseEvent &)
 {
     return fHasFocus;
 }
 
-bool NanoButton::rightClick(const MouseEvent &ev)
+bool NanoButton::rightClick(const MouseEvent &)
 {
     return fHasFocus;
 }

@@ -100,11 +100,8 @@ float lerp(float a, float b, float f);
 
 int doubleToRadixCString(char *buf, double value, int radix);
 
-int toHexFloat(char *buffer, const double value);
-
 double ipow2(int exponent);
 
-double parseHexFloat(char const* ptr, char **endPointer);
 }
 
 END_NAMESPACE_DISTRHO
