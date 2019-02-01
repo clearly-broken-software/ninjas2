@@ -30,7 +30,7 @@
 #define DISTRHO_PLUGIN_WANT_FULL_STATE 0
 #define DISTRHO_UI_USE_NANOVG 1
 
-#define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:GeneratorPlugin"
+#define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:InstrumentPlugin"
 
 enum Parameters
 {
