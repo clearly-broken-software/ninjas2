@@ -86,7 +86,7 @@ private:
     void selectSlice();
     void editCurrentSlice();
     void editSlice();
-    bool sampleIsInSlice ( int sample );
+    bool sampleIsInSlice ( long unsigned int sample );
     void getProgram ( int program );
     void setProgram ( int program );
 
@@ -134,8 +134,8 @@ private:
     std::vector<uint_t>onsets;
 
     struct WaveView {
-        long int start;
-        long int end;
+        unsigned long int start;
+        unsigned long int end;
         float zoom; // sample lenght / display width
         float max_zoom;
     };

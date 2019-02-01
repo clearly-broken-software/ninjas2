@@ -57,7 +57,7 @@ NinjasUI::NinjasUI()
     // init Programs
     for ( int p=0; p < 16; p++ ) {
         Programs[p].program_isEmpty = true;
-	Programs[p].program_slices = 1;
+        Programs[p].program_slices = 1;
         std::fill_n ( Programs[p].program_a_slices, 128, Slice() );
         std::fill_n ( Programs[p].program_Attack, 128, 0.5f );
         std::fill_n ( Programs[p].program_Decay,128, 0.5f );
@@ -178,8 +178,9 @@ NinjasUI::NinjasUI()
     loadSharedResources();
     fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
 
-    //for debugging , autoload sample
+    /*for debugging , autoload sample
     loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
+    */
 }
 
 void NinjasUI::positionWidgets() {
@@ -590,7 +591,8 @@ void NinjasUI::onNanoDisplay() {
 void NinjasUI::drawWaveform() {
 //  waveView.end = 1140;
     double view = waveView.end - waveView.start; // set these when zooming in
-    double samples_per_pixel =  view / display_length;
+
+    double samples_per_pixel =  view / ( double ) display_length;
     float fIndex;
     uint iIndex;
 
@@ -628,7 +630,7 @@ void NinjasUI::drawWaveform() {
             lineTo ( i+display_left,max );
 
         } else {
-            //  std::cout << "new color" << std::endl;
+
             stroke();
             closePath();
 
@@ -806,7 +808,6 @@ void NinjasUI::drawSlices() {
         }
         if ( a_slices[firstSlice].sliceEnd <= waveView.end ) {
             // bottom triangle end
-            //std::cout << right << std::endl;
             beginPath();
             fillColor ( 0,147,255 );
             moveTo ( right + display_left - 10, display_bottom );
@@ -842,7 +843,7 @@ void NinjasUI::drawOnsets() {
         if ( onset >= waveView.start && onset <= waveView.end ) {
             int display_onset_x = ( double ) ( onset - waveView.start ) * pixels_per_sample;
             display_onset_x += display_left;
-            for ( int i = display_top; i < display_bottom; i +=10 ) {
+            for ( unsigned int i = display_top; i < display_bottom; i +=10 ) {
                 moveTo ( display_onset_x, i );
                 lineTo ( display_onset_x, i+4 );
                 moveTo ( display_onset_x, i+6 );
@@ -904,7 +905,7 @@ void NinjasUI::loadSample ( String fp ) {
         createSlicesOnsets ();
     }
     // set program 0
-    setProgram(0);
+    setProgram ( 0 );
     Programs[0].program_isEmpty = false;
     repaint();
     return;
@@ -912,8 +913,6 @@ void NinjasUI::loadSample ( String fp ) {
 }
 
 void NinjasUI::getVisibleSlices ( int &firstSlice, int &lastSlice ) {
-    double view = waveView.end - waveView.start; // set these when zooming in
-    double pixels_per_sample =  display_length / view;
     // find first slice in view
     while ( a_slices[firstSlice].sliceEnd < waveView.start ) {
         firstSlice++;
@@ -925,12 +924,10 @@ void NinjasUI::getVisibleSlices ( int &firstSlice, int &lastSlice ) {
     }
 }
 
-bool NinjasUI::sampleIsInSlice ( int sample ) {
+bool NinjasUI::sampleIsInSlice ( unsigned long int sample ) {
     for ( int i = 0 ; i < slices ; i++ ) {
-        //  std::cout << "slice " << i << " start : " << a_slices[i].sliceStart << " end : " << a_slices[i].sliceEnd << " sample# " << sample << std::endl;
         if ( ( sample >= a_slices[i].sliceStart ) && ( sample <= a_slices[i].sliceEnd ) ) {
-            //        std::cout << "slice " << i << " start :" << a_slices[i].sliceStart << " end :" << a_slices[i].sliceEnd << " sample# " << sample << std::endl;
-            return true;
+           return true;
         }
     }
     return false;
@@ -1005,7 +1002,7 @@ void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & samp
     int win_s = 512;
 
     fvec_t ftable;               // 1. create fvec without allocating it
-    intptr_t readptr = 0;
+    uintptr_t readptr = 0;
     ftable.length = hop_size;    // 2. set ftable length
     fvec_t * out = new_fvec ( 2 ); // output position
 
@@ -1038,8 +1035,6 @@ void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & samp
 
 void NinjasUI::createSlicesRaw () {
     long double sliceSize = ( long double ) ( sampleSize ) / ( long double ) slices;
-    bool color {true};
-
     for ( int i = 0 ; i < slices; i++ ) {
         a_slices[i].sliceStart = i * sliceSize;
         a_slices[i].sliceEnd = ( i+1 ) * sliceSize  - 1 ;
@@ -1172,8 +1167,8 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev ) {
     float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
     uint length = int ( samples_per_pixel * float ( display_width ) );
     waveView.start = int ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
-    if ( waveView.start < 0 )
-        waveView.start = 0;
+//     if ( waveView.start < 0 )
+//         waveView.start = 0;
     waveView.end = waveView.start+length;
     if ( waveView.end > waveform.size() ) {
         waveView.end = waveform.size();
@@ -1208,9 +1203,9 @@ bool NinjasUI::onMotion ( const MotionEvent& ev ) {
         float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
         uint length = int ( samples_per_pixel * float ( display_width ) );
         waveView.start = waveView.start - int ( float ( mouseDistance )  *  samples_per_pixel );
-        if ( waveView.start < 0 )
-            waveView.start = 0;
-        waveView.end = waveView.start+length;
+        /*      if ( waveView.start < 0 )
+                  waveView.start = 0;
+        */      waveView.end = waveView.start+length;
         if ( waveView.end > waveform.size() )
             waveView.end = waveform.size();
         repaint();
@@ -1267,7 +1262,7 @@ void NinjasUI::selectSlice() {
     // convert mouseX to sample
     double view = waveView.end - waveView.start;
     double samples_per_pixel =  view / display_length ;
-    int mouseSample = mouseX * samples_per_pixel + waveView.start;
+    uint64_t mouseSample = mouseX * samples_per_pixel + waveView.start;
 
     std::vector<uint_t> sliceStarts, sliceEnds;
     for ( int i = firstSlice; i < lastSlice; i++ ) {
@@ -1292,7 +1287,7 @@ void NinjasUI::selectSlice() {
 void NinjasUI::editCurrentSlice() {
     double view = waveView.end - waveView.start;
     double samples_per_pixel =  view / display_length ;
-    int mouseSample = double ( mouseX ) * samples_per_pixel + double ( waveView.start ) ;
+    uint64_t mouseSample = double ( mouseX ) * samples_per_pixel + double ( waveView.start ) ;
     switch ( editSliceStartEnd ) {
     case start: {
         // can't drag start past end of current slice
@@ -1384,9 +1379,9 @@ void NinjasUI::getProgram ( int state ) {
     // set slices knob back
     setParameterValue ( paramNumberOfSlices, slices );
     fKnobSlices->setValue ( slices );
- 
-    
-    
+
+
+
 }
 
 void NinjasUI::setProgram ( int state ) {

@@ -772,7 +772,7 @@ void NinjasPlugin::getOnsets ()
   int hop_size = 256;
   int win_s = 512;
   fvec_t ftable;               // 1. create fvec without allocating it
-  intptr_t readptr = 0;
+  uintptr_t readptr = 0;
   ftable.length = hop_size;    // 2. set ftable length
   fvec_t * out = new_fvec ( 2 ); // output position
   //double samplerate = getSampleRate();
@@ -889,6 +889,8 @@ int NinjasPlugin::loadSample ( std::string fp )
       src_data.input_frames = sampleSize;
 
       int err = src_simple ( & src_data, SRC_SINC_BEST_QUALITY, sampleChannels );
+      if (err)
+	std::cout << "Samplerate error : src_simple err =" << err << std::endl;
       sampleSize = src_data.output_frames_gen;
     }
 
