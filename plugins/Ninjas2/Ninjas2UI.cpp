@@ -1358,7 +1358,7 @@ void NinjasUI::editSlice() {
         stateSlice.append ( std::to_string ( a_slices[i].sliceEnd ) );
         stateSlice.append ( " " );
     }
-    setState ( "slice", stateSlice.c_str() );
+    setState ( "slices", stateSlice.c_str() );
 
 }
 

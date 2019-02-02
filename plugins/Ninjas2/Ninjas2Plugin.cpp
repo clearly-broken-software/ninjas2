@@ -248,7 +248,7 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
     }
     case 1:
     {
-      stateKey = "slice";
+      stateKey = "slices";
       defaultStateValue = "empty";
       break;
     }
