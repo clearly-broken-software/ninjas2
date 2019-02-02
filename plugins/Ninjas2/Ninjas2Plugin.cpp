@@ -303,7 +303,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
         }
     }
 
-  if ( strcmp ( key, "slice" ) == 0 )
+  if ( strcmp ( key, "slices" ) == 0 )
     {
       const char* p = value;
       char * end;
