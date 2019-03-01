@@ -43,6 +43,7 @@ FILES_UI  = \
 	Widgets/src/BipolarModeSwitch.cpp \
 	Widgets/src/GlowingLabelsBox.cpp \
 	Widgets/src/NanoLabel.cpp \
+	Widgets/src/SpinBox.cpp \
 	Ninjas2UI.cpp
 
 # --------------------------------------------------------------

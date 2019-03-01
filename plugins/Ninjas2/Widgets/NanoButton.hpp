@@ -1,12 +1,11 @@
 #ifndef WOLF_NANO_BUTTON_HPP_INCLUDED
 #define WOLF_NANO_BUTTON_HPP_INCLUDED
 
-#include "Widget.hpp"
-#include "NanoVG.hpp"
+#include "WolfWidget.hpp"
 
 START_NAMESPACE_DISTRHO
 
-class NanoButton : public NanoWidget
+class NanoButton : public WolfWidget
 {
 public:
     class Callback

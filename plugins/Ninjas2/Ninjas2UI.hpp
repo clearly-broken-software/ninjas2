@@ -33,6 +33,7 @@
 #include "BipolarModeSwitch.hpp"
 #include "GlowingLabelsBox.hpp"
 #include "RemoveDCSwitch.hpp"
+#include "SpinBox.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -59,13 +60,15 @@ protected:
 
     void onNanoDisplay() override;
     void nanoKnobValueChanged ( NanoKnob* nanoKnob, const float value ) override;
+    void nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float value );
     void nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) override;
     bool onMouse ( const MouseEvent& ) override;
     bool onScroll ( const ScrollEvent& ) override;
     bool onMotion ( const MotionEvent& ) override;
 
 private:
-    ScopedPointer<VolumeKnob> fKnobSlices, fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
+    ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
+    ScopedPointer<SpinBox> fSpinBox;
     ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
     ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxLoadSample;
     ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev,fSwitchLoadSample;
