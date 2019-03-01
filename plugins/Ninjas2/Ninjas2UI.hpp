@@ -41,7 +41,8 @@ START_NAMESPACE_DISTRHO
 
 class NinjasUI : public UI,
     public NanoKnob::Callback,
-    public NanoSwitch::Callback {
+    public NanoSwitch::Callback,
+    public NanoSpinBox::Callback {
 public:
     NinjasUI();
 
@@ -60,14 +61,14 @@ protected:
 
     void onNanoDisplay() override;
     void nanoKnobValueChanged ( NanoKnob* nanoKnob, const float value ) override;
-    void nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float value );
+    void nanoSpinBoxValueChanged(NanoSpinBox *nanoSpinBox, const float value) override;
     void nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) override;
     bool onMouse ( const MouseEvent& ) override;
     bool onScroll ( const ScrollEvent& ) override;
     bool onMotion ( const MotionEvent& ) override;
 
 private:
-    ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease;
+    ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSlices;
     ScopedPointer<SpinBox> fSpinBox;
     ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
     ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxLoadSample;

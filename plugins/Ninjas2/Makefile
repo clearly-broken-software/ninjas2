@@ -44,6 +44,7 @@ FILES_UI  = \
 	Widgets/src/GlowingLabelsBox.cpp \
 	Widgets/src/NanoLabel.cpp \
 	Widgets/src/SpinBox.cpp \
+	Widgets/src/NanoSpinBox.cpp \
 	Ninjas2UI.cpp
 
 # --------------------------------------------------------------

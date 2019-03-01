@@ -94,18 +94,19 @@ NinjasUI::NinjasUI()
 
     Window &window = getParentWindow();
 
-    fSpinBox = new SpinBox(window, spinboxSize);
-    fSpinBox->setId(paramNumberOfSlices);
-    fSpinBox->setRange(1.0f, 128.0f);
-    fSpinBox->setStep(1.0f);
+       
+//     fKnobSlices = new VolumeKnob ( window, knobSize );
+//     fKnobSlices->setId ( paramNumberOfSlices );
+//     fKnobSlices->setRange ( 1.0f, 128.0f );
+//     fKnobSlices->setColor ( ninjasColor );
+//     fKnobSlices->setStep ( 1.0f );
+//     fKnobSlices->setCallback ( this );
+    
+    fSpinBox = new SpinBox (window, spinboxSize);
+    fSpinBox->setId( 9999);
+    fSpinBox->setRange(1.0f, 129.0f);
+    fSpinBox->setStep (1.0f);
     fSpinBox->setCallback( this );
-     
- /* //   fKnobSlices = new VolumeKnob ( window, knobSize );
-    fKnobSlices->setId ( paramNumberOfSlices );
-    fKnobSlices->setRange ( 1.0f, 128.0f );
-    fKnobSlices->setColor ( ninjasColor );
-    fKnobSlices->setStep ( 1.0f );
-    fKnobSlices->setCallback ( this ); */
 
     fKnobAttack = new VolumeKnob ( window, knobSize );
     fKnobAttack->setId ( paramAttack );
@@ -194,9 +195,9 @@ void NinjasUI::positionWidgets() {
     //const float width = getWidth();
     //const float height = getHeight();
 
-    fSpinBox->setAbsolutePos ( 200,440);
+    //fSpinBox->setAbsolutePos ( 200,440);
 
-   // fKnobSlices->setAbsolutePos ( 200, 440 );
+    fKnobSlices->setAbsolutePos ( 200, 440 );
     fKnobAttack->setAbsolutePos ( 660, 465 );
     fKnobDecay->setAbsolutePos ( 760, 465 );
     fKnobSustain->setAbsolutePos ( 860, 465 );
@@ -231,7 +232,7 @@ void NinjasUI::positionWidgets() {
 void NinjasUI::parameterChanged ( uint32_t index, float value ) {
     switch ( index ) {
     case paramNumberOfSlices:
-        fSpinBox->setValue ( value );
+        fKnobSlices->setValue ( value );
         slices = value ;
         createSlicesRaw ();
         break;
