@@ -137,6 +137,7 @@ private:
     editslicestartend editSliceStartEnd;
     bool mouseEditSlice;
     int slices;
+    int tempSlices; 
     Slice a_slices[128];
     Slice currentEditSlice;
     std::vector<uint_t>onsets;

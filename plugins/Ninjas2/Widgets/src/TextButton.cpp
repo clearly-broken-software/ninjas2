@@ -7,7 +7,7 @@ TextButton::TextButton ( Window& parent, Size< uint > size ) noexcept :
 NanoButton ( parent,size ),
            fText ( "button" ),
            fMargin ( Margin ( 0,0,0,0 ) ),
-           fAlign ( ALIGN_LEFT | ALIGN_TOP ),
+           fAlign ( ALIGN_TOP | ALIGN_LEFT ),
            fTextColor ( Color ( 255,255,255,255 ) ),
            fFontSize ( 12.0f ),
            fFontId( 0 )
@@ -19,7 +19,7 @@ TextButton::TextButton ( NanoWidget* widget, Size< uint > size ) noexcept :
 	   NanoButton ( widget, size ),
            fText ( "bottun" ),
            fMargin ( Margin ( 0,0,0,0 ) ),
-           fAlign ( ALIGN_LEFT | ALIGN_TOP ),
+           fAlign ( ALIGN_TOP | ALIGN_LEFT ),
            fTextColor ( Color ( 255,255,255,255 ) ),
            fFontSize ( 12.0f ),
            fFontId( 0 )
@@ -29,6 +29,19 @@ TextButton::TextButton ( NanoWidget* widget, Size< uint > size ) noexcept :
 
 void TextButton::draw()
 {
+     // draw background
+  float h = getHeight();
+  float w = getWidth();
+  
+  beginPath();
+  strokeWidth(1.0f);
+  strokeColor(Color(255, 255, 255, 255));
+  fillColor(Color(127,127,127,255));
+  rect(0.0f,0.0f,w,h);
+  fill();
+  stroke();
+  closePath();
+  
      beginPath();
 
      if (fFontId > 0)
