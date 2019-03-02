@@ -8,67 +8,70 @@
 
 START_NAMESPACE_DISTRHO
 
-class NanoSpinBox : public WolfWidget
-{
+class NanoSpinBox : public WolfWidget {
 public:
-  class Callback
-  {
-  public:
-    virtual ~Callback() {}
-    virtual void nanoSpinBoxValueChanged(NanoSpinBox *nanoSpinBox, const float value) = 0;
-  };
+    class Callback {
+    public:
+        virtual ~Callback() {}
+        virtual void nanoSpinBoxValueChanged ( NanoSpinBox *nanoSpinBox, const float value ) = 0;
+    };
 
-  explicit NanoSpinBox(Window &parent, Size<uint> size) noexcept;
-  explicit NanoSpinBox(NanoWidget *widget, Size<uint> size) noexcept;
+    enum ButtonState {
+        kNanoStateNormal = 0,
+        kNanoStateHover,
+        kNanoStateDown
+    };
 
-  float getValue() const noexcept;
-  void setValue(float value, bool sendCallback = false) noexcept;
+    explicit NanoSpinBox ( Window &parent, Size<uint> size ) noexcept;
+    explicit NanoSpinBox ( NanoWidget *widget, Size<uint> size ) noexcept;
 
-  void setDefault(float def) noexcept;
-  void setRange(float min, float max) noexcept;
-  void setStep(float step) noexcept;
-  void setUsingLogScale(bool yesNo) noexcept;
-  void setCallback(Callback *callback) noexcept;
-  void setColor(Color color) noexcept;
+    float getValue() const noexcept;
+    void setValue ( float value, bool sendCallback = false ) noexcept;
+
+    void setDefault ( float def ) noexcept;
+    void setRange ( float min, float max ) noexcept;
+    void setStep ( float step ) noexcept;
+    void setCallback ( Callback *callback ) noexcept;
+    void setColor ( Color color ) noexcept;
 
 protected:
-  void onNanoDisplay() override;
-  bool onMouse(const MouseEvent &) override;
-  bool onMotion(const MotionEvent &) override;
-  bool onScroll(const ScrollEvent &) override;
-  
-  Color getColor() noexcept;
-  float getMin() noexcept;
-  float getMax() noexcept;
+    void onNanoDisplay() override;
+    bool onMouse ( const MouseEvent & ) override;
+    bool onMotion ( const MotionEvent & ) override;
+    bool onScroll ( const ScrollEvent & ) override;
 
-  virtual void onMouseHover();
-  virtual void onMouseLeave();
-  virtual void onMouseUp();
-  virtual void onMouseDown();
+    Color getColor() noexcept;
+    float getMin() noexcept;
+    float getMax() noexcept;
 
-  virtual void draw() = 0;
+    virtual void onMouseHover();
+    virtual void onMouseLeave();
+    virtual void onMouseUp();
+    virtual void onMouseDown();
+
+    virtual void draw() = 0;
 
 private:
-  float fMin;
-  float fMax;
-  float fStep;
-  float fValue;
-  bool fUsingLog;
+    float fMin;
+    float fMax;
+    float fStep;
+    float fValue;
 
-  bool fLeftMouseDown;
-  Point<int> fLeftMouseDownLocation;
-  bool fIsHovered;
-  
-  int fRotationAngle;
-  bool fDragging;
-  int fLastX;
-  int fLastY;
+    Rectangle<uint> incButton,decButton;
 
-  Color fColor;
+    void setButtonState ( ButtonState state );
+    ButtonState fState;
 
-  Callback *fCallback;
+    bool fHasFocus;
+    bool fIsHovered;
+    bool fLeftMouseDown;
+    Point<int> fLeftMouseDownLocation;
+   
+    Color fColor;
 
-  DISTRHO_LEAK_DETECTOR(NanoSpinBox)
+    Callback *fCallback;
+
+    DISTRHO_LEAK_DETECTOR ( NanoSpinBox )
 };
 
 END_NAMESPACE_DISTRHO

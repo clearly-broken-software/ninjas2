@@ -9,13 +9,19 @@ NanoSpinBox::NanoSpinBox(Window &parent, Size<uint> size) noexcept
       fMax(1.0f),
       fStep(0.0f),
       fValue(0.5f),
-      fUsingLog(false),
       fLeftMouseDown(false),
       fIsHovered(false),
       fColor(Color(255, 0, 0, 255)),
       fCallback(nullptr)
 {
     setSize(size);
+    incButton.setHeight(getHeight()/2);
+    incButton.setWidth(getWidth());
+    decButton.setHeight(getHeight()/2);
+    decButton.setWidth(getWidth());
+    incButton.setPos(0,0);
+    decButton.setPos(0,getHeight()/2);
+    
 }
 
 NanoSpinBox::NanoSpinBox(NanoWidget *widget, Size<uint> size) noexcept
@@ -24,13 +30,19 @@ NanoSpinBox::NanoSpinBox(NanoWidget *widget, Size<uint> size) noexcept
       fMax(1.0f),
       fStep(0.0f),
       fValue(0.5f),
-      fUsingLog(false),
       fLeftMouseDown(false),
       fIsHovered(false),
       fColor(Color(255, 0, 0, 255)),
       fCallback(nullptr)
 {
     setSize(size);
+    setSize(size);
+    incButton.setHeight(getHeight()/2);
+    incButton.setWidth(getWidth());
+    decButton.setHeight(getHeight()/2);
+    decButton.setWidth(getWidth());
+    incButton.setPos(0,0);
+    decButton.setPos(0,getHeight()/2);
 }
 
 float NanoSpinBox::getValue() const noexcept
@@ -79,11 +91,6 @@ void NanoSpinBox::setValue(float value, bool sendCallback) noexcept
     repaint();
 }
 
-void NanoSpinBox::setUsingLogScale(bool yesNo) noexcept
-{
-    fUsingLog = yesNo;
-}
-
 void NanoSpinBox::setCallback(Callback *callback) noexcept
 {
     fCallback = callback;
@@ -106,22 +113,37 @@ void NanoSpinBox::onNanoDisplay()
 
 bool NanoSpinBox::onMouse(const MouseEvent &ev)
 {
-    if (ev.button != 1)
-        return fLeftMouseDown;
+   bool hover = contains(ev.pos);
+   bool incB = incButton.contains(ev.pos.getX(),ev.pos.getY());
+   bool decB = decButton.contains(ev.pos.getX(),ev.pos.getY());
+   float delta;
+   if (incB)
+     delta = 1.0f;
+   if (decB)
+     delta = -1.0f;
+  
 
     if (!ev.press)
     {
-        if (fLeftMouseDown == true)
+        if (fHasFocus == true)
         {
-            fLeftMouseDown = false;
-            setFocus(false);
+            fHasFocus = false;
 
-            //window.unclipCursor();
-            //window.setCursorPos(this);
-            //window.showCursor();
-            //getParentWindow().setCursorStyle(Window::CursorStyle::Grab);
+            if (hover)
+            {
+                setButtonState(kNanoStateHover);
 
-            onMouseUp();
+                if (fCallback != nullptr)
+                {
+		    fValue += fStep * delta;
+		    fValue = wolf::clamp<float>(fValue,fMin,fMax);
+		    fCallback->nanoSpinBoxValueChanged(this,fValue);
+                }
+            }
+            else
+            {
+                setButtonState(kNanoStateNormal);
+            }
 
             return true;
         }
@@ -129,16 +151,10 @@ bool NanoSpinBox::onMouse(const MouseEvent &ev)
         return false;
     }
 
-    if (contains(ev.pos))
+    if (ev.press && hover)
     {
-        fLeftMouseDownLocation = ev.pos;
-        fLeftMouseDown = true;
-        
-        //setFocus(true);
-        //window.hideCursor();
-        //window.clipCursor(Rectangle<int>(getAbsoluteX() + getWidth() / 2.0f, 0, 0, (int)window.getHeight()));
-
-        onMouseDown();
+        setButtonState(kNanoStateDown);
+        fHasFocus = true;
 
         return true;
     }
@@ -160,6 +176,7 @@ void NanoSpinBox::onMouseUp()
 
 void NanoSpinBox::onMouseDown()
 {
+ 
 }
 
 bool NanoSpinBox::onMotion(const MotionEvent &ev)
@@ -207,5 +224,12 @@ bool NanoSpinBox::onScroll(const ScrollEvent &ev)
 
     return true;
 }
+void NanoSpinBox::setButtonState(ButtonState state)
+{
+    fState = state;
+
+    repaint();
+}
+
 
 END_NAMESPACE_DISTRHO

@@ -89,31 +89,31 @@ NinjasUI::NinjasUI()
 
     // knobs
     const Size<uint> knobSize = Size<uint> ( 80, 80 );
-    const Size<uint> spinboxSize = Size<uint> (40,80);
+    const Size<uint> spinboxSize = Size<uint> ( 40,80 );
     const Color ninjasColor = Color ( 222,205,135,255 );
 
     Window &window = getParentWindow();
 
-       
+
 //     fKnobSlices = new VolumeKnob ( window, knobSize );
 //     fKnobSlices->setId ( paramNumberOfSlices );
 //     fKnobSlices->setRange ( 1.0f, 128.0f );
 //     fKnobSlices->setColor ( ninjasColor );
 //     fKnobSlices->setStep ( 1.0f );
 //     fKnobSlices->setCallback ( this );
-    
-    fSpinBox = new SpinBox (window, spinboxSize);
-    fSpinBox->setId( 9999);
-    fSpinBox->setRange(1.0f, 129.0f);
-    fSpinBox->setStep (1.0f);
-    fSpinBox->setCallback( this );
+
+    fSpinBox = new SpinBox ( window, spinboxSize );
+    fSpinBox->setId ( paramNumberOfSlices );
+    fSpinBox->setRange ( 1.0f, 128.0f );
+    fSpinBox->setStep ( 1.0f );
+    fSpinBox->setCallback ( this );
 
     fKnobAttack = new VolumeKnob ( window, knobSize );
     fKnobAttack->setId ( paramAttack );
     fKnobAttack->setRange ( 0.05f, 1.0f );
     fKnobAttack->setColor ( ninjasColor );
     fKnobAttack->setCallback ( this );
-    
+
     fKnobDecay = new VolumeKnob ( window, knobSize );
     fKnobDecay->setId ( paramDecay );
     fKnobDecay->setRange ( 0.05f, 1.0f );
@@ -195,9 +195,9 @@ void NinjasUI::positionWidgets() {
     //const float width = getWidth();
     //const float height = getHeight();
 
-    //fSpinBox->setAbsolutePos ( 200,440);
+    fSpinBox->setAbsolutePos ( 200,440 );
 
-    fKnobSlices->setAbsolutePos ( 200, 440 );
+    //fKnobSlices->setAbsolutePos ( 200, 440 );
     fKnobAttack->setAbsolutePos ( 660, 465 );
     fKnobDecay->setAbsolutePos ( 760, 465 );
     fKnobSustain->setAbsolutePos ( 860, 465 );
@@ -232,7 +232,7 @@ void NinjasUI::positionWidgets() {
 void NinjasUI::parameterChanged ( uint32_t index, float value ) {
     switch ( index ) {
     case paramNumberOfSlices:
-        fKnobSlices->setValue ( value );
+        fSpinBox->setValue ( value );
         slices = value ;
         createSlicesRaw ();
         break;
@@ -330,15 +330,6 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value ) {
     setParameterValue ( KnobID,value );
 
     switch ( KnobID ) {
-    case paramNumberOfSlices:
-        slices = value;
-        if ( !slicemethod ) {
-            createSlicesRaw ();
-        } else {
-            createSlicesOnsets ();
-        }
-        break;
-
     case paramAttack:
         p_Attack[currentSlice]=value;
         break;
@@ -359,10 +350,26 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value ) {
     repaint();
 }
 
-void nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float value ) 
-{
-  std::cout << "derp" << std::endl;
+void NinjasUI::nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float value ) {
+    int SpinBoxID = nanoSpinBox->getId();
+    std::printf("SpinBoxID=%i\n",SpinBoxID);
+    setParameterValue ( SpinBoxID,value );
+    switch ( SpinBoxID ) {
+    case paramNumberOfSlices:
+        slices = value;
+        if ( !slicemethod ) {
+            createSlicesRaw();
+        } else {
+            createSlicesOnsets();
+        }
+        break;
+    default: {
+        setParameterValue(SpinBoxID,value);
+        std::cout << "what's wrong" << std::endl;
+    }
+    }
 }
+
 
 void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) {
 //   if ((ev.mod & kModifierShift) > 0)
@@ -942,7 +949,7 @@ void NinjasUI::getVisibleSlices ( int &firstSlice, int &lastSlice ) {
 bool NinjasUI::sampleIsInSlice ( unsigned long int sample ) {
     for ( int i = 0 ; i < slices ; i++ ) {
         if ( ( sample >= a_slices[i].sliceStart ) && ( sample <= a_slices[i].sliceEnd ) ) {
-           return true;
+            return true;
         }
     }
     return false;
