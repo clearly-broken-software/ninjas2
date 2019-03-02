@@ -95,18 +95,16 @@ NinjasUI::NinjasUI()
     Window &window = getParentWindow();
 
 
-//     fKnobSlices = new VolumeKnob ( window, knobSize );
-//     fKnobSlices->setId ( paramNumberOfSlices );
-//     fKnobSlices->setRange ( 1.0f, 128.0f );
-//     fKnobSlices->setColor ( ninjasColor );
-//     fKnobSlices->setStep ( 1.0f );
-//     fKnobSlices->setCallback ( this );
-
     fSpinBox = new SpinBox ( window, spinboxSize );
     fSpinBox->setId ( paramNumberOfSlices );
     fSpinBox->setRange ( 1.0f, 128.0f );
     fSpinBox->setStep ( 1.0f );
     fSpinBox->setCallback ( this );
+    
+    fSliceButton = new TextButton (window, Size<uint>(50,50));
+    fSliceButton->setId (paramSlice);
+    fSliceButton->setText("Slice");
+    fSliceButton->setCallback(this);
 
     fKnobAttack = new VolumeKnob ( window, knobSize );
     fKnobAttack->setId ( paramAttack );
@@ -196,8 +194,8 @@ void NinjasUI::positionWidgets() {
     //const float height = getHeight();
 
     fSpinBox->setAbsolutePos ( 200,440 );
+    fSliceButton->setAbsolutePos( 200,400);
 
-    //fKnobSlices->setAbsolutePos ( 200, 440 );
     fKnobAttack->setAbsolutePos ( 660, 465 );
     fKnobDecay->setAbsolutePos ( 760, 465 );
     fKnobSustain->setAbsolutePos ( 860, 465 );
@@ -559,6 +557,12 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 //
     repaint();
 }
+
+void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
+{
+ std::printf("nanoButtonClicked id = %i\n",nanoButton->getId());
+}
+
 
 void NinjasUI::onNanoDisplay() {
     const float width = getWidth();

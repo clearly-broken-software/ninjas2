@@ -34,6 +34,7 @@
 #include "GlowingLabelsBox.hpp"
 #include "RemoveDCSwitch.hpp"
 #include "SpinBox.hpp"
+#include "TextButton.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -42,7 +43,8 @@ START_NAMESPACE_DISTRHO
 class NinjasUI : public UI,
     public NanoKnob::Callback,
     public NanoSwitch::Callback,
-    public NanoSpinBox::Callback {
+    public NanoSpinBox::Callback,
+    public NanoButton::Callback {
 public:
     NinjasUI();
 
@@ -63,6 +65,7 @@ protected:
     void nanoKnobValueChanged ( NanoKnob* nanoKnob, const float value ) override;
     void nanoSpinBoxValueChanged(NanoSpinBox *nanoSpinBox, const float value) override;
     void nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) override;
+    void nanoButtonClicked (NanoButton* nanoButton) override;
     bool onMouse ( const MouseEvent& ) override;
     bool onScroll ( const ScrollEvent& ) override;
     bool onMotion ( const MotionEvent& ) override;
@@ -74,6 +77,7 @@ private:
     ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxLoadSample;
     ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev,fSwitchLoadSample;
     ScopedPointer<RemoveDCSwitch> fGrid[16];
+    ScopedPointer<TextButton> fSliceButton;
 
     void loadSample ( String fp );
     std::vector<short int> waveform;

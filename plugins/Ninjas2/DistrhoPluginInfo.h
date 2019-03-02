@@ -35,6 +35,7 @@
 enum Parameters
 {
     paramNumberOfSlices = 0,
+    paramSlice,
     paramAttack,
     paramDecay,
     paramSustain,

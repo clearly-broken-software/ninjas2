@@ -2,6 +2,9 @@
 #define WOLF_NANO_BUTTON_HPP_INCLUDED
 
 #include "WolfWidget.hpp"
+#include "Widget.hpp"
+#include "NanoVG.hpp"
+#include "Window.hpp"
 
 START_NAMESPACE_DISTRHO
 
