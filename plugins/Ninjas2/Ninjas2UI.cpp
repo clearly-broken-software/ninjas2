@@ -352,7 +352,6 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value ) {
 
 void NinjasUI::nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float value ) {
     int SpinBoxID = nanoSpinBox->getId();
-    std::printf("SpinBoxID=%i\n",SpinBoxID);
     setParameterValue ( SpinBoxID,value );
     switch ( SpinBoxID ) {
     case paramNumberOfSlices:
