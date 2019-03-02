@@ -9,9 +9,10 @@ NanoButton ( parent,size ),
            fMargin ( Margin ( 0,0,0,0 ) ),
            fAlign ( ALIGN_LEFT | ALIGN_TOP ),
            fTextColor ( Color ( 255,255,255,255 ) ),
-           fFontSize ( 12.0f )
+           fFontSize ( 12.0f ),
+           fFontId( 0 )
 {
-//
+    loadSharedResources();
 }
 
 TextButton::TextButton ( NanoWidget* widget, Size< uint > size ) noexcept :
@@ -20,16 +21,21 @@ TextButton::TextButton ( NanoWidget* widget, Size< uint > size ) noexcept :
            fMargin ( Margin ( 0,0,0,0 ) ),
            fAlign ( ALIGN_LEFT | ALIGN_TOP ),
            fTextColor ( Color ( 255,255,255,255 ) ),
-           fFontSize ( 12.0f )
+           fFontSize ( 12.0f ),
+           fFontId( 0 )
 {
-//
+    loadSharedResources();
 }
 
 void TextButton::draw()
 {
-     std::printf("TextButton::draw()");
      beginPath();
-     fontFaceId ( fFontId );
+
+     if (fFontId > 0)
+     {
+        fontFaceId ( fFontId );
+     }
+
      fontSize ( fFontSize );
      fillColor ( fTextColor );
      textAlign ( fAlign );
