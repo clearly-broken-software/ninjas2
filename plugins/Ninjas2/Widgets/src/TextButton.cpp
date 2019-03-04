@@ -34,10 +34,15 @@ void TextButton::draw()
   float w = getWidth();
   
   beginPath();
-  strokeWidth(1.0f);
-  strokeColor(Color(255, 255, 255, 255));
-  fillColor(Color(127,127,127,255));
-  rect(0.0f,0.0f,w,h);
+  strokeWidth(2.0f);
+  const float margin = 2.0f;
+  const float doubleMargin = margin * 2.0f;
+  strokeColor(Color(89,82,78,255));
+  const Color icol=Color(86, 92, 95, 255);
+  const Color ocol=Color(39, 42, 43, 255);
+  const Paint bg=linearGradient(w-doubleMargin,margin,w - doubleMargin, h -doubleMargin,icol,ocol);
+  roundedRect ( margin, margin, w - doubleMargin, h - doubleMargin, 4.0f);
+  fillPaint(bg);
   fill();
   stroke();
   closePath();
@@ -48,12 +53,12 @@ void TextButton::draw()
      {
         fontFaceId ( fFontId );
      }
-
      fontSize ( fFontSize );
      fillColor ( fTextColor );
      textAlign ( fAlign );
      text ( fMargin.left, fMargin.top, fText, NULL );
      closePath();
+    
 }
 
 void TextButton::setTextColor(Color color)
