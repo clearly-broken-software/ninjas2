@@ -586,6 +586,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           } else {
                createSlicesOnsets();
           }
+          setParameterValue( paramNumberOfSlices, slices);
           break;
      }
      default:
