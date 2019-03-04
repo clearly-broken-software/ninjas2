@@ -33,13 +33,14 @@ public:
     void setStep ( float step ) noexcept;
     void setCallback ( Callback *callback ) noexcept;
     void setColor ( Color color ) noexcept;
+   
 
 protected:
     void onNanoDisplay() override;
     bool onMouse ( const MouseEvent & ) override;
     bool onMotion ( const MotionEvent & ) override;
     bool onScroll ( const ScrollEvent & ) override;
-
+    Rectangle<uint> incButton,decButton;
     Color getColor() noexcept;
     float getMin() noexcept;
     float getMax() noexcept;
@@ -57,7 +58,7 @@ private:
     float fStep;
     float fValue;
 
-    Rectangle<uint> incButton,decButton;
+    
 
     void setButtonState ( ButtonState state );
     ButtonState fState;

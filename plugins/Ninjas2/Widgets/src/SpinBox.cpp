@@ -3,201 +3,152 @@
 START_NAMESPACE_DISTRHO
 
 
-SpinBox::SpinBox(Window &parent, Size<uint> size) noexcept : NanoSpinBox(parent, size)
+SpinBox::SpinBox ( Window &parent, Size<uint> size ) noexcept :
+NanoSpinBox ( parent, size ),
+            fText ( "+" ),
+            fMargin ( Margin ( 0,0,0,0 ) ),
+            fAlign ( ALIGN_TOP | ALIGN_LEFT ),
+            fTextColor ( Color ( 255,255,255,255 ) ),
+            fFontSize ( 16.0f ),
+            fFontId ( 0 ),
+            fDigitsColor( Color (255,50,50,255))
 
 {
-    const float radius = size.getHeight() / 2.0f;
-    const float gaugeWidth = 3.5f;
-    const float diameter = (radius - gaugeWidth) * 2.0f - 4;
-
-    fKnobICol = Color(86, 92, 95, 255);
-
-    fKnobOCol = Color(39, 42, 43, 255);
-    const Color fKnobTargetOCol = Color(59, 62, 63, 255);
-
-    fKnobDiameter = diameter;
-
-    fGrowAnimation = new FloatTransition(0.100f, &fKnobDiameter, fKnobDiameter - 7);
-    fHoverAnimation = new ColorTransition(0.200f, &fKnobOCol, fKnobTargetOCol);
-
-    parent.addIdleCallback(this);
+     const uint h = getHeight();
+     incButton.setHeight(h/3);
+     decButton.setHeight(h/3);
+     decButton.setPos(0, h/3 * 2);
+     fDigitsClr0 = Color (255,50,50,255);
+     fDigitsClr1 = Color (0,0,0,255);
+     loadSharedResources();
+     parent.addIdleCallback ( this );
 }
 
-SpinBox::SpinBox(NanoWidget *widget, Size<uint> size) noexcept : NanoSpinBox(widget, size)
+SpinBox::SpinBox ( NanoWidget *widget, Size<uint> size ) noexcept :
+NanoSpinBox ( widget, size ),
+fText ( "A" ),
+fMargin ( Margin ( 0,0,0,0 ) ),
+fAlign ( ALIGN_TOP | ALIGN_LEFT ),
+fTextColor ( Color ( 255,255,255,255 ) ),
+fFontSize ( 16.0f ),
+fFontId ( 0 ),
+fDigitsColor( Color (255,50,50,255))
+
 
 {
-    const float radius = size.getHeight() / 2.0f;
-    const float gaugeWidth = 3.5f;
-    const float diameter = (radius - gaugeWidth) * 2.0f - 4;
-
-    fKnobICol = Color(86, 92, 95, 255);
-
-    fKnobOCol = Color(39, 42, 43, 255);
-    const Color fKnobTargetOCol = Color(59, 62, 63, 255);
-
-    fKnobDiameter = diameter;
-
-    fGrowAnimation = new FloatTransition(0.100f, &fKnobDiameter, fKnobDiameter - 7);
-    fHoverAnimation = new ColorTransition(0.200f, &fKnobOCol, fKnobTargetOCol);
-
-    widget->getParentWindow().addIdleCallback(this);
+     const uint h = getHeight();
+     incButton.setHeight(h/3);
+     decButton.setHeight(h/3);
+     decButton.setPos(0, h/3 * 2);
+     fDigitsClr0 = Color (255,50,50,255);
+     fDigitsClr1 = Color (0,0,0,255);
+     loadSharedResources();
+     widget->getParentWindow().addIdleCallback ( this );
 }
 
 void SpinBox::idleCallback()
 {
-    bool mustRepaint = false;
 
-    if (fGrowAnimation->isPlaying())
-    {
-        fGrowAnimation->run();
-        mustRepaint = true;
-    }
-
-    if (fHoverAnimation->isPlaying())
-    {
-        fHoverAnimation->run();
-        mustRepaint = true;
-    }
-
-    if (mustRepaint)
-        repaint();
 }
 
 void SpinBox::onMouseHover()
 {
-    if (!canBeFocused())
-        return;
 
-    //getParentWindow().setCursorStyle(Window::CursorStyle::Grab);
-
-    fHoverAnimation->play(Animation::Forward);
 }
 
 void SpinBox::onMouseLeave()
 {
-    if (!canBeFocused())
-        return;
-        
-    //getParentWindow().setCursorStyle(Window::CursorStyle::Default);
 
-    fHoverAnimation->play(Animation::Backward);
 }
 
 void SpinBox::onMouseDown()
 {
-    fGrowAnimation->pause();
-    fGrowAnimation->setDuration(0.100f);
-    fGrowAnimation->seek(fGrowAnimation->getCurrentTime() / 2.0f);
-    fGrowAnimation->play(Animation::Forward);
+
 }
 
 void SpinBox::onMouseUp()
 {
-    fGrowAnimation->pause();
-    fGrowAnimation->setDuration(0.400f);
-    fGrowAnimation->seek(fGrowAnimation->getCurrentTime() * 2.0f);
-    fGrowAnimation->play(Animation::Backward);
+
 }
 
 void SpinBox::draw()
 {
-    beginPath();
+     const float h = getHeight();
+     const float w = getWidth();
+     beginPath();
+     Color icol=Color(86, 92, 95, 255);
+     Color ocol=Color(39, 42, 43, 255);
+  //   Color icol=Color(255, 0, 0, 255);
+  //   Color ocol=Color(0, 0 , 255, 255);
+  
+     const float margin = 2.0f;
+     const float doubleMargin = margin * 2.0f;
+     roundedRect ( margin, margin, w - doubleMargin, h - doubleMargin, 4.0f);
+     Paint bg=linearGradient(w-doubleMargin,margin,w - doubleMargin, h -doubleMargin,icol,ocol);
+     fillPaint(bg);
+     fill();
+   //  stroke();
+     closePath();
 
-    strokeWidth(1.0f);
-    strokeColor(Color(255, 255, 255, 255));
-    fillColor(Color(127,127,127,255));
+// digit background
+     beginPath();
+     fillColor(Color(250,250,250,255));
+     rect(margin,h/3,w-doubleMargin,h/3);
+     fill();
+     closePath();
+    
+     // border
+     beginPath();
+     strokeColor(Color(89,82,78,255));
+     strokeWidth(2.0f);   
+     roundedRect ( margin, margin, w - doubleMargin, h - doubleMargin, 4.0f);
+     stroke();
+     closePath();
 
-    const float margin = 2.0f;
-    const float doubleMargin = margin * 2.0f;
-    roundedRect(margin, margin, getWidth() - doubleMargin, getHeight() - doubleMargin, 4.0f);
-    fill();
-    stroke();
-    closePath();
-   
-    //draw divider
-    beginPath();
-    moveTo(margin,getHeight()/2);
-    lineTo(getWidth()-margin,getHeight()/2);
-    stroke();
-    closePath();
-   
-    // draw +
-    beginPath();
-    strokeColor(Color(0, 0, 0, 255));
-    moveTo(getWidth()/2,doubleMargin*2);
-    lineTo(getWidth()/2,getHeight()/2 - doubleMargin*2);
-    moveTo(doubleMargin*2,(getHeight()-doubleMargin)/4 + 1 );
-    lineTo(getWidth()-doubleMargin*2,(getHeight()-doubleMargin)/4 + 1 );
-    // draw -
-    moveTo(doubleMargin*2,(getHeight()/4)*3);
-    lineTo( getWidth()-doubleMargin*2,getHeight()/4*3 );
-    stroke();
-    closePath();
-    // const float height = getHeight();
-    // const Color color = getColor();
-
-    // const float value = getValue();
-    // const float min = getMin();
-    // const float max = getMax();
-
-    // const float percentFilled = (value - min) / (max - min);
-
-    // const float radius = height / 2.0f;
-
-    // const float indicatorLineHeight = fKnobDiameter / 2.0f - 8;
-    // const float indicatorLineWidth = 3.0f;
-    // const float indicatorLineMarginTop = 4.0f;
-
-    // const float gaugeWidth = 3.5f;
-    // Color gaugeColor = Color(0, 0, 40, 255);
-    // gaugeColor.interpolate(color, 0.4f);
-
-    // const float margin = 3.0f;
-
-    // //Gauge (empty)
-    // beginPath();
-
-    // strokeWidth(gaugeWidth);
-    // strokeColor(gaugeColor);
-    // arc(radius, radius, radius - margin, 0.75f * M_PI, 0.25f * M_PI, NanoVG::Winding::CW);
-    // stroke();
-
-    // //Gauge (value)
-    // beginPath();
-
-    // strokeWidth(gaugeWidth);
-    // strokeColor(color);
-    // arc(radius, radius, radius - margin, 0.75f * M_PI, (0.75f + 1.5f * percentFilled) * M_PI, NanoVG::Winding::CW);
-    // stroke();
-
-    // //Knob
-    // beginPath();
-
-    // strokeWidth(2.0f);
-    // strokePaint(linearGradient(0, 0, 0, height - 10, Color(190, 190, 190, 30), Color(23, 23, 23, 255)));
-
-    // Paint knobPaint = linearGradient(radius, gaugeWidth, radius, fKnobDiameter, fKnobICol, fKnobOCol);
-    // fillPaint(knobPaint);
-
-    // circle(radius, radius, fKnobDiameter / 2.0f);
-    // fill();
-    // stroke();
-
-    // //Indicator line
-    // beginPath();
-    // save();
-
-    // translate(radius, radius);
-    // rotate((2.0f + ((percentFilled - 0.5f) * 1.5f)) * M_PI);
-    // translate(-radius, -radius);
-
-    // fillColor(color);
-    // rect(radius - indicatorLineWidth / 2.0f, margin + indicatorLineMarginTop + fKnobDiameter / 2.0f - radius, indicatorLineWidth, indicatorLineHeight);
-    // fill();
-
-    // restore();
-
-    // closePath();
+     // incButton
+     beginPath();
+     if (fFontId > 0)
+     {
+        fontFaceId ( fFontId );
+     }
+     fontSize(26);
+     fText = "+";
+     fillColor ( Color (200,200,200,255) );
+     textAlign ( fAlign );
+     text ( 10, 0 , fText, NULL );
+     closePath();
+     
+     // decButton
+     beginPath();
+     fontSize(26);
+     fText = "‒"; // U+2012 FIGURE DASH
+     text ( 12, 50 , fText, NULL );
+     closePath();
+     
+     // digits
+     beginPath();
+     fontSize(20);
+     char fDigits[32+1];
+     int value = getValue();
+     fDigits[32]='\0';
+     snprintf(fDigits,32,"%i",value);
+     fillColor ( fDigitsColor );
+     fText = fDigits;
+     textAlign ( ALIGN_CENTER | ALIGN_TOP );
+     text ( w/2, h/3 +4 , fDigits, NULL );
+     closePath();
+     
+     
 }
+
+void SpinBox::setDigitsColor ( bool color )
+{
+  // true is 
+  if (color)
+    fDigitsColor = fDigitsClr0;
+  else
+    fDigitsColor = fDigitsClr1;
+}
+
 
 END_NAMESPACE_DISTRHO

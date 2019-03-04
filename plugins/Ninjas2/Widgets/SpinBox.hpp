@@ -3,6 +3,7 @@
 
 #include "NanoSpinBox.hpp"
 #include "Animation.hpp"
+#include "Layout.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -12,6 +13,14 @@ class SpinBox : public NanoSpinBox,
 public:
   explicit SpinBox(Window &parent, Size<uint> size) noexcept;
   explicit SpinBox(NanoWidget *widget, Size<uint> size) noexcept;
+  void setFontSize(float fontSize);
+  void setTextColor(Color color);
+  void setDigitsColor(bool color);
+  void setTextBackgroundColor(Color color);
+  void setMargin(Margin margin);
+  void setAlign(int align); //NanoVG align
+  void setText(const char *text);
+  void setFontId(NanoVG::FontId fontId);
 
 protected:
   void idleCallback() override;
@@ -26,12 +35,15 @@ protected:
 private:
   ScopedPointer<FloatTransition> fGrowAnimation;
   ScopedPointer<ColorTransition> fHoverAnimation;
-  
-  float fKnobDiameter;
-
-  Color fKnobICol;
-  Color fKnobOCol;
-
+  const char* fText;
+  Margin fMargin;
+  NanoVG::FontId fFontId;
+  int fAlign;
+  Color fTextColor;
+  Color fDigitsColor;
+  Color fDigitsClr0;
+  Color fDigitsClr1;
+  float fFontSize;
   DISTRHO_LEAK_DETECTOR(SpinBox)
 };
 

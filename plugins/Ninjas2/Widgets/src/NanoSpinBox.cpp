@@ -36,7 +36,6 @@ NanoSpinBox::NanoSpinBox(NanoWidget *widget, Size<uint> size) noexcept
       fCallback(nullptr)
 {
     setSize(size);
-    setSize(size);
     incButton.setHeight(getHeight()/2);
     incButton.setWidth(getWidth());
     decButton.setHeight(getHeight()/2);
@@ -116,7 +115,7 @@ bool NanoSpinBox::onMouse(const MouseEvent &ev)
    bool hover = contains(ev.pos);
    bool incB = incButton.contains(ev.pos.getX(),ev.pos.getY());
    bool decB = decButton.contains(ev.pos.getX(),ev.pos.getY());
-   float delta;
+   float delta = 1.0f;
    if (incB)
      delta = 1.0f;
    if (decB)
@@ -129,7 +128,7 @@ bool NanoSpinBox::onMouse(const MouseEvent &ev)
         {
             fHasFocus = false;
 
-            if (hover)
+            if (incB || decB)
             {
                 setButtonState(kNanoStateHover);
 
@@ -230,6 +229,5 @@ void NanoSpinBox::setButtonState(ButtonState state)
 
     repaint();
 }
-
 
 END_NAMESPACE_DISTRHO
