@@ -103,12 +103,13 @@ NinjasUI::NinjasUI()
      fSpinBox->setStep ( 1.0f );
      fSpinBox->setCallback ( this );
 
-     fSliceButton = new TextButton ( window, Size<uint> ( 40,20 ) );
+
+     fSliceButton = new TextButton ( window, Size<uint> ( 40,30 ) );
      fSliceButton->setId ( paramSlice );
      fSliceButton->setText ( "Slice" );
-     fSliceButton->setFontSize(14.0f);
-     fSliceButton->setTextColor(Color(0.0f,0.0f,0.0f,255.0f));
-     fSliceButton->setMargin(Margin(5,0,3,0));
+     fSliceButton->setFontSize ( 14.0f );
+     fSliceButton->setTextColor ( Color ( 255.0f,255.0f,255.0f,255.0f ) );
+     fSliceButton->setMargin ( Margin ( 5,0,7,0 ) );
      fSliceButton->setCallback ( this );
 
      fKnobAttack = new VolumeKnob ( window, knobSize );
@@ -191,7 +192,7 @@ NinjasUI::NinjasUI()
 
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
-    
+
 }
 
 void NinjasUI::positionWidgets()
@@ -200,7 +201,7 @@ void NinjasUI::positionWidgets()
      //const float height = getHeight();
 
      fSpinBox->setAbsolutePos ( 200,440 );
-     fSliceButton->setAbsolutePos ( 200,415 );
+     fSliceButton->setAbsolutePos ( 200,410 );
 
      fKnobAttack->setAbsolutePos ( 660, 465 );
      fKnobDecay->setAbsolutePos ( 760, 465 );
@@ -366,6 +367,11 @@ void NinjasUI::nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float v
 
      case paramNumberOfSlices: {
           tempSlices = value;
+          if ( tempSlices == slices )
+               fSpinBox->setDigitsColor ( false );
+          else
+               fSpinBox->setDigitsColor ( true );
+
           break;
      }
 
@@ -574,6 +580,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      switch ( NanoButtonID ) {
      case paramSlice: {
           slices = tempSlices;
+          fSpinBox->setDigitsColor ( false );
           if ( !slicemethod ) {
                createSlicesRaw();
           } else {
