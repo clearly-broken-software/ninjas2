@@ -155,9 +155,12 @@ NinjasUI::NinjasUI()
      const Size<uint> gridSize = Size<uint> ( 25, 25 );
 
 
-     fSwitchFwd = new RemoveDCSwitch ( window, switchSize );
-     fSwitchFwd->setId ( paramOneShotFwd );
-     fSwitchFwd->setCallback ( this );
+//      fSwitchFwd = new RemoveDCSwitch ( window, switchSize );
+//      fSwitchFwd->setId ( paramOneShotFwd );
+//      fSwitchFwd->setCallback ( this );
+     fPlayFwd = new PlayModeSwitch ( window , switchSize );
+     fPlayFwd->setId( paramOneShotFwd);
+     fPlayFwd->setCallback( this );
 
      fSwitchRev = new RemoveDCSwitch ( window, switchSize );
      fSwitchRev->setId ( paramOneShotRev );
@@ -189,7 +192,7 @@ NinjasUI::NinjasUI()
      // text
      loadSharedResources();
      fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
-
+   
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
@@ -211,7 +214,8 @@ void NinjasUI::positionWidgets()
      fSliceModeSlider->setAbsolutePos ( 200, 540 );
      fLabelsBoxSliceModeSlider->setAbsolutePos ( 230, 540 );
 
-     fSwitchFwd->setAbsolutePos ( 490, 450 );
+     //fSwitchFwd->setAbsolutePos ( 490, 450 );
+     fPlayFwd->setAbsolutePos(490, 450 );
      fSwitchRev->setAbsolutePos ( 560, 450 );
      fSwitchLoopFwd->setAbsolutePos ( 490, 510 );
      fSwitchLoopRev->setAbsolutePos ( 560, 510 );
@@ -244,7 +248,8 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           break;
           // Play Modes
      case paramOneShotFwd:
-          fSwitchFwd->setDown ( value > 0.5f );
+         // fSwitchFwd->setDown ( value > 0.5f );
+          fPlayFwd->setDown( value > 0.5f);
           p_OneShotFwd[currentSlice] = value > 0.5f;
           break;
      case paramOneShotRev:
@@ -410,7 +415,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           setParameterValue ( paramLoopFwd, 0.0f );
           setParameterValue ( paramLoopRev, 0.0f );
 
-          fSwitchFwd->setDown ( true );
+          //fSwitchFwd->setDown ( true );
+	  fPlayFwd->setDown(true);
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
@@ -437,7 +443,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           setParameterValue ( paramLoopFwd, 0.0f );
           setParameterValue ( paramLoopRev, 0.0f );
 
-          fSwitchFwd->setDown ( false );
+          //fSwitchFwd->setDown ( false );
+	  fPlayFwd->setDown(false);
           fSwitchRev->setDown ( true );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
@@ -464,7 +471,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           setParameterValue ( paramLoopFwd, 1.0f );
           setParameterValue ( paramLoopRev, 0.0f );
 
-          fSwitchFwd->setDown ( false );
+          fPlayFwd->setDown(false);
+          //fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( true );
           fSwitchLoopRev->setDown ( false );
@@ -491,7 +499,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           setParameterValue ( paramLoopFwd, 0.0f );
           setParameterValue ( paramLoopRev, 1.0f );
 
-          fSwitchFwd->setDown ( false );
+          fPlayFwd->setDown(false);
+	  //fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( true );
@@ -1051,7 +1060,8 @@ void NinjasUI::recallSliceSettings ( int slice )
      setParameterValue ( paramRelease, p_Release[slice] );
      fKnobRelease->setValue ( p_Release[slice] );
      setParameterValue ( paramOneShotFwd, p_OneShotFwd[slice] );
-     fSwitchFwd->setDown ( p_OneShotFwd[slice] == 1.0f );
+     fPlayFwd->setDown(p_OneShotFwd[slice] == 1.0f);
+     //fSwitchFwd->setDown ( p_OneShotFwd[slice] == 1.0f );
      setParameterValue ( paramOneShotRev,  p_OneShotRev[slice] );
      fSwitchRev->setDown ( p_OneShotRev[slice] == 1.0f );
      setParameterValue ( paramLoopFwd, p_LoopFwd[slice] );

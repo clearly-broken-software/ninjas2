@@ -35,6 +35,7 @@
 #include "RemoveDCSwitch.hpp"
 #include "SpinBox.hpp"
 #include "TextButton.hpp"
+#include "PlayModeSwitch.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -78,6 +79,7 @@ private:
     ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev,fSwitchLoadSample;
     ScopedPointer<RemoveDCSwitch> fGrid[16];
     ScopedPointer<TextButton> fSliceButton;
+    ScopedPointer<PlayModeSwitch> fPlayFwd;
 
     void loadSample ( String fp );
     std::vector<short int> waveform;
@@ -204,6 +206,8 @@ private:
 
     // font
     FontId fNanoFont;
+    FontId Labels;
+    
 
 
 
