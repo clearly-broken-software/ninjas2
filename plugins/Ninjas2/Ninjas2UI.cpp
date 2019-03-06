@@ -631,7 +631,27 @@ void NinjasUI::onNanoDisplay()
      rect ( display_left, display_top, display_length, display_bottom - display_top );
      fill();
      closePath();
-        
+     
+     // states 
+     beginPath();
+     strokeWidth( 2.0f);
+     strokeColor(Color ( 60,60,60,255));
+     roundedRect ( 330 - 5 ,450 - 20 , 120 + 5 , 120 + 20, 3);
+     stroke();
+     closePath();
+     
+     beginPath();
+     fontFaceId(fNanoFont);
+     fontSize(18);
+     fillColor(Color(235, 196, 74, 255));
+     const uint adsr_label_offset = 15;
+     text(330+35,447,"States",NULL);
+     text(660+adsr_label_offset,450,"Attack",NULL);
+     text(760+adsr_label_offset,450,"Decay",NULL);
+     text(860+adsr_label_offset - 5,450,"Sustain",NULL);
+     text(960+adsr_label_offset - 5,450,"Release",NULL);
+     closePath();
+     
 
      if ( sample_is_loaded ) {
           drawSlices();
