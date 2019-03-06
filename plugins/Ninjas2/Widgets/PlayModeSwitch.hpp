@@ -14,6 +14,7 @@ class PlayModeSwitch : public NanoSwitch,
   public:
     explicit PlayModeSwitch(Window &parent, Size<uint> size) noexcept;
     explicit PlayModeSwitch(NanoWidget *widget, Size<uint> size) noexcept;
+    void setLabel(std::string label);
 
   protected:
     void draw() override;
@@ -34,9 +35,18 @@ class PlayModeSwitch : public NanoSwitch,
     GradientTransition fMainRectGradientTransition;
     
     FontId fFontAwesome;
+    std::string fLabel;
+   
+    /*
+     * string in utf8 format for fontawesome
+     * UTF-8: 0xEF 0x81 0x90 / one shot fwd
+     * UTF-8: 0xEF 0x81 0x89 / one shot rev
+     * UTF-8: 0xEF 0x80 0x9E / loop fwd
+     * UTF-8: 0xEF 0x83 0xA2 / loop rev
+     */ 
     
-    
-
+    Color fLabelColor;
+ 
     DISTRHO_LEAK_DETECTOR(PlayModeSwitch)
 };
 

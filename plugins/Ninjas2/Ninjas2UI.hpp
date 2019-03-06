@@ -76,10 +76,11 @@ private:
     ScopedPointer<SpinBox> fSpinBox;
     ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
     ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxLoadSample;
-    ScopedPointer<RemoveDCSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev,fSwitchLoadSample;
+    ScopedPointer<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
+    ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
     ScopedPointer<RemoveDCSwitch> fGrid[16];
     ScopedPointer<TextButton> fSliceButton;
-    ScopedPointer<PlayModeSwitch> fPlayFwd;
+ 
 
     void loadSample ( String fp );
     std::vector<short int> waveform;

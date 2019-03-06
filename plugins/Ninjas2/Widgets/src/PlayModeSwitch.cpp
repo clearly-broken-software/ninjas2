@@ -11,7 +11,10 @@ PlayModeSwitch::PlayModeSwitch(Window &parent, Size<uint> size) noexcept : NanoS
                                                                                fGlowIcolTransition(0.200f, &fGlowIcol, Color(210, 123, 30, 125)),
 
                                                                                fMainRectColor(Color(73, 73, 73, 255)),
-                                                                               fMainRectColorTransition(0.150f, &fMainRectColor, Color(234, 151, 39, 255))
+                                                                               fMainRectColorTransition(0.150f, &fMainRectColor, Color(234, 151, 39, 255)),
+                                                                    
+                                                                               fLabel(u8"\xEF\x85\xB9"),
+									       fLabelColor(Color(0,0,0,255))
 {
     const float socketMargin = 2.0f; //how much we can see the socket behind the main square
     const float doubleSocketMargin = socketMargin * 2.0f;
@@ -30,11 +33,8 @@ PlayModeSwitch::PlayModeSwitch(Window &parent, Size<uint> size) noexcept : NanoS
 
     fMainRectGradient = radialGradient(mainRectCenter, mainRectCenter, 0.5f, mainRectHalfWidth, Color(113, 113, 113, 255), Color(73, 73, 73, 0));
     fMainRectGradientTransition = GradientTransition(0.010f, &fMainRectGradient, targetGradient);
-  
     fFontAwesome = createFontFromMemory("fontawesome", font_fontawesome::fontawesome_ttf, font_fontawesome::fontawesome_ttf_size, false);
-    
-    
-    
+ 
 }
 
 PlayModeSwitch::PlayModeSwitch(NanoWidget *widget, Size<uint> size) noexcept : NanoSwitch(widget, size),
@@ -46,7 +46,9 @@ PlayModeSwitch::PlayModeSwitch(NanoWidget *widget, Size<uint> size) noexcept : N
                                                                                fGlowIcolTransition(0.200f, &fGlowIcol, Color(210, 123, 30, 125)),
 
                                                                                fMainRectColor(Color(73, 73, 73, 255)),
-                                                                               fMainRectColorTransition(0.150f, &fMainRectColor, Color(234, 151, 39, 255))
+                                                                               fMainRectColorTransition(0.150f, &fMainRectColor, Color(234, 151, 39, 255)),
+                                                                               fLabel(u8"\xEF\x85\xB9"),
+									       fLabelColor(Color(0,0,0,255))
 {
     const float socketMargin = 2.0f; //how much we can see the socket behind the main square
     const float doubleSocketMargin = socketMargin * 2.0f;
@@ -65,7 +67,6 @@ PlayModeSwitch::PlayModeSwitch(NanoWidget *widget, Size<uint> size) noexcept : N
 
     fMainRectGradient = radialGradient(mainRectCenter, mainRectCenter, 0.5f, mainRectHalfWidth, Color(113, 113, 113, 255), Color(73, 73, 73, 0));
     fMainRectGradientTransition = GradientTransition(0.010f, &fMainRectGradient, targetGradient);
-    
     fFontAwesome = createFontFromMemory("fontawesome", font_fontawesome::fontawesome_ttf, font_fontawesome::fontawesome_ttf_size, false);
     
 }
@@ -177,27 +178,16 @@ void PlayModeSwitch::draw()
     beginPath();
     fontFaceId(fFontAwesome);
     fontSize(20);
-    fillColor(255,0,0,255);
+    fillColor(fLabelColor);
     textAlign(ALIGN_TOP | ALIGN_LEFT);
-  //  std::string label = "";
-    text ( 0, 0, "0123", NULL );
+    text ( 15, 15, fLabel.c_str(), NULL );
     closePath();
 
-    /*if (isDown())
-    {
-        //line at top
-        beginPath();
+}
 
-        strokeColor(Color(255, 182, 82, 255));
-        strokeWidth(1.0f);
-
-        moveTo(mainRectTopLeft, mainRectTopLeft + 1.0f);
-        lineTo(mainRectTopLeft + mainRectWidth, mainRectTopLeft + 1.0f);
-
-        stroke();
-
-        closePath();
-    }*/
+void PlayModeSwitch::setLabel(std::string label)
+{
+  fLabel = label;
 }
 
 END_NAMESPACE_DISTRHO
