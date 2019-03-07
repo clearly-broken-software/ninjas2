@@ -185,7 +185,7 @@ NinjasUI::NinjasUI()
      // grid
 
      for ( int i = paramSwitch01, j = 0 ; i <= paramSwitch16; ++i , ++j ) {
-          fGrid[j] = new RemoveDCSwitch ( window, gridSize );
+          fGrid[j] = new StateSwitch ( window, gridSize );
           fGrid[j]->setId ( i );
           fGrid[j]->setCallback ( this );
      }
@@ -340,22 +340,38 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
 void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
 {
      int KnobID = knob->getId();
-
+     float oldValue;
      setParameterValue ( KnobID,value );
 
      switch ( KnobID ) {
-     case paramAttack:
+     case paramAttack: {
+          oldValue = p_Attack[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
           p_Attack[currentSlice]=value;
           break;
-     case paramDecay:
+     }
+     case paramDecay: {
+          oldValue = p_Decay[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
           p_Decay[currentSlice]=value;
           break;
-     case  paramSustain:
+     }
+     case  paramSustain: {
+          oldValue = p_Sustain[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
           p_Sustain[currentSlice]=value;
           break;
-     case paramRelease:
+     }
+     case paramRelease: {
+          oldValue = p_Release[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
           p_Release[currentSlice]=value;
           break;
+     }
      default:
           setParameterValue ( KnobID,value );
 
@@ -394,9 +410,38 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 //   {
 //     fprintf(stderr, "Shift click!!\n");
 //   }
-
+     float oldValue;
      const float value = nanoSwitch->isDown() ? 1.0f : 0.0f;
      const uint buttonId = nanoSwitch->getId();
+
+     // check if parameter is changed
+     switch ( buttonId ) {
+     case paramOneShotFwd: {
+          oldValue = p_OneShotFwd[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
+          break;
+     }
+     case paramOneShotRev: {
+          oldValue = p_OneShotRev[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
+          break;
+     }
+     case paramLoopFwd: {
+          oldValue = p_LoopFwd[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
+          break;
+     }
+     case paramLoopRev: {
+          oldValue = p_LoopRev[currentSlice];
+          if ( oldValue != value )
+               Programs[currentProgram].program_isEmpty = false;
+          break;
+     }
+     }
+
 
      switch ( buttonId ) {
      case paramOneShotFwd: {
@@ -508,6 +553,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      case paramSliceMode: {
+          if ( slicemethod != value )
+               Programs[currentProgram].program_isEmpty = false;
           fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
           setParameterValue ( paramSliceMode, value );
           slicemethod = value;
@@ -542,13 +589,13 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 
 
           int program = buttonId - paramSwitch01;
-          /
 
           // shift click stores current program on new program location
           if ( ( ev.mod & kModifierShift ) > 0 ) {
                setProgram ( currentProgram );
                setProgram ( program );
                currentProgram = program;
+               Programs[currentProgram].program_isEmpty = false;
                goto toggleswitches;
           }
           // normal click stores current program and gets new program
@@ -556,6 +603,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                setProgram ( currentProgram ); // store current
                getProgram ( program ); // get new
                currentProgram = program;
+               printf ( "program is empty %i\n",Programs[program].program_isEmpty );
                goto toggleswitches;
           }
           // empty program selected
@@ -589,14 +637,17 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      int NanoButtonID = nanoButton->getId();
      switch ( NanoButtonID ) {
      case paramSlice: {
-          slices = tempSlices;
-          fSpinBox->setDigitsColor ( false );
-          if ( !slicemethod ) {
-               createSlicesRaw();
-          } else {
-               createSlicesOnsets();
+          if ( slices != tempSlices ) {
+               slices = tempSlices;
+               fSpinBox->setDigitsColor ( false ); // set digits to black
+               if ( !slicemethod ) {
+                    createSlicesRaw();
+               } else {
+                    createSlicesOnsets();
+               }
+               setParameterValue ( paramNumberOfSlices, slices );
+               Programs[currentProgram].program_isEmpty = false;
           }
-          setParameterValue ( paramNumberOfSlices, slices );
           break;
      }
      default:

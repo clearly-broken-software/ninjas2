@@ -36,6 +36,7 @@
 #include "SpinBox.hpp"
 #include "TextButton.hpp"
 #include "PlayModeSwitch.hpp"
+#include "StateSwitch.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -78,7 +79,7 @@ private:
     ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxLoadSample;
     ScopedPointer<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
     ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
-    ScopedPointer<RemoveDCSwitch> fGrid[16];
+    ScopedPointer<StateSwitch> fGrid[16];
     ScopedPointer<TextButton> fSliceButton;
  
 
