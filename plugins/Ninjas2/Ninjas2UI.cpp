@@ -157,23 +157,23 @@ NinjasUI::NinjasUI()
 
      fSwitchFwd = new PlayModeSwitch ( window, switchSize );
      fSwitchFwd->setId ( paramOneShotFwd );
-     fSwitchFwd->setLabel(u8"\xEF\x81\x90"); // see
+     fSwitchFwd->setLabel ( u8"\xEF\x81\x90" ); // see
      fSwitchFwd->setCallback ( this );
-       
+
 
      fSwitchRev = new PlayModeSwitch ( window, switchSize );
      fSwitchRev->setId ( paramOneShotRev );
-     fSwitchRev->setLabel(u8"\xEF\x81\x89");
+     fSwitchRev->setLabel ( u8"\xEF\x81\x89" );
      fSwitchRev->setCallback ( this );
 
      fSwitchLoopFwd = new PlayModeSwitch ( window, switchSize );
      fSwitchLoopFwd->setId ( paramLoopFwd );
-     fSwitchLoopFwd->setLabel(u8"\xEF\x80\x9E");
+     fSwitchLoopFwd->setLabel ( u8"\xEF\x80\x9E" );
      fSwitchLoopFwd->setCallback ( this );
 
      fSwitchLoopRev = new PlayModeSwitch ( window, switchSize );
      fSwitchLoopRev->setId ( paramLoopRev );
-     fSwitchLoopRev->setLabel( u8"\xEF\x83\xA2");
+     fSwitchLoopRev->setLabel ( u8"\xEF\x83\xA2" );
      fSwitchLoopRev->setCallback ( this );
 
      // sample load button
@@ -194,7 +194,7 @@ NinjasUI::NinjasUI()
      // text
      loadSharedResources();
      fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
-   
+
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
@@ -416,7 +416,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           setParameterValue ( paramLoopRev, 0.0f );
 
           fSwitchFwd->setDown ( true );
-	  fSwitchRev->setDown ( false );
+          fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
 
@@ -443,7 +443,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           setParameterValue ( paramLoopRev, 0.0f );
 
           fSwitchFwd->setDown ( false );
-	  fSwitchRev->setDown ( true );
+          fSwitchRev->setDown ( true );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
 
@@ -536,10 +536,13 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      } // switch (buttonId)
 
      // process the grid
+     // FIXME get rid of goto
 
      if ( buttonId >= paramSwitch01 && buttonId <= paramSwitch16 ) {
 
-          int program = buttonId -11;
+
+          int program = buttonId - paramSwitch01;
+          /
 
           // shift click stores current program on new program location
           if ( ( ev.mod & kModifierShift ) > 0 ) {
@@ -549,7 +552,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                goto toggleswitches;
           }
           // normal click stores current program and gets new program
-          if ( ( program != currentProgram ) && ( Programs[program].program_isEmpty == false ) ) {
+          if ( ( program != currentProgram ) ) {
                setProgram ( currentProgram ); // store current
                getProgram ( program ); // get new
                currentProgram = program;
@@ -557,12 +560,14 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           }
           // empty program selected
           // copy current program to new program location
+          /*
           if ( ( program != currentProgram )  && ( Programs[program].program_isEmpty == true ) ) {
                setProgram ( currentProgram ); // store current
                setProgram ( program ); // copy to new location
                Programs[program].program_isEmpty = false;
                currentProgram = program;
           }
+          */
           // toggle the switches
      toggleswitches:
 
@@ -591,7 +596,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           } else {
                createSlicesOnsets();
           }
-          setParameterValue( paramNumberOfSlices, slices);
+          setParameterValue ( paramNumberOfSlices, slices );
           break;
      }
      default:
@@ -631,27 +636,27 @@ void NinjasUI::onNanoDisplay()
      rect ( display_left, display_top, display_length, display_bottom - display_top );
      fill();
      closePath();
-     
-     // states 
+
+     // states
      beginPath();
-     strokeWidth( 2.0f);
-     strokeColor(Color ( 60,60,60,255));
-     roundedRect ( 330 - 5 ,450 - 20 , 120 + 5 , 120 + 20, 3);
+     strokeWidth ( 2.0f );
+     strokeColor ( Color ( 60,60,60,255 ) );
+     roundedRect ( 330 - 5 ,450 - 20 , 120 + 5 , 120 + 20, 3 );
      stroke();
      closePath();
-     
+
      beginPath();
-     fontFaceId(fNanoFont);
-     fontSize(18);
-     fillColor(Color(235, 196, 74, 255));
+     fontFaceId ( fNanoFont );
+     fontSize ( 18 );
+     fillColor ( Color ( 235, 196, 74, 255 ) );
      const uint adsr_label_offset = 15;
-     text(330+35,447,"States",NULL);
-     text(660+adsr_label_offset,450,"Attack",NULL);
-     text(760+adsr_label_offset,450,"Decay",NULL);
-     text(860+adsr_label_offset - 5,450,"Sustain",NULL);
-     text(960+adsr_label_offset - 5,450,"Release",NULL);
+     text ( 330+35,447,"States",NULL );
+     text ( 660+adsr_label_offset,450,"Attack",NULL );
+     text ( 760+adsr_label_offset,450,"Decay",NULL );
+     text ( 860+adsr_label_offset - 5,450,"Sustain",NULL );
+     text ( 960+adsr_label_offset - 5,450,"Release",NULL );
      closePath();
-     
+
 
      if ( sample_is_loaded ) {
           drawSlices();
@@ -991,8 +996,17 @@ void NinjasUI::loadSample ( String fp )
           createSlicesOnsets ();
      }
      // set program 0
+     //
      setProgram ( 0 );
      Programs[0].program_isEmpty = false;
+     initPrograms();
+     // toggle program 0 switch
+     // editParameter ( paramSwitch01, true );
+     // setParameterValue ( paramSwitch01, 1.0f; );
+     fGrid[0]->setDown ( true );
+     // editParameter ( paramSwitch01, false );
+
+
      repaint();
      return;
 
@@ -1067,25 +1081,25 @@ void NinjasUI::recallSliceSettings ( int slice )
 {
      setParameterValue ( paramAttack, p_Attack[slice] );
      fKnobAttack->setValue ( p_Attack[slice] );
-     
+
      setParameterValue ( paramDecay,  p_Decay[slice] );
      fKnobDecay->setValue ( p_Decay[slice] );
-     
+
      setParameterValue ( paramSustain, p_Sustain[slice] );
      fKnobSustain->setValue ( p_Sustain[slice] );
-     
+
      setParameterValue ( paramRelease, p_Release[slice] );
      fKnobRelease->setValue ( p_Release[slice] );
-     
+
      setParameterValue ( paramOneShotFwd, p_OneShotFwd[slice] );
      fSwitchFwd->setDown ( p_OneShotFwd[slice] == 1.0f );
-     
+
      setParameterValue ( paramOneShotRev,  p_OneShotRev[slice] );
      fSwitchRev->setDown ( p_OneShotRev[slice] == 1.0f );
-     
+
      setParameterValue ( paramLoopFwd, p_LoopFwd[slice] );
      fSwitchLoopFwd->setDown ( p_LoopFwd[slice] == 1.0f );
-     
+
      setParameterValue ( paramLoopRev, p_LoopRev[slice] );
      fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );
 
@@ -1488,9 +1502,7 @@ void NinjasUI::getProgram ( int state )
      // set slices knob back
      setParameterValue ( paramNumberOfSlices, slices );
      fSpinBox->setValue ( slices );
-
-
-
+     recallSliceSettings ( currentSlice );
 }
 
 void NinjasUI::setProgram ( int state )
@@ -1508,8 +1520,19 @@ void NinjasUI::setProgram ( int state )
           Programs[state].program_LoopFwd[i] = p_LoopFwd[i];
           Programs[state].program_LoopRev[i] = p_LoopRev[i];
      }
+}
+
+void NinjasUI::initPrograms()
+{
+     // copy progam 0 to 1 ... 15
+     const uint state = 0;
+     getProgram ( state );
+     for ( int i=1; i <16 ; i++ ) {
+          setProgram ( i );
+     }
 
 }
+
 
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */
