@@ -31,12 +31,14 @@ User can play the slices using midi notes and change the pitch with midi pitchbe
     * **note**: slices can not overlap
     * dragging the top marker edits both start and end point, keeping the slices continious
     * dragging the bottom markers edits the the start or end point of a slice.
+  + states : store and retrieve up to 16 configurations of slices
+    * normal click restores state
+    * shift click copies current state to new location
 + #### To be implemented:
   + mp3 import
   + exponential curves in ADSR
   + highlight slice when midi note is received
   + adding a bar:beat:ticks ruler for easier lining up slice points
-  + states : store and retrieve up to 16 configurations of slices
 + #### Things to rework:
   + adding and removing slice points in the waveform display, currently only the control can be used for that.
     * the control should display the number of slices.
