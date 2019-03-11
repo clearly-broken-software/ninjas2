@@ -13,6 +13,7 @@ class StateSwitch : public NanoSwitch,
   public:
     explicit StateSwitch(Window &parent, Size<uint> size) noexcept;
     explicit StateSwitch(NanoWidget *widget, Size<uint> size) noexcept;
+    void setStateSwitch(bool isEmpty);
 
   protected:
     void draw() override;
@@ -21,8 +22,10 @@ class StateSwitch : public NanoSwitch,
 
   private:
     Color fSocketColor;
-    ColorTransition fSocketColorTransition;
-
+    Color fSocketColor2;
+  //  ColorTransition fSocketColorTransition;
+    
+    
     Color fGlowIcol;
     ColorTransition fGlowIcolTransition;
 
@@ -31,7 +34,7 @@ class StateSwitch : public NanoSwitch,
 
     NanoVG::Paint fMainRectGradient;
     GradientTransition fMainRectGradientTransition;
-
+    
     DISTRHO_LEAK_DETECTOR(StateSwitch)
 };
 

@@ -347,8 +347,8 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
      case paramAttack: {
           oldValue = p_Attack[currentSlice];
           if ( oldValue != value )
-               Programs[currentProgram].program_isEmpty = false;
-          p_Attack[currentSlice]=value;
+	      Programs[currentProgram].program_isEmpty = false;
+	  p_Attack[currentSlice]=value;
           break;
      }
      case paramDecay: {
@@ -376,6 +376,7 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
           setParameterValue ( KnobID,value );
 
      }
+     fGrid[currentProgram]->setStateSwitch(Programs[currentProgram].program_isEmpty);
 
      repaint();
 }
@@ -441,6 +442,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      }
+     fGrid[currentProgram]->setStateSwitch(Programs[currentProgram].program_isEmpty);
 
 
      switch ( buttonId ) {
@@ -596,7 +598,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                setProgram ( program );
                currentProgram = program;
                Programs[currentProgram].program_isEmpty = false;
-               goto toggleswitches;
+	       goto toggleswitches;
           }
           // normal click stores current program and gets new program
           if ( ( program != currentProgram ) ) {
@@ -622,7 +624,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           for ( uint32_t i = paramSwitch01, j=0; i <= paramSwitch16; ++i,++j ) {
                editParameter ( i, true );
                setParameterValue ( i, i == buttonId ? 1.0f : 0.0f );
-               fGrid[j]->setDown ( i == buttonId );
+	       fGrid[j]->setStateSwitch(Programs[j].program_isEmpty);
+	       fGrid[j]->setDown ( i == buttonId );
                editParameter ( i, false );
           }
      }
@@ -647,6 +650,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                }
                setParameterValue ( paramNumberOfSlices, slices );
                Programs[currentProgram].program_isEmpty = false;
+	       fGrid[currentProgram]->setStateSwitch(false);
           }
           break;
      }
@@ -1050,6 +1054,7 @@ void NinjasUI::loadSample ( String fp )
      //
      setProgram ( 0 );
      Programs[0].program_isEmpty = false;
+     fGrid[0]->setStateSwitch(false);
      initPrograms();
      // toggle program 0 switch
      // editParameter ( paramSwitch01, true );
