@@ -41,6 +41,8 @@
 //nanosvg
 #define NANOSVG_IMPLEMENTATION	// Expands implementation
 #include "../../nanosvg/src/nanosvg.h"
+#define NANOSVGRAST_IMPLEMENTATION
+#include "../../nanosvg/src/nanosvgrast.h"
 
 START_NAMESPACE_DISTRHO
 
@@ -217,6 +219,8 @@ private:
     
     // svg
     struct NSVGimage* ninjas_logo;
+    NanoImage ninlogo;
+   // NanoImage ninlogo;
     
 
 

@@ -196,7 +196,15 @@ NinjasUI::NinjasUI()
      fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
 
      ninjas_logo = nsvgParseFromFile ( "/home/rob/git/ninjas2/plugins/Ninjas2/Art working directory/ninjas2logo.svg", "px", 96 );
-
+     printf("size :%f x %f\n", ninjas_logo->width, ninjas_logo->height);
+     auto logo_width = ninjas_logo->width, logo_height= ninjas_logo->height;
+     struct NSVGrasterizer* rast = nsvgCreateRasterizer();
+     uint image_size = ninjas_logo->width * ninjas_logo->height * 4;
+     
+     unsigned char img[image_size];
+     nsvgRasterize(rast, ninjas_logo, 0,0,1, img, logo_width, logo_height, logo_width*4 );
+     ninlogo = createImageFromFile("/home/rob/git/ninjas2/plugins/Ninjas2/Art working directory/ninjas2logo.png",0);
+     
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
@@ -730,33 +738,55 @@ void NinjasUI::onNanoDisplay()
           drawRuler();
      }
      // ninjas_logo
+     Size<uint> s = ninlogo.getSize();
+     
+     const float logo_width = 133;
+     const float logo_height = 30;
+     const float logo_offset_x = display_left;
+     const float logo_offset_y = 12.0f;
      beginPath();
-     moveTo ( 300,300 );
-     strokeWidth ( 2.0f );
-     strokeColor ( Color ( 255,255,0,255 ) );
-    
-    
-     for ( auto shape = ninjas_logo->shapes; shape != nullptr; shape = shape->next ) {
-
-         // strokeWidth ( shape->strokeWidth );
-          for ( auto path = shape->paths; path != NULL; path = path->next ) {
-               moveTo ( path->pts[0], path->pts[1] );
-               for ( auto i = 0; i < path->npts-1; i += 3 ) {
-                    float* p = &path->pts[i*2];
-                   
-                    bezierTo ( p[2], p[3], p[4], p[5], p[6], p[7] );
-                    
-               }
-
-               
-          }
-
-     }
-     stroke();
+     Paint logo_paint = imagePattern(logo_offset_x,logo_offset_y,logo_width,logo_height,0.0f,ninlogo,1.0f);
+     rect ( logo_offset_x,logo_offset_y,logo_width,logo_height);
+          //fillColor(Color(255,0,0,255));
+    fillPaint(logo_paint);
+     fill();
      closePath();
+     
+    
+     
+     
+     //   beginPath();
+//      const float osX = 300;
+//      const float osY = 300;
+//      //strokeWidth ( 2.0f );
+//      strokeColor ( Color ( 255,255,0,255 ) );
+//      auto shapeCount = 0;
+// 
+//      for ( auto shape = ninjas_logo->shapes;  shape != nullptr; shape = shape->next ) {
+//      strokeWidth ( shape->strokeWidth );
+//      printf ( "shapeCount %i\n",shapeCount );
+//      printf ( "stroke.cninlogo = createImageFromFile("/home/rob/git/ninjas2/plugins/Ninjas2/Art working directory/ninjas2logo.svg.png",IMAGE_GENERATE_MIPMAPS);
+ //    olor %x\n",(uint) shape->stroke.color);
+//      if ( shapeCount == 6 ) {
+//           strokeColor ( Color ( 255,0,0,255 ) );
+//      }
+// 
+//      for ( auto path = shape->paths; path != NULL; path = path->next ) {
+//           beginPath();
+//           moveTo ( path->pts[0], path->pts[1] );
+//           for ( auto i = 0; i < path->npts-1; i += 3 ) {
+//                float* p = &path->pts[i*2];
+//                bezierTo ( p[2], p[3], p[4], p[5], p[6], p[7] );
+// 
+//           }
+//           closePath();
+//      }
+//      stroke();
+// 
+//      //        printf ( "shapeCount %i\n" , shapeCount );
+//      shapeCount++;
+//}
 }
-
-
 
 
 void NinjasUI::drawWaveform()
