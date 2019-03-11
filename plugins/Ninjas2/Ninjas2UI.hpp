@@ -38,6 +38,10 @@
 #include "PlayModeSwitch.hpp"
 #include "StateSwitch.hpp"
 
+//nanosvg
+#define NANOSVG_IMPLEMENTATION	// Expands implementation
+#include "../../nanosvg/src/nanosvg.h"
+
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
@@ -210,6 +214,9 @@ private:
     // font
     FontId fNanoFont;
     FontId Labels;
+    
+    // svg
+    struct NSVGimage* ninjas_logo;
     
 
 
