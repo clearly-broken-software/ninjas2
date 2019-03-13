@@ -6,10 +6,8 @@
 namespace Ninjas2Resources
 {
     extern const unsigned char* ninjas2logoData;
-    const unsigned int ninjas2logoDataSize = 15960;
-    const unsigned int ninjas2logoWidth    = 133;
-    const unsigned int ninjas2logoHeight   = 30;
+    const unsigned int ninjas2logoDataSize = 1777;
 }
 
-#endif // BINARY_NINJAS2RESCOURCES_HPP
+#endif // BINARY_NINJAS2RESOURCES_HPP
 

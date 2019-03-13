@@ -194,7 +194,7 @@ NinjasUI::NinjasUI()
      // text
      loadSharedResources();
      fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
-     imgNinjasLogo = createImageFromRGBA(Ninjas2Resources::ninjas2logoWidth, Ninjas2Resources::ninjas2logoHeight,Ninjas2Resources::ninjas2logoData,0);
+     imgNinjasLogo = createImageFromMemory((uchar*)Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1);
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
@@ -730,9 +730,17 @@ void NinjasUI::onNanoDisplay()
      // ninjas_logo
      const float logo_offset_x = display_left;
      const float logo_offset_y = 12.0f;
+    // getSize() returns Size(0,0) , hardcoding for now
+    // const Size<uint> logoSize = imgNinjasLogo.getSize();
+    // const auto logoWidth = logoSize.getWidth();
+    //  const auto logoHeight = logoSize.getHeight();
+     const auto logoWidth = 133;
+     const auto logoHeight = 30;
+   
+     
      beginPath();
-     Paint logo_paint = imagePattern(logo_offset_x,logo_offset_y,Ninjas2Resources::ninjas2logoWidth,Ninjas2Resources::ninjas2logoHeight,0.0f,imgNinjasLogo,1.0f);
-     rect ( logo_offset_x,logo_offset_y,Ninjas2Resources::ninjas2logoWidth,Ninjas2Resources::ninjas2logoHeight);
+     Paint logo_paint = imagePattern(logo_offset_x,logo_offset_y,logoWidth,logoHeight,0,imgNinjasLogo,1.0f);
+     rect ( logo_offset_x,logo_offset_y,logoWidth,logoHeight);
      fillPaint(logo_paint);
      fill();
      closePath();
