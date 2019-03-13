@@ -195,6 +195,7 @@ NinjasUI::NinjasUI()
      loadSharedResources();
      fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
      imgNinjasLogo = createImageFromMemory((uchar*)Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1);
+     imgClearlyBroken = createImageFromMemory((uchar*)Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1);
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
@@ -205,23 +206,23 @@ void NinjasUI::positionWidgets()
      //const float width = getWidth();
      //const float height = getHeight();
 
-     fSpinBox->setAbsolutePos ( 200,440 );
-     fSliceButton->setAbsolutePos ( 200,410 );
+     fSpinBox->setAbsolutePos ( 160,470 );
+     fSliceButton->setAbsolutePos ( 160,435 );
 
      fKnobAttack->setAbsolutePos ( 660, 465 );
      fKnobDecay->setAbsolutePos ( 760, 465 );
      fKnobSustain->setAbsolutePos ( 860, 465 );
      fKnobRelease->setAbsolutePos ( 960, 465 );
 
-     fSliceModeSlider->setAbsolutePos ( 200, 540 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 230, 540 );
+     fSliceModeSlider->setAbsolutePos ( 220, 480 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 250, 480 );
 
      fSwitchFwd->setAbsolutePos ( 490, 450 );
      fSwitchRev->setAbsolutePos ( 560, 450 );
      fSwitchLoopFwd->setAbsolutePos ( 490, 510 );
      fSwitchLoopRev->setAbsolutePos ( 560, 510 );
-     fSwitchLoadSample->setAbsolutePos ( 50, 495 );
-     fLabelsBoxLoadSample->setAbsolutePos ( 30, 480 );
+     fSwitchLoadSample->setAbsolutePos ( 50, 495 -15  );
+     fLabelsBoxLoadSample->setAbsolutePos ( 30, 480 -15 );
 
      // set coordinates for grid
 
@@ -691,12 +692,19 @@ void NinjasUI::onNanoDisplay()
      rect ( display_left, display_top, display_length, display_bottom - display_top );
      fill();
      closePath();
-
-     // states
+     
+    
      beginPath();
      strokeWidth ( 2.0f );
      strokeColor ( Color ( 60,60,60,255 ) );
+     // slices box
+     roundedRect ( 160 - 5 ,430 ,160,140, 3 );
+     // states box
      roundedRect ( 330 - 5 ,450 - 20 , 120 + 5 , 120 + 20, 3 );
+     // adsr box
+     roundedRect ( 655 ,430 , 390 , 140,  3 );
+     // playmode box 
+      roundedRect( 480 ,430 , 140 , 140,  3 );
      stroke();
      closePath();
 
@@ -705,7 +713,7 @@ void NinjasUI::onNanoDisplay()
      fontSize ( 18 );
      fillColor ( Color ( 235, 196, 74, 255 ) );
      const uint adsr_label_offset = 15;
-     text ( 330+35,447,"States",NULL );
+     text ( 330+33,447,"States",NULL );
      text ( 660+adsr_label_offset,450,"Attack",NULL );
      text ( 760+adsr_label_offset,450,"Decay",NULL );
      text ( 860+adsr_label_offset - 5,450,"Sustain",NULL );
@@ -730,18 +738,28 @@ void NinjasUI::onNanoDisplay()
      // ninjas_logo
      const float logo_offset_x = display_left;
      const float logo_offset_y = 12.0f;
+     
     // getSize() returns Size(0,0) , hardcoding for now
     // const Size<uint> logoSize = imgNinjasLogo.getSize();
     // const auto logoWidth = logoSize.getWidth();
     //  const auto logoHeight = logoSize.getHeight();
      const auto logoWidth = 133;
      const auto logoHeight = 30;
-   
-     
+     const auto cbWidth = 139;
+     const auto cbHeight = 20;
+     const float clearlyBroken_offset_x= display_right - cbWidth;
+     const float clearlyBroken_offset_y= 14.0f;
      beginPath();
      Paint logo_paint = imagePattern(logo_offset_x,logo_offset_y,logoWidth,logoHeight,0,imgNinjasLogo,1.0f);
      rect ( logo_offset_x,logo_offset_y,logoWidth,logoHeight);
      fillPaint(logo_paint);
+     fill();
+     closePath();
+     
+     beginPath();
+     Paint cb_paint = imagePattern(clearlyBroken_offset_x,clearlyBroken_offset_y,cbWidth,cbHeight,0,imgClearlyBroken,1.0f);
+     rect ( clearlyBroken_offset_x,clearlyBroken_offset_y,cbWidth,cbHeight);
+     fillPaint(cb_paint);
      fill();
      closePath();
 }
@@ -940,6 +958,14 @@ void NinjasUI::drawSlices()
 //    if ( a_slices[firstSlice].sliceStart < waveView.start )
           //     continue; // don't draw marker
           if ( a_slices[firstSlice].sliceStart >= waveView.start ) {
+	       // draw marker lines
+               beginPath();
+               strokeColor ( 25,25,25,255 );
+               moveTo ( left + display_left , display_top);
+               lineTo ( left + display_left , display_bottom );
+               stroke();
+               closePath();
+	       
                beginPath();
                fillColor ( 146,232,147 );
                // top triangle
@@ -958,13 +984,7 @@ void NinjasUI::drawSlices()
                lineTo ( left + display_left     , display_bottom );
                fill();
                closePath();
-               // draw marker lines
-               beginPath();
-               strokeColor ( 25,25,25,255 );
-               moveTo ( left + display_left , display_top + 10 );
-               lineTo ( left + display_left , display_bottom );
-               stroke();
-               closePath();
+            
 
           }
           if ( a_slices[firstSlice].sliceEnd <= waveView.end ) {

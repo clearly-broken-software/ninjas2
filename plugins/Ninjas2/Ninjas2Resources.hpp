@@ -5,7 +5,10 @@
 
 namespace Ninjas2Resources
 {
-    extern const unsigned char* ninjas2logoData;
+    extern const char* ClearlyBrokenData;
+    const unsigned int ClearlyBrokenDataSize = 3485;
+
+    extern const char* ninjas2logoData;
     const unsigned int ninjas2logoDataSize = 1777;
 }
 

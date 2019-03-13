@@ -212,7 +212,7 @@ private:
     FontId fNanoFont;
     FontId Labels;
 
-    NanoImage imgNinjasLogo;
+    NanoImage imgNinjasLogo,imgClearlyBroken;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
 };
