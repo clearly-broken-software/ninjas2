@@ -11,5 +11,5 @@ namespace Ninjas2Resources
     const unsigned int ninjas2logoHeight   = 30;
 }
 
-#endif // BINARY_NINJAS2RESOURCES_HPP
+#endif // BINARY_NINJAS2RESCOURCES_HPP
 
