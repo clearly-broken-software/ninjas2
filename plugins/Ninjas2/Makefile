@@ -49,7 +49,9 @@ FILES_UI  = \
 	Widgets/src/PlayModeSwitch.cpp \
 	Resources/fontawesome_ttf.cpp \
 	Widgets/src/StateSwitch.cpp \
-	Ninjas2UI.cpp
+	Ninjas2UI.cpp \
+	Ninjas2Resources.cpp
+	
 
 # --------------------------------------------------------------
 # Do some magic

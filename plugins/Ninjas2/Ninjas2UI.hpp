@@ -37,12 +37,7 @@
 #include "TextButton.hpp"
 #include "PlayModeSwitch.hpp"
 #include "StateSwitch.hpp"
-
-//nanosvg
-#define NANOSVG_IMPLEMENTATION	// Expands implementation
-#include "../../nanosvg/src/nanosvg.h"
-#define NANOSVGRAST_IMPLEMENTATION
-#include "../../nanosvg/src/nanosvgrast.h"
+#include "Ninjas2Resources.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -216,14 +211,8 @@ private:
     // font
     FontId fNanoFont;
     FontId Labels;
-    
-    // svg
-    struct NSVGimage* ninjas_logo;
-    NanoImage ninlogo;
-   // NanoImage ninlogo;
-    
 
-
+    NanoImage imgNinjasLogo;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
 };
