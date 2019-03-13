@@ -194,7 +194,7 @@ NinjasUI::NinjasUI()
      // text
      loadSharedResources();
      fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
-     imgNinjasLogo = createImageFromMemory(Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,0);
+     imgNinjasLogo = createImageFromRGBA(Ninjas2Resources::ninjas2logoWidth, Ninjas2Resources::ninjas2logoHeight,Ninjas2Resources::ninjas2logoData,0);
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
