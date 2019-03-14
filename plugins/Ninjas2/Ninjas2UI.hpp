@@ -94,7 +94,8 @@ private:
     void drawWaveform();
     void drawRuler();
     void drawOnsets();
-    void drawSlices();
+    void drawSliceMarkers();
+    void drawCurrentSlice();
     void getVisibleSlices ( int &firstSice, int &lastSlice );
     void selectSlice();
     void editCurrentSlice();

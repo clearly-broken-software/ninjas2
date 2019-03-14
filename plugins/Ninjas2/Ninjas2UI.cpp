@@ -194,8 +194,8 @@ NinjasUI::NinjasUI()
      // text
      loadSharedResources();
      fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
-     imgNinjasLogo = createImageFromMemory((uchar*)Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1);
-     imgClearlyBroken = createImageFromMemory((uchar*)Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1);
+     imgNinjasLogo = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1 );
+     imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
      // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
@@ -221,7 +221,7 @@ void NinjasUI::positionWidgets()
      fSwitchRev->setAbsolutePos ( 560, 450 );
      fSwitchLoopFwd->setAbsolutePos ( 490, 510 );
      fSwitchLoopRev->setAbsolutePos ( 560, 510 );
-     fSwitchLoadSample->setAbsolutePos ( 50, 495 -15  );
+     fSwitchLoadSample->setAbsolutePos ( 50, 495 -15 );
      fLabelsBoxLoadSample->setAbsolutePos ( 30, 480 -15 );
 
      // set coordinates for grid
@@ -692,8 +692,8 @@ void NinjasUI::onNanoDisplay()
      rect ( display_left, display_top, display_length, display_bottom - display_top );
      fill();
      closePath();
-     
-    
+
+
      beginPath();
      strokeWidth ( 2.0f );
      strokeColor ( Color ( 60,60,60,255 ) );
@@ -703,8 +703,8 @@ void NinjasUI::onNanoDisplay()
      roundedRect ( 330 - 5 ,450 - 20 , 120 + 5 , 120 + 20, 3 );
      // adsr box
      roundedRect ( 655 ,430 , 390 , 140,  3 );
-     // playmode box 
-      roundedRect( 480 ,430 , 140 , 140,  3 );
+     // playmode box
+     roundedRect ( 480 ,430 , 140 , 140,  3 );
      stroke();
      closePath();
 
@@ -722,10 +722,12 @@ void NinjasUI::onNanoDisplay()
 
 
      if ( sample_is_loaded ) {
-          drawSlices();
+          drawCurrentSlice();
           drawWaveform();
+          drawSliceMarkers();
           // draw center line
           beginPath();
+          strokeWidth ( 1.0f );
           strokeColor ( 0,0,0,255 );
           moveTo ( display_left,display_center );
           lineTo ( display_right,display_center );
@@ -738,11 +740,11 @@ void NinjasUI::onNanoDisplay()
      // ninjas_logo
      const float logo_offset_x = display_left;
      const float logo_offset_y = 12.0f;
-     
-    // getSize() returns Size(0,0) , hardcoding for now
-    // const Size<uint> logoSize = imgNinjasLogo.getSize();
-    // const auto logoWidth = logoSize.getWidth();
-    //  const auto logoHeight = logoSize.getHeight();
+
+     // getSize() returns Size(0,0) , hardcoding for now
+     // const Size<uint> logoSize = imgNinjasLogo.getSize();
+     // const auto logoWidth = logoSize.getWidth();
+     //  const auto logoHeight = logoSize.getHeight();
      const auto logoWidth = 133;
      const auto logoHeight = 30;
      const auto cbWidth = 139;
@@ -750,16 +752,16 @@ void NinjasUI::onNanoDisplay()
      const float clearlyBroken_offset_x= display_right - cbWidth;
      const float clearlyBroken_offset_y= 14.0f;
      beginPath();
-     Paint logo_paint = imagePattern(logo_offset_x,logo_offset_y,logoWidth,logoHeight,0,imgNinjasLogo,1.0f);
-     rect ( logo_offset_x,logo_offset_y,logoWidth,logoHeight);
-     fillPaint(logo_paint);
+     Paint logo_paint = imagePattern ( logo_offset_x,logo_offset_y,logoWidth,logoHeight,0,imgNinjasLogo,1.0f );
+     rect ( logo_offset_x,logo_offset_y,logoWidth,logoHeight );
+     fillPaint ( logo_paint );
      fill();
      closePath();
-     
+
      beginPath();
-     Paint cb_paint = imagePattern(clearlyBroken_offset_x,clearlyBroken_offset_y,cbWidth,cbHeight,0,imgClearlyBroken,1.0f);
-     rect ( clearlyBroken_offset_x,clearlyBroken_offset_y,cbWidth,cbHeight);
-     fillPaint(cb_paint);
+     Paint cb_paint = imagePattern ( clearlyBroken_offset_x,clearlyBroken_offset_y,cbWidth,cbHeight,0,imgClearlyBroken,1.0f );
+     rect ( clearlyBroken_offset_x,clearlyBroken_offset_y,cbWidth,cbHeight );
+     fillPaint ( cb_paint );
      fill();
      closePath();
 }
@@ -919,7 +921,45 @@ void NinjasUI::drawRuler()
      closePath();
 }
 
-void NinjasUI::drawSlices()
+void NinjasUI::drawCurrentSlice()
+{
+     //FIXME refactor this .. somehow
+     double view = waveView.end - waveView.start; // set these when zooming in
+     double pixels_per_sample =  display_length / view;
+     int firstSlice = 0, lastSlice = 0;
+     getVisibleSlices ( firstSlice,lastSlice );
+     for ( uint left,right; firstSlice < lastSlice; firstSlice++ ) {
+          if ( a_slices[firstSlice].sliceStart < waveView.start ) {
+               left = 0;
+          } else {
+               left = ( a_slices[firstSlice].sliceStart - waveView.start ) * pixels_per_sample;
+          }
+          if ( a_slices[firstSlice].sliceEnd > waveView.end ) {
+               right = 1140;
+          } else {
+               right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * pixels_per_sample;
+          }
+
+          // highlight selected slice
+          if ( firstSlice == currentSlice && slices > 1 ) {
+               beginPath();
+
+               fillPaint ( linearGradient (
+                                left+display_left, display_top, right + display_left, display_bottom,
+                                Color ( 218,202,134,128 ) ,
+                                Color ( 234,151,139,128 )
+                           )
+                         );
+               rect ( left+display_left,display_top,right - left,display_height*2 );
+               fill();
+               closePath();
+          }
+     }
+
+}
+
+
+void NinjasUI::drawSliceMarkers()
 {
      double view = waveView.end - waveView.start; // set these when zooming in
      double pixels_per_sample =  display_length / view;
@@ -939,33 +979,33 @@ void NinjasUI::drawSlices()
           }
 
 
-          // highlight selected slice
-          if ( firstSlice == currentSlice && slices > 1 ) {
-               beginPath();
-
-               fillPaint ( linearGradient (
-                                left+display_left, display_top, right + display_left, display_bottom,
-                                Color ( 218,202,134,128 ) ,
-                                Color ( 234,151,139,128 )
-                           )
-                         );
-               rect ( left+display_left,display_top,right - left,display_height*2 );
-               fill();
-               closePath();
-          }
+//           // highlight selected slice
+//           if ( firstSlice == currentSlice && slices > 1 ) {
+//                beginPath();
+//
+//                fillPaint ( linearGradient (
+//                                 left+display_left, display_top, right + display_left, display_bottom,
+//                                 Color ( 218,202,134,128 ) ,
+//                                 Color ( 234,151,139,128 )
+//                            )
+//                          );
+//                rect ( left+display_left,display_top,right - left,display_height*2 );
+//                fill();
+//                closePath();
+//           }
 
           // draw marker + hitboxes
 //    if ( a_slices[firstSlice].sliceStart < waveView.start )
           //     continue; // don't draw marker
           if ( a_slices[firstSlice].sliceStart >= waveView.start ) {
-	       // draw marker lines
+               // draw marker lines
                beginPath();
                strokeColor ( 25,25,25,255 );
-               moveTo ( left + display_left , display_top);
+               moveTo ( left + display_left , display_top );
                lineTo ( left + display_left , display_bottom );
                stroke();
                closePath();
-	       
+
                beginPath();
                fillColor ( 146,232,147 );
                // top triangle
@@ -984,7 +1024,7 @@ void NinjasUI::drawSlices()
                lineTo ( left + display_left     , display_bottom );
                fill();
                closePath();
-            
+
 
           }
           if ( a_slices[firstSlice].sliceEnd <= waveView.end ) {
@@ -997,12 +1037,15 @@ void NinjasUI::drawSlices()
                lineTo ( right + display_left - 10, display_bottom );
                fill();
                closePath();
+               // marker
+               // FIXME don't draw right marker if right == firstSlice - 1(left)
                beginPath();
                strokeColor ( 25,25,25,255 );
-               moveTo ( right + display_left , display_top + 10 );
+               moveTo ( right + display_left , display_top );
                lineTo ( right + display_left , display_bottom );
                stroke();
                closePath();
+
           }
 
           // set hitboxes
@@ -1377,7 +1420,7 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
           waveView.zoom = 1.0f;
      float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
      uint length = int ( samples_per_pixel * float ( display_width ) );
-     waveView.start = int ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
+     waveView.start = uint ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
 //     if ( waveView.start < 0 )
 //         waveView.start = 0;
      waveView.end = waveView.start+length;
@@ -1385,6 +1428,10 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
           waveView.end = waveform.size();
           waveView.start = waveView.end-length;
      }
+     // std::cout << "waveView.max_zoom = " << waveView.max_zoom << " waveView.zoom = "<< waveView.zoom << std::endl;
+     // std::cout << "samples_per_pixel = " << samples_per_pixel << std::endl;
+     // std::cout << "length = " << length << " center = " << center << std::endl;
+     // std::cout << "waveView.start = " << waveView.start << " waveView.end = " << waveView.end << std::endl;
      repaint();
      return true;
 }
@@ -1414,10 +1461,13 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
 
           float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
           uint length = int ( samples_per_pixel * float ( display_width ) );
-          waveView.start = waveView.start - int ( float ( mouseDistance )  *  samples_per_pixel );
-          /*      if ( waveView.start < 0 )
-                    waveView.start = 0;
-          */      waveView.end = waveView.start+length;
+          uint underflowcheck = waveView.start - uint ( float ( mouseDistance )  *  samples_per_pixel );
+          if ( underflowcheck > waveView.end )
+               waveView.start = 0;
+          else
+               waveView.start = underflowcheck;
+
+          waveView.end = waveView.start+length;
           if ( waveView.end > waveform.size() )
                waveView.end = waveform.size();
           repaint();
@@ -1437,7 +1487,6 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
 
 void NinjasUI::selectSlice()
 {
-
      // find all slices shown
      int firstSlice = 0, lastSlice = 0;
      getVisibleSlices ( firstSlice, lastSlice );
@@ -1556,7 +1605,7 @@ void NinjasUI::editCurrentSlice()
           break;
      }
      default: {
-          std::cout << "wut happenend? " << editSliceStartEnd << std::endl;
+          std::cout << "wut happenend?" << editSliceStartEnd << std::endl;
      }
      }
      repaint();
