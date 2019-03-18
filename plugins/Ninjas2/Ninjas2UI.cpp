@@ -185,7 +185,7 @@ NinjasUI::NinjasUI()
      // grid
 
      for ( int i = paramSwitch01, j = 0 ; i <= paramSwitch16; ++i , ++j ) {
-          fGrid[j] = new StateSwitch ( window, gridSize );
+          fGrid[j] = new StateSwitch ( window, gridSize);
           fGrid[j]->setId ( i );
           fGrid[j]->setCallback ( this );
      }
@@ -193,11 +193,11 @@ NinjasUI::NinjasUI()
      positionWidgets();
      // text
      loadSharedResources();
-     fNanoFont = findFont ( NANOVG_DEJAVU_SANS_TTF );
+     fNanoFont = createFontFromMemory("dungeon",fonts::dungeon_ttf,fonts::dungeon_ttf_size, false);
      imgNinjasLogo = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1 );
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
-     // loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
+     loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
 }
 
@@ -206,23 +206,23 @@ void NinjasUI::positionWidgets()
      //const float width = getWidth();
      //const float height = getHeight();
 
-     fSpinBox->setAbsolutePos ( 160,470 );
-     fSliceButton->setAbsolutePos ( 160,435 );
+     fSpinBox->setAbsolutePos ( 222,486 );
+     fSliceButton->setAbsolutePos ( 222,451 );
 
-     fKnobAttack->setAbsolutePos ( 660, 465 );
-     fKnobDecay->setAbsolutePos ( 760, 465 );
-     fKnobSustain->setAbsolutePos ( 860, 465 );
-     fKnobRelease->setAbsolutePos ( 960, 465 );
+     fKnobAttack->setAbsolutePos ( 791, 465 );
+     fKnobDecay->setAbsolutePos ( 883, 465 );
+     fKnobSustain->setAbsolutePos ( 975, 465 );
+     fKnobRelease->setAbsolutePos ( 1067, 465 );
 
-     fSliceModeSlider->setAbsolutePos ( 220, 480 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 250, 480 );
+     fSliceModeSlider->setAbsolutePos ( 275, 489 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 293, 484 );
 
-     fSwitchFwd->setAbsolutePos ( 490, 450 );
-     fSwitchRev->setAbsolutePos ( 560, 450 );
-     fSwitchLoopFwd->setAbsolutePos ( 490, 510 );
-     fSwitchLoopRev->setAbsolutePos ( 560, 510 );
-     fSwitchLoadSample->setAbsolutePos ( 50, 495 -15 );
-     fLabelsBoxLoadSample->setAbsolutePos ( 30, 480 -15 );
+     fSwitchFwd->setAbsolutePos ( 592, 449 );
+     fSwitchRev->setAbsolutePos ( 654, 449 );
+     fSwitchLoopFwd->setAbsolutePos ( 592, 511 );
+     fSwitchLoopRev->setAbsolutePos ( 654, 511 );
+     fSwitchLoadSample->setAbsolutePos ( 51+24, 470+18 );
+     fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
 
      // set coordinates for grid
 
@@ -231,7 +231,7 @@ void NinjasUI::positionWidgets()
      for ( int y = 0 ; y < 4 ; ++y ) {
           for ( int x = 0 ; x < 4 ; ++x ) {
                int index = y * 4 + x;
-               fGrid[index]->setAbsolutePos ( 330+x*30,450+y*30 );
+               fGrid[index]->setAbsolutePos ( 412+x*30,448+y*30 );
           } // for x
      } // for y
 }
@@ -696,28 +696,82 @@ void NinjasUI::onNanoDisplay()
 
      beginPath();
      strokeWidth ( 2.0f );
-     strokeColor ( Color ( 60,60,60,255 ) );
+     strokeColor ( Color ( 255,221,85,255 ) );
+     // sample box
+     roundedRect (  31, 440, 130, 130, 4);
+     
      // slices box
-     roundedRect ( 160 - 5 ,430 ,160,140, 3 );
+     roundedRect ( 207, 440 ,153, 130, 4 );
+     
      // states box
-     roundedRect ( 330 - 5 ,450 - 20 , 120 + 5 , 120 + 20, 3 );
-     // adsr box
-     roundedRect ( 655 ,430 , 390 , 140,  3 );
+     roundedRect ( 405 ,440 , 130 , 130 , 4 );
+     
      // playmode box
-     roundedRect ( 480 ,430 , 140 , 140,  3 );
+     roundedRect ( 582 ,440 , 130 , 130,  4 );
+     
+     // adsr box
+     roundedRect ( 768 ,450 , 400, 110,  4 );
+     
+     
      stroke();
+     closePath();
+     
+     // box labels back 
+     fillColor ( Color ( 40,40,40, 255 ) );
+    
+     beginPath();
+     rect( 55,431, 80, 18); // sample
+     fill();
      closePath();
 
      beginPath();
+     rect(252,431,60,18); // slices
+     fill();
+     closePath();
+     
+     beginPath();
+     rect(435 ,431, 70, 18); // states
+     fill();
+     closePath();
+     
+     beginPath();
+     rect( 588,431, 118, 18); // playmodes
+     fill();
+     closePath();
+     
+     beginPath();
+     rect( 794,441, 70, 15); // attack
+     fill();
+     closePath();
+     
+     beginPath();
+     rect( 889,441, 66, 18); // decay
+     fill();
+     closePath();
+     
+     beginPath();  
+     rect( 974,441, 80, 18); // sustain
+     fill();
+     closePath();
+     
+     beginPath();
+     rect( 1066,441, 80, 18); // release
+     fill();
+     closePath();
+ 
+     beginPath();
      fontFaceId ( fNanoFont );
-     fontSize ( 18 );
-     fillColor ( Color ( 235, 196, 74, 255 ) );
-     const uint adsr_label_offset = 15;
-     text ( 330+33,447,"States",NULL );
-     text ( 660+adsr_label_offset,450,"Attack",NULL );
-     text ( 760+adsr_label_offset,450,"Decay",NULL );
-     text ( 860+adsr_label_offset - 5,450,"Sustain",NULL );
-     text ( 960+adsr_label_offset - 5,450,"Release",NULL );
+     fontSize ( 22 );
+     fillColor ( Color (255,221,85,255 ) );
+    // const uint adsr_label_offset = 15;
+     text ( 56,445,"sample",NULL );
+     text ( 253,445,"slices",NULL );
+     text ( 436,445,"states",NULL );
+     text ( 589,444,"playmodes",NULL );
+     text ( 795,455,"attack",NULL );
+     text ( 890,455,"decay",NULL );
+     text ( 975,455,"sustain",NULL );
+     text ( 1067,455,"release",NULL );
      closePath();
 
 

@@ -47,7 +47,7 @@ FILES_UI  = \
 	Widgets/src/NanoSpinBox.cpp \
 	Widgets/src/TextButton.cpp \
 	Widgets/src/PlayModeSwitch.cpp \
-	Resources/fontawesome_ttf.cpp \
+	Resources/fonts.cpp \
 	Widgets/src/StateSwitch.cpp \
 	Ninjas2UI.cpp \
 	Ninjas2Resources.cpp

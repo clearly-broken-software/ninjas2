@@ -33,7 +33,7 @@ PlayModeSwitch::PlayModeSwitch(Window &parent, Size<uint> size) noexcept : NanoS
 
     fMainRectGradient = radialGradient(mainRectCenter, mainRectCenter, 0.5f, mainRectHalfWidth, Color(113, 113, 113, 255), Color(73, 73, 73, 0));
     fMainRectGradientTransition = GradientTransition(0.010f, &fMainRectGradient, targetGradient);
-    fFontAwesome = createFontFromMemory("fontawesome", font_fontawesome::fontawesome_ttf, font_fontawesome::fontawesome_ttf_size, false);
+    fFontAwesome = createFontFromMemory("fontawesome", fonts::fontawesome_ttf, fonts::fontawesome_ttf_size, false);
  
 }
 
@@ -67,7 +67,7 @@ PlayModeSwitch::PlayModeSwitch(NanoWidget *widget, Size<uint> size) noexcept : N
 
     fMainRectGradient = radialGradient(mainRectCenter, mainRectCenter, 0.5f, mainRectHalfWidth, Color(113, 113, 113, 255), Color(73, 73, 73, 0));
     fMainRectGradientTransition = GradientTransition(0.010f, &fMainRectGradient, targetGradient);
-    fFontAwesome = createFontFromMemory("fontawesome", font_fontawesome::fontawesome_ttf, font_fontawesome::fontawesome_ttf_size, false);
+    fFontAwesome = createFontFromMemory("fontawesome", fonts::fontawesome_ttf, fonts::fontawesome_ttf_size, false);
     
 }
 

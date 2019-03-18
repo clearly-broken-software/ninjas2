@@ -4,7 +4,7 @@
 #include "NanoSwitch.hpp"
 #include "Animation.hpp"
 #include "Window.hpp"
-#include "../Resources/fontawesome_ttf.hpp"
+#include "../Resources/fonts.hpp"
 
 START_NAMESPACE_DISTRHO
 
