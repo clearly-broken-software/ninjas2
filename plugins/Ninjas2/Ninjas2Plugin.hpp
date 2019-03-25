@@ -105,6 +105,10 @@ private:
   void createSlicesOnsets ();
   int loadSample(std::string fp);
   int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
+  void getProgram( int program);
+  void setProgram( int program);
+  void initPrograms();
+  
 
   // Paramaters for 128 slices
   float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
@@ -183,7 +187,7 @@ private:
     unsigned long int sliceStart;
     unsigned long int sliceEnd;
     slicePlayMode playmode;
-    bool sliceActive;
+    // bool sliceActive;
   };
   
   Slice a_slices[128];
@@ -203,6 +207,24 @@ private:
   bool bypass; // {true};
   std::vector<uint_t>onsets;
   double samplerate;
+  float programNumber;
+  int programGrid;
+  
+  struct program {
+        int program_slices; // number of slices ..
+        int program_currentslice;
+        Slice program_a_slices[128];
+        float program_Attack[128];
+        float program_Decay[128];
+        float program_Sustain[128];
+        float program_Release[128];
+        float program_OneShotFwd[128];
+        float program_OneShotRev[128];
+        float program_LoopFwd[128];
+        float program_LoopRev[128];
+	bool program_isEmpty;
+  };
+  program Programs[16];
    
   /*
    * Set our plugin class as non-copyable and add a leak detector just in case.
