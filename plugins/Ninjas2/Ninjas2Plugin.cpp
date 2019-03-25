@@ -225,6 +225,7 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.symbol  = "programnumber";
           break;
      }
+     }
      if ( index >= programSwitch00 && index <= programSwitch15 ) {
           parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
           parameter.ranges.def = 0.0f;
@@ -234,7 +235,7 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.symbol  = "switch"+String ( index - programSwitch00 );
 //       parameter.midiCC = index - paramSwitch01 + 33;
      }
-     }
+     
 }
 
 void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& defaultStateValue )

@@ -382,6 +382,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      case paramOneShotFwd: {
           oldValue = p_OneShotFwd[currentSlice];
           if ( oldValue != value )
+               setProgramGrid(programNumber);
                //  Programs[currentProgram].program_isEmpty = false;
                break;
      }
@@ -1614,6 +1615,11 @@ void NinjasUI::editSlice()
           stateSlice.append ( " " );
      }
      setState ( "slices", stateSlice.c_str() );
+
+}
+
+void NinjasUI::setProgramGrid(int program)
+{
 
 }
 

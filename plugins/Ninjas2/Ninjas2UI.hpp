@@ -101,15 +101,13 @@ private:
     void editCurrentSlice();
     void editSlice();
     bool sampleIsInSlice ( long unsigned int sample );
-    void getProgram ( int program );
-    void setProgram ( int program );
-    void initPrograms();
-    void initParameters();
-
+    void setProgramGrid(int program);
+  
     float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
     float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
     std::string dirnameOf ( const std::string& fname );
     std::string toTime ( double time, double round_up );
+    int programNumber; // 0 - 15
 
     //
     bool mouseDragging;
