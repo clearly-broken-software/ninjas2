@@ -4,6 +4,9 @@ Rewrite of Ninjas, a sample slicer audio plugin.
 This plugin uses the [DPF](https://github.com/DISTRHO/DPF) for the creation of audio plugins in [lv2](http://lv2plug.in/), vst2 and dssi formats. 
 A stand alone [jack](http://jackaudio.org/) app is also compiled
 
+![Screenshot of Ninjas2](https://raw.githubusercontent.com/rghvdberg/ninjas2/master/plugins/Ninjas2/Artwork/Ninjas2.png "Ninjas2 Screenshot")
+
+
 #### Goal: 
 Easy to use sample slicer, quick slicing of sample and mapping slices to midi note numbers.
 The target platform is Linux.
@@ -12,6 +15,8 @@ The target platform is Linux.
 Primarily targeted at chopping up loops or short ( ≈ 10 - 20 seconds) samples. Think drum loops, vocal chops etc.
 Currently there's no limit on imported sample lenght.
 User can play the slices using midi notes and change the pitch with midi pitchbend.
+
+
 
 #### Features:
 + #### Implemented:
