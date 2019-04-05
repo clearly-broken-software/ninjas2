@@ -38,7 +38,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-     : Plugin ( paramCount, 0, 4 ) //1 parameter, 0 programs (presets) , 4 states
+     : Plugin ( paramCount, 0, 15 ) //1 parameter, 0 programs (presets) , 15 states
 {
      // init parameters
 
@@ -89,6 +89,7 @@ NinjasPlugin::NinjasPlugin()
      getOnsets ();
      createSlicesRaw();
      bypass = false;
+     initPrograms();
 
 
 }
@@ -235,7 +236,7 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.symbol  = "switch"+String ( index - programSwitch00 );
 //       parameter.midiCC = index - paramSwitch01 + 33;
      }
-     
+
 }
 
 void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& defaultStateValue )
@@ -247,36 +248,142 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
           break;
      }
      case 1: {
-          stateKey = "slices";
+          stateKey = "slicesUI";
           defaultStateValue = "empty";
           break;
      }
 
      case 2: {
-          stateKey = "programgrid";
-          defaultStateValue = "1"; // 16 bit 'register'
+          stateKey = "slicePlugin";
+          defaultStateValue = "empty";
+          break;
      }
 
      case 3: {
-          stateKey = "storeprogram";
+          stateKey = "programGrid";
+          defaultStateValue = "1"; // 16 bit 'register'
+          break;
+     }
+
+     case 4: {
+          stateKey = "storeProgram";
           defaultStateValue = "0";
+          break;
      }
+     case 5: {
+          stateKey = "numberOfSlices";
+          defaultStateValue = "1";
+          break;
      }
-}
+     case 6: {
+          stateKey = "sliceMode";
+          defaultStateValue = "0";
+          break;
+     }
+     case 7: {
+          stateKey = "oneShotFwd";
+          defaultStateValue = "1";
+          break;
+     }
+     case 8: {
+          stateKey = "oneShotRev";
+          defaultStateValue = "0";
+          break;
+     }
+     case 9: {
+          stateKey = "loopFwd";
+          defaultStateValue = "0";
+          break;
+     }
+     case 10: {
+          stateKey = "loopRev";
+          defaultStateValue = "0";
+          break;
+     }
+     case 11: {
+          stateKey = "attack";
+          defaultStateValue = "0.001";
+          break;
+     }
+     case 12: {
+          stateKey = "decay";
+          defaultStateValue = "0.001";
+          break;
+     }
+     case 13: {
+          stateKey = "sustain";
+          defaultStateValue = "1.0";
+          break;
+     }
+     case 14: {
+          stateKey = "release";
+          defaultStateValue = "0.001";
+          break;
+     }
+     }// switch
+
+
+} // initState
 
 String NinjasPlugin::getState ( const char* key ) const
 {
      if ( std::strcmp ( key, "filepath" ) )
           return String ( "filepath" );
 
-     if ( std::strcmp ( key, "slices" ) )
+     if ( std::strcmp ( key, "slicesUI" ) )
           return String ( "slices" );
+     
+     if ( std::strcmp ( key, "slicePlugin"))
+       return String ( "slicesPlugin");
 
-     if ( std::strcmp ( key, "programgrid" ) )
-          return String ( "programgrid" ) ;
+     if ( std::strcmp ( key, "programGrid" ) )
+          return String ( std::to_string ( programGrid ).c_str() ) ;
 
-     if ( std::strcmp ( key, "storeprogram" ) )
-          return String ( "storeprogram" );
+     if ( std::strcmp ( key, "storeProgram" ) )
+          return String ( std::to_string ( programNumber ).c_str() );
+
+     if ( std::strcmp ( key, "numberOfSlices" ) )
+          return String ( std::to_string ( slices ).c_str() );
+
+     if ( std::strcmp ( key, "sliceMode" ) )
+          return String ( std::to_string ( slicemode ).c_str() );
+
+     if ( std::strcmp ( key, "oneShotFwd" ) ) {
+          if ( a_slices[currentSlice].playmode == ONE_SHOT_FWD )
+               return String ( "1" );
+          else return String ( "0" );
+     }
+
+     if ( std::strcmp ( key, "oneShotRev" ) ) {
+          if ( a_slices[currentSlice].playmode == ONE_SHOT_REV )
+               return String ( "1" );
+          else return String ( "0" );
+     }
+
+     if ( std::strcmp ( key, "loopFwd" ) ) {
+
+          if ( a_slices[currentSlice].playmode == LOOP_FWD )
+               return String ( "1" );
+          else return String ( "0" );
+     }
+
+     if ( std::strcmp ( key, "loopRev" ) ) {
+          if ( a_slices[currentSlice].playmode == LOOP_REV )
+               return String ( "1" );
+          else return String ( "0" );
+     }
+
+     if ( std::strcmp ( key, "attack" ) )
+          return String ( std::to_string ( p_Attack[ ( currentSlice + 60 ) %128] ).c_str() );
+
+     if ( std::strcmp ( key, "decay" ) )
+          return String ( std::to_string ( p_Decay[ ( currentSlice + 60 ) %128] ).c_str() );
+
+     if ( std::strcmp ( key, "sustain" ) )
+          return String ( std::to_string ( p_Sustain[ ( currentSlice + 60 ) %128] ).c_str() );
+
+     if ( std::strcmp ( key, "release" ) )
+          return String ( std::to_string ( p_Release[ ( currentSlice + 60 ) %128] ).c_str() );
 
      return String ( "something went wrong" );
 
@@ -326,7 +433,8 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      }
 
      if ( strcmp ( key, "programgrid" ) == 0 ) {
-          programGrid = std::stoi ( value, nullptr, 2 );
+          std::cout << "NinjasPlugin::setState " << value << std::endl;
+          programGrid = std::stoi ( value );
      }
 
      if ( strcmp ( key, "storeprogram" ) == 0 ) {
@@ -412,6 +520,7 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
+     std::cerr << "NinjasPlugin::setParameterValue(" << index <<", "<<value<<")"<<std::endl;
      int voice = ( currentSlice + 60 ) % 128;
 
      switch ( index ) {
@@ -457,12 +566,25 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           else
                createSlicesOnsets ();
           break;
+     case paramCurrentSlice:
+          currentSlice = value;
+          break;
+     default:
+          ;
+          // std::cerr << "NinjasPlugin::setParameterValue unexpected parameter. index = " << index << "value = " <<value<< std::endl;
      } // switch
 
      if ( index >= programSwitch00 && index <= programSwitch15 ) {
           p_Grid[index - programSwitch00]=value;
           if ( value == 1 ) {
-               programNumber = index - programSwitch00;
+               int program = index - programSwitch00;
+               std::cout << "current program = " << programNumber << std::endl;
+               std::cout << "program = " << program << std::endl;
+               if ( programNumber != program ) {
+                    setProgram ( programNumber );
+                    getProgram ( program );
+                    programNumber = program;
+               }
           }
      }
 } // setParameterValue
@@ -844,6 +966,7 @@ int NinjasPlugin::loadSample ( std::string fp )
 
 void NinjasPlugin::getProgram ( int program )
 {
+     std::cout << "getProgram " << program << std::endl;
      currentSlice = Programs[program].program_currentslice;
      slices = Programs[program].program_slices;
      for ( int i=0; i < 128 ; i++ ) {
@@ -857,10 +980,18 @@ void NinjasPlugin::getProgram ( int program )
           p_LoopFwd[i]=Programs[program].program_LoopFwd[i];
           p_LoopRev[i]=Programs[program].program_LoopRev[i];
      }
-     // set slices knob back
-     setParameterValue ( paramNumberOfSlices, slices );
-//     fSpinBox->setValue ( slices );
-//     recallSliceSettings ( currentSlice );
+     setState ( "numberOfSlices",String ( slices ) );
+     setState ( "attack",String ( p_Attack[currentSlice] ) );
+     setState ( "decay", String ( p_Decay[currentSlice] ) );
+     setState ( "release", String ( p_Release[currentSlice] ) );
+     setState ( "oneShotFwd",String ( p_OneShotFwd[currentSlice] ) );
+     setState ( "oneShotRev",String ( p_OneShotRev[currentSlice] ) );
+     setState ( "oneShotRev",String ( p_OneShotRev[currentSlice] ) );
+     setState ( "loopFwd", String ( p_LoopFwd[currentSlice] ) );
+     setState ( "loopRev", String ( p_LoopRev[currentSlice] ) );
+     editSlice(); //TODO better name ..
+
+
 }
 void NinjasPlugin::setProgram ( int program )
 {
@@ -885,16 +1016,30 @@ void NinjasPlugin::initPrograms()
           Programs[p].program_slices = 1;
           Programs[p].program_currentslice = 0;
           std::fill_n ( Programs[p].program_a_slices, 128, Slice() );
-          std::fill_n ( Programs[p].program_Attack, 128, 0.5f );
-          std::fill_n ( Programs[p].program_Decay,128, 0.5f );
+          std::fill_n ( Programs[p].program_Attack, 128, 0.001f );
+          std::fill_n ( Programs[p].program_Decay,128, 0.001f );
           std::fill_n ( Programs[p].program_Sustain, 128, 1.0f );
-          std::fill_n ( Programs[p].program_Release, 128, 0.5f );
+          std::fill_n ( Programs[p].program_Release, 128, 0.001f );
           std::fill_n ( Programs[p].program_OneShotFwd, 128, 1.0f );
           std::fill_n ( Programs[p].program_OneShotRev,128, 0.0f );
           std::fill_n ( Programs[p].program_LoopFwd, 128, 0.0f );
           std::fill_n ( Programs[p].program_LoopRev, 128, 0.0f );
      }
      programNumber = 0;
+}
+
+void NinjasPlugin::editSlice()
+{
+     stateSlice.clear();
+
+     for ( int i=0; i < 128 ; i++ ) {
+          stateSlice.append ( std::to_string ( a_slices[i].sliceStart ) );
+          stateSlice.append ( " " );
+          stateSlice.append ( std::to_string ( a_slices[i].sliceEnd ) );
+          stateSlice.append ( " " );
+     }
+     setState ( "slicesDSP", stateSlice.c_str() );
+
 }
 
 

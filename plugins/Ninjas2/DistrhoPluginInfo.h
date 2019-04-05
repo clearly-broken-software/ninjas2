@@ -35,37 +35,37 @@
 enum Parameters
 {
     paramNumberOfSlices = 0,
-    paramSlice,
-    paramAttack,
-    paramDecay,
-    paramSustain,
-    paramRelease,
-    paramOneShotFwd,
-    paramOneShotRev,
-    paramLoopFwd,
-    paramLoopRev,
-    paramLoadSample,
-    paramSliceMode,
-    paramCurrentSlice,
+    paramSlice, // 1
+    paramAttack, // 2
+    paramDecay, // 3
+    paramSustain, // 4
+    paramRelease, // 5
+    paramOneShotFwd, // 6
+    paramOneShotRev, // 7
+    paramLoopFwd, // 8
+    paramLoopRev, // 9
+    paramLoadSample, // 10
+    paramSliceMode, // 11
+    paramCurrentSlice, // 12
    
-    programSwitch00,
-    programSwitch01,
-    programSwitch02,
-    programSwitch03,
-    programSwitch04,
-    programSwitch05,
-    programSwitch06,
-    programSwitch07,
-    programSwitch08,
-    programSwitch09,
-    programSwitch10,
-    programSwitch11,
-    programSwitch12,
-    programSwitch13,
-    programSwitch14,
-    programSwitch15,
+    programSwitch00, // 13
+    programSwitch01, // 14
+    programSwitch02, // 15
+    programSwitch03, // 16
+    programSwitch04, // 17
+    programSwitch05, // 18
+    programSwitch06, // 19
+    programSwitch07, // 20
+    programSwitch08, // 21
+    programSwitch09, // 22
+    programSwitch10, // 23
+    programSwitch11, // 24
+    programSwitch12, // 25
+    programSwitch13, // 26
+    programSwitch14, // 27
+    programSwitch15, // 28
     
-    paramProgramNumber,
+    paramProgramNumber, // 29
     paramCount
 };
 

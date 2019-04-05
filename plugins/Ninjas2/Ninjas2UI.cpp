@@ -68,13 +68,13 @@ NinjasUI::NinjasUI()
 
      fKnobAttack = new VolumeKnob ( window, knobSize );
      fKnobAttack->setId ( paramAttack );
-     fKnobAttack->setRange ( 0.05f, 1.0f );
+     fKnobAttack->setRange ( 0.001f, 1.0f );
      fKnobAttack->setColor ( ninjasColor );
      fKnobAttack->setCallback ( this );
 
      fKnobDecay = new VolumeKnob ( window, knobSize );
      fKnobDecay->setId ( paramDecay );
-     fKnobDecay->setRange ( 0.05f, 1.0f );
+     fKnobDecay->setRange ( 0.001f, 1.0f );
      fKnobDecay->setColor ( ninjasColor );
      fKnobDecay->setCallback ( this );
 
@@ -86,7 +86,7 @@ NinjasUI::NinjasUI()
 
      fKnobRelease = new VolumeKnob ( window, knobSize );
      fKnobRelease->setId ( paramRelease );
-     fKnobRelease->setRange ( 0.05f, 1.0f );
+     fKnobRelease->setRange ( 0.001f, 1.0f );
      fKnobRelease->setColor ( ninjasColor );
      fKnobRelease->setCallback ( this );
 
@@ -196,45 +196,50 @@ void NinjasUI::positionWidgets()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
+     std::cout << "UI::parameterChanged " << index << "," << value << std::endl;
      switch ( index ) {
      case paramNumberOfSlices:
           fSpinBox->setValue ( value );
           slices = value ;
           createSlicesRaw ();
           break;
+     case paramCurrentSlice:
+          currentSlice = value;
+          recallSliceSettings ( currentSlice );
+          break;
           // Play Modes
      case paramOneShotFwd:
           fSwitchFwd->setDown ( value > 0.5f );
-          p_OneShotFwd[currentSlice] = value > 0.5f;
+          oneShotFwd = value > 0.5f;
           break;
      case paramOneShotRev:
           fSwitchRev->setDown ( value > 0.5f );
-          p_OneShotRev[currentSlice] = value > 0.5f;
+          oneShotRev= value > 0.5f;
           break;
      case paramLoopFwd:
           fSwitchLoopFwd->setDown ( value > 0.5f );
-          p_LoopFwd[currentSlice] = value > 0.5f;
+          loopFwd = value > 0.5f;
           break;
      case paramLoopRev:
           fSwitchLoopRev->setDown ( value > 0.5f );
-          p_LoopRev[currentSlice] = value > 0.5f;
+          loopRev = value > 0.5f;
           break;
           // ADSR
      case paramAttack:
           fKnobAttack->setValue ( value );
-          p_Attack[currentSlice] = value;
+          attack = value;
           break;
      case paramDecay:
           fKnobDecay->setValue ( value );
-          p_Decay[currentSlice] = value;
+          decay = value;
           break;
      case paramSustain:
           fKnobSustain->setValue ( value );
-          p_Sustain[currentSlice] = value;
+          sustain = value;
           break;
      case paramRelease:
           fKnobRelease->setValue ( value );
-          p_Release[currentSlice] = value;
+          release = value;
           break;
      case paramLoadSample:
           if ( sample_is_loaded ) {
@@ -252,17 +257,9 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      // Programs grid
 
      if ( index >= programSwitch00 && index <= programSwitch15 ) {
-          /* old code
-           * int slice = index - paramSwitch01;
-          fGrid[slice]->setDown ( value > 0.5f );
-          if ( fGrid[slice]->isDown() )
-            {
-              currentSlice = slice;
-              recallSliceSettings ( slice );
-            }
-            */
+          int program = index - programSwitch00;
+          fGrid[program]->setDown ( value > 0.5f );
      }
-
      repaint();
 }
 
@@ -275,10 +272,17 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
           std::string tmp ( value );
           std::cout << "decode : " << tmp << std::endl;
      }
+
+     if ( std::strcmp ( key, "programgrid" ) == 0 ) {
+          std::cout << "NinjasUI::stateChanged " << value << std::endl;
+          programGrid = std:: stoi ( value );
+          //   processProgramGrid();
+     }
      
-     if (std::strcmp (key, "programgrid") == 0) {
-       std::cout << "NinjasUI::stateChanged " << value << std::endl;
-       programGrid = std:: stoi(value,nullptr,2);
+     if (std::strcmp (key, "numberOfSlices") == 0) {
+       // set numberOfSlices
+       fSpinBox->setValue(std::stoi(value));
+       std::cout << value << std::endl;
      }
 }
 
@@ -305,32 +309,32 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
 
      switch ( KnobID ) {
      case paramAttack: {
-          oldValue = p_Attack[currentSlice];
+          oldValue = attack;
           if ( oldValue != value )
 
                //Programs[currentProgram].program_isEmpty = false;
-               p_Attack[currentSlice]=value;
+               attack=value;
           break;
      }
      case paramDecay: {
-          oldValue = p_Decay[currentSlice];
+          oldValue = decay;
           if ( oldValue != value )
                //      Programs[currentProgram].program_isEmpty = false;
-               p_Decay[currentSlice]=value;
+               decay=value;
           break;
      }
      case  paramSustain: {
-          oldValue = p_Sustain[currentSlice];
+          oldValue = sustain;
           if ( oldValue != value )
                //     Programs[currentProgram].program_isEmpty = false;
-               p_Sustain[currentSlice]=value;
+               sustain=value;
           break;
      }
      case paramRelease: {
-          oldValue = p_Release[currentSlice];
+          oldValue = release;
           if ( oldValue != value )
                //      Programs[currentProgram].program_isEmpty = false;
-               p_Release[currentSlice]=value;
+               release=value;
           break;
      }
      default:
@@ -380,29 +384,32 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      // check if parameter is changed
      switch ( buttonId ) {
      case paramOneShotFwd: {
-          oldValue = p_OneShotFwd[currentSlice];
+          oldValue = oneShotFwd;
           if ( oldValue != value )
-               setProgramGrid(programNumber);
-               //  Programs[currentProgram].program_isEmpty = false;
-               break;
+               setProgramGrid ( currentProgram );
+          //  Programs[currentProgram].program_isEmpty = false;
+          break;
      }
      case paramOneShotRev: {
           oldValue = p_OneShotRev[currentSlice];
           if ( oldValue != value )
-               //   Programs[currentProgram].program_isEmpty = false;
-               break;
+               setProgramGrid ( currentProgram );
+          //   Programs[currentProgram].program_isEmpty = false;
+          break;
      }
      case paramLoopFwd: {
-          oldValue = p_LoopFwd[currentSlice];
+          oldValue = loopFwd;
           if ( oldValue != value )
-               //    Programs[currentProgram].program_isEmpty = false;
-               break;
+               setProgramGrid ( currentProgram );
+          //    Programs[currentProgram].program_isEmpty = false;
+          break;
      }
      case paramLoopRev: {
-          oldValue = p_LoopRev[currentSlice];
+          oldValue = loopRev;
           if ( oldValue != value )
-               //     Programs[currentProgram].program_isEmpty = false;
-               break;
+               setProgramGrid ( currentProgram );
+          //     Programs[currentProgram].program_isEmpty = false;
+          break;
      }
      }
      //  fGrid[currentProgram]->setStateSwitch ( Programs[currentProgram].program_isEmpty );
@@ -410,10 +417,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 
      switch ( buttonId ) {
      case paramOneShotFwd: {
-          p_OneShotFwd[currentSlice] = 1;
-          p_OneShotRev[currentSlice] = 0;
-          p_LoopFwd[currentSlice]    = 0;
-          p_LoopRev[currentSlice]    = 0;
+          oneShotFwd = 1;
+          oneShotRev= 0;
+          loopFwd    = 0;
+          loopRev    = 0;
 
           editParameter ( paramOneShotFwd, true );
           editParameter ( paramOneShotRev, true );
@@ -437,10 +444,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      case paramOneShotRev: {
-          p_OneShotFwd[currentSlice] = 0;
-          p_OneShotRev[currentSlice] = 1;
-          p_LoopFwd[currentSlice]    = 0;
-          p_LoopRev[currentSlice]    = 0;
+          oneShotFwd = 0;
+          oneShotRev= 1;
+          loopFwd    = 0;
+          loopRev    = 0;
 
           editParameter ( paramOneShotFwd, true );
           editParameter ( paramOneShotRev, true );
@@ -464,10 +471,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      case paramLoopFwd: {
-          p_OneShotFwd[currentSlice] = 0;
-          p_OneShotRev[currentSlice] = 0;
-          p_LoopFwd[currentSlice]    = 1;
-          p_LoopRev[currentSlice]    = 0;
+          oneShotFwd = 0;
+          oneShotRev= 0;
+          loopFwd    = 1;
+          loopRev    = 0;
 
           editParameter ( paramOneShotFwd, true );
           editParameter ( paramOneShotRev, true );
@@ -491,10 +498,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      case paramLoopRev: {
-          p_OneShotFwd[currentSlice] = 0;
-          p_OneShotRev[currentSlice] = 0;
-          p_LoopFwd[currentSlice]    = 0;
-          p_LoopRev[currentSlice]    = 1;
+          oneShotFwd = 0;
+          oneShotRev= 0;
+          loopFwd    = 0;
+          loopRev    = 1;
 
           editParameter ( paramOneShotFwd, true );
           editParameter ( paramOneShotRev, true );
@@ -1532,9 +1539,10 @@ void NinjasUI::selectSlice()
 
      editParameter ( paramCurrentSlice,true );
      setParameterValue ( paramCurrentSlice,currentSlice );
+     editParameter ( paramCurrentSlice,false );
 
      //setState ( "currentslice",std::to_string ( currentSlice ).c_str() );
-     recallSliceSettings ( currentSlice );
+     //  recallSliceSettings ( currentSlice );
 
      repaint();
 }
@@ -1614,12 +1622,27 @@ void NinjasUI::editSlice()
           stateSlice.append ( std::to_string ( a_slices[i].sliceEnd ) );
           stateSlice.append ( " " );
      }
-     setState ( "slices", stateSlice.c_str() );
+     setState ( "slicesUI", stateSlice.c_str() );
 
 }
 
-void NinjasUI::setProgramGrid(int program)
+void NinjasUI::setProgramGrid ( int program )
 {
+     // programGrid is 16 bit register
+     // check if bit 2^program is flipped already
+     // if not set bit to 1
+     program = pow ( 2,program );
+     std::cout << "setProgramGrid " << ( programGrid & program ) << std::endl;
+     if ( ! ( programGrid & program ) ) {
+          programGrid += program;
+          setState ( "programgrid",std::to_string ( programGrid ).c_str() );
+          bool isEmpty = true;
+          int foo;
+          for ( int i = 0 ; i < 16 ; i++ ) {
+               foo = pow ( 2,i );
+               std::cout << "setProgramGrid : program " << i << " " << ( foo & programGrid ) << std::endl;;
+          }
+     }
 
 }
 
