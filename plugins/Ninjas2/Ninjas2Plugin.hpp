@@ -108,7 +108,7 @@ private:
   void getProgram( int program);
   void setProgram( int program);
   void initPrograms();
-  void editSlice();
+  void serializePrograms();
   
 
   // Paramaters for 128 slices
@@ -210,7 +210,7 @@ private:
   double samplerate;
   float programNumber;
   int programGrid;
-  std::string stateSlice;
+  std::string statePrograms;
   
   struct program {
         int program_slices; // number of slices ..

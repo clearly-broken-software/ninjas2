@@ -16,6 +16,7 @@
 
 #include "DistrhoUI.hpp"
 #include "Ninjas2UI.hpp"
+//#include "Ninjas2Plugin.hpp"
 #include <iostream>
 #include <string>
 #include "DistrhoPluginInfo.h"
@@ -26,6 +27,9 @@ START_NAMESPACE_DISTRHO
 NinjasUI::NinjasUI()
      : UI ( 1200, 600 )
 {
+    // void* pi =  getPluginInstancePointer();
+    // NinjasPlugin * plugin = static_cast<NinjasPlugin*> ( pi );
+     // std::cout << plugin->slices << std::endl;
      samplerate = getSampleRate();
      // sample
      sampleSize = 0;
@@ -196,7 +200,7 @@ void NinjasUI::positionWidgets()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
-     std::cout << "UI::parameterChanged " << index << "," << value << std::endl;
+//     std::cout << "UI::parameterChanged " << index << "," << value << std::endl;
      switch ( index ) {
      case paramNumberOfSlices:
           fSpinBox->setValue ( value );
@@ -268,22 +272,18 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
      if ( std::strcmp ( key, "filepath" ) == 0 ) {
           loadSample ( String ( value ) );
      }
-     if ( std::strcmp ( key, "filepath" ) == 0 ) {
-          std::string tmp ( value );
-          std::cout << "decode : " << tmp << std::endl;
-     }
 
      if ( std::strcmp ( key, "programgrid" ) == 0 ) {
           std::cout << "NinjasUI::stateChanged " << value << std::endl;
           programGrid = std:: stoi ( value );
           //   processProgramGrid();
      }
-     
-     if (std::strcmp (key, "numberOfSlices") == 0) {
-       // set numberOfSlices
-       fSpinBox->setValue(std::stoi(value));
-       std::cout << value << std::endl;
+
+     if ( std::strcmp ( key, "getPrograms" ) == 0 ) {
+          deserializePrograms ( value );
      }
+
+
 }
 
 
@@ -619,7 +619,6 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           setParameterValue ( paramNumberOfSlices,slices );
      }
 }
-
 
 void NinjasUI::onNanoDisplay()
 {
@@ -1636,7 +1635,7 @@ void NinjasUI::setProgramGrid ( int program )
      if ( ! ( programGrid & program ) ) {
           programGrid += program;
           setState ( "programgrid",std::to_string ( programGrid ).c_str() );
-          bool isEmpty = true;
+   //       bool isEmpty = true;
           int foo;
           for ( int i = 0 ; i < 16 ; i++ ) {
                foo = pow ( 2,i );
@@ -1646,10 +1645,56 @@ void NinjasUI::setProgramGrid ( int program )
 
 }
 
+void NinjasUI::deserializePrograms ( const char* value )
+{
+  std::cout << "deserializePrograms()" << std::endl;
+     const char *p = value;
+     char *end;
+     for ( int iValue = std::strtol ( p, &end,10 ), program = 0; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
+          p = end;
+          if ( errno == ERANGE ) {
+               std::cout << "range error, got ";
+               errno = 0;
+          }
+          // loop over programs
+          Programs[program].program_slices = iValue;
+          iValue = std::strtol ( p, &end,10 );p = end;
+          Programs[program].program_currentslice = iValue;
+          iValue = std::strtol ( p, &end,10 );p = end;
+          // loop over slices
+          for ( int i=0; i < 128 ; i++ ) {
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_a_slices[i].sliceStart = iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_a_slices[i].sliceEnd = iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_a_slices[i].playmode = static_cast<slicePlayMode>(iValue);
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_Attack[i]= iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_Decay[i]= iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_Sustain[i]= iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_Release[i]= iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_OneShotFwd[i]= iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_OneShotRev[i] = iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_LoopFwd[i]= iValue;
+               iValue = std::strtol ( p, &end,10 ); p = end;
+               Programs[program].program_LoopRev[i]= iValue;
+          }
+          Programs[program].program_isEmpty = iValue;
+          program++;
+     }
+}
+
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */
 
-UI* createUI()
+                                    UI* createUI()
 {
      return new NinjasUI();
 }
