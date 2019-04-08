@@ -78,14 +78,14 @@ protected:
   // Init
 
   void initParameter ( uint32_t index, Parameter& parameter ) override;
-  void initState ( uint32_t index, String& stateKey, String& defaultStateValue );
+  void initState ( uint32_t index, String& stateKey, String& defaultStateValue ) override;
 
   // -------------------------------------------------------------------
   // Internal data
 
   float getParameterValue ( uint32_t index ) const override;
   void  setParameterValue ( uint32_t index, float value ) override;
-  String getState ( const char* key ) const;
+  String getState ( const char* key ) const override;
   void setState ( const char* key, const char* value ) override;
 
 
@@ -108,7 +108,7 @@ private:
   void getProgram( int program);
   void setProgram( int program);
   void initPrograms();
-  void serializePrograms();
+  std::string serializePrograms() const;
   
 
   // Paramaters for 128 slices

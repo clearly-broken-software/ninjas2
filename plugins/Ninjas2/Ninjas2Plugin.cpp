@@ -285,8 +285,7 @@ String NinjasPlugin::getState ( const char* key ) const
           return String ( std::to_string ( programGrid ).c_str() ) ;
 
      if ( std::strcmp ( key, "getPrograms" ) == 0 ) {
-          serializePrograms();
-          return String ( statePrograms.c_str() );
+          return String (serializePrograms().c_str());
      }
 
      return String ( "something went wrong" );
@@ -922,45 +921,46 @@ void NinjasPlugin::initPrograms()
      programNumber = 0;
 }
 
-void NinjasPlugin::serializePrograms()
+std::string NinjasPlugin::serializePrograms() const
 {
-     statePrograms.clear();
+    std::string programsString; 
+    programsString.clear();
      // loop over programs
      for ( int program = 0; program < 16 ; program++ ) {
-          statePrograms.append ( std::to_string ( Programs[program].program_slices ) );
-          statePrograms.append ( " " );
-          statePrograms.append ( std::to_string ( Programs[program].program_currentslice ) );
-          statePrograms.append ( " " );
+          programsString.append ( std::to_string ( Programs[program].program_slices ) );
+          programsString.append ( " " );
+          programsString.append ( std::to_string ( Programs[program].program_currentslice ) );
+          programsString.append ( " " );
           //  loop over slices
           for ( int i=0; i < 128 ; i++ ) {
-               statePrograms.append ( std::to_string ( Programs[program].program_a_slices[i].sliceStart ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_a_slices[i].sliceEnd ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_a_slices[i].playmode ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_Attack[i] ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_Decay[i] ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_Sustain[i] ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_Release[i] ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_OneShotFwd[i] ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_OneShotRev[i] ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_LoopFwd[i] ) );
-               statePrograms.append ( " " );
-               statePrograms.append ( std::to_string ( Programs[program].program_LoopRev[i] ) );
-               statePrograms.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_a_slices[i].sliceStart ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_a_slices[i].sliceEnd ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_a_slices[i].playmode ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_Attack[i] ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_Decay[i] ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_Sustain[i] ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_Release[i] ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_OneShotFwd[i] ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_OneShotRev[i] ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_LoopFwd[i] ) );
+               programsString.append ( " " );
+               programsString.append ( std::to_string ( Programs[program].program_LoopRev[i] ) );
+               programsString.append ( " " );
           }
-          statePrograms.append ( std::to_string ( Programs[program].program_isEmpty ) );
-          statePrograms.append ( " " );
+          programsString.append ( std::to_string ( Programs[program].program_isEmpty ) );
+          programsString.append ( " " );
 
      }
-
+return programsString;
 }
 
 
