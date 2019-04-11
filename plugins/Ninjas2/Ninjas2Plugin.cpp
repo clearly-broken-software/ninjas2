@@ -85,11 +85,11 @@ NinjasPlugin::NinjasPlugin()
      p_Grid[0] = 1;
 
      //for debugging , autoload sample
-  //   filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
- //    loadSample ( filepath);
- //    getOnsets ();
- //    createSlicesRaw();
- //    bypass = false;
+     //   filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
+//    loadSample ( filepath);
+//    getOnsets ();
+//    createSlicesRaw();
+//    bypass = false;
      initPrograms();
 
 
@@ -255,7 +255,7 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
      switch ( index ) {
      case 0: {
           stateKey ="filepath";
-          defaultStateValue = String(filepath.c_str());
+          defaultStateValue = String ( filepath.c_str() );
           break;
      }
      case 1: {
@@ -331,25 +331,30 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      }
 
      if ( strcmp ( key, "slices" ) == 0 ) {
-       std::cout << value << std::endl;
-       std::cout << slices << std::endl;
-       std::cout << sampleVector.size() << std::endl;
+          std::cout << "value = " << value << std::endl;
+          std::cout << "slices = " << slices << std::endl;
+          // std::cout << "sample size = " << sampleVector.size() << std::endl;
           const char* p = value;
           char * end;
-       
-          for ( int iValue = std::strtol ( p, &end,10 ), index = 0; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
+          bool start = true;
+
+          for ( int iValue = std::strtol ( p, &end,10 ), index = 0; p != end;iValue = std::strtol ( p, &end, 10 ) ) {
                p = end;
                if ( errno == ERANGE ) {
                     std::cout << "range error, got ";
                     errno = 0;
                }
-                    a_slices[index].sliceStart = iValue * sampleChannels;
-		    iValue = std::strtol ( p, &end, 10);
-                    a_slices[index].sliceEnd = iValue * sampleChannels;
-                    index++;
-		    if (index <= slices)
-		    std::cout << "slice " << index-1 << "start " << a_slices[index-1].sliceStart << " end " << a_slices[index-1].sliceEnd << std::endl;
-          }
+              if (start)
+	       a_slices[index].sliceStart = iValue * sampleChannels;
+	      else
+	      {
+               a_slices[index].sliceEnd = iValue * sampleChannels;
+	       std::cout << "slice " << index << ": start " << a_slices[index].sliceStart << " end " << a_slices[index].sliceEnd << " | ";
+	       index++;
+	      }
+	      start = !start;
+         }
+          std::cout << std::endl;
      }
 
      if ( strcmp ( key, "programgrid" ) == 0 ) {
@@ -447,6 +452,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 
      switch ( index ) {
      case paramNumberOfSlices:
+          std::cout << "setParameterValue() paramNumberOfSlices " << value << std::endl;
           slices = ( int ) value;
           if ( slicemode == 0 )
                createSlicesRaw ();
@@ -754,12 +760,11 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
 void NinjasPlugin::createSlicesRaw ()
 {
-     for (int s = 0 ; s < 128 ; s++)
-     {
-       a_slices[s].sliceStart = 0;
-       a_slices[s].sliceEnd = 0;
+     for ( int s = 0 ; s < 128 ; s++ ) {
+          a_slices[s].sliceStart = 0;
+          a_slices[s].sliceEnd = 0;
      }
-     
+
      long double sliceSize = ( long double ) ( sampleSize * sampleChannels ) / ( long double ) slices;
      for ( int i = 0 ; i < slices; i++ ) {
           a_slices[i].sliceStart = ( int ) i * sliceSize;
@@ -904,6 +909,7 @@ void NinjasPlugin::getProgram ( int program )
      std::cout << "getProgram " << program << std::endl;
      currentSlice = Programs[program].program_currentslice;
      slices = Programs[program].program_slices;
+     std::cout << "getProgram : slices =" << slices << std::endl;
      for ( int i=0; i < 128 ; i++ ) {
           a_slices[i]=Programs[program].program_a_slices[i];
           p_Attack[i]=Programs[program].program_Attack[i];
