@@ -85,10 +85,11 @@ NinjasPlugin::NinjasPlugin()
      p_Grid[0] = 1;
 
      //for debugging , autoload sample
-     //loadSample ( std::string ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
-     getOnsets ();
-     createSlicesRaw();
-     bypass = false;
+  //   filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
+ //    loadSample ( filepath);
+ //    getOnsets ();
+ //    createSlicesRaw();
+ //    bypass = false;
      initPrograms();
 
 
@@ -194,7 +195,7 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.def = 0.0f;
           parameter.ranges.min = 0.0f;
           parameter.ranges.max = 1.0f;
-          parameter.name   = "Load";
+          parameter.name   = "Load Sample";
           parameter.symbol  = "load";
           break;
      }
@@ -226,7 +227,17 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.symbol  = "programnumber";
           break;
      }
+
+     case paramProgramGrid: {
+          parameter.hints = kParameterIsInteger; // FIXME not automate ?? is this the correct way of operation
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 0xFFFF; // 16 bits
+          parameter.name = "Program Grid";
+          parameter.symbol = "programgrid";
+          break;
      }
+     } // switch
      if ( index >= programSwitch00 && index <= programSwitch15 ) {
           parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
           parameter.ranges.def = 0.0f;
@@ -244,7 +255,7 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
      switch ( index ) {
      case 0: {
           stateKey ="filepath";
-          defaultStateValue = "empty";
+          defaultStateValue = String(filepath.c_str());
           break;
      }
      case 1: {
@@ -267,7 +278,7 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
 
      case 5: {
           stateKey = "getPrograms";
-          defaultStateValue = "";
+          defaultStateValue = "empty";
           break;
      }
      }// switch
@@ -275,17 +286,22 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
 
 String NinjasPlugin::getState ( const char* key ) const
 {
+     std::cout << "GetState("<< key <<")" << std::endl;
      if ( std::strcmp ( key, "filepath" ) == 0 )
-          return String ( "filepath" );
+          return String ( filepath.c_str() );
 
-     if ( std::strcmp ( key, "slicesUI" ) == 0 )
+     if ( std::strcmp ( key, "slices" ) == 0 )
           return String ( "slices" );
 
      if ( std::strcmp ( key, "programGrid" ) == 0 )
           return String ( std::to_string ( programGrid ).c_str() ) ;
 
      if ( std::strcmp ( key, "getPrograms" ) == 0 ) {
-          return String (serializePrograms().c_str());
+          {
+               String sPrograms = String ( serializePrograms().c_str() );
+               std::cout << "sPrograms " << sPrograms << std::endl;
+               return String ( sPrograms );
+          }
      }
 
      return String ( "something went wrong" );
@@ -307,31 +323,32 @@ void NinjasPlugin::setState ( const char* key, const char* value )
                     createSlicesOnsets ();
 
                bypass = false;
-               setParameterValue ( paramLoadSample, 1.0f );
+               //setParameterValue ( paramLoadSample, 1.0f );
           } else {
                bypass = true;
-               setParameterValue ( paramLoadSample, 0.0f );
+               //setParameterValue ( paramLoadSample, 0.0f );
           }
      }
 
      if ( strcmp ( key, "slices" ) == 0 ) {
+       std::cout << value << std::endl;
+       std::cout << slices << std::endl;
+       std::cout << sampleVector.size() << std::endl;
           const char* p = value;
           char * end;
-          bool start = true;
-          for ( int l = std::strtol ( p, &end,10 ), index = 0; p != end; l = std::strtol ( p, &end, 10 ) ) {
+       
+          for ( int iValue = std::strtol ( p, &end,10 ), index = 0; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
                p = end;
                if ( errno == ERANGE ) {
                     std::cout << "range error, got ";
                     errno = 0;
                }
-
-               if ( start ) {
-                    a_slices[index].sliceStart = l;
-               } else {
-                    a_slices[index].sliceEnd = l;
+                    a_slices[index].sliceStart = iValue * sampleChannels;
+		    iValue = std::strtol ( p, &end, 10);
+                    a_slices[index].sliceEnd = iValue * sampleChannels;
                     index++;
-               }
-               start = !start;
+		    if (index <= slices)
+		    std::cout << "slice " << index-1 << "start " << a_slices[index-1].sliceStart << " end " << a_slices[index-1].sliceEnd << std::endl;
           }
      }
 
@@ -406,6 +423,8 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
      case paramProgramNumber:
           return_Value = programNumber;
           break;
+     case paramProgramGrid:
+          return_Value = programGrid;
 
      }
      if ( index >= programSwitch00 && index <= programSwitch15 ) {
@@ -472,6 +491,10 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      case paramCurrentSlice:
           currentSlice = value;
           break;
+     case paramProgramGrid:
+          programGrid = value;
+          break;
+
      default:
           ;
           // std::cerr << "NinjasPlugin::setParameterValue unexpected parameter. index = " << index << "value = " <<value<< std::endl;
@@ -731,13 +754,19 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
 void NinjasPlugin::createSlicesRaw ()
 {
+     for (int s = 0 ; s < 128 ; s++)
+     {
+       a_slices[s].sliceStart = 0;
+       a_slices[s].sliceEnd = 0;
+     }
+     
      long double sliceSize = ( long double ) ( sampleSize * sampleChannels ) / ( long double ) slices;
      for ( int i = 0 ; i < slices; i++ ) {
           a_slices[i].sliceStart = ( int ) i * sliceSize;
           a_slices[i].sliceEnd   = ( ( int ) ( i+1 ) * sliceSize ) - 1;
 
 #ifdef DEBUG
-          std::cout << "slice" << i << "Start " << a_slices[i].sliceStart << " End "<< a_slices[i].sliceEnd << std::endl;
+          std::cout << "slice" << i << " Start " << a_slices[i].sliceStart << " End "<< a_slices[i].sliceEnd << std::endl;
 #endif
 
      }
@@ -863,7 +892,10 @@ int NinjasPlugin::loadSample ( std::string fp )
                std::cout << "Samplerate error : src_simple err =" << err << std::endl;
           sampleSize = src_data.output_frames_gen;
      }
-
+     for ( int p=0; p <16; p++ ) {
+          setProgram ( p );
+     }
+     Programs[0].program_isEmpty = false;
      return 0;
 }
 
@@ -923,8 +955,8 @@ void NinjasPlugin::initPrograms()
 
 std::string NinjasPlugin::serializePrograms() const
 {
-    std::string programsString; 
-    programsString.clear();
+     std::string programsString;
+     //   programsString.clear();
      // loop over programs
      for ( int program = 0; program < 16 ; program++ ) {
           programsString.append ( std::to_string ( Programs[program].program_slices ) );
@@ -960,7 +992,8 @@ std::string NinjasPlugin::serializePrograms() const
           programsString.append ( " " );
 
      }
-return programsString;
+     std::cout << "programsString = " << programsString << std::endl;
+     return programsString;
 }
 
 

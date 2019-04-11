@@ -102,12 +102,15 @@ private:
      void editCurrentSlice();
      void editSlice();
      bool sampleIsInSlice ( long unsigned int sample );
+     void initPrograms();
      void setProgramGrid ( int program );
      void deserializePrograms(const char* value);
+     void setProgram( int program);
+     void getProgram( int program);
 
      float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
-     float attack, decay, sustain, release;
-     float oneShotFwd, oneShotRev, loopFwd, loopRev;
+ //    float attack, decay, sustain, release;
+  //   float oneShotFwd, oneShotRev, loopFwd, loopRev;
      float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
      std::string dirnameOf ( const std::string& fname );
      std::string toTime ( double time, double round_up );
@@ -217,6 +220,9 @@ private:
      NanoImage imgNinjasLogo,imgClearlyBroken;
 
      DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
+     void initParameters();
+     void initSlices();
+     
 };
 
 // -----------------------------------------------------------------------

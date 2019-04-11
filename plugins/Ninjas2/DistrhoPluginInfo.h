@@ -67,6 +67,7 @@ enum Parameters
     programSwitch15, // 28
     
     paramProgramNumber, // 29
+    paramProgramGrid, // 30
     paramCount
 };
 
