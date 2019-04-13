@@ -38,7 +38,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-     : Plugin ( paramCount, 0, 15 ) //1 parameter, 0 programs (presets) , 15 states
+     : Plugin ( paramCount, 0, 4 ) //1 parameter, 0 programs (presets) , 4 states
 {
      // init parameters
 
@@ -215,7 +215,7 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.min = 0.0f;
           parameter.ranges.max = 127.0f;
           parameter.name = "Current Slice";
-          parameter.symbol = "currentslice";
+          parameter.symbol = "currentSlice";
           break;
      }
      case paramProgramNumber: {
@@ -224,17 +224,17 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.min = 0.0f;
           parameter.ranges.max = 15.0f;
           parameter.name   = "Program Number";
-          parameter.symbol  = "programnumber";
+          parameter.symbol  = "programNumber";
           break;
      }
 
      case paramProgramGrid: {
-          parameter.hints = kParameterIsInteger; // FIXME not automate ?? is this the correct way of operation
+          parameter.hints = kParameterIsInteger|kParameterIsInteger; // FIXME not automate ?? is this the correct way of operation
           parameter.ranges.def = 0.0f;
           parameter.ranges.min = 0.0f;
           parameter.ranges.max = 0xFFFF; // 16 bits
           parameter.name = "Program Grid";
-          parameter.symbol = "programgrid";
+          parameter.symbol = "programGrid";
           break;
      }
      } // switch
@@ -243,8 +243,8 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.def = 0.0f;
           parameter.ranges.min = 0.0f;
           parameter.ranges.max = 1.0f;
-          parameter.name   = "Switch "+String ( index - programSwitch00 );
-          parameter.symbol  = "switch"+String ( index - programSwitch00 );
+          parameter.name   = "State Switch "+String ( index - programSwitch00 );
+          parameter.symbol  = "stateSwitch"+String ( index - programSwitch00 );
 //       parameter.midiCC = index - paramSwitch01 + 33;
      }
 
@@ -263,25 +263,24 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
           defaultStateValue = "empty";
           break;
      }
-
+  
      case 3: {
-          stateKey = "programGrid";
-          defaultStateValue = "1"; // 16 bit 'register'
+          stateKey = "storeProgram";
+          defaultStateValue = "empty";
           break;
      }
 
      case 4: {
-          stateKey = "storeProgram";
-          defaultStateValue = "0";
-          break;
-     }
-
-     case 5: {
           stateKey = "getPrograms";
           defaultStateValue = "empty";
           break;
      }
-     }// switch
+     default: {
+        stateKey = "emptyKey";
+	defaultStateValue = "default";
+	break;
+     }
+     } // switch
 } // initState
 
 String NinjasPlugin::getState ( const char* key ) const
