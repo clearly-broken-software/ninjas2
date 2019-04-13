@@ -623,6 +623,10 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          int sliceStart = a_slices[slice].sliceStart; //fix this !
                          int sliceEnd = a_slices[slice].sliceEnd;
                          int pos = voices[i].playbackIndex;
+                         if ( ( sliceStart + pos ) > ( sampleVector.size()-sampleChannels ) ) {
+                              pos = 0;
+                         }
+                         
                          float* sample = &sampleVector.at ( sliceStart+pos );
                          float sampleL { *sample };
                          float sampleR { * ( sample + ( sampleChannels -1 ) ) };
