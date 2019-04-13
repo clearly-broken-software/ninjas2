@@ -28,6 +28,7 @@
 #include <math.h>
 #include <string>
 #include <cstdlib>
+#include <samplerate.h>
 
 //Wolf Widgets
 #include "VolumeKnob.hpp"

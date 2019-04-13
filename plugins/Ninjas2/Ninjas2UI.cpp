@@ -1137,16 +1137,39 @@ void NinjasUI::loadSample ( String fp )
      SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , samplerate );
      sampleSize = fileHandle.frames();
      sampleChannels   = fileHandle.channels();
+     int file_samplerate = fileHandle.samplerate();
      if ( sampleSize == 0 ) {
           sample_is_loaded = false;
           return;
      }
+     
      sample_is_loaded =true;
      fSwitchLoadSample->setDown ( true );
      //float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
 
      sampleVector.resize ( sampleSize * sampleChannels );
      fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
+      if ( file_samplerate != samplerate )
+
+     {
+          // temporary sample vector
+          std::vector<float> tmp_sample_vector = sampleVector;
+
+          SRC_DATA src_data;
+          src_data.data_in = & tmp_sample_vector.at ( 0 );
+          src_data.src_ratio = samplerate / file_samplerate;
+          src_data.output_frames = sampleSize * src_data.src_ratio;
+
+          sampleVector.resize ( src_data.output_frames * sampleChannels );
+
+          src_data.data_out = & sampleVector.at ( 0 );
+          src_data.input_frames = sampleSize;
+
+          int err = src_simple ( & src_data, SRC_SINC_BEST_QUALITY, sampleChannels );
+          if ( err )
+               std::cout << "Samplerate error : src_simple err =" << err << std::endl;
+          sampleSize = src_data.output_frames_gen;
+     }
 
      // display height = 350
      // store waveform as -175 to  175 integer
