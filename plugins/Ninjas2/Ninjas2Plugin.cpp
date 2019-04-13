@@ -337,22 +337,21 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           char * end;
           bool start = true;
 
-          for ( int iValue = std::strtol ( p, &end,10 ), index = 0; p != end;iValue = std::strtol ( p, &end, 10 ) ) {
+          for ( int iValue = std::strtol ( p, &end,10 ), index = 0; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
                p = end;
                if ( errno == ERANGE ) {
                     std::cout << "range error, got ";
                     errno = 0;
                }
-              if (start)
-	       a_slices[index].sliceStart = iValue * sampleChannels;
-	      else
-	      {
-               a_slices[index].sliceEnd = iValue * sampleChannels;
-	       std::cout << "slice " << index << ": start " << a_slices[index].sliceStart << " end " << a_slices[index].sliceEnd << " | ";
-	       index++;
-	      }
-	      start = !start;
-         }
+               if ( start )
+                    a_slices[index].sliceStart = iValue * sampleChannels;
+               else {
+                    a_slices[index].sliceEnd = iValue * sampleChannels;
+                    std::cout << "slice " << index << ": start " << a_slices[index].sliceStart << " end " << a_slices[index].sliceEnd << " | ";
+                    index++;
+               }
+               start = !start;
+          }
           std::cout << std::endl;
      }
 
@@ -856,7 +855,6 @@ int64_t NinjasPlugin::find_nearest ( std::vector<uint_t> & haystack, uint_t need
 
 int NinjasPlugin::loadSample ( std::string fp )
 {
-     std::cout << "plugin side : loadSample " << fp << std::endl;
      SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , 44100 );
 
      // get the number of frames in the sample
