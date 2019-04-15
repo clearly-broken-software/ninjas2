@@ -164,7 +164,7 @@ NinjasUI::NinjasUI()
 
 
      // for debugging , autoload sample
-     loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
+     //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
 }
 

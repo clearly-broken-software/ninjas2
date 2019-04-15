@@ -85,11 +85,11 @@ NinjasPlugin::NinjasPlugin()
      p_Grid[0] = 1;
      // initPrograms();
      //for debugging , autoload sample
-     filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
-     loadSample ( filepath );
-     getOnsets ();
-     createSlicesRaw();
-     bypass = false;
+   //  filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
+  //   loadSample ( filepath );
+  //   getOnsets ();
+   //  createSlicesRaw();
+   //  bypass = false;
      
 
 
