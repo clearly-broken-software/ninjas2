@@ -27,9 +27,10 @@ START_NAMESPACE_DISTRHO
 NinjasUI::NinjasUI()
      : UI ( 1200, 600 )
 {
-     // void* pi =  getPluginInstancePointer();
-     // NinjasPlugin * plugin = static_cast<NinjasPlugin*> ( pi );
-     // std::cout << plugin->slices << std::endl;
+     void* pi =  getPluginInstancePointer();
+     plugin = static_cast<NinjasPlugin*> ( pi );
+     //std::cout << plugin->slices << std::endl;
+     //  std::cout << plugin->Programs[0].program_slices << std::endl;
 
      samplerate = getSampleRate();
      initParameters();
@@ -147,7 +148,6 @@ NinjasUI::NinjasUI()
      fSwitchLoadSample->setCallback ( this );
 
      // grid
-
      for ( int i = programSwitch00, j = 0 ; i <= programSwitch15; ++i , ++j ) {
           fGrid[j] = new StateSwitch ( window, gridSize );
           fGrid[j]->setId ( i );
@@ -164,7 +164,7 @@ NinjasUI::NinjasUI()
 
 
      // for debugging , autoload sample
-     //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
+     loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
 }
 
@@ -244,7 +244,7 @@ void NinjasUI::initSlices()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
-//     std::cout << "UI::parameterChanged " << index << "," << value << std::endl;
+    printf("UI::parameterChanged(%i,%f)\n",index,value);
 
      switch ( index ) {
      case paramNumberOfSlices:
@@ -296,6 +296,11 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      case paramSliceMode:
           fSliceModeSlider->setDown ( value > 0.5f );
           break;
+     case paramOutputProgramNumber:
+     {
+       printf("UI paramOutputProgramNumber = %f", value);
+       getProgram(value);
+     }
      }
 
 
@@ -321,9 +326,13 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
           //   processProgramGrid();
      }
 
-     if ( std::strcmp ( key, "getPrograms" ) == 0 ) {
-          deserializePrograms ( value );
-     }
+//      if ( std::strcmp ( key, "getProgram0" ) == 0 ) {
+//          // deserializeProgram ( 0, value );
+//      }
+//
+//      if ( std::strcmp ( key, "getProgram1" ) == 0 ) {
+//      // deserializeProgram ( 1, value );
+//      }
 
 
 }
@@ -424,7 +433,6 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      float oldValue;
      const float value = nanoSwitch->isDown() ? 1.0f : 0.0f;
      const uint buttonId = nanoSwitch->getId();
-     printf ( "currentSlice = %i\n",currentSlice );
 
      // check if parameter is changed
      switch ( buttonId ) {
@@ -615,18 +623,18 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                editParameter ( paramProgramNumber,true );
                setParameterValue ( paramProgramNumber,currentProgram );
                editParameter ( paramProgramNumber,false );
-               setProgram ( program );
+             //  setProgram ( program );
                goto toggleswitches;
           }
           // normal click stores current program and gets new program
           if ( ( program != currentProgram ) ) {
                setState ( "storeprogram", std::to_string ( currentProgram ).c_str() );
-               setProgram ( currentProgram );
+             //  setProgram ( currentProgram );
                currentProgram = program;
                editParameter ( paramProgramNumber,true );
                setParameterValue ( paramProgramNumber,currentProgram );
                editParameter ( paramProgramNumber,false );
-               getProgram ( currentProgram );
+           //    getProgram ( currentProgram );
                //    printf ( "program is empty %i\n",Programs[program].program_isEmpty );
                goto toggleswitches;
           }
@@ -651,7 +659,9 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      int NanoButtonID = nanoButton->getId();
      switch ( NanoButtonID ) {
      case paramSlice: {
+      // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
           if ( slices != tempSlices ) {
+	    
                slices = tempSlices;
                fSpinBox->setDigitsColor ( false ); // set digits to black
                fGrid[currentProgram]->setStateSwitch ( false );
@@ -664,7 +674,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
                Programs[currentProgram].program_isEmpty = false;
-	       setProgramGrid(currentProgram);
+               setProgramGrid ( currentProgram );
                fGrid[currentProgram]->setStateSwitch ( false );
           }
           break;
@@ -1132,7 +1142,7 @@ void NinjasUI::loadSample ( String fp )
 {
      //int  iIndex {0};
      //float fIndex {0};
-      double samplerate = getSampleRate();
+     double samplerate = getSampleRate();
 
      SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , samplerate );
      sampleSize = fileHandle.frames();
@@ -1142,14 +1152,14 @@ void NinjasUI::loadSample ( String fp )
           sample_is_loaded = false;
           return;
      }
-     
+
      sample_is_loaded =true;
      fSwitchLoadSample->setDown ( true );
      //float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
 
      sampleVector.resize ( sampleSize * sampleChannels );
      fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
-      if ( file_samplerate != samplerate )
+     if ( file_samplerate != samplerate )
 
      {
           // temporary sample vector
@@ -1202,7 +1212,7 @@ void NinjasUI::loadSample ( String fp )
           createSlicesOnsets ();
      }
      // set program 0
-     setProgram ( 0 );
+    // setProgram ( 0 );
      Programs[0].program_isEmpty = false;
      fGrid[0]->setStateSwitch ( false );
 
@@ -1216,8 +1226,8 @@ void NinjasUI::loadSample ( String fp )
      setParameterValue ( paramProgramGrid,1.0f );
      editParameter ( paramProgramGrid,false );
      // copy program 0 to
-     for ( int p=1; p < 15 ; p++ ) {
-          setProgram ( p );
+     for ( int p=1; p < 16 ; p++ ) {
+        //  setProgram ( p );
      }
 
      repaint();
@@ -1717,7 +1727,7 @@ void NinjasUI::setProgramGrid ( int program )
      program = pow ( 2,program );
      programGrid += program;
      //TODO Check dsp side
-     setParameterValue(paramProgramGrid,programGrid);
+     setParameterValue ( paramProgramGrid,programGrid );
 }
 
 void NinjasUI::initPrograms()
@@ -1761,40 +1771,57 @@ void NinjasUI::setProgram ( int program )
 
 void NinjasUI::getProgram ( int program )
 {
-     currentSlice = Programs[program].program_currentslice;
-     slices = Programs[program].program_slices;
-     for ( int i=0; i < 128 ; i++ ) {
-          a_slices[i]=Programs[program].program_a_slices[i];
-          p_Attack[i]=Programs[program].program_Attack[i];
-          p_Decay[i]=Programs[program].program_Decay[i];
-          p_Sustain[i]=Programs[program].program_Sustain[i];
-          p_Release[i]=Programs[program].program_Release[i];
-          p_OneShotFwd[i]=Programs[program].program_OneShotFwd[i];
-          p_OneShotRev[i]=Programs[program].program_OneShotRev[i];
-          p_LoopFwd[i]=Programs[program].program_LoopFwd[i];
-          p_LoopRev[i]=Programs[program].program_LoopRev[i];
+  printf("UI:getProgram(%i) ",program);
+     currentSlice = plugin->Programs[program].currentslice;
+     slices = plugin->Programs[program].slices;
+  //   int voice = ( currentSlice + 60 ) % 128; FIXME there's a problem I think, use same index for slice
+   int i=0;
+   //  printf ( "Program %i, Current Slice %i : # of slices %i\n",program, currentSlice,slices ); 
+    printf("sliceEnd %i\n",plugin->Programs[program].a_slices[0].sliceEnd);
+     for ( int i=0, voice = 0; i < 128 ; i++ ) {
+          voice = (i+60) % 128;
+
+          a_slices[i].sliceStart = plugin->Programs[program].a_slices[i].sliceStart / plugin->sampleChannels;
+          a_slices[i].sliceEnd = plugin->Programs[program].a_slices[i].sliceEnd / plugin->sampleChannels;
+          a_slices[i].playmode = static_cast<slicePlayMode> ( plugin->Programs[program].a_slices[i].playmode );
+          p_Attack[i]=plugin->Programs[program].Attack[voice];
+          p_Decay[i]=plugin->Programs[program].Decay[voice];
+          p_Sustain[i]=plugin->Programs[program].Sustain[voice];
+          p_Release[i]=plugin->Programs[program].Release[voice];
+          p_OneShotFwd[i]=plugin->Programs[program].OneShotFwd[i];
+          p_OneShotRev[i]=plugin->Programs[program].OneShotRev[i];
+          p_LoopFwd[i]=plugin->Programs[program].LoopFwd[i];
+          p_LoopRev[i]=plugin->Programs[program].LoopRev[i];
+	
+      //   printf ( "Slice # %i : start %i, end %i, ADSR %f,%f,%f,%f , playmodes %f,%f,%f,%f\n", i,a_slices[i].sliceStart,a_slices[i].sliceEnd,p_Attack[i],p_Decay[i],p_Sustain[i],p_Release[i],p_OneShotFwd[i],p_OneShotRev[i],p_LoopFwd[i],p_LoopRev[i] );
+
      }
+      printf ( "Slice # %i : start %i, end %i\n", i ,a_slices[i].sliceStart,a_slices[i].sliceEnd );
+   
+   //   printf( "dsp slice range %i - %i", plugin->Programs[program].a_slices[i].sliceStart / sampleChannels, plugin->Programs[program].a_slices[i].sliceEnd / sampleChannels
+     
+
      fSpinBox->setValue ( slices );
+     tempSlices = slices;
      recallSliceSettings ( currentSlice );
-     // editSlice(); //TODO better name ..
+
 }
 
-void NinjasUI::deserializePrograms ( const char* value )
+void NinjasUI::deserializeProgram ( const int program, const char* value )
 {
-     std::cout << "deserializePrograms()" << value << std::endl;
+     std::cerr << "deserializePrograms()" << value << std::endl;
      if ( strcmp ( value, "empty" ) == 0 ) {
           std::cout << "programsString is empty" << std::endl;
           return;
      }
      const char *p = value;
      char *end;
-     for ( int iValue = std::strtol ( p, &end,10 ), program = 0; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
+     for ( int iValue = std::strtol ( p, &end,10 ) ; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
           p = end;
           if ( errno == ERANGE ) {
                std::cout << "range error, got ";
                errno = 0;
           }
-          // loop over programs
           Programs[program].program_slices = iValue;
           iValue = std::strtol ( p, &end,10 );
           p = end;
@@ -1838,7 +1865,7 @@ void NinjasUI::deserializePrograms ( const char* value )
                Programs[program].program_LoopRev[i]= iValue;
           }
           Programs[program].program_isEmpty = iValue;
-          program++;
+
      }
 }
 

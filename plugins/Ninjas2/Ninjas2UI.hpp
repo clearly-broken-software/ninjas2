@@ -39,7 +39,9 @@
 #include "TextButton.hpp"
 #include "PlayModeSwitch.hpp"
 #include "StateSwitch.hpp"
+
 #include "Ninjas2Resources.hpp"
+#include "Ninjas2Plugin.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -85,7 +87,7 @@ private:
      ScopedPointer<StateSwitch> fGrid[16];
      ScopedPointer<TextButton> fSliceButton;
 
-
+     const NinjasPlugin * plugin;
      void loadSample ( String fp );
      std::vector<short int> waveform;
      void getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets );
@@ -105,13 +107,11 @@ private:
      bool sampleIsInSlice ( long unsigned int sample );
      void initPrograms();
      void setProgramGrid ( int program );
-     void deserializePrograms(const char* value);
+     void deserializeProgram(const int program, const char* value);
      void setProgram( int program);
      void getProgram( int program);
 
      float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
- //    float attack, decay, sustain, release;
-  //   float oneShotFwd, oneShotRev, loopFwd, loopRev;
      float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
      std::string dirnameOf ( const std::string& fname );
      std::string toTime ( double time, double round_up );

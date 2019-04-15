@@ -108,7 +108,7 @@ private:
   void getProgram( int program);
   void setProgram( int program);
   void initPrograms();
-  std::string serializePrograms() const;
+  std::string serializeProgram( int program) const;
   
 
   // Paramaters for 128 slices
@@ -213,17 +213,17 @@ private:
   std::string statePrograms;
   
   struct program {
-        int program_slices; // number of slices ..
-        int program_currentslice;
-        Slice program_a_slices[128];
-        float program_Attack[128];
-        float program_Decay[128];
-        float program_Sustain[128];
-        float program_Release[128];
-        float program_OneShotFwd[128];
-        float program_OneShotRev[128];
-        float program_LoopFwd[128];
-        float program_LoopRev[128];
+        int slices; // number of slices ..
+        int currentslice;
+        Slice a_slices[128];
+        float Attack[128];
+        float Decay[128];
+        float Sustain[128];
+        float Release[128];
+        float OneShotFwd[128];
+        float OneShotRev[128];
+        float LoopFwd[128];
+        float LoopRev[128];
 	bool program_isEmpty;
   };
   program Programs[16];
@@ -232,7 +232,7 @@ private:
    * Set our plugin class as non-copyable and add a leak detector just in case.
   */
 
-
+friend class NinjasUI;
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasPlugin )
 };
 
