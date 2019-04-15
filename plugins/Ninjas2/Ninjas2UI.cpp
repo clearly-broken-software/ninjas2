@@ -634,7 +634,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                editParameter ( paramProgramNumber,true );
                setParameterValue ( paramProgramNumber,currentProgram );
                editParameter ( paramProgramNumber,false );
-           //    getProgram ( currentProgram );
+               getProgram ( currentProgram );
                //    printf ( "program is empty %i\n",Programs[program].program_isEmpty );
                goto toggleswitches;
           }
@@ -1777,7 +1777,6 @@ void NinjasUI::getProgram ( int program )
   //   int voice = ( currentSlice + 60 ) % 128; FIXME there's a problem I think, use same index for slice
    int i=0;
    //  printf ( "Program %i, Current Slice %i : # of slices %i\n",program, currentSlice,slices ); 
-    printf("sliceEnd %i\n",plugin->Programs[program].a_slices[0].sliceEnd);
      for ( int i=0, voice = 0; i < 128 ; i++ ) {
           voice = (i+60) % 128;
 
@@ -1796,7 +1795,8 @@ void NinjasUI::getProgram ( int program )
       //   printf ( "Slice # %i : start %i, end %i, ADSR %f,%f,%f,%f , playmodes %f,%f,%f,%f\n", i,a_slices[i].sliceStart,a_slices[i].sliceEnd,p_Attack[i],p_Decay[i],p_Sustain[i],p_Release[i],p_OneShotFwd[i],p_OneShotRev[i],p_LoopFwd[i],p_LoopRev[i] );
 
      }
-      printf ( "Slice # %i : start %i, end %i\n", i ,a_slices[i].sliceStart,a_slices[i].sliceEnd );
+     printf ( "Slice Programs[%i].a_slices[%i].sliceEnd =%i\n",program,0,plugin->Programs[program].a_slices[0].sliceEnd);
+     printf ( "Slice # %i : start %i, end %i\n", i ,a_slices[i].sliceStart,a_slices[i].sliceEnd );
    
    //   printf( "dsp slice range %i - %i", plugin->Programs[program].a_slices[i].sliceStart / sampleChannels, plugin->Programs[program].a_slices[i].sliceEnd / sampleChannels
      

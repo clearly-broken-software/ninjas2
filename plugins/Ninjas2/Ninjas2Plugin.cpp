@@ -83,14 +83,14 @@ NinjasPlugin::NinjasPlugin()
      // grid
      std::fill_n ( p_Grid, 16, 0 );
      p_Grid[0] = 1;
-
+     // initPrograms();
      //for debugging , autoload sample
      filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
      loadSample ( filepath );
      getOnsets ();
      createSlicesRaw();
      bypass = false;
-     initPrograms();
+     
 
 
 }
@@ -948,6 +948,7 @@ int NinjasPlugin::loadSample ( std::string fp )
 
      for ( int p=0; p <16; p++ ) {
           setProgram ( p );
+          printf("Plugin::loadSample %i",Programs[p].a_slices[0].sliceEnd);
      }
      Programs[0].program_isEmpty = false;
      return 0;
@@ -1094,9 +1095,6 @@ std::string NinjasPlugin::serializeProgram ( int program ) const
      std::cout << "programsString = " << programsString << std::endl;
      return programsString;
 }
-
-
-
 /* ------------------------------------------------------------------------------------------------------------
 * Plugin entry point, called by DPF to create a new plugin instance. */
 
