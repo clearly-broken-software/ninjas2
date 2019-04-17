@@ -105,10 +105,9 @@ private:
      void editCurrentSlice();
      void editSlice();
      bool sampleIsInSlice ( long unsigned int sample );
-     void initPrograms();
      void setProgramGrid ( int program );
+     void ProgramGrid( int grid);
      void deserializeProgram(const int program, const char* value);
-     void setProgram( int program);
      void getProgram( int program);
 
      float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
@@ -200,7 +199,7 @@ private:
      Rectangle<int> display;
      bool mouseMoveWaveform;
      int currentProgram;
-     int programGrid;
+     uint programGrid;
 
      // need static constexpr apparently because of std::array ..
 

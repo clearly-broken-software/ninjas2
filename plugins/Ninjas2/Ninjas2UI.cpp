@@ -35,8 +35,7 @@ NinjasUI::NinjasUI()
      samplerate = getSampleRate();
      initParameters();
      initSlices();
-     initPrograms();
-     currentProgram = 0;
+     currentProgram = 16;
 
      // sample
      sampleSize = 0;
@@ -161,8 +160,6 @@ NinjasUI::NinjasUI()
      // logos
      imgNinjasLogo = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1 );
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
-
-
      // for debugging , autoload sample
      //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
 
@@ -244,7 +241,6 @@ void NinjasUI::initSlices()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
-    printf("UI::parameterChanged(%i,%f)\n",index,value);
 
      switch ( index ) {
      case paramNumberOfSlices:
@@ -296,11 +292,13 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      case paramSliceMode:
           fSliceModeSlider->setDown ( value > 0.5f );
           break;
-     case paramOutputProgramNumber:
-     {
-       printf("UI paramOutputProgramNumber = %f", value);
-       getProgram(value);
-     }
+     case paramProgramGrid:
+          printf ( "UI paramProgramGrid %f\n",value );
+          ProgramGrid ( value );
+          break;
+     case paramProgramNumber:
+          currentProgram = value;
+          break;
      }
 
 
@@ -318,12 +316,6 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
      std::cout << "stateChanged() key = "<<key <<" value = " << value << "\n" ;
      if ( std::strcmp ( key, "filepath" ) == 0 ) {
           loadSample ( String ( value ) );
-     }
-
-     if ( std::strcmp ( key, "programgrid" ) == 0 ) {
-          std::cout << "NinjasUI::stateChanged " << value << std::endl;
-          programGrid = std:: stoi ( value );
-          //   processProgramGrid();
      }
 
 //      if ( std::strcmp ( key, "getProgram0" ) == 0 ) {
@@ -361,42 +353,34 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
      case paramAttack: {
           oldValue = p_Attack[currentSlice];
           if ( oldValue != value )
-               Programs[currentProgram].program_isEmpty = false;
+               setProgramGrid ( currentProgram );
           p_Attack[currentSlice]=value;
           break;
      }
      case paramDecay: {
           oldValue = p_Decay[currentSlice];
           if ( oldValue != value )
-               Programs[currentProgram].program_isEmpty = false;
+               setProgramGrid ( currentProgram );
           p_Decay[currentSlice]=value;
           break;
      }
      case  paramSustain: {
           oldValue = p_Sustain[currentSlice];
           if ( oldValue != value )
-               Programs[currentProgram].program_isEmpty = false;
+               setProgramGrid ( currentProgram );
           p_Sustain[currentSlice]=value;
           break;
      }
      case paramRelease: {
           oldValue = p_Release[currentSlice];
           if ( oldValue != value )
-               Programs[currentProgram].program_isEmpty = false;
+               setProgramGrid ( currentProgram );
           p_Release[currentSlice]=value;
           break;
      }
      default:
           setParameterValue ( KnobID,value );
      }
-
-     fGrid[currentProgram]->setStateSwitch ( Programs[currentProgram].program_isEmpty );
-     // flip the bit in the programGrid parameter
-     const bool flip = !Programs[currentProgram].program_isEmpty;
-     programGrid ^= 1UL << ( currentProgram * flip );
-     // let dsp know about changed program
-     setState ( "programGrid",std::to_string ( programGrid ).c_str() );
-
      repaint();
 }
 
@@ -440,7 +424,6 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           oldValue = p_OneShotFwd[currentSlice];
           if ( oldValue != value ) {
                setProgramGrid ( currentProgram );
-               Programs[currentProgram].program_isEmpty = false;
           }
           break;
      }
@@ -448,7 +431,6 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           oldValue = p_OneShotRev[currentSlice];
           if ( oldValue != value ) {
                setProgramGrid ( currentProgram );
-               Programs[currentProgram].program_isEmpty = false;
           }
           break;
      }
@@ -456,7 +438,6 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           oldValue = p_LoopFwd[currentSlice];
           if ( oldValue != value ) {
                setProgramGrid ( currentProgram );
-               Programs[currentProgram].program_isEmpty = false;
           }
           break;
      }
@@ -464,13 +445,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           oldValue = p_LoopRev[currentSlice];
           if ( oldValue != value ) {
                setProgramGrid ( currentProgram );
-               Programs[currentProgram].program_isEmpty = false;
           }
           break;
      }
      }
-     fGrid[currentProgram]->setStateSwitch ( Programs[currentProgram].program_isEmpty );
-
 
      switch ( buttonId ) {
      case paramOneShotFwd: {
@@ -623,19 +601,16 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                editParameter ( paramProgramNumber,true );
                setParameterValue ( paramProgramNumber,currentProgram );
                editParameter ( paramProgramNumber,false );
-             //  setProgram ( program );
                goto toggleswitches;
           }
           // normal click stores current program and gets new program
           if ( ( program != currentProgram ) ) {
                setState ( "storeprogram", std::to_string ( currentProgram ).c_str() );
-             //  setProgram ( currentProgram );
                currentProgram = program;
                editParameter ( paramProgramNumber,true );
                setParameterValue ( paramProgramNumber,currentProgram );
                editParameter ( paramProgramNumber,false );
                getProgram ( currentProgram );
-               //    printf ( "program is empty %i\n",Programs[program].program_isEmpty );
                goto toggleswitches;
           }
           // toggle the switches
@@ -659,12 +634,11 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      int NanoButtonID = nanoButton->getId();
      switch ( NanoButtonID ) {
      case paramSlice: {
-      // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
+          // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
           if ( slices != tempSlices ) {
-	    
+
                slices = tempSlices;
                fSpinBox->setDigitsColor ( false ); // set digits to black
-               fGrid[currentProgram]->setStateSwitch ( false );
                if ( !slicemethod ) {
                     createSlicesRaw();
                } else {
@@ -673,9 +647,8 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                editParameter ( paramNumberOfSlices,true );
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
-               Programs[currentProgram].program_isEmpty = false;
                setProgramGrid ( currentProgram );
-               fGrid[currentProgram]->setStateSwitch ( false );
+
           }
           break;
      }
@@ -1212,10 +1185,9 @@ void NinjasUI::loadSample ( String fp )
           createSlicesOnsets ();
      }
      // set program 0
-    // setProgram ( 0 );
-     Programs[0].program_isEmpty = false;
-     fGrid[0]->setStateSwitch ( false );
 
+     currentProgram = 0;
+     setProgramGrid(currentProgram);
      // toggle program 0 switch
      editParameter ( programSwitch00, true );
      setParameterValue ( programSwitch00, 1.0f );
@@ -1225,11 +1197,6 @@ void NinjasUI::loadSample ( String fp )
      editParameter ( paramProgramGrid, true );
      setParameterValue ( paramProgramGrid,1.0f );
      editParameter ( paramProgramGrid,false );
-     // copy program 0 to
-     for ( int p=1; p < 16 ; p++ ) {
-        //  setProgram ( p );
-     }
-
      repaint();
 
      return;
@@ -1724,61 +1691,34 @@ void NinjasUI::setProgramGrid ( int program )
      // programGrid is 16 bit register
      // check if bit 2^program is flipped already
      // if not set bit to 1
-     program = pow ( 2,program );
-     programGrid += program;
-     //TODO Check dsp side
-     setParameterValue ( paramProgramGrid,programGrid );
-}
+     //
+     printf("setProgramGrid(%i)\n",program);
+     if (program < 16){
+     programGrid |= 1UL << program;
+     ProgramGrid(programGrid);
+     }
+     
+   }
 
-void NinjasUI::initPrograms()
+void NinjasUI::ProgramGrid ( int grid )
 {
-     for ( int p = 0; p < 16 ; p++ ) {
-          Programs[p].program_slices = 1;
-          Programs[p].program_currentslice = 0;
-          for ( int i =0 ; i < 128 ; i++ ) {
-               Programs[p].program_a_slices[i].sliceStart = 0;
-               Programs[p].program_a_slices[i].sliceEnd = 0;
-               Programs[p].program_a_slices[i].playmode = ONE_SHOT_FWD;
+     printf ( "ProgramGrid(%i)\n",grid );
+     for ( int b= 0; b<16; b++ ) {
+          bool testBit = grid & ( int ) pow ( 2,b );
+          if ( testBit ) {
+               fGrid[b]->setStateSwitch ( false );
           }
-          std::fill_n ( Programs[p].program_Attack, 128, 0.001f );
-          std::fill_n ( Programs[p].program_Decay,128, 0.001f );
-          std::fill_n ( Programs[p].program_Sustain, 128, 1.0f );
-          std::fill_n ( Programs[p].program_Release, 128, 0.001f );
-          std::fill_n ( Programs[p].program_OneShotFwd, 128, 1.0f );
-          std::fill_n ( Programs[p].program_OneShotRev,128, 0.0f );
-          std::fill_n ( Programs[p].program_LoopFwd, 128, 0.0f );
-          std::fill_n ( Programs[p].program_LoopRev, 128, 0.0f );
-          Programs[p].program_isEmpty = true;
      }
-
-}
-void NinjasUI::setProgram ( int program )
-{
-     Programs[program].program_currentslice = currentSlice;
-     Programs[program].program_slices = slices;
-     for ( int i=0; i < 128 ; i++ ) {
-          Programs[program].program_a_slices[i] = a_slices[i];
-          Programs[program].program_Attack[i] = p_Attack[i];
-          Programs[program].program_Decay[i] = p_Decay[i];
-          Programs[program].program_Sustain[i] = p_Sustain[i];
-          Programs[program].program_Release[i] = p_Release[i];
-          Programs[program].program_OneShotFwd[i] = p_OneShotFwd[i];
-          Programs[program].program_OneShotRev[i] = p_OneShotRev[i];
-          Programs[program].program_LoopFwd[i] = p_LoopFwd[i];
-          Programs[program].program_LoopRev[i] = p_LoopRev[i];
-     }
+     repaint();
 }
 
 void NinjasUI::getProgram ( int program )
 {
-  printf("UI:getProgram(%i) ",program);
      currentSlice = plugin->Programs[program].currentslice;
      slices = plugin->Programs[program].slices;
-  //   int voice = ( currentSlice + 60 ) % 128; FIXME there's a problem I think, use same index for slice
-   int i=0;
-   //  printf ( "Program %i, Current Slice %i : # of slices %i\n",program, currentSlice,slices ); 
+
      for ( int i=0, voice = 0; i < 128 ; i++ ) {
-          voice = (i+60) % 128;
+          voice = ( i+60 ) % 128;
 
           a_slices[i].sliceStart = plugin->Programs[program].a_slices[i].sliceStart / plugin->sampleChannels;
           a_slices[i].sliceEnd = plugin->Programs[program].a_slices[i].sliceEnd / plugin->sampleChannels;
@@ -1791,25 +1731,18 @@ void NinjasUI::getProgram ( int program )
           p_OneShotRev[i]=plugin->Programs[program].OneShotRev[i];
           p_LoopFwd[i]=plugin->Programs[program].LoopFwd[i];
           p_LoopRev[i]=plugin->Programs[program].LoopRev[i];
-	
-      //   printf ( "Slice # %i : start %i, end %i, ADSR %f,%f,%f,%f , playmodes %f,%f,%f,%f\n", i,a_slices[i].sliceStart,a_slices[i].sliceEnd,p_Attack[i],p_Decay[i],p_Sustain[i],p_Release[i],p_OneShotFwd[i],p_OneShotRev[i],p_LoopFwd[i],p_LoopRev[i] );
-
      }
-     printf ( "Slice Programs[%i].a_slices[%i].sliceEnd =%i\n",program,0,plugin->Programs[program].a_slices[0].sliceEnd);
-     printf ( "Slice # %i : start %i, end %i\n", i ,a_slices[i].sliceStart,a_slices[i].sliceEnd );
-   
-   //   printf( "dsp slice range %i - %i", plugin->Programs[program].a_slices[i].sliceStart / sampleChannels, plugin->Programs[program].a_slices[i].sliceEnd / sampleChannels
-     
-
      fSpinBox->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
-
 }
+
+
+
+
 
 void NinjasUI::deserializeProgram ( const int program, const char* value )
 {
-     std::cerr << "deserializePrograms()" << value << std::endl;
      if ( strcmp ( value, "empty" ) == 0 ) {
           std::cout << "programsString is empty" << std::endl;
           return;

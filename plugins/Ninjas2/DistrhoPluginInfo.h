@@ -68,7 +68,6 @@ enum Parameters
     
     paramProgramNumber, // 29
     paramProgramGrid, // 30
-    paramOutputProgramNumber, //31
     paramCount
 };
 

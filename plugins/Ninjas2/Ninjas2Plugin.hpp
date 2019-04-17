@@ -209,7 +209,7 @@ private:
   std::vector<uint_t>onsets;
   double samplerate;
   float programNumber;
-  int programGrid;
+  unsigned programGrid;
   std::string statePrograms;
   
   struct program {
