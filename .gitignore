@@ -24,3 +24,7 @@ plugins/Ninjas2/Art working directory/
 *.ods
 
 \.vscode/
+
+plugins/Ninjas2/ninjas2_debug\.carxp
+
+plugins/Ninjas2/ninjas2_debug\.json
