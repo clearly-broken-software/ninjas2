@@ -36,6 +36,7 @@ NinjasUI::NinjasUI()
      initParameters();
      initSlices();
      currentProgram = 16;
+     sliceButton = 0;
 
      // sample
      sampleSize = 0;
@@ -245,9 +246,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      switch ( index ) {
      case paramNumberOfSlices:
           fSpinBox->setValue ( value );
-          slices = value ;
-          createSlicesRaw ();
-          break;
+	  break;
           // Play Modes
      case paramOneShotFwd:
           fSwitchFwd->setDown ( value > 0.5f );
@@ -293,14 +292,14 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSliceModeSlider->setDown ( value > 0.5f );
           break;
      case paramProgramGrid:
-          printf ( "UI paramProgramGrid %f\n",value );
+      //    printf ( "UI paramProgramGrid %f\n",value );
           ProgramGrid ( value );
           break;
      case paramProgramNumber: {
           currentProgram = value;
           fGrid[currentProgram]->setDown ( 1 );
-	 
-          break;
+	  getProgram(currentProgram);
+	  break;
      }
      }
 
@@ -316,31 +315,10 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
 {
-     std::cout << "stateChanged() key = "<<key <<" value = " << value << "\n" ;
+   //  std::cout << "stateChanged() key = "<<key <<" value = " << value << "\n" ;
      if ( std::strcmp ( key, "filepathFromState" ) == 0 ) {
           loadSample ( String ( value ), false );
      }
-  
-
-     if ( std::strcmp ( key, "program00" ) == 0 ) {
-          //  getProgram(0);
-          ;
-     }
-
-     if ( std::strcmp ( key, "program01" ) == 0 ) {
-          // getProgram(1);
-          ;
-     }
-
-//      if ( std::strcmp ( key, "getProgram0" ) == 0 ) {
-//          // deserializeProgram ( 0, value );
-//      }
-//
-//      if ( std::strcmp ( key, "getProgram1" ) == 0 ) {
-//      // deserializeProgram ( 1, value );
-//      }
-
-
 }
 
 
@@ -652,7 +630,8 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      case paramSlice: {
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
           if ( slices != tempSlices ) {
-
+	       sliceButton = !sliceButton;
+	       printf("sliceButton = %i\n",sliceButton);
                slices = tempSlices;
                fSpinBox->setDigitsColor ( false ); // set digits to black
                if ( !slicemethod ) {
@@ -660,7 +639,11 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                } else {
                     createSlicesOnsets();
                }
-               editParameter ( paramNumberOfSlices,true );
+               editParameter(paramSlice,true);
+	       setParameterValue(paramSlice,sliceButton);
+	       editParameter(paramSlice,false);
+	    
+	       editParameter ( paramNumberOfSlices,true );
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
                setProgramGrid ( currentProgram );
@@ -1698,7 +1681,7 @@ void NinjasUI::loadSample ( String fp , bool fromUser )
           // check if bit 2^program is flipped already
           // if not set bit to 1
           //
-          printf ( "setProgramGrid(%i)\n",program );
+      //    printf ( "setProgramGrid(%i)\n",program );
           if ( program < 16 ) {
                programGrid |= 1UL << program;
                ProgramGrid ( programGrid );
@@ -1710,7 +1693,7 @@ void NinjasUI::loadSample ( String fp , bool fromUser )
      }
 
      void NinjasUI::ProgramGrid ( int grid ) {
-          printf ( "ProgramGrid(%i)\n",grid );
+      //    printf ( "ProgramGrid(%i)\n",grid );
           for ( int b= 0; b<16; b++ ) {
                bool testBit = grid & ( int ) pow ( 2,b );
                if ( testBit ) {

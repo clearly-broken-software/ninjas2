@@ -34,39 +34,37 @@
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:InstrumentPlugin"
 
 enum Parameters
-{
-    paramNumberOfSlices = 0,
-    paramSlice, // 1
-    paramAttack, // 2
-    paramDecay, // 3
-    paramSustain, // 4
-    paramRelease, // 5
-    paramOneShotFwd, // 6
-    paramOneShotRev, // 7
-    paramLoopFwd, // 8
-    paramLoopRev, // 9
-    paramLoadSample, // 10
-    paramSliceMode, // 11
-    paramCurrentSlice, // 12
-   
-    programSwitch00, // 13
-    programSwitch01, // 14
-    programSwitch02, // 15
-    programSwitch03, // 16
-    programSwitch04, // 17
-    programSwitch05, // 18
-    programSwitch06, // 19
-    programSwitch07, // 20
-    programSwitch08, // 21
-    programSwitch09, // 22
-    programSwitch10, // 23
-    programSwitch11, // 24
-    programSwitch12, // 25
-    programSwitch13, // 26
-    programSwitch14, // 27
-    programSwitch15, // 28
-    
-    paramProgramNumber, // 29
+{  
+    paramProgramNumber = 0, // 0 
+    paramCurrentSlice, // 1
+    paramNumberOfSlices, // 2
+    paramSlice, // 3
+    paramAttack, // 4
+    paramDecay, // 5
+    paramSustain, // 6
+    paramRelease, // 7
+    paramOneShotFwd, // 8
+    paramOneShotRev, // 9
+    paramLoopFwd, // 10
+    paramLoopRev, // 11
+    paramLoadSample, // 12
+    paramSliceMode, // 13
+    programSwitch00, // 14
+    programSwitch01, // 15
+    programSwitch02, // 16
+    programSwitch03, // 17
+    programSwitch04, // 18
+    programSwitch05, // 19
+    programSwitch06, // 20
+    programSwitch07, // 21
+    programSwitch08, // 22
+    programSwitch09, // 23
+    programSwitch10, // 24
+    programSwitch11, // 25
+    programSwitch12, // 26
+    programSwitch13, // 27
+    programSwitch14, // 28
+    programSwitch15, // 29
     paramProgramGrid, // 30
     paramCount
 };

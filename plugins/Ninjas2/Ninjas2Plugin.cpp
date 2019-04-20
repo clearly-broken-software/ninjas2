@@ -365,80 +365,61 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
 
 String NinjasPlugin::getState ( const char* key ) const
 {
-     std::cerr << "NinjasPlugin::getState("<< key <<")" << std::endl;
      if ( std::strcmp ( key, "filepathFromState" ) == 0 ) {
-          printf ( "getState(%s) %s\n",key,filepath.c_str() );
           return String ( filepath.c_str() );
      }
 
      if ( std::strcmp ( key, "filepathFromUI" ) == 0 ) {
-          printf ( "getState(%s) %s\n",key,"empty" );
           return String ( "empty" );
      }
 
      if ( std::strcmp ( key, "program00" ) == 0 ) {
-          std::cerr << "program00 =" << serializeProgram ( 0 ) << std::endl;;
           return String ( serializeProgram ( 0 ).c_str() );
      }
      if ( std::strcmp ( key, "program01" ) == 0 ) {
-          std::cerr << "program01 =" << serializeProgram ( 1 ) << std::endl;;
           return String ( serializeProgram ( 1 ).c_str() );
      }
 
      if ( std::strcmp ( key, "program02" ) == 0 ) {
-          std::cerr << "program02 =" << serializeProgram ( 2 ) << std::endl;;
           return String ( serializeProgram ( 2 ).c_str() );
      }
      if ( std::strcmp ( key, "program03" ) == 0 ) {
-          std::cerr << "program03 =" << serializeProgram ( 3 ) << std::endl;;
           return String ( serializeProgram ( 3 ).c_str() );
      }
      if ( std::strcmp ( key, "program04" ) == 0 ) {
-          std::cerr << "program04 =" << serializeProgram ( 4 ) << std::endl;;
           return String ( serializeProgram ( 4 ).c_str() );
      }
      if ( std::strcmp ( key, "program05" ) == 0 ) {
-          std::cerr << "program05 =" << serializeProgram ( 5 ) << std::endl;;
           return String ( serializeProgram ( 5 ).c_str() );
      }
      if ( std::strcmp ( key, "program06" ) == 0 ) {
-          std::cerr << "program06 =" << serializeProgram ( 6 ) << std::endl;;
           return String ( serializeProgram ( 6 ).c_str() );
      }
      if ( std::strcmp ( key, "program07" ) == 0 ) {
-          std::cerr << "program07 =" << serializeProgram ( 7 ) << std::endl;;
           return String ( serializeProgram ( 7 ).c_str() );
      }
      if ( std::strcmp ( key, "program08" ) == 0 ) {
-          std::cerr << "program08 =" << serializeProgram ( 8 ) << std::endl;;
           return String ( serializeProgram ( 8 ).c_str() );
      }
      if ( std::strcmp ( key, "program09" ) == 0 ) {
-          std::cerr << "program09 =" << serializeProgram ( 9 ) << std::endl;;
           return String ( serializeProgram ( 9 ).c_str() );
      }
      if ( std::strcmp ( key, "program10" ) == 0 ) {
-          std::cerr << "program10 =" << serializeProgram ( 10 ) << std::endl;;
           return String ( serializeProgram ( 10 ).c_str() );
      }
      if ( std::strcmp ( key, "program11" ) == 0 ) {
-          std::cerr << "program11 =" << serializeProgram ( 11 ) << std::endl;;
           return String ( serializeProgram ( 11 ).c_str() );
      }
      if ( std::strcmp ( key, "program12" ) == 0 ) {
-          std::cerr << "program12 =" << serializeProgram ( 12 ) << std::endl;;
           return String ( serializeProgram ( 12 ).c_str() );
      }
      if ( std::strcmp ( key, "program13" ) == 0 ) {
-          std::cerr << "program13 =" << serializeProgram ( 13 ) << std::endl;;
           return String ( serializeProgram ( 13 ).c_str() );
      }
      if ( std::strcmp ( key, "program14" ) == 0 ) {
-          std::cerr << "program14 =" << serializeProgram ( 14 ) << std::endl;;
           return String ( serializeProgram ( 14 ).c_str() );
      }
      if ( std::strcmp ( key, "program15" ) == 0 ) {
-          std::cerr << "program15 =" << serializeProgram ( 15 ) << std::endl;;
           return String ( serializeProgram ( 15 ).c_str() );
      }
 
@@ -449,9 +430,9 @@ String NinjasPlugin::getState ( const char* key ) const
 
 void NinjasPlugin::setState ( const char* key, const char* value )
 {
-     printf ( "setState(%s) %s\n",key,value );
+     //  printf ( "setState(%s) %s\n",key,value );
      if ( strcmp ( value, "empty" ) == 00 ) {
-          printf ( "state is empty, returning/n" );
+          printf ( "state is empty, returning\n" );
           return;
      }
 
@@ -658,13 +639,23 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 
      switch ( index ) {
      case paramNumberOfSlices:
-          Programs[currentProgram].slices = ( int ) value;
-          if ( slicemode == 0 )
-               createSlicesRaw ();
-          else
-               createSlicesOnsets ();
-          break;
+          printf ( "currentProgram = %i, slices = %i , value = %f\n", currentProgram, Programs[currentProgram].slices, value );
+          if ( Programs[currentProgram].slices  != ( int ) value ) {
+               Programs[currentProgram].slices = ( int ) value;
+               switch ( slicemode ) {
+               case 0:
+                    createSlicesRaw();
+                    break;
+               case 1:
+                    createSlicesOnsets();
+                    break;
+               default:
+                    printf ( "unexpected slicemode : %i\n",slicemode );
+                    }
+          }
+
      case paramSlice:
+          printf ( "paramSlice %f\n",value );
           break;
      case paramAttack:
           Programs[currentProgram].Attack[voice] = value;
@@ -685,8 +676,6 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
                Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 0;
                Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 0;
                Programs[currentProgram].LoopRev[Programs[currentProgram].currentSlice] = 0;
-
-               printf ( "currentProgram %i, playmode %i\n", currentProgram, Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode );
           }
           break;
      case paramOneShotRev: // one shot Reverse
@@ -696,15 +685,11 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
                Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 1;
                Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 0;
                Programs[currentProgram].LoopRev[Programs[currentProgram].currentSlice] = 0;
-
-
-               printf ( "currentProgram %i, playmode %i\n", currentProgram, Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode );
           }
           break;
      case paramLoopFwd: // Loop Fwd
           if ( value == 1 ) {
                Programs[currentProgram].a_slices[ Programs[currentProgram].currentSlice].playmode = LOOP_FWD;
-               printf ( "currentProgram %i, playmode %i\n", currentProgram, Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode );
                Programs[currentProgram].OneShotFwd[Programs[currentProgram].currentSlice] = 0;
                Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 0;
                Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 1;
@@ -714,7 +699,6 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      case paramLoopRev: // Loop Rev
           if ( value == 1 ) {
                Programs[currentProgram].a_slices[ Programs[currentProgram].currentSlice].playmode = LOOP_REV;
-               printf ( "currentProgram %i, playmode %i\n", currentProgram, Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode );
                Programs[currentProgram].OneShotFwd[Programs[currentProgram].currentSlice] = 0;
                Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 0;
                Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 0;
@@ -723,13 +707,20 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           break;
      case paramLoadSample:
           break;
-     case paramSliceMode:
-          slicemode = ( int ) value;
-          if ( slicemode == 0 )
-               createSlicesRaw ();
-          else
-               createSlicesOnsets ();
+     case paramSliceMode: {
+          if ( slicemode != ( int ) value ) {
+               slicemode = ( int ) value;
+               switch ( slicemode ) {
+               case 0:
+                    createSlicesRaw ();
+               case 1:
+                    createSlicesOnsets ();
+               default :
+                    printf ( "unexpected value for slicemode : %i\n",slicemode );
+               }
+          }
           break;
+     }
      case paramCurrentSlice:
           Programs[currentProgram].currentSlice = value;
           break;
@@ -737,10 +728,9 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           programGrid = value;
           break;
      case paramProgramNumber: {
-          //    printf ( "setParameterValue ProgramNumber %f // programNumber =%f\n",value,programNumber );
+          printf ( "setParameterValue ProgramNumber %f // programNumber =%f\n",value,programNumber );
           programNumber = value;
           currentProgram = programNumber; // implicit cast to int
-          printf ( "currentProgram = %i\n",currentProgram );
           break;
      }
      case programSwitch00: // 13
@@ -1010,6 +1000,8 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
 void NinjasPlugin::createSlicesRaw ()
 {
+     printf ( "Ninjas2Plugin::createSlicesRaw() called\n" );
+
      for ( int s = 0 ; s < 128 ; s++ ) {
           Programs[currentProgram].a_slices[s].sliceStart = 0;
           Programs[currentProgram].a_slices[s].sliceEnd = 0;
@@ -1254,7 +1246,7 @@ std::string NinjasPlugin::serializeProgram ( int program ) const
      std::string programsString = "";
      //   programsString.clear();
      programsString.append ( std::to_string ( Programs[program].slices ) );
-     printf ( "serializeProgram(%i) Programs[%i].slices = %i\n",program,program,Programs[program].slices );
+     //   printf ( "serializeProgram(%i) Programs[%i].slices = %i\n",program,program,Programs[program].slices );
      programsString.append ( " " );
      programsString.append ( std::to_string ( Programs[program].currentSlice ) );
      programsString.append ( " " );
@@ -1358,7 +1350,7 @@ void NinjasPlugin::deserializeProgram ( const int program, const char* string )
                Programs[program].LoopRev[i]= iValue;
           }
      }
-     printf ( "deserializeProgram(%i) Programs[%i].slices = %i\n",program,program,Programs[program].slices );
+//    printf ( "deserializeProgram(%i) Programs[%i].slices = %i\n",program,program,Programs[program].slices );
 }
 /* ------------------------------------------------------------------------------------------------------------
 * Plugin entry point, called by DPF to create a new plugin instance. */

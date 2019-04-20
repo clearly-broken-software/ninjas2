@@ -230,6 +230,8 @@ private:
 	bool program_isEmpty;
   };
   program Programs[16];
+  
+  bool sliceButton; 
    
   /*
    * Set our plugin class as non-copyable and add a leak detector just in case.

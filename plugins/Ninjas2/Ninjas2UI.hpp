@@ -199,6 +199,7 @@ private:
      bool mouseMoveWaveform;
      int currentProgram;
      uint programGrid;
+     bool sliceButton;
 
      // need static constexpr apparently because of std::array ..
 
