@@ -103,17 +103,19 @@ private:
   void createSlicesRaw ();
   void getOnsets ();
   void createSlicesOnsets ();
-  int loadSample(std::string fp);
+  int loadSample(std::string fp, bool fromUser );
   int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
   void getProgram( int program);
   void setProgram( int program);
   void initPrograms();
   std::string serializeProgram( int program) const;
+  void deserializeProgram(int program, const char* string); 
+
   
 
   // Paramaters for 128 slices
-  float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
-  float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
+ // float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
+ // float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
   float p_Grid[16];
 
   // slices
@@ -191,9 +193,9 @@ private:
     // bool sliceActive;
   };
   
-  Slice a_slices[128];
-  int slices; // number of slices
-  int currentSlice;
+  //Slice a_slices[128];
+  //int slices; // number of slices
+  //int currentSlice;
   
   // empty sample object
   std::vector<float> sampleVector; // this holds the sample data
@@ -208,13 +210,14 @@ private:
   bool bypass; // {true};
   std::vector<uint_t>onsets;
   double samplerate;
-  float programNumber;
+  float programNumber; // float for Param
+  int currentProgram;
   unsigned programGrid;
   std::string statePrograms;
   
   struct program {
         int slices; // number of slices ..
-        int currentslice;
+        int currentSlice;
         Slice a_slices[128];
         float Attack[128];
         float Decay[128];

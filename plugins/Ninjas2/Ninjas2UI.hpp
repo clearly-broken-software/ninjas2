@@ -88,7 +88,7 @@ private:
      ScopedPointer<TextButton> fSliceButton;
 
      const NinjasPlugin * plugin;
-     void loadSample ( String fp );
+     void loadSample ( String fp, bool fromUser );
      std::vector<short int> waveform;
      void getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets );
      void createSlicesRaw ();
@@ -107,7 +107,6 @@ private:
      bool sampleIsInSlice ( long unsigned int sample );
      void setProgramGrid ( int program );
      void ProgramGrid( int grid);
-     void deserializeProgram(const int program, const char* value);
      void getProgram( int program);
 
      float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
