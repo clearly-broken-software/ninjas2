@@ -94,7 +94,7 @@ endif
 
 ifeq ($(BUILD_LV2),true)
 ifeq ($(HAVE_DGL),true)
-TARGETS += lv2_sep
+TARGETS += lv2
 else
 TARGETS += lv2_dsp
 endif
