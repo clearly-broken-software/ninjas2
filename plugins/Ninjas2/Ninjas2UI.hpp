@@ -113,7 +113,7 @@ private:
      float p_OneShotFwd[128], p_OneShotRev[128], p_LoopFwd[128], p_LoopRev[128];
      std::string dirnameOf ( const std::string& fname );
      std::string toTime ( double time, double round_up );
-     // int programNumber; // 0 - 15
+     int programNumber; // 0 - 15
 
      //
      bool mouseDragging;
@@ -197,7 +197,7 @@ private:
      std::string stateSlice;
      Rectangle<int> display;
      bool mouseMoveWaveform;
-     int currentProgram;
+   //  int currentProgram;
      uint programGrid;
      bool sliceButton;
 

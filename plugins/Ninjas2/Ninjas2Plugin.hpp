@@ -109,7 +109,8 @@ private:
   void setProgram( int program);
   void initPrograms();
   std::string serializeProgram( int program) const;
-  void deserializeProgram(int program, const char* string); 
+  void deserializeProgram(int program, const char* string);
+  bool sliceButton;
 
   
 
@@ -210,8 +211,7 @@ private:
   bool bypass; // {true};
   std::vector<uint_t>onsets;
   double samplerate;
-  float programNumber; // float for Param
-  int currentProgram;
+  int programNumber; // float for Param
   unsigned programGrid;
   std::string statePrograms;
   
@@ -231,7 +231,7 @@ private:
   };
   program Programs[16];
   
-  bool sliceButton; 
+  //bool sliceButton; 
    
   /*
    * Set our plugin class as non-copyable and add a leak detector just in case.

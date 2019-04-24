@@ -38,7 +38,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-     : Plugin ( paramCount, 0, 20 ) // parameters, programs (presets) , states
+     : Plugin ( paramCount, 0, 22 ) // parameters, programs (presets) , states
 {
      // init parameters
 
@@ -78,8 +78,7 @@ NinjasPlugin::NinjasPlugin()
      // grid
      std::fill_n ( p_Grid, 16, 0 );
      p_Grid[0] = 1;
-     programNumber=0.0f; // parameter
-     currentProgram = 0;
+     programNumber = 0;
      programGrid=0;
      initPrograms();
 
@@ -96,6 +95,16 @@ NinjasPlugin::NinjasPlugin()
 void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
 {
      switch ( index ) {
+     case paramProgramNumber: {
+          parameter.hints = kParameterIsOutput;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 15.0f;
+          parameter.name   = "programNumber (output)";
+          parameter.symbol  = "programNumberOut";
+          break;
+     }
+
      case paramNumberOfSlices: {
           parameter.hints      = kParameterIsAutomable|kParameterIsInteger;
           parameter.ranges.def = 1.0f;
@@ -106,15 +115,15 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.midiCC = 102;
           break;
      }
-     case paramSlice: {
-          parameter.hints = kParameterIsBoolean;
-          parameter.ranges.def = 0.0f;
-          parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 1.0f;
-          parameter.name = "Slice Button";
-          parameter.symbol = "sliceButton";
-          break;
-     }
+//      case paramSliceButton: {
+//           parameter.hints = kParameterIsBoolean;
+//           parameter.ranges.def = 0.0f;
+//           parameter.ranges.min = 0.0f;
+//           parameter.ranges.max = 1.0f;
+//           parameter.name = "Slice Button";
+//           parameter.symbol = "sliceButton";
+//           break;
+//      }
      case paramAttack: {
           parameter.hints      = kParameterIsAutomable ;
           parameter.ranges.def = 0.001f;
@@ -214,24 +223,6 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.midiCC = 111;
           break;
      }
-     case paramCurrentSlice: {
-          parameter.hints = kParameterIsAutomable|kParameterIsInteger;
-          parameter.ranges.def = 0.0f;
-          parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 127.0f;
-          parameter.name = "Current Slice";
-          parameter.symbol = "currentSlice";
-          break;
-     }
-     case paramProgramNumber: {
-          parameter.hints = kParameterIsAutomable;
-          parameter.ranges.def = 0.0f;
-          parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 15.0f;
-          parameter.name   = "Program Number";
-          parameter.symbol  = "programNumber";
-          break;
-     }
 
      case paramProgramGrid: {
           parameter.hints = kParameterIsInteger|kParameterIsInteger; // FIXME not automate ?? is this the correct way of operation
@@ -242,17 +233,13 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.symbol = "programGrid";
           break;
      }
-     } // switch
-     if ( index >= programSwitch00 && index <= programSwitch15 ) {
-          parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-          parameter.ranges.def = 0.0f;
-          parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 1.0f;
-          parameter.name   = "State Switch "+String ( index - programSwitch00 );
-          parameter.symbol  = "stateSwitch"+String ( index - programSwitch00 );
-//       parameter.midiCC = index - paramSwitch01 + 33;
+     default: {
+          printf ( "unexpected parameter %i \n",index );
+          parameter.name = "describe it";
+          parameter.symbol = "describeIt";
      }
 
+     }
 }
 
 void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& defaultStateValue )
@@ -260,12 +247,12 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
      switch ( index ) {
      case 0: {
           stateKey ="filepathFromUI";
-          defaultStateValue = "empty";
+          defaultStateValue = String ( filepath.c_str() );
           break;
      }
      case 1: {
           stateKey ="filepathFromState";
-          defaultStateValue = "empty";
+          defaultStateValue = String ( filepath.c_str() );
           break;
      }
      case 2: {
@@ -358,6 +345,21 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
           defaultStateValue = "empty";
           break;
      }
+     case 20: {
+          stateKey = "programNumber";
+          defaultStateValue = "empty";
+          break;
+     }
+     case 21: {
+          stateKey = "currentSlice";
+          defaultStateValue = "empty";
+          break;
+     }
+     case 22: {
+          stateKey = "sliceButton";
+          defaultStateValue = "empty";
+          break;
+     }
 
 //
      } // switch
@@ -365,21 +367,29 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
 
 String NinjasPlugin::getState ( const char* key ) const
 {
+     // std::printf ( "getState( %s )\n",key );
      if ( std::strcmp ( key, "filepathFromState" ) == 0 ) {
           return String ( filepath.c_str() );
      }
 
-     if ( std::strcmp ( key, "filepathFromUI" ) == 0 ) {
-          return String ( "empty" );
+     /*    if ( std::strcmp ( key, "filepathFromUI" ) == 0 ) {
+              return String ( filepath.c_str() );
+         }
+     */
+     if ( std::strcmp ( key, "programNumber" ) == 0 ) {
+          printf ( "programNumber = %i", programNumber );
+          return String ( programNumber );
      }
 
+     if ( std::strcmp ( key, "currentSlice" ) == 0 ) {
+          return String ( Programs[programNumber].currentSlice );
+     }
      if ( std::strcmp ( key, "program00" ) == 0 ) {
           return String ( serializeProgram ( 0 ).c_str() );
      }
      if ( std::strcmp ( key, "program01" ) == 0 ) {
           return String ( serializeProgram ( 1 ).c_str() );
      }
-
      if ( std::strcmp ( key, "program02" ) == 0 ) {
           return String ( serializeProgram ( 2 ).c_str() );
      }
@@ -422,20 +432,32 @@ String NinjasPlugin::getState ( const char* key ) const
      if ( std::strcmp ( key, "program15" ) == 0 ) {
           return String ( serializeProgram ( 15 ).c_str() );
      }
-
-
      return String ( "empty" );
 }
 
 
 void NinjasPlugin::setState ( const char* key, const char* value )
 {
-     //  printf ( "setState(%s) %s\n",key,value );
-     if ( strcmp ( value, "empty" ) == 00 ) {
-          printf ( "state is empty, returning\n" );
+  //   printf ( "setState ( %s )\n",key);
+     if ( strcmp ( value, "empty" ) == 0 ) {
+          //       printf ( "state is empty, returning\n" );
           return;
      }
 
+     if ( strcmp ( key, "sliceButton" ) == 0 ) {
+          if ( strcmp ( value, "true" ) == 0 ) {
+               switch ( slicemode ) {
+               case 0:
+                    createSlicesRaw();
+                    break;
+               case 1:
+                    createSlicesOnsets();
+                    break;
+               default:
+                    printf ( "unexpected slicemode :%i\n",slicemode );
+               }
+          }
+     }
 
      if ( strcmp ( key, "filepathFromState" ) == 0 ) {
 
@@ -454,7 +476,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
 
      if ( strcmp ( key, "filepathFromUI" ) == 0 ) {
 
-          if ( strcmp ( value, "empty" ) == 00 )
+          if ( strcmp ( value, "empty" ) == 0 )
                return;
 
           filepath = value;
@@ -488,9 +510,9 @@ void NinjasPlugin::setState ( const char* key, const char* value )
                     errno = 0;
                }
                if ( start )
-                    Programs[currentProgram].a_slices[index].sliceStart = iValue * sampleChannels;
+                    Programs[programNumber].a_slices[index].sliceStart = iValue * sampleChannels;
                else {
-                    Programs[currentProgram].a_slices[index].sliceEnd = iValue * sampleChannels;
+                    Programs[programNumber].a_slices[index].sliceEnd = iValue * sampleChannels;
                     index++;
                }
                start = !start;
@@ -550,6 +572,15 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      if ( strcmp ( key, "program15" ) == 0 ) {
           deserializeProgram ( 15,value );
      }
+
+     if ( strcmp ( key,  "programNumber" ) == 0 ) {
+          programNumber = std::stoi ( value );
+          //  printf ( "setState ( %s ) value = %s \n" , key, value );
+     }
+
+     if ( strcmp ( key, "currentSlice" ) == 0 ) {
+          Programs[programNumber].currentSlice = std::stoi ( value );
+     }
 }
 
 
@@ -567,44 +598,49 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
 {
      float return_Value = 0.0f;
 
-     int voice = ( Programs[currentProgram].currentSlice + 60 ) %128;
+     int voice = ( Programs[programNumber].currentSlice + 60 ) %128;
 
      switch ( index ) {
+     case paramProgramNumber: {
+
+          return_Value = ( float ) programNumber;
+          break;
+     }
      case paramNumberOfSlices:
-          return_Value = ( float ) Programs[currentProgram].slices;
+          return_Value = ( float ) Programs[programNumber].slices;
           break;
      case paramAttack:
-          return_Value = Programs[currentProgram].Attack[voice];
+          return_Value = Programs[programNumber].Attack[voice];
           break;
      case paramDecay:
-          return_Value = Programs[currentProgram].Decay[voice];
+          return_Value = Programs[programNumber].Decay[voice];
           break;
      case paramSustain:
-          return_Value = Programs[currentProgram].Sustain[voice];
+          return_Value = Programs[programNumber].Sustain[voice];
           break;
      case paramRelease:
-          return_Value = Programs[currentProgram].Release[voice];
+          return_Value = Programs[programNumber].Release[voice];
           break;
      case paramOneShotFwd: // one shot forward
-          if ( Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode == ONE_SHOT_FWD )
+          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == ONE_SHOT_FWD )
                return_Value = 1.0f;
           else
                return_Value = 0.0f;
           break;
      case paramOneShotRev: // one shot Reverse
-          if ( Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode == ONE_SHOT_REV )
+          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == ONE_SHOT_REV )
                return_Value = 1.0f;
           else
                return_Value = 0.0f;
           break;
      case paramLoopFwd: // Loop Fwd
-          if ( Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode == LOOP_FWD )
+          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == LOOP_FWD )
                return_Value = 1.0f;
           else
                return_Value = 0.0f;
           break;
      case paramLoopRev: // Loop Rev
-          if ( Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode == LOOP_REV )
+          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == LOOP_REV )
                return_Value = 1.0f;
           else
                return_Value = 0.0f;
@@ -612,15 +648,9 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
      case paramSliceMode:
           return_Value = slicemode;
           break;
-     case paramProgramNumber:
-          return_Value = programNumber;
-          break;
      case paramProgramGrid:
           return_Value = programGrid;
-
-     }
-     if ( index >= programSwitch00 && index <= programSwitch15 ) {
-          return_Value = p_Grid[index - programSwitch00];
+	  break;
      }
      return return_Value;
 
@@ -634,95 +664,66 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
-     std::cerr << "NinjasPlugin::setParameterValue(" << index <<", "<<value<<")" <<std::endl;
-     int voice = ( Programs[currentProgram].currentSlice + 60 ) % 128;
+     printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
+     int voice = ( Programs[programNumber].currentSlice + 60 ) % 128;
 
      switch ( index ) {
      case paramNumberOfSlices:
-          printf ( "currentProgram = %i, slices = %i , value = %f\n", currentProgram, Programs[currentProgram].slices, value );
-          if ( Programs[currentProgram].slices  != ( int ) value ) {
-               Programs[currentProgram].slices = ( int ) value;
-               switch ( slicemode ) {
-               case 0:
-                    createSlicesRaw();
-                    break;
-               case 1:
-                    createSlicesOnsets();
-                    break;
-               default:
-                    printf ( "unexpected slicemode : %i\n",slicemode );
-                    }
-          }
-
-     case paramSlice:
-          printf ( "paramSlice %f\n",value );
+          Programs[programNumber].slices = ( int ) value;
           break;
+
      case paramAttack:
-          Programs[currentProgram].Attack[voice] = value;
+          Programs[programNumber].Attack[voice] = value;
           break;
      case paramDecay:
-          Programs[currentProgram].Decay[voice] = value;
+          Programs[programNumber].Decay[voice] = value;
           break;
      case paramSustain:
-          Programs[currentProgram].Sustain[voice] = value;
+          Programs[programNumber].Sustain[voice] = value;
           break;
      case paramRelease:
-          Programs[currentProgram].Release[voice] = value;
+          Programs[programNumber].Release[voice] = value;
           break;
      case paramOneShotFwd: // one shot forward
           if ( value == 1 ) {
-               Programs[currentProgram].a_slices[Programs[currentProgram].currentSlice].playmode =  ONE_SHOT_FWD;
-               Programs[currentProgram].OneShotFwd[Programs[currentProgram].currentSlice] = 1;
-               Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].LoopRev[Programs[currentProgram].currentSlice] = 0;
+               Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode =  ONE_SHOT_FWD;
+               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 1;
+               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 0;
           }
           break;
      case paramOneShotRev: // one shot Reverse
           if ( value == 1 ) {
-               Programs[currentProgram].a_slices[ Programs[currentProgram].currentSlice].playmode = ONE_SHOT_REV;
-               Programs[currentProgram].OneShotFwd[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 1;
-               Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].LoopRev[Programs[currentProgram].currentSlice] = 0;
+               Programs[programNumber].a_slices[ Programs[programNumber].currentSlice].playmode = ONE_SHOT_REV;
+               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 1;
+               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 0;
           }
           break;
      case paramLoopFwd: // Loop Fwd
           if ( value == 1 ) {
-               Programs[currentProgram].a_slices[ Programs[currentProgram].currentSlice].playmode = LOOP_FWD;
-               Programs[currentProgram].OneShotFwd[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 1;
-               Programs[currentProgram].LoopRev[Programs[currentProgram].currentSlice] = 0;
+               Programs[programNumber].a_slices[ Programs[programNumber].currentSlice].playmode = LOOP_FWD;
+               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 1;
+               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 0;
           }
           break;
      case paramLoopRev: // Loop Rev
           if ( value == 1 ) {
-               Programs[currentProgram].a_slices[ Programs[currentProgram].currentSlice].playmode = LOOP_REV;
-               Programs[currentProgram].OneShotFwd[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].OneShotRev[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].LoopFwd[Programs[currentProgram].currentSlice] = 0;
-               Programs[currentProgram].LoopRev[Programs[currentProgram].currentSlice] = 1;
+               Programs[programNumber].a_slices[ Programs[programNumber].currentSlice].playmode = LOOP_REV;
+               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 0;
+               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 1;
           }
           break;
      case paramLoadSample:
           break;
-     case paramSliceMode: {
-          if ( slicemode != ( int ) value ) {
-               slicemode = ( int ) value;
-               switch ( slicemode ) {
-               case 0:
-                    createSlicesRaw ();
-               case 1:
-                    createSlicesOnsets ();
-               default :
-                    printf ( "unexpected value for slicemode : %i\n",slicemode );
-               }
-          }
-          break;
-     }
-     case paramCurrentSlice:
-          Programs[currentProgram].currentSlice = value;
+     case paramSliceMode:
+          slicemode = ( int ) value;
           break;
      case paramProgramGrid:
           programGrid = value;
@@ -730,28 +731,8 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      case paramProgramNumber: {
           printf ( "setParameterValue ProgramNumber %f // programNumber =%f\n",value,programNumber );
           programNumber = value;
-          currentProgram = programNumber; // implicit cast to int
           break;
      }
-     case programSwitch00: // 13
-     case programSwitch01: // 14
-     case programSwitch02: // 15
-     case programSwitch03: // 16
-     case programSwitch04: // 17
-     case programSwitch05: // 18
-     case programSwitch06: // 19
-     case programSwitch07: // 20
-     case programSwitch08: // 21
-     case programSwitch09: // 22
-     case programSwitch10: // 23
-     case programSwitch11: // 24
-     case programSwitch12: // 25
-     case programSwitch13: // 26
-     case programSwitch14: // 27
-     case programSwitch15: // 28
-          break;
-
-
      default:
           std::cerr << "NinjasPlugin::setParameterValue unexpected parameter. index = " << index << "value = " <<value<< std::endl;
      }
@@ -765,6 +746,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 {
      float* const outL = outputs[0]; // output ports , stereo
      float* const outR = outputs[1];
+     float* const outPrograms = outputs[2];
      uint32_t framesDone = 0;
      uint32_t curEventIndex = 0; // index for midi event to process
      while ( framesDone < frames ) { // we have frames to process !!
@@ -796,7 +778,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                     case 0x90 : {
                          //c4 is 60
                          int index = ( data1 + 68 ) % 128;
-                         if ( index < 0 || index > Programs[currentProgram].slices -1 ) {
+                         if ( index < 0 || index > Programs[programNumber].slices -1 ) {
                               break;
                          }
                          // new note .. let's activate
@@ -809,10 +791,10 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          voices[data1].adsr.adsr_gain = 0.0f;
 
                          // set adsr values
-                         voices[data1].adsr.attack  = Programs[currentProgram].Attack[data1];
-                         voices[data1].adsr.decay   = Programs[currentProgram].Decay[data1];
-                         voices[data1].adsr.sustain = Programs[currentProgram].Sustain[data1];
-                         voices[data1].adsr.release = Programs[currentProgram].Release[data1];
+                         voices[data1].adsr.attack  = Programs[programNumber].Attack[data1];
+                         voices[data1].adsr.decay   = Programs[programNumber].Decay[data1];
+                         voices[data1].adsr.sustain = Programs[programNumber].Sustain[data1];
+                         voices[data1].adsr.release = Programs[programNumber].Release[data1];
 
                          // calculate gain
                          voices[data1].adsr.attack_gain  = ( 1.0f / voices[data1].adsr.attack )  / samplerate;
@@ -821,9 +803,9 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                          // check playmode
                          // if LOOP_REV or ONE_SHOT_REV set playback indici to end of slice
-                         if ( Programs[currentProgram].a_slices[index].playmode == LOOP_REV || Programs[currentProgram].a_slices[index].playmode == ONE_SHOT_REV ) {
-                              voices[data1].playbackIndex = Programs[currentProgram].a_slices[index].sliceEnd - Programs[currentProgram].a_slices[index].sliceStart;
-                              voices[data1].multiplierIndex = ( Programs[currentProgram].a_slices[index].sliceEnd - Programs[currentProgram].a_slices[index].sliceStart ) / sampleChannels;
+                         if ( Programs[programNumber].a_slices[index].playmode == LOOP_REV || Programs[programNumber].a_slices[index].playmode == ONE_SHOT_REV ) {
+                              voices[data1].playbackIndex = Programs[programNumber].a_slices[index].sliceEnd - Programs[programNumber].a_slices[index].sliceStart;
+                              voices[data1].multiplierIndex = ( Programs[programNumber].a_slices[index].sliceEnd - Programs[programNumber].a_slices[index].sliceStart ) / sampleChannels;
 
                          }
 
@@ -856,8 +838,8 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          // float* pointer will allow any amount of samples to be pulled in
                          //
                          int slice = ( i+68 ) %128;
-                         int sliceStart = Programs[currentProgram].a_slices[slice].sliceStart; //fix this !
-                         int sliceEnd = Programs[currentProgram].a_slices[slice].sliceEnd;
+                         int sliceStart = Programs[programNumber].a_slices[slice].sliceStart; //fix this !
+                         int sliceEnd = Programs[programNumber].a_slices[slice].sliceEnd;
                          int pos = voices[i].playbackIndex;
                          if ( ( sliceStart + pos ) > ( sampleVector.size()-sampleChannels ) ) {
                               pos = 0;
@@ -924,7 +906,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                          // set multiplier to negative if direction is reverse
 
-                         if ( Programs[currentProgram].a_slices[slice].playmode == LOOP_REV || Programs[currentProgram].a_slices[slice].playmode == ONE_SHOT_REV )
+                         if ( Programs[programNumber].a_slices[slice].playmode == LOOP_REV || Programs[programNumber].a_slices[slice].playmode == ONE_SHOT_REV )
                               multiplier=-multiplier;
 
                          // add the multiplier, when it's negative this should substract
@@ -934,7 +916,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          tmp = tmp * sampleChannels;
 
                          // check bounderies according to playmode: loop or oneshot.
-                         switch ( Programs[currentProgram].a_slices[slice].playmode ) {
+                         switch ( Programs[programNumber].a_slices[slice].playmode ) {
                          case LOOP_FWD: {
                               if ( sliceStart + tmp >= ( sliceEnd-sampleChannels ) ) {
                                    voices[i].playbackIndex = 0;
@@ -993,26 +975,25 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
           ++framesDone;
 
      }
-
 }// run()
 
 // slice funtions
 
 void NinjasPlugin::createSlicesRaw ()
 {
-     printf ( "Ninjas2Plugin::createSlicesRaw() called\n" );
+     // printf ( "Ninjas2Plugin::createSlicesRaw() called\n" );
 
      for ( int s = 0 ; s < 128 ; s++ ) {
-          Programs[currentProgram].a_slices[s].sliceStart = 0;
-          Programs[currentProgram].a_slices[s].sliceEnd = 0;
+          Programs[programNumber].a_slices[s].sliceStart = 0;
+          Programs[programNumber].a_slices[s].sliceEnd = 0;
      }
 
-     long double sliceSize = ( long double ) ( sampleSize * sampleChannels ) / ( long double ) Programs[currentProgram].slices;
-     for ( int i = 0 ; i < Programs[currentProgram].slices; i++ ) {
-          Programs[currentProgram].a_slices[i].sliceStart = ( int ) i * sliceSize;
-          Programs[currentProgram].a_slices[i].sliceStart = Programs[currentProgram].a_slices[i].sliceStart;
-          Programs[currentProgram].a_slices[i].sliceEnd   = ( ( int ) ( i+1 ) * sliceSize ) - 1;
-          Programs[currentProgram].a_slices[i].sliceEnd = Programs[currentProgram].a_slices[i].sliceEnd;
+     long double sliceSize = ( long double ) ( sampleSize * sampleChannels ) / ( long double ) Programs[programNumber].slices;
+     for ( int i = 0 ; i < Programs[programNumber].slices; i++ ) {
+          Programs[programNumber].a_slices[i].sliceStart = ( int ) i * sliceSize;
+          Programs[programNumber].a_slices[i].sliceStart = Programs[programNumber].a_slices[i].sliceStart;
+          Programs[programNumber].a_slices[i].sliceEnd   = ( ( int ) ( i+1 ) * sliceSize ) - 1;
+          Programs[programNumber].a_slices[i].sliceEnd = Programs[programNumber].a_slices[i].sliceEnd;
      }
 }
 
@@ -1061,21 +1042,21 @@ void NinjasPlugin::createSlicesOnsets ()
      if ( sampleSize == 0 ) {
           return;
      }
-     long double sliceSize = ( long double ) sampleSize / ( long double ) Programs[currentProgram].slices;
+     long double sliceSize = ( long double ) sampleSize / ( long double ) Programs[programNumber].slices;
 
      // raw slicing
-     for ( int i = 0 ; i < Programs[currentProgram].slices; i++ ) {
+     for ( int i = 0 ; i < Programs[programNumber].slices; i++ ) {
           int64_t start = ( ( int ) i * sliceSize );
           int64_t end = ( ( ( int ) ( i+1 ) * sliceSize ) - 1 );
           // map to nearest onset
           int64_t onset_start = find_nearest ( onsets,start );
           int64_t onset_end = find_nearest ( onsets,end )-1;
 
-          Programs[currentProgram].a_slices[i].sliceStart =  onset_start * sampleChannels ;
-          Programs[currentProgram].a_slices[i].sliceEnd = onset_end * sampleChannels ;
+          Programs[programNumber].a_slices[i].sliceStart =  onset_start * sampleChannels ;
+          Programs[programNumber].a_slices[i].sliceEnd = onset_end * sampleChannels ;
           // set slice end of last slice to end of sample
-          if ( i == Programs[currentProgram].slices -1 ) {
-               Programs[currentProgram].a_slices[i].sliceEnd = end * sampleChannels ;
+          if ( i == Programs[programNumber].slices -1 ) {
+               Programs[programNumber].a_slices[i].sliceEnd = end * sampleChannels ;
           }
      }
 }
@@ -1137,7 +1118,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
 
      if ( fromUser ) {
           printf ( "loadSample(%s) by user\n",fp.c_str() );
-          currentProgram = 0;
+          programNumber = 0;
           createSlicesRaw();
           for ( int p=1; p <16; p++ ) {
                Programs[p]=Programs[0];
@@ -1145,7 +1126,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
      }
      //  createSlicesRaw();
      //   programNumber = 0;
-//    currentProgram = 0;
+//    programNumber = 0;
 
      //   for ( int p=1; p <16; p++ ) {
      //     Programs[p]=Programs[0];
