@@ -1730,7 +1730,7 @@ void NinjasUI::setProgramGrid ( int program )
      printf ( "setProgramGrid(%i) programGrid = %i\n",program,programGrid );
      if ( program < 16 ) {
           programGrid |= 1UL << program;
-       //   ProgramGrid ( programGrid );
+          ProgramGrid ( programGrid );
           editParameter ( paramProgramGrid,true );
           setParameterValue ( paramProgramGrid, programGrid );
           editParameter ( paramProgramGrid,false );
