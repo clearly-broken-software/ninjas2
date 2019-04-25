@@ -164,7 +164,7 @@ NinjasUI::NinjasUI()
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
      //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
-     getProgram(programNumber);
+     getProgram ( programNumber );
 
 
 }
@@ -245,7 +245,9 @@ void NinjasUI::initSlices()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
-     printf ( "parameterChanged( %i, %f )\n",index, value );
+     if ( index != paramProgramNumber ) {
+          printf ( "UI::parameterChanged( %i, %f )\n",index, value );
+     }
      switch ( index ) {
      case paramNumberOfSlices:
           fSpinBox->setValue ( value );
@@ -296,15 +298,16 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           break;
      case paramProgramGrid:
           printf ( "UI paramProgramGrid %f\n",value );
-	  programGrid = value;
+          programGrid = value;
           ProgramGrid ( value );
           break;
      case paramProgramNumber: {
           if ( ( int ) value != programNumber ) {
                programNumber = value;
                getProgram ( programNumber );
+
+               //     printf("UI : paramProgramNumber %f \n", value );
           }
-          //     printf("UI : paramProgramNumber %f \n", value );
 
           break;
      }
@@ -315,9 +318,9 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
 {
-     printf("stateChanged ( %s )\n", key);
+     //   printf ( "stateChanged ( %s )\n", key );
      if ( std::strcmp ( value, "empty" ) == 0 ) {
-       printf("state value is empty, returning\n");
+          //      printf ( "state value is empty, returning\n" );
           return;
      }
 
@@ -624,8 +627,11 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           //  printf("program = %i , programNumber = %i \n",program, programNumber);
           // shift click stores current program on new program location
           if ( ( ev.mod & kModifierShift ) > 0 ) {
-               setState ( "programNumber", std::to_string ( program ).c_str() );
-               setState ( "storeprogram", std::to_string ( programNumber ).c_str() );
+               std::string sp = std::to_string ( programNumber ); // oldProgram
+               sp.push_back ( ' ' );
+               sp.append ( std::to_string ( program ) );
+               setState ( "storeprogram", sp.c_str() );
+	       setProgramGrid(program);
                goto toggleswitches;
           }
           // normal click stores current program and gets new program
@@ -649,6 +655,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 
 void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
 {
+
      int NanoButtonID = nanoButton->getId();
      switch ( NanoButtonID ) {
      case 100: {
@@ -664,7 +671,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                editParameter ( paramNumberOfSlices,true );
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
-	       setState("sliceButton","true");
+               setState ( "sliceButton","true" );
                setProgramGrid ( programNumber );
 
           }
@@ -672,7 +679,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      }
      default:
           std::printf ( "describe it\n" );
-          setParameterValue ( paramNumberOfSlices,slices );
+          // setParameterValue ( paramNumberOfSlices,slices );
      }
 }
 
@@ -1201,12 +1208,12 @@ void NinjasUI::loadSample ( String fp , bool fromUser )
      /*
       */   // set program 0
      if ( fromUser ) {
-        //  programNumber = 0;
-       //   programGrid = 0;
-       //   editParameter ( paramProgramGrid,true );
-       //   parameterChanged ( paramProgramGrid,0.0f );
-       //   editParameter ( paramProgramGrid,false );
-       //   setProgramGrid ( 0 );
+          //  programNumber = 0;
+          //   programGrid = 0;
+          //   editParameter ( paramProgramGrid,true );
+          //   parameterChanged ( paramProgramGrid,0.0f );
+          //   editParameter ( paramProgramGrid,false );
+          //   setProgramGrid ( 0 );
           if ( !slicemethod ) {
                createSlicesRaw ();
           } else {
@@ -1220,7 +1227,7 @@ void NinjasUI::loadSample ( String fp , bool fromUser )
           //    editParameter ( programSwitch00, false );
           //   update program grid
      }
-  
+
 
      repaint();
 

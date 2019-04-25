@@ -438,7 +438,7 @@ String NinjasPlugin::getState ( const char* key ) const
 
 void NinjasPlugin::setState ( const char* key, const char* value )
 {
-  //   printf ( "setState ( %s )\n",key);
+     //   printf ( "setState ( %s )\n",key);
      if ( strcmp ( value, "empty" ) == 0 ) {
           //       printf ( "state is empty, returning\n" );
           return;
@@ -521,7 +521,18 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      }
 
      if ( strcmp ( key, "storeprogram" ) == 0 ) {
-          setProgram ( std::stoi ( value ) );
+          const char* p = value;
+          char * end;
+          std::vector<int> v; // 0 = oldProgram, 1 = newProgram
+          for ( int iValue = std::strtol ( p, &end,10 ); p != end; iValue = std::strtol ( p, &end, 10 ) ) {
+               p = end;
+               if ( errno == ERANGE ) {
+                    std::cout << "range error, got ";
+                    errno = 0;
+               }
+               v.push_back ( iValue );
+          }
+          setProgram ( v[0],v[1] );
      }
 
      if ( strcmp ( key, "program00" ) == 0 ) {
@@ -596,13 +607,14 @@ The host may call this function from any context, including realtime processing.
 float NinjasPlugin::getParameterValue ( uint32_t index ) const
 
 {
+     if ( index != 0 ) {
+          printf ( "getParameterValue ( %i )\n",index );
+     }
      float return_Value = 0.0f;
-
      int voice = ( Programs[programNumber].currentSlice + 60 ) %128;
 
      switch ( index ) {
      case paramProgramNumber: {
-
           return_Value = ( float ) programNumber;
           break;
      }
@@ -650,7 +662,7 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
           break;
      case paramProgramGrid:
           return_Value = programGrid;
-	  break;
+          break;
      }
      return return_Value;
 
@@ -1136,72 +1148,13 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
      return 0;
 }
 
-void NinjasPlugin::getProgram ( int program )
-{
-     // not needed anymore ?
-//      currentSlice = Programs[program].currentslice;
-//      slices = Programs[program].slices;
-//      for ( int i=0; i < 128 ; i++ ) {
-//           a_slices[i].sliceStart=Programs[program].a_slices[i].sliceStart;
-//           a_slices[i].sliceEnd=Programs[program].a_slices[i].sliceEnd;
-//           a_slices[i].playmode=Programs[program].a_slices[i].playmode;
-//           Attack[i]=Programs[program].Attack[i];
-//           Decay[i]=Programs[program].Decay[i];
-//           Sustain[i]=Programs[program].Sustain[i];
-//           Release[i]=Programs[program].Release[i];
-//           p_OneShotFwd[i]=Programs[program].OneShotFwd[i];
-//           p_OneShotRev[i]=Programs[program].OneShotRev[i];
-//           p_LoopFwd[i]=Programs[program].LoopFwd[i];
-//           p_LoopRev[i]=Programs[program].LoopRev[i];
-//     }
-}
-
-void NinjasPlugin::setProgram ( int program )
+void NinjasPlugin::setProgram ( int oldProgram, int newProgram )
 {
 //   //TODO refactor or create new function
-//   printf("NinjasPlugin::setProgram(%i)\n",program);
-//      Programs[program].currentslice = currentSlice;
-//      Programs[program].slices = slices;
-//      for ( int i=0; i < 128 ; i++ ) {
-//           Programs[program].a_slices[i].sliceStart = a_slices[i].sliceStart;
-//           Programs[program].a_slices[i].sliceEnd = a_slices[i].sliceEnd;
-//           Programs[program].a_slices[i].playmode = a_slices[i].playmode;
-//           Programs[program].Attack[i] = Attack[i];
-//           Programs[program].Decay[i] = Decay[i];
-//           Programs[program].Sustain[i] = Sustain[i];
-//           Programs[program].Release[i] = Release[i];
-//           switch ( Programs[program].a_slices[i].playmode ) {
-//           case ONE_SHOT_FWD: {
-//                Programs[program].OneShotFwd[i] = 1.0f;
-//                Programs[program].OneShotRev[i] = 0.0f;
-//                Programs[program].LoopFwd[i] = 0.0f;
-//                Programs[program].LoopRev[i] = 0.0f;
-//                break;
-//           }
-//           case ONE_SHOT_REV: {
-//                Programs[program].OneShotFwd[i] = 0.0f;
-//                Programs[program].OneShotRev[i] = 1.0f;
-//                Programs[program].LoopFwd[i] = 0.0f;
-//                Programs[program].LoopRev[i] = 0.0f;
-//
-//                break;
-//           }
-//           case LOOP_FWD: {
-//                Programs[program].OneShotFwd[i] = 0.0f;
-//                Programs[program].OneShotRev[i] = 0.0f;
-//                Programs[program].LoopFwd[i] = 1.0f;
-//                Programs[program].LoopRev[i] = 0.0f;
-//                break;
-//           }
-//           case LOOP_REV: {
-//                Programs[program].OneShotFwd[i] = 0.0f;
-//                Programs[program].OneShotRev[i] = 0.0f;
-//                Programs[program].LoopFwd[i] = 0.0f;
-//                Programs[program].LoopRev[i] = 1.0f;
-//                break;
-//           }
-//           }
-//      }
+     printf ( "NinjasPlugin::setProgram(%i)\n",newProgram);
+     Programs[newProgram]=Programs[oldProgram];
+
+
 }
 void NinjasPlugin::initPrograms()
 {

@@ -105,8 +105,7 @@ private:
   void createSlicesOnsets ();
   int loadSample(std::string fp, bool fromUser );
   int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
-  void getProgram( int program);
-  void setProgram( int program);
+  void setProgram( int oldProgram, int newProgram);
   void initPrograms();
   std::string serializeProgram( int program) const;
   void deserializeProgram(int program, const char* string);
