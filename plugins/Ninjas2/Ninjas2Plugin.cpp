@@ -1013,7 +1013,7 @@ void NinjasPlugin::getOnsets ()
 {
      // temp sample vector
      std::vector<float> tmp_sample_vector;
-     tmp_sample_vector.resize ( sampleSize );
+     tmp_sample_vector.resize ( sampleSize *sampleChannels);
 
      int hop_size = 256;
      int win_s = 512;
