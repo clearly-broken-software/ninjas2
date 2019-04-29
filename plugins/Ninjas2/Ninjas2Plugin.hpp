@@ -25,6 +25,10 @@
 #include <algorithm>
 #include <string>
 
+// #define MINIMP3_IMPLEMENTATION
+// #define MINIMP3_FLOAT_OUTPUT
+//#include "minimp3_ex.h"
+
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------

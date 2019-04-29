@@ -27,7 +27,9 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <cerrno>
-// #include <sstream>
+#define MINIMP3_IMPLEMENTATION
+#define MINIMP3_FLOAT_OUTPUT
+#include "minimp3_ex.h"
 
 #include "DistrhoPluginInfo.h"
 
@@ -607,9 +609,9 @@ The host may call this function from any context, including realtime processing.
 float NinjasPlugin::getParameterValue ( uint32_t index ) const
 
 {
-     if ( index != 0 ) {
-          printf ( "getParameterValue ( %i )\n",index );
-     }
+//      if ( index != 0 ) {
+//           printf ( "getParameterValue ( %i )\n",index );
+//      }
      float return_Value = 0.0f;
      int voice = ( Programs[programNumber].currentSlice + 60 ) %128;
 
@@ -1013,7 +1015,7 @@ void NinjasPlugin::getOnsets ()
 {
      // temp sample vector
      std::vector<float> tmp_sample_vector;
-     tmp_sample_vector.resize ( sampleSize *sampleChannels);
+  //   tmp_sample_vector.resize ( sampleSize *sampleChannels);
 
      int hop_size = 256;
      int win_s = 512;
@@ -1025,7 +1027,7 @@ void NinjasPlugin::getOnsets ()
           for ( int i=0, j=0 ; i <= sampleSize; i++ ) {
                // sum to mono
                float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
-               tmp_sample_vector[i]=sum_mono;
+               tmp_sample_vector.push_back(sum_mono);
                j+=2;
           }
      } else {
@@ -1084,6 +1086,37 @@ int64_t NinjasPlugin::find_nearest ( std::vector<uint_t> & haystack, uint_t need
 
 int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
 {
+  int file_samplerate (0);
+  // get extension
+  std::string ext = fp.substr(fp.find_last_of(".") + 1);
+  std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+  printf("extension = %s \n",ext.c_str());
+  if (ext == "mp3")
+  {
+    printf("file is an mp3\n");
+    mp3dec_t mp3d;
+    mp3dec_file_info_t info;
+    if ( mp3dec_load( &mp3d, fp.c_str(), &info, NULL, NULL) )
+    {
+      std::cout << "Can't load sample " << fp << std::endl;
+      return -1;
+    }
+    file_samplerate = info.hz;
+    sampleChannels = info.channels;
+    printf("sample channels %i\n", info.channels);
+    printf("samplerate %i\n", info.hz);
+    printf("samples %i\n", info.samples);
+    // fill samplevector
+    sampleVector.clear();
+    for (int i =0 ; i < info.samples ; i++)
+    {
+     // printf("j = %i\n",j);
+       sampleVector.push_back(*(info.buffer+i));
+ 
+    }
+    sampleSize = sampleVector.size()/sampleChannels;
+   }
+  else {
      SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , 44100 );
 
      // get the number of frames in the sample
@@ -1097,13 +1130,14 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
      // get some more info of the sample
 
      sampleChannels = fileHandle.channels();
-     int file_samplerate = fileHandle.samplerate();
+     file_samplerate = fileHandle.samplerate();
 
      // resize vector
      sampleVector.resize ( sampleSize * sampleChannels );
 
      // load sample memory in samplevector
      fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
+  }
 
      // check if samplerate != host_samplerate
      if ( file_samplerate != samplerate )
@@ -1127,6 +1161,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
                std::cout << "Samplerate error : src_simple err =" << err << std::endl;
           sampleSize = src_data.output_frames_gen;
      }
+  
 
      if ( fromUser ) {
           printf ( "loadSample(%s) by user\n",fp.c_str() );
@@ -1136,15 +1171,6 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
                Programs[p]=Programs[0];
           }
      }
-     //  createSlicesRaw();
-     //   programNumber = 0;
-//    programNumber = 0;
-
-     //   for ( int p=1; p <16; p++ ) {
-     //     Programs[p]=Programs[0];
-     // setProgram ( p );
-     //   }
-     //setProgram(0);
      return 0;
 }
 
@@ -1297,4 +1323,5 @@ Plugin* createPlugin()
 // -----------------------------------------------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO
+
 

@@ -20,6 +20,8 @@
 #include <iostream>
 #include <string>
 #include "DistrhoPluginInfo.h"
+#define MINIMP3_FLOAT_OUTPUT
+#include "minimp3_ex.h"
 
 START_NAMESPACE_DISTRHO
 
@@ -245,9 +247,9 @@ void NinjasUI::initSlices()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
-     if ( index != paramProgramNumber ) {
-          printf ( "UI::parameterChanged( %i, %f )\n",index, value );
-     }
+//      if ( index != paramProgramNumber ) {
+//           printf ( "UI::parameterChanged( %i, %f )\n",index, value );
+//      }
      switch ( index ) {
      case paramNumberOfSlices:
           fSpinBox->setValue ( value );
@@ -1137,15 +1139,38 @@ void NinjasUI::drawOnsets()
 }
 
 void NinjasUI::loadSample ( String fp , bool fromUser )
-{
-     //int  iIndex {0};
-     //float fIndex {0};
-     double samplerate = getSampleRate();
-
+{ 
+  double samplerate = getSampleRate();
+  int file_samplerate (0); 
+  String ext = fp;
+  ext.toLower();
+  if (ext.endsWith("mp3")) {
+    printf("file is an mp3\n");
+    mp3dec_t mp3d;
+    mp3dec_file_info_t info;
+    
+    if ( mp3dec_load( &mp3d, fp.buffer(), &info, NULL, NULL) )
+    {
+      std::cout << "UI:Can't load sample " << fp << std::endl;
+      return;
+    } 
+    file_samplerate = info.hz;
+    sampleChannels = info.channels;
+    sampleVector.clear();
+    for (int i; i < info.samples ; i+=sizeof(float))
+    {
+      sampleVector.push_back(*(info.buffer+i));
+    }
+    sampleSize = sampleVector.size()/sampleChannels;
+    sample_is_loaded = true;
+    fSwitchLoadSample->setDown ( true );
+    
+  }
+  else {
      SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , samplerate );
      sampleSize = fileHandle.frames();
      sampleChannels   = fileHandle.channels();
-     int file_samplerate = fileHandle.samplerate();
+     file_samplerate = fileHandle.samplerate();
      if ( sampleSize == 0 ) {
           sample_is_loaded = false;
           std::cerr << "error loading sample : " << fp << std::endl;
@@ -1158,8 +1183,9 @@ void NinjasUI::loadSample ( String fp , bool fromUser )
 
      sampleVector.resize ( sampleSize * sampleChannels );
      fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
+  }
+    
      if ( file_samplerate != samplerate )
-
      {
           // temporary sample vector
           std::vector<float> tmp_sample_vector = sampleVector;
@@ -1182,13 +1208,13 @@ void NinjasUI::loadSample ( String fp , bool fromUser )
 
      // display height = 350
      // store waveform as -175 to  175 integer
-
      waveform.resize ( 0 ); // clear waveform
 
      if ( sampleChannels == 2 ) { // sum to mono
 
           for ( uint i=0, j=0 ; i <= sampleSize; i++ ) {
                float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
+	      // printf("
                waveform.push_back ( sum_mono * 175.0f );
                j+=2;
           }
@@ -1208,30 +1234,14 @@ void NinjasUI::loadSample ( String fp , bool fromUser )
      /*
       */   // set program 0
      if ( fromUser ) {
-          //  programNumber = 0;
-          //   programGrid = 0;
-          //   editParameter ( paramProgramGrid,true );
-          //   parameterChanged ( paramProgramGrid,0.0f );
-          //   editParameter ( paramProgramGrid,false );
-          //   setProgramGrid ( 0 );
           if ( !slicemethod ) {
                createSlicesRaw ();
           } else {
                createSlicesOnsets ();
           }
-
-          //   toggle program 0 switch
-          //   editParameter ( programSwitch00, true );
-          //   setParameterValue ( programSwitch00, 1.0f );
-          fGrid[0]->setDown ( true );
-          //    editParameter ( programSwitch00, false );
-          //   update program grid
+       fGrid[0]->setDown ( true );
      }
-
-
      repaint();
-
-
      return;
 
 }
