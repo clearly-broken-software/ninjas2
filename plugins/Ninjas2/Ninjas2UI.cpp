@@ -1711,7 +1711,7 @@ void NinjasUI::ProgramGrid ( int grid )
                fGrid[b]->setStateSwitch ( false );
           }
      }
-     repaint();
+    // repaint();
 }
 
 void NinjasUI::getProgram ( int program )
