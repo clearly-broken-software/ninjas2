@@ -88,7 +88,7 @@ private:
      ScopedPointer<TextButton> fSliceButton;
 
      const NinjasPlugin * plugin;
-     void loadSample ( String fp, bool fromUser );
+     void loadSample (bool fromUser );
      std::vector<short int> waveform;
      void getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets );
      void createSlicesRaw ();
@@ -200,6 +200,7 @@ private:
    //  int currentProgram;
      uint programGrid;
      bool sliceButton;
+     bool sig_LoadProgram {false};
 
      // need static constexpr apparently because of std::array ..
 

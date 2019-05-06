@@ -41,7 +41,7 @@ void NanoButton::setButtonState(ButtonState state)
 {
     fState = state;
 
-    repaint();
+  //  repaint();
 }
 
 bool NanoButton::leftClick(const MouseEvent &ev)
