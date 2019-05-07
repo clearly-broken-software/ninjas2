@@ -166,6 +166,9 @@ NinjasUI::NinjasUI()
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
      //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
+     if (!plugin->bypass)
+       loadSample(false);
+     
      getProgram ( programNumber );
 
 
