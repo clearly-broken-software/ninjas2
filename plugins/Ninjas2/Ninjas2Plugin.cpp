@@ -457,6 +457,10 @@ String NinjasPlugin::getState ( const char* key ) const
      if ( std::strcmp ( key, "program15" ) == 0 ) {
           return String ( serializeProgram ( 15 ).c_str() );
      }
+     
+     if ( std::strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
+       return String (!bypass); // if not bypassed sample is loaded. UI should reload sample when state restored
+     }
      return String ( "empty" );
 }
 

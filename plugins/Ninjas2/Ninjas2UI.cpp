@@ -336,22 +336,11 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
 {
-     //   printf ( "stateChanged ( %s )\n", key );
+     printf ( "stateChanged ( %s )\n", key );
      if ( std::strcmp ( value, "empty" ) == 0 ) {
           //      printf ( "state value is empty, returning\n" );
           return;
      }
-
-//       if ( std::strcmp ( key, "filepathFromState" ) == 0 ) {
-//            if ( std::strcmp ( value, "" ) ) {
-//                 loadSample ( false );
-//            }
-//       }
-
-//     if ( std::strcmp ( key, "filepathFromUI" ) == 0 ) {
-//           loadSample ( String ( value ), true );
-//           //  std::printf ( "stateChanged -> loadSample\n" );
-//      }
 
      if ( std::strcmp ( key, "paramProgramNumber" ) == 0 ) {
           programNumber = std::stoi ( value );
@@ -365,6 +354,13 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
                recallSliceSettings ( currentSlice );
           }
      }
+     
+     if ( std::strcmp ( key, "sig_SampleLoaded") == 0 ) {
+       if ( std::stoi (value) ) {
+	 loadSample(false);
+       }
+     }
+	
 
 
 }
