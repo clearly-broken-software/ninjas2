@@ -166,9 +166,9 @@ NinjasUI::NinjasUI()
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
      //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
-     if (!plugin->bypass)
-       loadSample(false);
-     
+     if ( !plugin->bypass )
+          loadSample ( false );
+
      getProgram ( programNumber );
 
 
@@ -310,7 +310,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           if ( ( int ) value != programNumber ) {
                programNumber = value;
                getProgram ( programNumber );
-	       // toggle switches
+               // toggle switches
                //     printf("UI : paramProgramNumber %f \n", value );
           }
           break;
@@ -322,20 +322,19 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           break;
      }
      case paramSigLoadProgram: {
-       if ( (int) value != sig_LoadProgram)
-       {
-	 printf("NinjasUI::parameterChanged(%i, %i)\n",index,(int)value);
-	 sig_LoadProgram = (int) value;
-          if ( value > 0.5f ) {
-               getProgram ( programNumber );
-               setState ( "sig_LoadProgram","false" );
+          if ( ( int ) value != sig_LoadProgram ) {
+               printf ( "NinjasUI::parameterChanged(%i, %i)\n",index, ( int ) value );
+               sig_LoadProgram = ( int ) value;
+               if ( value > 0.5f ) {
+                    getProgram ( programNumber );
+                    setState ( "sig_LoadProgram","false" );
+               }
           }
-       }
-        break;
+          break;
      }
 
      }
-    // repaint();
+     // repaint();
 }
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
@@ -358,15 +357,12 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
                recallSliceSettings ( currentSlice );
           }
      }
-     
-     if ( std::strcmp ( key, "sig_SampleLoaded") == 0 ) {
-       if ( std::stoi (value) ) {
-	 loadSample(false);
-       }
-     }
-	
 
-
+//      if ( std::strcmp ( key, "sig_SampleLoaded") == 0 ) {
+//         if ( std::stoi (value) ) {
+// 	 loadSample(false);
+//        }
+//      }
 }
 
 
@@ -661,7 +657,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           }
           // toggle the switches
      toggleswitches:
-     ;
+          ;
 //           for ( uint i = 0; i <= 15; i++ ) {
 //                fGrid[i]->setDown ( i+paramCount == buttonId );
 //           }
@@ -1033,7 +1029,7 @@ void NinjasUI::drawCurrentSlice()
 
           // highlight selected slice
           if ( firstSlice == currentSlice && slices > 1 ) {
-	    printf("NinjasUI::drawCurrentSlice() %i : %i, %i\n",a_slices[firstSlice].sliceStart,a_slices[firstSlice].sliceEnd);
+               printf ( "NinjasUI::drawCurrentSlice() %i : %i, %i\n",a_slices[firstSlice].sliceStart,a_slices[firstSlice].sliceEnd );
                beginPath();
 
                fillPaint ( linearGradient (
@@ -1292,7 +1288,7 @@ void NinjasUI::recallSliceSettings ( int slice )
 //    setParameterValue ( paramLoopRev, p_LoopRev[slice] );
      fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );
 
-   //  repaint();
+     //  repaint();
 }
 
 void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets )
@@ -1712,7 +1708,7 @@ void NinjasUI::ProgramGrid ( int grid )
                fGrid[b]->setStateSwitch ( false );
           }
      }
-    // repaint();
+     // repaint();
 }
 
 void NinjasUI::getProgram ( int program )
@@ -1743,8 +1739,8 @@ void NinjasUI::getProgram ( int program )
      recallSliceSettings ( currentSlice );
      // toggle switches
      for ( uint i = 0; i <= 15; i++ ) {
-               fGrid[i]->setDown ( i == program );
-          }
+          fGrid[i]->setDown ( i == program );
+     }
      repaint();
 }
 
