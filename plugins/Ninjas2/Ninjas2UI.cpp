@@ -310,6 +310,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           if ( ( int ) value != programNumber ) {
                programNumber = value;
                getProgram ( programNumber );
+	       // toggle switches
                //     printf("UI : paramProgramNumber %f \n", value );
           }
           break;
@@ -660,9 +661,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           }
           // toggle the switches
      toggleswitches:
-          for ( uint i = 0; i <= 15; i++ ) {
-               fGrid[i]->setDown ( i+paramCount == buttonId );
-          }
+     ;
+//           for ( uint i = 0; i <= 15; i++ ) {
+//                fGrid[i]->setDown ( i+paramCount == buttonId );
+//           }
      }
 
 
@@ -1739,6 +1741,10 @@ void NinjasUI::getProgram ( int program )
      fSpinBox->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
+     // toggle switches
+     for ( uint i = 0; i <= 15; i++ ) {
+               fGrid[i]->setDown ( i == program );
+          }
      repaint();
 }
 

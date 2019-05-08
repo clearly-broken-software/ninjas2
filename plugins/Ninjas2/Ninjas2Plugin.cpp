@@ -882,6 +882,11 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          pitchbend = ( data2 * 128 ) + data1;
                          break;
                     }
+                    
+		    case 0xc0: { // program change
+		      programNumber = data1 % 16;
+		      break;
+		    }
 
                     } // switch
 
