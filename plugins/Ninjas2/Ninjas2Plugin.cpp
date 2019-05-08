@@ -40,7 +40,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-     : Plugin ( paramCount, 0, 22 ) // parameters, programs (presets) , states
+     : Plugin ( paramCount, 0, 25 ) // parameters, programs (presets) , states
 {
      // init parameters
 
@@ -82,6 +82,8 @@ NinjasPlugin::NinjasPlugin()
      p_Grid[0] = 1;
      programNumber = 0;
      programGrid=0;
+     sig_SampleLoaded = false;
+     sig_LoadProgram = false;
      initPrograms();
 
      //for debugging , autoload sample
@@ -107,6 +109,26 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           break;
      }
 
+     case paramSigSampleLoaded: {
+          parameter.hints = kParameterIsOutput|kParameterIsBoolean;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 1.0f;
+          parameter.name = "sampleLoaded";
+          parameter.symbol = "sampleLoaded";
+          break;
+     }
+
+     case paramSigLoadProgram: {
+          parameter.hints = kParameterIsOutput|kParameterIsBoolean;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 1.0f;
+          parameter.name = "sigLoadProgram";
+          parameter.symbol = "sigLoadProgram";
+          break;
+     }
+
      case paramNumberOfSlices: {
           parameter.hints      = kParameterIsAutomable|kParameterIsInteger;
           parameter.ranges.def = 1.0f;
@@ -117,15 +139,7 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.midiCC = 102;
           break;
      }
-//      case paramSliceButton: {
-//           parameter.hints = kParameterIsBoolean;
-//           parameter.ranges.def = 0.0f;
-//           parameter.ranges.min = 0.0f;
-//           parameter.ranges.max = 1.0f;
-//           parameter.name = "Slice Button";
-//           parameter.symbol = "sliceButton";
-//           break;
-//      }
+
      case paramAttack: {
           parameter.hints      = kParameterIsAutomable ;
           parameter.ranges.def = 0.001f;
@@ -362,7 +376,16 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
           defaultStateValue = "empty";
           break;
      }
-
+     case 23: {
+          stateKey = "sig_SampleLoaded";
+          defaultStateValue = "empty";
+          break;
+     }
+     case 24: {
+          stateKey = "sig_ProgramLoaded";
+          defaultStateValue = "empty";
+          break;
+     }
 //
      } // switch
 } // initState
@@ -434,6 +457,10 @@ String NinjasPlugin::getState ( const char* key ) const
      if ( std::strcmp ( key, "program15" ) == 0 ) {
           return String ( serializeProgram ( 15 ).c_str() );
      }
+     
+     if ( std::strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
+       return String (!bypass); // if not bypassed sample is loaded. UI should reload sample when state restored
+     }
      return String ( "empty" );
 }
 
@@ -448,6 +475,8 @@ void NinjasPlugin::setState ( const char* key, const char* value )
 
      if ( strcmp ( key, "sliceButton" ) == 0 ) {
           if ( strcmp ( value, "true" ) == 0 ) {
+	    printf ("NinjasPlugin::setState(%s,%s)\n",key, value);
+	    printf ("program = %i, slices = %i\n",programNumber,Programs[programNumber].slices);
                switch ( slicemode ) {
                case 0:
                     createSlicesRaw();
@@ -458,6 +487,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
                default:
                     printf ( "unexpected slicemode :%i\n",slicemode );
                }
+               sig_LoadProgram = true;
           }
      }
 
@@ -469,6 +499,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
                // sample loaded ok, slice it up and set bool
                getOnsets ();
                bypass = false;
+               sig_SampleLoaded = true;
                //setParameterValue ( paramLoadSample, 1.0f );
           } else {
                bypass = true;
@@ -493,7 +524,8 @@ void NinjasPlugin::setState ( const char* key, const char* value )
                     createSlicesOnsets ();
 
                bypass = false;
-               //setParameterValue ( paramLoadSample, 1.0f );
+               sig_SampleLoaded = true;
+
           } else {
                bypass = true;
                //setParameterValue ( paramLoadSample, 0.0f );
@@ -594,10 +626,15 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      if ( strcmp ( key, "currentSlice" ) == 0 ) {
           Programs[programNumber].currentSlice = std::stoi ( value );
      }
+
+     if ( strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
+          sig_SampleLoaded = false;
+     }
+
+     if ( strcmp ( key, "sig_LoadProgram" ) == 0 ) {
+          sig_LoadProgram = false;
+     }
 }
-
-
-
 /* --------------------------------------------------------------------------------------------------------
 * Internal data
 */
@@ -618,6 +655,14 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
      switch ( index ) {
      case paramProgramNumber: {
           return_Value = ( float ) programNumber;
+          break;
+     }
+     case paramSigSampleLoaded: {
+          return_Value = ( float ) sig_SampleLoaded;
+          break;
+     }
+     case paramSigLoadProgram: {
+          return_Value = ( float ) sig_LoadProgram;
           break;
      }
      case paramNumberOfSlices:
@@ -685,7 +730,6 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      case paramNumberOfSlices:
           Programs[programNumber].slices = ( int ) value;
           break;
-
      case paramAttack:
           Programs[programNumber].Attack[voice] = value;
           break;
@@ -838,6 +882,11 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          pitchbend = ( data2 * 128 ) + data1;
                          break;
                     }
+                    
+		    case 0xc0: { // program change
+		      programNumber = data1 % 16;
+		      break;
+		    }
 
                     } // switch
 
@@ -1015,7 +1064,7 @@ void NinjasPlugin::getOnsets ()
 {
      // temp sample vector
      std::vector<float> tmp_sample_vector;
-  //   tmp_sample_vector.resize ( sampleSize *sampleChannels);
+     //   tmp_sample_vector.resize ( sampleSize *sampleChannels);
 
      int hop_size = 256;
      int win_s = 512;
@@ -1027,7 +1076,7 @@ void NinjasPlugin::getOnsets ()
           for ( int i=0, j=0 ; i <= sampleSize; i++ ) {
                // sum to mono
                float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
-               tmp_sample_vector.push_back(sum_mono);
+               tmp_sample_vector.push_back ( sum_mono );
                j+=2;
           }
      } else {
@@ -1086,63 +1135,58 @@ int64_t NinjasPlugin::find_nearest ( std::vector<uint_t> & haystack, uint_t need
 
 int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
 {
-  int file_samplerate (0);
-  // get extension
-  std::string ext = fp.substr(fp.find_last_of(".") + 1);
-  std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-  printf("extension = %s \n",ext.c_str());
-  if (ext == "mp3")
-  {
-    printf("file is an mp3\n");
-    mp3dec_t mp3d;
-    mp3dec_file_info_t info;
-    if ( mp3dec_load( &mp3d, fp.c_str(), &info, NULL, NULL) )
-    {
-      std::cout << "Can't load sample " << fp << std::endl;
-      return -1;
-    }
-    file_samplerate = info.hz;
-    sampleChannels = info.channels;
-    printf("sample channels %i\n", info.channels);
-    printf("samplerate %i\n", info.hz);
-    printf("samples %i\n", info.samples);
-    // fill samplevector
-    sampleVector.clear();
-    for (int i =0 ; i < info.samples ; i++)
-    {
-     // printf("j = %i\n",j);
-       sampleVector.push_back(*(info.buffer+i));
- 
-    }
-    sampleSize = sampleVector.size()/sampleChannels;
-   }
-  else {
-     SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , 44100 );
+     int file_samplerate ( 0 );
+     // get extension
+     std::string ext = fp.substr ( fp.find_last_of ( "." ) + 1 );
+     std::transform ( ext.begin(), ext.end(), ext.begin(), ::tolower );
+     printf ( "extension = %s \n",ext.c_str() );
+     if ( ext == "mp3" ) {
+          printf ( "file is an mp3\n" );
+          mp3dec_t mp3d;
+          mp3dec_file_info_t info;
+          if ( mp3dec_load ( &mp3d, fp.c_str(), &info, NULL, NULL ) ) {
+               std::cout << "Can't load sample " << fp << std::endl;
+               return -1;
+          }
+          file_samplerate = info.hz;
+          sampleChannels = info.channels;
+          printf ( "sample channels %i\n", info.channels );
+          printf ( "samplerate %i\n", info.hz );
+          printf ( "samples %i\n", info.samples );
+          // fill samplevector
+          sampleVector.clear();
+          for ( int i =0 ; i < info.samples ; i++ ) {
+               // printf("j = %i\n",j);
+               sampleVector.push_back ( * ( info.buffer+i ) );
 
-     // get the number of frames in the sample
-     sampleSize = fileHandle.frames();
+          }
 
-     if ( sampleSize == 0 ) {
-          //file doesn't exist or is of incompatible type, main handles the -1
-          std::cout << "Can't load sample " << fp << std::endl;
-          return -1;
+          sampleSize = sampleVector.size() /sampleChannels;
+     } else {
+          SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , 44100 );
+
+          // get the number of frames in the sample
+          sampleSize = fileHandle.frames();
+
+          if ( sampleSize == 0 ) {
+               //file doesn't exist or is of incompatible type, main handles the -1
+               std::cout << "Can't load sample " << fp << std::endl;
+               return -1;
+          }
+          // get some more info of the sample
+
+          sampleChannels = fileHandle.channels();
+          file_samplerate = fileHandle.samplerate();
+
+          // resize vector
+          sampleVector.resize ( sampleSize * sampleChannels );
+
+          // load sample memory in samplevector
+          fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
      }
-     // get some more info of the sample
-
-     sampleChannels = fileHandle.channels();
-     file_samplerate = fileHandle.samplerate();
-
-     // resize vector
-     sampleVector.resize ( sampleSize * sampleChannels );
-
-     // load sample memory in samplevector
-     fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
-  }
 
      // check if samplerate != host_samplerate
-     if ( file_samplerate != samplerate )
-
-     {
+     if ( file_samplerate != samplerate ) {
           // temporary sample vector
           std::vector<float> tmp_sample_vector = sampleVector;
 
@@ -1161,7 +1205,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
                std::cout << "Samplerate error : src_simple err =" << err << std::endl;
           sampleSize = src_data.output_frames_gen;
      }
-  
+
 
      if ( fromUser ) {
           printf ( "loadSample(%s) by user\n",fp.c_str() );
@@ -1177,7 +1221,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
 void NinjasPlugin::setProgram ( int oldProgram, int newProgram )
 {
 //   //TODO refactor or create new function
-     printf ( "NinjasPlugin::setProgram(%i)\n",newProgram);
+     printf ( "NinjasPlugin::setProgram(%i)\n",newProgram );
      Programs[newProgram]=Programs[oldProgram];
 
 

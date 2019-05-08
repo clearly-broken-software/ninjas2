@@ -166,6 +166,9 @@ NinjasUI::NinjasUI()
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
      //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
+     if (!plugin->bypass)
+       loadSample(false);
+     
      getProgram ( programNumber );
 
 
@@ -307,34 +310,40 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           if ( ( int ) value != programNumber ) {
                programNumber = value;
                getProgram ( programNumber );
-
+	       // toggle switches
                //     printf("UI : paramProgramNumber %f \n", value );
           }
-
           break;
      }
+     case paramSigSampleLoaded: {
+          if ( ( int ) value == 1 ) {
+               loadSample ( true );
+          }
+          break;
+     }
+     case paramSigLoadProgram: {
+       if ( (int) value != sig_LoadProgram)
+       {
+	 printf("NinjasUI::parameterChanged(%i, %i)\n",index,(int)value);
+	 sig_LoadProgram = (int) value;
+          if ( value > 0.5f ) {
+               getProgram ( programNumber );
+               setState ( "sig_LoadProgram","false" );
+          }
+       }
+        break;
+     }
 
      }
-     repaint();
+    // repaint();
 }
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
 {
-     //   printf ( "stateChanged ( %s )\n", key );
+     printf ( "stateChanged ( %s )\n", key );
      if ( std::strcmp ( value, "empty" ) == 0 ) {
           //      printf ( "state value is empty, returning\n" );
           return;
-     }
-
-     if ( std::strcmp ( key, "filepathFromState" ) == 0 ) {
-          if ( std::strcmp ( value, "" ) ) {
-               loadSample ( String ( value ), false );
-          }
-     }
-
-     if ( std::strcmp ( key, "filepathFromUI" ) == 0 ) {
-          loadSample ( String ( value ), true );
-          //  std::printf ( "stateChanged -> loadSample\n" );
      }
 
      if ( std::strcmp ( key, "paramProgramNumber" ) == 0 ) {
@@ -349,6 +358,13 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
                recallSliceSettings ( currentSlice );
           }
      }
+     
+     if ( std::strcmp ( key, "sig_SampleLoaded") == 0 ) {
+       if ( std::stoi (value) ) {
+	 loadSample(false);
+       }
+     }
+	
 
 
 }
@@ -360,7 +376,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
           // if a file was selected, tell DSP
           directory = dirnameOf ( filename );
           setState ( "filepathFromUI", filename );
-          loadSample ( String ( filename ), true );
+          //   loadSample ( String ( filename ), true );
      }
 }
 /* ----------------------------------------------------------------------------------------------------------
@@ -633,7 +649,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
                sp.push_back ( ' ' );
                sp.append ( std::to_string ( program ) );
                setState ( "storeprogram", sp.c_str() );
-	       setProgramGrid(program);
+               setProgramGrid ( program );
                goto toggleswitches;
           }
           // normal click stores current program and gets new program
@@ -645,9 +661,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           }
           // toggle the switches
      toggleswitches:
-          for ( uint i = 0; i <= 15; i++ ) {
-               fGrid[i]->setDown ( i+paramCount == buttonId );
-          }
+     ;
+//           for ( uint i = 0; i <= 15; i++ ) {
+//                fGrid[i]->setDown ( i+paramCount == buttonId );
+//           }
      }
 
 
@@ -665,16 +682,13 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           if ( slices != tempSlices ) {
                slices = tempSlices;
                fSpinBox->setDigitsColor ( false ); // set digits to black
-               if ( !slicemethod ) {
-                    createSlicesRaw();
-               } else {
-                    createSlicesOnsets();
-               }
                editParameter ( paramNumberOfSlices,true );
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
                setState ( "sliceButton","true" );
+               setState ( "paramSigLoadProgram", "true" ) ;
                setProgramGrid ( programNumber );
+               //   getProgram ( programNumber );
 
           }
           break;
@@ -1019,6 +1033,7 @@ void NinjasUI::drawCurrentSlice()
 
           // highlight selected slice
           if ( firstSlice == currentSlice && slices > 1 ) {
+	    printf("NinjasUI::drawCurrentSlice() %i : %i, %i\n",a_slices[firstSlice].sliceStart,a_slices[firstSlice].sliceEnd);
                beginPath();
 
                fillPaint ( linearGradient (
@@ -1138,110 +1153,50 @@ void NinjasUI::drawOnsets()
      closePath();
 }
 
-void NinjasUI::loadSample ( String fp , bool fromUser )
-{ 
-  double samplerate = getSampleRate();
-  int file_samplerate (0); 
-  String ext = fp;
-  ext.toLower();
-  if (ext.endsWith("mp3")) {
-    printf("file is an mp3\n");
-    mp3dec_t mp3d;
-    mp3dec_file_info_t info;
-    
-    if ( mp3dec_load( &mp3d, fp.buffer(), &info, NULL, NULL) )
-    {
-      std::cout << "UI:Can't load sample " << fp << std::endl;
-      return;
-    } 
-    file_samplerate = info.hz;
-    sampleChannels = info.channels;
-    sampleVector.clear();
-    for (int i; i < info.samples ; i+=sizeof(float))
-    {
-      sampleVector.push_back(*(info.buffer+i));
-    }
-    sampleSize = sampleVector.size()/sampleChannels;
-    sample_is_loaded = true;
-    fSwitchLoadSample->setDown ( true );
-    
-  }
-  else {
-     SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , samplerate );
-     sampleSize = fileHandle.frames();
-     sampleChannels   = fileHandle.channels();
-     file_samplerate = fileHandle.samplerate();
-     if ( sampleSize == 0 ) {
-          sample_is_loaded = false;
-          std::cerr << "error loading sample : " << fp << std::endl;
-          return;
-     }
+void NinjasUI::loadSample ( bool fromUser )
+{
+     printf ( "NinjasUI::loadSample(%i) called \n",fromUser );
+     // sample data
+     waveform.clear();
+     int size = plugin->sampleSize;
 
-     sample_is_loaded =true;
+     sample_is_loaded = true;
      fSwitchLoadSample->setDown ( true );
-     //float samples_per_pixel = ( float ) ( sampleSize * sampleChannels ) / ( float ) lcd_length;
-
-     sampleVector.resize ( sampleSize * sampleChannels );
-     fileHandle.read ( &sampleVector.at ( 0 ) , sampleSize * sampleChannels );
-  }
-    
-     if ( file_samplerate != samplerate )
-     {
-          // temporary sample vector
-          std::vector<float> tmp_sample_vector = sampleVector;
-
-          SRC_DATA src_data;
-          src_data.data_in = & tmp_sample_vector.at ( 0 );
-          src_data.src_ratio = samplerate / file_samplerate;
-          src_data.output_frames = sampleSize * src_data.src_ratio;
-
-          sampleVector.resize ( src_data.output_frames * sampleChannels );
-
-          src_data.data_out = & sampleVector.at ( 0 );
-          src_data.input_frames = sampleSize;
-
-          int err = src_simple ( & src_data, SRC_SINC_BEST_QUALITY, sampleChannels );
-          if ( err )
-               std::cout << "Samplerate error : src_simple err =" << err << std::endl;
-          sampleSize = src_data.output_frames_gen;
-     }
-
-     // display height = 350
-     // store waveform as -175 to  175 integer
-     waveform.resize ( 0 ); // clear waveform
+     sampleChannels = plugin->sampleChannels;
 
      if ( sampleChannels == 2 ) { // sum to mono
 
-          for ( uint i=0, j=0 ; i <= sampleSize; i++ ) {
-               float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
-	      // printf("
+          for ( uint i=0, j=0 ; i < size; i++ ) {
+               float sum_mono = ( plugin->sampleVector[j] + plugin->sampleVector[j+1] ) * 0.5f;
                waveform.push_back ( sum_mono * 175.0f );
                j+=2;
           }
      } else {
-          waveform.resize ( sampleSize );
-          for ( uint i=0; i < sampleVector.size(); i++ ) {
-               waveform[i] =  sampleVector[i] * 175.0f;
+          waveform.resize ( size );
+          for ( uint i=0; i < size; i++ ) {
+               waveform[i] =  plugin->sampleVector[i] * 175.0f;
           }
      }
-
      waveView.start = 0;
-     waveView.end = sampleSize;
+     waveView.end =waveform.size();
      waveView.zoom = 1.0f;
-     waveView.max_zoom = float ( sampleSize ) / float ( display_width );
+     waveView.max_zoom = float ( waveform.size() ) / float ( display_width );
 
-     getOnsets ( sampleSize ,sampleChannels, sampleVector, onsets );
-     /*
-      */   // set program 0
+     // onsets
+     onsets.clear();
+     onsets = plugin->onsets;
+
+
      if ( fromUser ) {
           if ( !slicemethod ) {
                createSlicesRaw ();
           } else {
                createSlicesOnsets ();
           }
-       fGrid[0]->setDown ( true );
+          fGrid[0]->setDown ( true );
      }
      repaint();
+     setState ( "sig_SampleLoaded", "false" );
      return;
 
 }
@@ -1337,7 +1292,7 @@ void NinjasUI::recallSliceSettings ( int slice )
 //    setParameterValue ( paramLoopRev, p_LoopRev[slice] );
      fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );
 
-     repaint();
+   //  repaint();
 }
 
 void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets )
@@ -1757,21 +1712,22 @@ void NinjasUI::ProgramGrid ( int grid )
                fGrid[b]->setStateSwitch ( false );
           }
      }
-     repaint();
+    // repaint();
 }
 
 void NinjasUI::getProgram ( int program )
 {
-     printf ( "Plugin: program %i, currentSlice %i\n",plugin->programNumber,plugin->Programs[plugin->programNumber].currentSlice );
-     //  printf ( "UI: program %i\n",program );
      currentSlice = plugin->Programs[program].currentSlice;
      slices = plugin->Programs[program].slices;
+     printf ( "NinjasUI::getProgram( %i ) , slices %i \n" , program, slices );
 
      for ( int i=0, voice = 0; i < 128 ; i++ ) {
           voice = ( i+60 ) % 128;
-
           a_slices[i].sliceStart = plugin->Programs[program].a_slices[i].sliceStart / plugin->sampleChannels;
           a_slices[i].sliceEnd = plugin->Programs[program].a_slices[i].sliceEnd / plugin->sampleChannels;
+          if ( i < slices ) {
+               printf ( "slice %i : %i - %i\n", i , a_slices[i].sliceStart, a_slices[i].sliceEnd );
+          }
           a_slices[i].playmode = static_cast<slicePlayMode> ( plugin->Programs[program].a_slices[i].playmode );
           p_Attack[i]=plugin->Programs[program].Attack[voice];
           p_Decay[i]=plugin->Programs[program].Decay[voice];
@@ -1785,6 +1741,11 @@ void NinjasUI::getProgram ( int program )
      fSpinBox->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
+     // toggle switches
+     for ( uint i = 0; i <= 15; i++ ) {
+               fGrid[i]->setDown ( i == program );
+          }
+     repaint();
 }
 
 /* ------------------------------------------------------------------------------------------------------------

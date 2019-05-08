@@ -35,20 +35,22 @@
 
 enum Parameters
 {  
-    paramProgramNumber = 0, // 0 
-    paramNumberOfSlices, // 1
-    paramAttack, // 2
-    paramDecay, // 3
-    paramSustain, // 4
-    paramRelease, // 5
-    paramOneShotFwd, // 6
-    paramOneShotRev, // 7
-    paramLoopFwd, // 8
-    paramLoopRev, // 9
-    paramLoadSample, // 10
-    paramSliceMode, // 11
-    paramProgramGrid, // 12
-    paramCount // 13
+    paramProgramNumber = 0, // 0
+    paramSigSampleLoaded, // 1
+    paramSigLoadProgram, // 2
+    paramNumberOfSlices, // 3
+    paramAttack, // 5
+    paramDecay, // 6
+    paramSustain, // 6
+    paramRelease, // 7
+    paramOneShotFwd, // 8
+    paramOneShotRev, // 9
+    paramLoopFwd, // 10
+    paramLoopRev, // 11
+    paramLoadSample, // 12
+    paramSliceMode, // 13
+    paramProgramGrid, // 14
+    paramCount // 15
 };
 
 

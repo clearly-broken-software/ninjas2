@@ -114,6 +114,8 @@ private:
   std::string serializeProgram( int program) const;
   void deserializeProgram(int program, const char* string);
   bool sliceButton;
+  bool sig_SampleLoaded; // set to true when sample loaded, UI loads (new) sample -> use state to flip to false
+  bool sig_LoadProgram;
 
   
 
