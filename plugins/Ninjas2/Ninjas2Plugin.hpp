@@ -201,7 +201,7 @@ private:
   
   //Slice a_slices[128];
   //int slices; // number of slices
-  //int currentSlice;
+  int sig_currentSlice;
   
   // empty sample object
   std::vector<float> sampleVector; // this holds the sample data

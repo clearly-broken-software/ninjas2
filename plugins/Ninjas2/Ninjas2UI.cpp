@@ -333,6 +333,15 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           break;
      }
 
+     case paramCurrentSlice: {
+          if ( ( int ) value != -1 ) {
+	    printf("paramCurrentSlice: %i\n",(int) value);
+               currentSlice = std::min ( ( int ) value,slices-1 );
+	       setState("sig_CurrentSlice", "-1");
+               repaint();
+          }
+          break;
+     }
      }
      // repaint();
 }
@@ -1738,7 +1747,7 @@ void NinjasUI::getProgram ( int program )
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
      // toggle switches
-     for ( uint i = 0; i <= 15; i++ ) {
+     for ( int i = 0; i <= 15; i++ ) {
           fGrid[i]->setDown ( i == program );
      }
      repaint();

@@ -40,7 +40,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-     : Plugin ( paramCount, 0, 25 ) // parameters, programs (presets) , states
+     : Plugin ( paramCount, 0, 26 ) // parameters, programs (presets) , states
 {
      // init parameters
 
@@ -84,6 +84,7 @@ NinjasPlugin::NinjasPlugin()
      programGrid=0;
      sig_SampleLoaded = false;
      sig_LoadProgram = false;
+     sig_currentSlice = -1;
      initPrograms();
 
      //for debugging , autoload sample
@@ -126,6 +127,16 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.max = 1.0f;
           parameter.name = "sigLoadProgram";
           parameter.symbol = "sigLoadProgram";
+          break;
+     }
+
+     case paramCurrentSlice: {
+          parameter.hints = kParameterIsOutput|kParameterIsInteger;
+          parameter.ranges.def = -1.0f;
+          parameter.ranges.min = -1.0f;
+          parameter.ranges.max = 127.0f;
+          parameter.name   = "Current Slice (output)";
+          parameter.symbol  = "currentSlice";
           break;
      }
 
@@ -386,6 +397,10 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
           defaultStateValue = "empty";
           break;
      }
+     case 25: {
+          stateKey = "sig_CurrentSlice";
+          defaultStateValue = "-1";
+     }
 //
      } // switch
 } // initState
@@ -457,9 +472,9 @@ String NinjasPlugin::getState ( const char* key ) const
      if ( std::strcmp ( key, "program15" ) == 0 ) {
           return String ( serializeProgram ( 15 ).c_str() );
      }
-     
+
      if ( std::strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
-       return String (!bypass); // if not bypassed sample is loaded. UI should reload sample when state restored
+          return String ( !bypass ); // if not bypassed sample is loaded. UI should reload sample when state restored
      }
      return String ( "empty" );
 }
@@ -475,8 +490,8 @@ void NinjasPlugin::setState ( const char* key, const char* value )
 
      if ( strcmp ( key, "sliceButton" ) == 0 ) {
           if ( strcmp ( value, "true" ) == 0 ) {
-	    printf ("NinjasPlugin::setState(%s,%s)\n",key, value);
-	    printf ("program = %i, slices = %i\n",programNumber,Programs[programNumber].slices);
+               printf ( "NinjasPlugin::setState(%s,%s)\n",key, value );
+               printf ( "program = %i, slices = %i\n",programNumber,Programs[programNumber].slices );
                switch ( slicemode ) {
                case 0:
                     createSlicesRaw();
@@ -624,6 +639,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      }
 
      if ( strcmp ( key, "currentSlice" ) == 0 ) {
+
           Programs[programNumber].currentSlice = std::stoi ( value );
      }
 
@@ -634,6 +650,11 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      if ( strcmp ( key, "sig_LoadProgram" ) == 0 ) {
           sig_LoadProgram = false;
      }
+
+     if ( strcmp ( key, "sig_CurrentSlice" ) == 0 ) {
+          sig_currentSlice = -1;
+     }
+
 }
 /* --------------------------------------------------------------------------------------------------------
 * Internal data
@@ -665,6 +686,12 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
           return_Value = ( float ) sig_LoadProgram;
           break;
      }
+
+     case paramCurrentSlice: {
+          return_Value = sig_currentSlice;
+          break;
+     }
+
      case paramNumberOfSlices:
           return_Value = ( float ) Programs[programNumber].slices;
           break;
@@ -872,6 +899,10 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                               voices[data1].multiplierIndex = 0;
                          }
 
+                         // set sig_currentSlice
+                         sig_currentSlice = index;
+
+
                          float transpose = ( pitchbend/pitchbend_step ) -12;
                          voices[data1].multiplier=pow ( 2.0, transpose / 12.0 );
                          break;
@@ -882,11 +913,11 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          pitchbend = ( data2 * 128 ) + data1;
                          break;
                     }
-                    
-		    case 0xc0: { // program change
-		      programNumber = data1 % 16;
-		      break;
-		    }
+
+                    case 0xc0: { // program change
+                         programNumber = data1 % 16;
+                         break;
+                    }
 
                     } // switch
 
