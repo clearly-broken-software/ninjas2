@@ -123,23 +123,23 @@ NinjasUI::NinjasUI()
 
 
      fSwitchFwd = new PlayModeSwitch ( window, switchSize );
-     fSwitchFwd->setId ( paramOneShotFwd );
+     fSwitchFwd->setId ( 200 ); //FIXME EVIL MAGIC NUMBERS !!!
      fSwitchFwd->setLabel ( u8"\xEF\x81\x90" ); // see
      fSwitchFwd->setCallback ( this );
 
 
      fSwitchRev = new PlayModeSwitch ( window, switchSize );
-     fSwitchRev->setId ( paramOneShotRev );
+     fSwitchRev->setId ( 201 );
      fSwitchRev->setLabel ( u8"\xEF\x81\x89" );
      fSwitchRev->setCallback ( this );
 
      fSwitchLoopFwd = new PlayModeSwitch ( window, switchSize );
-     fSwitchLoopFwd->setId ( paramLoopFwd );
+     fSwitchLoopFwd->setId ( 202 );
      fSwitchLoopFwd->setLabel ( u8"\xEF\x80\x9E" );
      fSwitchLoopFwd->setCallback ( this );
 
      fSwitchLoopRev = new PlayModeSwitch ( window, switchSize );
-     fSwitchLoopRev->setId ( paramLoopRev );
+     fSwitchLoopRev->setId ( 203 );
      fSwitchLoopRev->setLabel ( u8"\xEF\x83\xA2" );
      fSwitchLoopRev->setCallback ( this );
 
@@ -218,10 +218,7 @@ void NinjasUI::initParameters()
      std::fill_n ( p_Release, 128, 0.001f );
 
      // play modes
-     std::fill_n ( p_OneShotFwd, 128, 1.0f );
-     std::fill_n ( p_OneShotRev, 128, 0.0f );
-     std::fill_n ( p_LoopFwd, 128, 0.0f );
-     std::fill_n ( p_LoopRev, 128, 0.0f );
+     std::fill_n ( p_playMode, 128, ONE_SHOT_FWD );
 
 }
 
@@ -258,24 +255,15 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSpinBox->setValue ( value );
           break;
           // Play Modes
-     case paramOneShotFwd:
-          fSwitchFwd->setDown ( value > 0.5f );
-          p_OneShotFwd[currentSlice] = value > 0.5f;
+     case paramPlayMode:{
+          int v = value;
+          fSwitchFwd->setDown ( v == 0 );
+          fSwitchRev->setDown ( v == 1 );
+          fSwitchLoopFwd->setDown ( v == 2 );
+          fSwitchLoopRev->setDown ( v == 3 );
           break;
-     case paramOneShotRev:
-          fSwitchRev->setDown ( value > 0.5f );
-          p_OneShotRev[currentSlice] = value > 0.5f;
-          break;
-     case paramLoopFwd:
-          fSwitchLoopFwd->setDown ( value > 0.5f );
-          p_LoopFwd[currentSlice] = value > 0.5f;
-          break;
-     case paramLoopRev:
-          fSwitchLoopRev->setDown ( value > 0.5f );
-          p_LoopRev[currentSlice] = value > 0.5f;
-          break;
-          // ADSR
-     case paramAttack:
+     }
+    case paramAttack:
           fKnobAttack->setValue ( value );
           p_Attack[currentSlice] = value;
           break;
@@ -302,7 +290,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSliceModeSlider->setDown ( value > 0.5f );
           break;
      case paramProgramGrid:
-          printf ( "UI paramProgramGrid %f\n",value );
+       //   printf ( "UI paramProgramGrid %f\n",value );
           programGrid = value;
           ProgramGrid ( value );
           break;
@@ -323,7 +311,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      }
      case paramSigLoadProgram: {
           if ( ( int ) value != sig_LoadProgram ) {
-               printf ( "NinjasUI::parameterChanged(%i, %i)\n",index, ( int ) value );
+          //     printf ( "NinjasUI::parameterChanged(%i, %i)\n",index, ( int ) value );
                sig_LoadProgram = ( int ) value;
                if ( value > 0.5f ) {
                     getProgram ( programNumber );
@@ -335,9 +323,11 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 
      case paramCurrentSlice: {
           if ( ( int ) value != -1 ) {
-	    printf("paramCurrentSlice: %i\n",(int) value);
                currentSlice = std::min ( ( int ) value,slices-1 );
-	       setState("sig_CurrentSlice", "-1");
+	       printf ( "paramCurrentSlice: %i\n", currentSlice );
+	       
+               setState ( "sig_CurrentSlice", "-1" );
+	       recallSliceSettings( currentSlice);
                repaint();
           }
           break;
@@ -348,7 +338,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
 {
-     printf ( "stateChanged ( %s )\n", key );
+    // printf ( "stateChanged ( %s )\n", key );
      if ( std::strcmp ( value, "empty" ) == 0 ) {
           //      printf ( "state value is empty, returning\n" );
           return;
@@ -462,37 +452,39 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 //     fprintf(stderr, "Shift click!!\n");
 //   }
 
-     float oldValue;
-     const float value = nanoSwitch->isDown() ? 1.0f : 0.0f;
+     bool oldValue;
+     const bool value = nanoSwitch->isDown() ? true : false;
      const uint buttonId = nanoSwitch->getId();
-     //   printf("nanoSwitchClicked( %i )\n",buttonId);
-     //   printf("paramCount %i\n", paramCount);
+  /*   printf("nanoSwitchClicked( %i )\n",buttonId);
+     printf("value %i\n",value);
+ */   // printf("paramCount %i\n", paramCount);
 
      // check if parameter is changed
      switch ( buttonId ) {
-     case paramOneShotFwd: {
-          oldValue = p_OneShotFwd[currentSlice];
+     case 200: {
+          oldValue = p_playMode[currentSlice]==ONE_SHOT_FWD;
+	  
           if ( oldValue != value ) {
                setProgramGrid ( programNumber );
           }
           break;
      }
-     case paramOneShotRev: {
-          oldValue = p_OneShotRev[currentSlice];
+     case 201: {
+          oldValue = p_playMode[currentSlice]==ONE_SHOT_REV;
           if ( oldValue != value ) {
                setProgramGrid ( programNumber );
           }
           break;
      }
-     case paramLoopFwd: {
-          oldValue = p_LoopFwd[currentSlice];
+     case 202: {
+          oldValue = p_playMode[currentSlice]==LOOP_FWD;
           if ( oldValue != value ) {
                setProgramGrid ( programNumber );
           }
           break;
      }
-     case paramLoopRev: {
-          oldValue = p_LoopRev[currentSlice];
+     case 203: {
+          oldValue = p_playMode[currentSlice]==LOOP_REV;
           if ( oldValue != value ) {
                setProgramGrid ( programNumber );
           }
@@ -501,112 +493,54 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      }
 
      switch ( buttonId ) {
-     case paramOneShotFwd: {
-          p_OneShotFwd[currentSlice] = 1;
-          p_OneShotRev[currentSlice]= 0;
-          p_LoopFwd[currentSlice]    = 0;
-          p_LoopRev[currentSlice]    = 0;
-
-          editParameter ( paramOneShotFwd, true );
-          editParameter ( paramOneShotRev, true );
-          editParameter ( paramLoopFwd, true );
-          editParameter ( paramLoopRev, true );
-
-          setParameterValue ( paramOneShotFwd, 1.0f );
-          setParameterValue ( paramOneShotRev, 0.0f );
-          setParameterValue ( paramLoopFwd, 0.0f );
-          setParameterValue ( paramLoopRev, 0.0f );
+     case 200: {
+          p_playMode[currentSlice] = ONE_SHOT_FWD;
+          editParameter ( paramPlayMode, true );
+          setParameterValue ( paramPlayMode, ONE_SHOT_FWD );
 
           fSwitchFwd->setDown ( true );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
 
-          editParameter ( paramOneShotFwd, false );
-          editParameter ( paramOneShotRev, false );
-          editParameter ( paramLoopFwd, false );
-          editParameter ( paramLoopRev, false );
+          editParameter ( paramPlayMode, false );
           break;
      }
-     case paramOneShotRev: {
-          p_OneShotFwd[currentSlice] = 0;
-          p_OneShotRev[currentSlice]= 1;
-          p_LoopFwd[currentSlice]    = 0;
-          p_LoopRev[currentSlice]    = 0;
-
-          editParameter ( paramOneShotFwd, true );
-          editParameter ( paramOneShotRev, true );
-          editParameter ( paramLoopFwd, true );
-          editParameter ( paramLoopRev, true );
-
-          setParameterValue ( paramOneShotFwd, 0.0f );
-          setParameterValue ( paramOneShotRev, 1.0f );
-          setParameterValue ( paramLoopFwd, 0.0f );
-          setParameterValue ( paramLoopRev, 0.0f );
+     case 201: {
+          p_playMode[currentSlice] = ONE_SHOT_REV;
+          editParameter ( paramPlayMode, true );
+          setParameterValue ( paramPlayMode, ONE_SHOT_REV );
 
           fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( true );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
-
-          editParameter ( paramOneShotFwd, false );
-          editParameter ( paramOneShotRev, false );
-          editParameter ( paramLoopFwd, false );
-          editParameter ( paramLoopRev, false );
+          editParameter ( paramPlayMode, false );
+	  
           break;
      }
-     case paramLoopFwd: {
-          p_OneShotFwd[currentSlice] = 0;
-          p_OneShotRev[currentSlice]= 0;
-          p_LoopFwd[currentSlice]    = 1;
-          p_LoopRev[currentSlice]    = 0;
-
-          editParameter ( paramOneShotFwd, true );
-          editParameter ( paramOneShotRev, true );
-          editParameter ( paramLoopFwd, true );
-          editParameter ( paramLoopRev, true );
-
-          setParameterValue ( paramOneShotFwd, 0.0f );
-          setParameterValue ( paramOneShotRev, 0.0f );
-          setParameterValue ( paramLoopFwd, 1.0f );
-          setParameterValue ( paramLoopRev, 0.0f );
-
-          fSwitchFwd->setDown ( false );
+     case 202: {
+          p_playMode[currentSlice] = LOOP_FWD;
+          editParameter ( paramPlayMode, true );
+          setParameterValue ( paramPlayMode, LOOP_FWD );
+	  
+	  fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( true );
           fSwitchLoopRev->setDown ( false );
-
-          editParameter ( paramOneShotFwd, false );
-          editParameter ( paramOneShotRev, false );
-          editParameter ( paramLoopFwd, false );
-          editParameter ( paramLoopRev, false );
+          editParameter ( paramPlayMode, false );
+	  printf("playmode %i\n",LOOP_FWD );
           break;
      }
-     case paramLoopRev: {
-          p_OneShotFwd[currentSlice] = 0;
-          p_OneShotRev[currentSlice]= 0;
-          p_LoopFwd[currentSlice]    = 0;
-          p_LoopRev[currentSlice]    = 1;
-
-          editParameter ( paramOneShotFwd, true );
-          editParameter ( paramOneShotRev, true );
-          editParameter ( paramLoopFwd, true );
-          editParameter ( paramLoopRev, true );
-
-          setParameterValue ( paramOneShotFwd, 0.0f );
-          setParameterValue ( paramOneShotRev, 0.0f );
-          setParameterValue ( paramLoopFwd, 0.0f );
-          setParameterValue ( paramLoopRev, 1.0f );
-
+     case 203: {
+          p_playMode[currentSlice] = LOOP_REV;
+          editParameter ( paramPlayMode, true );
+          setParameterValue ( paramPlayMode, LOOP_REV );
           fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( true );
-
-          editParameter ( paramOneShotFwd, false );
-          editParameter ( paramOneShotRev, false );
-          editParameter ( paramLoopFwd, false );
-          editParameter ( paramLoopRev, false );
+          editParameter ( paramPlayMode, false );
           break;
      }
      case paramSliceMode: {
@@ -1038,7 +972,7 @@ void NinjasUI::drawCurrentSlice()
 
           // highlight selected slice
           if ( firstSlice == currentSlice && slices > 1 ) {
-               printf ( "NinjasUI::drawCurrentSlice() %i : %i, %i\n",a_slices[firstSlice].sliceStart,a_slices[firstSlice].sliceEnd );
+            //   printf ( "NinjasUI::drawCurrentSlice() %i : %i, %i\n",a_slices[firstSlice].sliceStart,a_slices[firstSlice].sliceEnd );
                beginPath();
 
                fillPaint ( linearGradient (
@@ -1273,31 +1207,14 @@ std::string NinjasUI::dirnameOf ( const std::string& fname )
 
 void NinjasUI::recallSliceSettings ( int slice )
 {
-     //  setParameterValue ( paramAttack, p_Attack[slice] );
      fKnobAttack->setValue ( p_Attack[slice] );
-
-     //  setParameterValue ( paramDecay,  p_Decay[slice] );
      fKnobDecay->setValue ( p_Decay[slice] );
-
-     //  setParameterValue ( paramSustain, p_Sustain[slice] );
      fKnobSustain->setValue ( p_Sustain[slice] );
-
-     //   setParameterValue ( paramRelease, p_Release[slice] );
      fKnobRelease->setValue ( p_Release[slice] );
-
-     //   setParameterValue ( paramOneShotFwd, p_OneShotFwd[slice] );
-     fSwitchFwd->setDown ( p_OneShotFwd[slice] == 1.0f );
-
-     //   setParameterValue ( paramOneShotRev,  p_OneShotRev[slice] );
-     fSwitchRev->setDown ( p_OneShotRev[slice] == 1.0f );
-
-     //   setParameterValue ( paramLoopFwd, p_LoopFwd[slice] );
-     fSwitchLoopFwd->setDown ( p_LoopFwd[slice] == 1.0f );
-
-//    setParameterValue ( paramLoopRev, p_LoopRev[slice] );
-     fSwitchLoopRev->setDown ( p_LoopRev[slice] == 1.0f );
-
-     //  repaint();
+     fSwitchFwd->setDown ( p_playMode[slice] == ONE_SHOT_FWD );
+     fSwitchRev->setDown ( p_playMode[slice] == ONE_SHOT_REV );
+     fSwitchLoopFwd->setDown ( p_playMode[slice] == LOOP_FWD );
+     fSwitchLoopRev->setDown ( p_playMode[slice] == LOOP_REV );
 }
 
 void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets )
@@ -1555,7 +1472,7 @@ void NinjasUI::selectSlice()
           if ( a_slices[i].bothHitBox.contains ( mouseX + display_left, mouseY + display_top ) ) {
                currentEditSlice = a_slices[i];
                currentSlice = i;
-               mouseEditSlice = true;
+	       mouseEditSlice = true;
                editSliceStartEnd = both;
                repaint();
                return;
@@ -1603,10 +1520,6 @@ void NinjasUI::selectSlice()
 
      }
 
-     /*    editParameter ( paramCurrentSlice,true );
-         setParameterValue ( paramCurrentSlice,currentSlice );
-         editParameter ( paramCurrentSlice,false );
-     */
      setState ( "currentSlice", std::to_string ( currentSlice ).c_str() );
      recallSliceSettings ( currentSlice );
      repaint();
@@ -1697,7 +1610,7 @@ void NinjasUI::setProgramGrid ( int program )
      // check if bit 2^program is flipped already
      // if not set bit to 1
      //
-     printf ( "setProgramGrid(%i) programGrid = %i\n",program,programGrid );
+ //    printf ( "setProgramGrid(%i) programGrid = %i\n",program,programGrid );
      if ( program < 16 ) {
           programGrid |= 1UL << program;
           ProgramGrid ( programGrid );
@@ -1724,7 +1637,7 @@ void NinjasUI::getProgram ( int program )
 {
      currentSlice = plugin->Programs[program].currentSlice;
      slices = plugin->Programs[program].slices;
-     printf ( "NinjasUI::getProgram( %i ) , slices %i \n" , program, slices );
+   //  printf ( "NinjasUI::getProgram( %i ) , slices %i \n" , program, slices );
 
      for ( int i=0, voice = 0; i < 128 ; i++ ) {
           voice = ( i+60 ) % 128;
@@ -1738,11 +1651,7 @@ void NinjasUI::getProgram ( int program )
           p_Decay[i]=plugin->Programs[program].Decay[voice];
           p_Sustain[i]=plugin->Programs[program].Sustain[voice];
           p_Release[i]=plugin->Programs[program].Release[voice];
-          p_OneShotFwd[i]=plugin->Programs[program].OneShotFwd[i];
-          p_OneShotRev[i]=plugin->Programs[program].OneShotRev[i];
-          p_LoopFwd[i]=plugin->Programs[program].LoopFwd[i];
-          p_LoopRev[i]=plugin->Programs[program].LoopRev[i];
-     }
+        }
      fSpinBox->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
