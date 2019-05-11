@@ -804,6 +804,7 @@ void NinjasUI::onNanoDisplay()
 
           drawOnsets();
           drawRuler();
+          drawPlayheads();
      }
      // ninjas_logo
      const float logo_offset_x = display_left;
@@ -988,6 +989,28 @@ void NinjasUI::drawRuler()
      stroke();
      closePath();
 }
+
+
+void NinjasUI::drawPlayheads()
+{
+     // loop through active voices
+     for ( int i = 0 ; i < 128 ; i++ ) {
+          if ( plugin->voices[i].active ) {
+               int pos = plugin->voices[i].playbackIndex;
+               int gain = 255 * plugin->voices[i].gain;
+               // TODO: Check if in view?
+               printf("%i\n", pos);
+               beginPath();
+               strokeColor (gain, gain, gain, 255);
+               moveTo ( pos + display_left , display_top );
+               lineTo ( pos + display_left , display_bottom );
+               stroke();
+               closePath();
+          }
+     }
+
+}
+
 
 void NinjasUI::drawCurrentSlice()
 {

@@ -100,6 +100,7 @@ private:
      void drawOnsets();
      void drawSliceMarkers();
      void drawCurrentSlice();
+     void drawPlayheads();
      void getVisibleSlices ( int &firstSice, int &lastSlice );
      void selectSlice();
      void editCurrentSlice();
