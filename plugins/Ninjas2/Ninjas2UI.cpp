@@ -322,7 +322,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      }
 
      case paramCurrentSlice: {
-          if ( ( int ) value != -1 ) {
+          if ( ( int ) value != -1  && !mouseEditSlice) {
                currentSlice = std::min ( ( int ) value,slices-1 );
 	       printf ( "paramCurrentSlice: %i\n", currentSlice );
 	       
