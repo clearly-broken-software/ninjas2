@@ -775,7 +775,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          break;
                     }
 
-                    case 0x90 : {
+                    case 0x90 : { // note on
                          //c4 is 60
                          int index = ( data1 + 68 ) % 128;
                          if ( index < 0 || index > Programs[programNumber].slices -1 ) {

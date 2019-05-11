@@ -690,8 +690,7 @@ void NinjasUI::onNanoDisplay()
 
      closePath();
 
-     // waveform display back
-
+     // waveform display background
      beginPath();
      fillPaint (
           linearGradient
@@ -708,6 +707,7 @@ void NinjasUI::onNanoDisplay()
      closePath();
 
 
+     // parameter boxes
      beginPath();
      strokeWidth ( 2.0f );
      strokeColor ( Color ( 255,221,85,255 ) );
@@ -725,7 +725,6 @@ void NinjasUI::onNanoDisplay()
 
      // adsr box
      roundedRect ( 768 ,450 , 400, 110,  4 );
-
 
      stroke();
      closePath();
@@ -773,6 +772,7 @@ void NinjasUI::onNanoDisplay()
      fill();
      closePath();
 
+     // Settings labels
      beginPath();
      fontFaceId ( fNanoFont );
      fontSize ( 22 );
