@@ -1012,9 +1012,12 @@ void NinjasUI::drawPlayheads()
                                             - float(waveView.start))
                                    / samples_per_pixel;
 
+               if (pixel_pos < 0 || pixel_pos + display_left > display_right) {
+                    continue;
+               }
+
                int gain = std::min(int(255 * plugin->voices[i].adsr.adsr_gain), 255);
 
-               // TODO: Check if in view?
                beginPath();
                strokeColor (255, 255, 255, gain);
                moveTo ( pixel_pos + display_left , display_top );
