@@ -51,7 +51,8 @@ class NinjasUI : public UI,
      public NanoKnob::Callback,
      public NanoSwitch::Callback,
      public NanoSpinBox::Callback,
-     public NanoButton::Callback {
+     public NanoButton::Callback,
+     public IdleCallback {
 public:
      NinjasUI();
 
@@ -69,6 +70,7 @@ protected:
      // Widget Callbacks
 
      void onNanoDisplay() override;
+     void idleCallback() override;
      void nanoKnobValueChanged ( NanoKnob* nanoKnob, const float value ) override;
      void nanoSpinBoxValueChanged ( NanoSpinBox *nanoSpinBox, const float value ) override;
      void nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) override;

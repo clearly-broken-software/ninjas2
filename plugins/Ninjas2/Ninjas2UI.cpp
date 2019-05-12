@@ -835,6 +835,13 @@ void NinjasUI::onNanoDisplay()
      closePath();
 }
 
+
+void NinjasUI::idleCallback()
+{
+     repaint();
+}
+
+
 void NinjasUI::drawWaveform()
 {
 //  waveView.end = 1140;
@@ -996,14 +1003,19 @@ void NinjasUI::drawPlayheads()
      // loop through active voices
      for ( int i = 0 ; i < 128 ; i++ ) {
           if ( plugin->voices[i].active ) {
-               int pos = plugin->voices[i].playbackIndex;
+               int sample_pos = plugin->voices[i].playbackIndex;
+               float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
+               int pixel_pos = (float(sample_pos) - float(waveView.start)) / samples_per_pixel;
+               printf("sample_pos: %i\n", sample_pos);
+               printf("pixel_pos: %i\n", pixel_pos);
+
                int gain = 255 * plugin->voices[i].gain;
+
                // TODO: Check if in view?
-               printf("%i\n", pos);
                beginPath();
                strokeColor (gain, gain, gain, 255);
-               moveTo ( pos + display_left , display_top );
-               lineTo ( pos + display_left , display_bottom );
+               moveTo ( pixel_pos + display_left , display_top );
+               lineTo ( pixel_pos + display_left , display_bottom );
                stroke();
                closePath();
           }
