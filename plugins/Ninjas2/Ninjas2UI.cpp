@@ -1012,7 +1012,7 @@ void NinjasUI::drawPlayheads()
                                             - float(waveView.start))
                                    / samples_per_pixel;
 
-               int gain = std::min(int(255 * plugin->voices[i].gain), 255);
+               int gain = std::min(int(255 * plugin->voices[i].adsr.adsr_gain), 255);
 
                // TODO: Check if in view?
                beginPath();
