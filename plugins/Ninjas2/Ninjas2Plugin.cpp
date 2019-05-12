@@ -783,6 +783,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          }
                          // new note .. let's activate
                          voices[data1].active = true;
+                         voices[data1].notenumber = index;
                          voices[data1].velocity = data2;
                          voices[data1].gain = ( float ) data2 / 127.0f;
 
