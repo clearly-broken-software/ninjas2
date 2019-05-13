@@ -44,15 +44,11 @@ enum Parameters
     paramDecay, // 6
     paramSustain, // 7
     paramRelease, // 8
-  /*  paramOneShotFwd, // 9
-    paramOneShotRev, // 10
-    paramLoopFwd, // 11
-    paramLoopRev, // 12
- */
     paramLoadSample, // 13
     paramSliceMode, // 14
     paramProgramGrid, // 15
     paramPlayMode,
+    paramPitchbendDepth,
     paramCount // 16
 };
 

@@ -57,8 +57,8 @@ NinjasPlugin::NinjasPlugin()
 
      // pitchbend
      pitchbend       = 8192 ;  // center
-     pitchbend_range = 24 ; // TODO should be user configurable
-     pitchbend_step  = ( float ) 16384 / ( float ) pitchbend_range;
+     pitchbendDepth = 24 ; 
+     pitchbendStep  = 16384.0f / pitchbendDepth;
 
      //
      gain = 1.0f;
@@ -86,10 +86,6 @@ NinjasPlugin::NinjasPlugin()
      sig_LoadProgram = false;
      sig_currentSlice = -1;
      initPrograms();
-     // const ParameterEnumerationValue * playmode = new ParameterEnumerationValue[4]{ParameterEnumerationValue(0,"One Shot Forward")};
-     
-     
-
      //for debugging , autoload sample
      //  filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
      //   loadSample ( filepath );
@@ -195,65 +191,24 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           break;
      }
      case paramPlayMode: {
-       parameter.hints = kParameterIsAutomable|kParameterIsInteger;
-       parameter.ranges.def = 0.0f;
-       parameter.ranges.min = 0.0f;
-       parameter.ranges.max = 3.0f;
-       parameter.enumValues.count = 4;
-       parameter.enumValues.restrictedMode = true;
-       parameter.enumValues.values = new ParameterEnumerationValue[4]{
-	 ParameterEnumerationValue(0.0f,"One Shot Forward"),
-	 ParameterEnumerationValue(1.0f,"One Shot Reverse"),
-	 ParameterEnumerationValue(2.0f,"Loop Forward"),
-	 ParameterEnumerationValue(3.0f,"Loop Reverse")
-       };
-      
-       parameter.name = "Play Mode";
-       parameter.symbol = "playmode";
-       break;
+          parameter.hints = kParameterIsAutomable|kParameterIsInteger;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 3.0f;
+          parameter.enumValues.count = 4;
+          parameter.enumValues.restrictedMode = true;
+          parameter.enumValues.values = new ParameterEnumerationValue[4] {
+               ParameterEnumerationValue ( 0.0f,"One Shot Forward" ),
+               ParameterEnumerationValue ( 1.0f,"One Shot Reverse" ),
+               ParameterEnumerationValue ( 2.0f,"Loop Forward" ),
+               ParameterEnumerationValue ( 3.0f,"Loop Reverse" )
+          };
+
+          parameter.name = "Play Mode";
+          parameter.symbol = "playmode";
+          break;
      }
-     
-     
-//      case paramOneShotFwd: {
-//           parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-//           parameter.ranges.def = 1.0f;
-//           parameter.ranges.min = 0.0f;
-//           parameter.ranges.max = 1.0f;
-//           parameter.name   = "One Shot Forward";
-//           parameter.symbol  = "one_shot_fwd";
-//           parameter.midiCC = 107;
-//           break;
-//      }
-//      case paramOneShotRev: {
-//           parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-//           parameter.ranges.def = 0.0f;
-//           parameter.ranges.min = 0.0f;
-//           parameter.ranges.max = 1.0f;
-//           parameter.name   = "One Shot Reverse";
-//           parameter.symbol  = "one_shot_rev";
-//           parameter.midiCC = 108;
-//           break;
-//      }
-//      case paramLoopFwd: {
-//           parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-//           parameter.ranges.def = 0.0f;
-//           parameter.ranges.min = 0.0f;
-//           parameter.ranges.max = 1.0f;
-//           parameter.name   = "Looped Play Forward";
-//           parameter.symbol  = "loop_fwd";
-//           parameter.midiCC = 109;
-//           break;
-//      }
-//      case paramLoopRev: {
-//           parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-//           parameter.ranges.def = 0.0f;
-//           parameter.ranges.min = 0.0f;
-//           parameter.ranges.max = 1.0f;
-//           parameter.name   = "Looped Play Reverse";
-//           parameter.symbol  = "loop_rev";
-//           parameter.midiCC = 110;
-//           break;
-//      }
+
      case paramLoadSample: {
           parameter.hints = kParameterIsAutomable|kParameterIsBoolean;
           parameter.ranges.def = 0.0f;
@@ -281,6 +236,15 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.max = 65535.0f; // 16 bits
           parameter.name = "Program Grid";
           parameter.symbol = "programGrid";
+          break;
+     }
+     case paramPitchbendDepth: {
+          parameter.hints = kParameterIsAutomable|kParameterIsInteger;
+          parameter.ranges.def = 24.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 24.0f;
+          parameter.name = "Pitchbend Depth";
+          parameter.symbol = "pitchbendDepth";
           break;
      }
      default: {
@@ -505,7 +469,7 @@ String NinjasPlugin::getState ( const char* key ) const
 
 void NinjasPlugin::setState ( const char* key, const char* value )
 {
-      printf ( "setState ( %s )\n",key);
+     printf ( "setState ( %s )\n",key );
      if ( strcmp ( value, "empty" ) == 0 ) {
           //       printf ( "state is empty, returning\n" );
           return;
@@ -664,7 +628,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      if ( strcmp ( key, "currentSlice" ) == 0 ) {
 
           Programs[programNumber].currentSlice = std::stoi ( value );
-	  printf("NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice);
+          printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
      }
 
      if ( strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
@@ -737,7 +701,8 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
      case paramProgramGrid:
           return_Value = programGrid;
           break;
-
+     case paramPitchbendDepth:
+       return_Value = pitchbendDepth;
      }
      return return_Value;
 
@@ -784,11 +749,16 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           break;
      }
      case paramPlayMode: {
-       printf("NinjasPlugin::setParameterValue(%i,%f)\n",index,value);
-       
-       Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = static_cast<slicePlayMode>(value);
-       printf("NinjasPlugin::setParameterValue %i \n", Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode);
-       break;
+          printf ( "NinjasPlugin::setParameterValue(%i,%f)\n",index,value );
+
+          Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = static_cast<slicePlayMode> ( value );
+          printf ( "NinjasPlugin::setParameterValue %i \n", Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode );
+          break;
+     }
+     case paramPitchbendDepth: {
+          pitchbendDepth = value;
+	  pitchbendStep  = 16384.0f / pitchbendDepth;
+          break;
      }
      default:
           std::cerr << "NinjasPlugin::setParameterValue unexpected parameter. index = " << index << "value = " <<value<< std::endl;
@@ -875,7 +845,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          sig_currentSlice = index;
 
 
-                         float transpose = ( pitchbend/pitchbend_step ) -12;
+                         float transpose = ( pitchbend / pitchbendStep ) - (pitchbendDepth/2);
                          voices[data1].multiplier=pow ( 2.0, transpose / 12.0 );
                          break;
 
@@ -966,7 +936,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          mixer.samples++;
 
                          // increase sample reading position
-                         float transpose = ( pitchbend/pitchbend_step ) -12;
+                         float transpose = ( pitchbend/pitchbendStep ) - (pitchbendDepth/2);
                          voices[i].multiplier=pow ( 2.0, transpose / 12.0 );
                          float multiplier = voices[i].multiplier;
 

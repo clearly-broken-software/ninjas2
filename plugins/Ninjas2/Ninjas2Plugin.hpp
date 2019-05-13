@@ -209,8 +209,8 @@ private:
   sf_count_t sampleSize; // in frames !!
 
   int pitchbend;
-  int pitchbend_range;
-  float pitchbend_step;
+  float pitchbendDepth;
+  float pitchbendStep;
   float gain;
   std::string filepath; // = "";
   bool bypass; // {true};
