@@ -545,16 +545,9 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      }
      case paramSliceMode: {
           if ( slicemethod != value )
-               //     Programs[programNumber].program_isEmpty = false;
-               fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
+             fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
           setParameterValue ( paramSliceMode, value );
           slicemethod = value;
-          if ( !slicemethod ) {
-               createSlicesRaw ();
-          } else {
-               createSlicesOnsets ();
-          }
-
           break;
      }
      case paramLoadSample: {
@@ -613,12 +606,11 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 
 void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
 {
-
      int NanoButtonID = nanoButton->getId();
      switch ( NanoButtonID ) {
-     case 100: {
+     case 100: { //FIXME EVIL MAGIC NUMBER
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
-          if ( slices != tempSlices ) {
+          if ( slices != tempSlices || slicemodeChanged) {
                slices = tempSlices;
                fSpinBox->setDigitsColor ( false ); // set digits to black
                editParameter ( paramNumberOfSlices,true );

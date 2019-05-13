@@ -130,6 +130,7 @@ private:
      SLICEMODE enum_slicemode;
      //temp FIXME
      int slicemode;
+     bool slicemodeChanged;
      
      enum slicePlayMode {
           ONE_SHOT_FWD ,

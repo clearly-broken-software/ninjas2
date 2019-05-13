@@ -57,7 +57,7 @@ NinjasPlugin::NinjasPlugin()
 
      // pitchbend
      pitchbend       = 8192 ;  // center
-     pitchbendDepth = 24 ; 
+     pitchbendDepth = 24 ;
      pitchbendStep  = 16384.0f / pitchbendDepth;
 
      //
@@ -702,7 +702,7 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
           return_Value = programGrid;
           break;
      case paramPitchbendDepth:
-       return_Value = pitchbendDepth;
+          return_Value = pitchbendDepth;
      }
      return return_Value;
 
@@ -757,7 +757,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      }
      case paramPitchbendDepth: {
           pitchbendDepth = value;
-	  pitchbendStep  = 16384.0f / pitchbendDepth;
+          pitchbendStep  = 16384.0f / pitchbendDepth;
           break;
      }
      default:
@@ -845,7 +845,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          sig_currentSlice = index;
 
 
-                         float transpose = ( pitchbend / pitchbendStep ) - (pitchbendDepth/2);
+                         float transpose = ( pitchbend / pitchbendStep ) - ( pitchbendDepth/2 );
                          voices[data1].multiplier=pow ( 2.0, transpose / 12.0 );
                          break;
 
@@ -936,7 +936,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          mixer.samples++;
 
                          // increase sample reading position
-                         float transpose = ( pitchbend/pitchbendStep ) - (pitchbendDepth/2);
+                         float transpose = ( pitchbend/pitchbendStep ) - ( pitchbendDepth/2 );
                          voices[i].multiplier=pow ( 2.0, transpose / 12.0 );
                          float multiplier = voices[i].multiplier;
 
@@ -1094,6 +1094,28 @@ void NinjasPlugin::createSlicesOnsets ()
           if ( i == Programs[programNumber].slices -1 ) {
                Programs[programNumber].a_slices[i].sliceEnd = end * sampleChannels ;
           }
+     }
+     // purge zero lenght slices
+     
+     int totalSlices = 0;
+     Slice temp[Programs[programNumber].slices];
+     for ( int i = 0; i < Programs[programNumber].slices; i++ ) {
+          int64_t start = Programs[programNumber].a_slices[i].sliceStart;
+          int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
+          int64_t length = end - start;
+    //      printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
+          if ( length > 0 ) {
+               temp[totalSlices]=Programs[programNumber].a_slices[i];
+               totalSlices++;
+          }
+     }
+     Programs[programNumber].slices = totalSlices;
+     for ( int i = 0 ; i < totalSlices; i++ ) {
+          Programs[programNumber].a_slices[i]=temp[i];
+          int64_t start = Programs[programNumber].a_slices[i].sliceStart;
+          int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
+          int64_t length = end - start;
+  //        printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
      }
 }
 
