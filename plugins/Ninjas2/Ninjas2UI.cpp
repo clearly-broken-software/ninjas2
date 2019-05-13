@@ -39,6 +39,7 @@ NinjasUI::NinjasUI()
      initSlices();
      programNumber = plugin->programNumber;
      sliceButton = 0;
+     slicemodeChanged = false;
 
      // sample
      sampleSize = 0;
@@ -545,7 +546,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      }
      case paramSliceMode: {
           if ( slicemethod != value )
+          {
              fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
+             slicemodeChanged=true;
+          }
           setParameterValue ( paramSliceMode, value );
           slicemethod = value;
           break;
@@ -619,6 +623,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                setState ( "sliceButton","true" );
                setState ( "paramSigLoadProgram", "true" ) ;
                setProgramGrid ( programNumber );
+               slicemodeChanged=false;
                //   getProgram ( programNumber );
 
           }
