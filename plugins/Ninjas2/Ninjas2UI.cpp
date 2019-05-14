@@ -1501,14 +1501,16 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
           waveView.zoom = 1.0f;
      float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
      uint length = int ( samples_per_pixel * float ( display_width ) );
-     waveView.start = uint ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
-//     if ( waveView.start < 0 )
-//         waveView.start = 0;
-     waveView.end = waveView.start+length;
+
+     // we use a signed in to be able to handle temporary negative starts.
+     int start = int ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
+
+     waveView.end = start + length;
      if ( waveView.end > waveform.size() ) {
           waveView.end = waveform.size();
-          waveView.start = waveView.end-length;
+          start = waveView.end - length;
      }
+     waveView.start = start < 0 ? 0 : start;
      // std::cout << "waveView.max_zoom = " << waveView.max_zoom << " waveView.zoom = "<< waveView.zoom << std::endl;
      // std::cout << "samples_per_pixel = " << samples_per_pixel << std::endl;
      // std::cout << "length = " << length << " center = " << center << std::endl;
