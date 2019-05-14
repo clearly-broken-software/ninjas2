@@ -59,6 +59,7 @@ NinjasUI::NinjasUI()
 
      // knobs
      const Size<uint> knobSize = Size<uint> ( 80, 80 );
+     const Size<uint> knobSizeSmall = Size<uint> ( 40, 40 );
      const Size<uint> spinboxSize = Size<uint> ( 40,80 );
      const Color ninjasColor = Color ( 222,205,135,255 );
 
@@ -71,6 +72,11 @@ NinjasUI::NinjasUI()
      fSpinBox->setStep ( 1.0f );
      fSpinBox->setCallback ( this );
 
+     fKnobSliceSensitivity = new VolumeKnob ( window, knobSizeSmall );
+     fKnobSliceSensitivity->setId ( paramSliceSensitivity );
+     fKnobSliceSensitivity->setRange ( 0.001f, 1.0f );
+     fKnobSliceSensitivity->setColor ( ninjasColor );
+     fKnobSliceSensitivity->setCallback ( this );
 
      fSliceButton = new TextButton ( window, Size<uint> ( 40,30 ) );
      fSliceButton->setId ( 100 ); // FIXME don't hardcode this
@@ -112,6 +118,9 @@ NinjasUI::NinjasUI()
 
      fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( window, Size<uint> ( 58, 42 ) );
      fLabelsBoxSliceModeSlider->setLabels ( {"RAW", "ONSETS"} );
+     fLabelsBoxSliceSensitivity = new GlowingLabelsBox ( window, Size<uint> ( 84, 21 ) );
+     fLabelsBoxSliceSensitivity->setLabels ( {"SENSITIVITY" } );
+
      fLabelsBoxLoadSample = new GlowingLabelsBox ( window, Size<uint> ( 90, 70 ) );
      fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
@@ -180,16 +189,18 @@ void NinjasUI::positionWidgets()
      //const float width = getWidth();
      //const float height = getHeight();
 
-     fSpinBox->setAbsolutePos ( 302, 450 );
-     fSliceButton->setAbsolutePos ( 302, 531 );
+     fSliceModeSlider->setAbsolutePos ( 217, 458 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 236, 453 );
+     fKnobSliceSensitivity->setAbsolutePos ( 237, 505 );
+     fLabelsBoxSliceSensitivity->setAbsolutePos ( 215, 543 );
+
+     fSpinBox->setAbsolutePos ( 307, 450 );
+     fSliceButton->setAbsolutePos ( 307, 532 );
 
      fKnobAttack->setAbsolutePos ( 791, 465 );
      fKnobDecay->setAbsolutePos ( 883, 465 );
      fKnobSustain->setAbsolutePos ( 975, 465 );
      fKnobRelease->setAbsolutePos ( 1067, 465 );
-
-     fSliceModeSlider->setAbsolutePos ( 215, 458 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 235, 453 );
 
      fSwitchFwd->setAbsolutePos ( 592, 449 );
      fSwitchRev->setAbsolutePos ( 654, 449 );
