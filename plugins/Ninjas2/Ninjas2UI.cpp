@@ -64,7 +64,7 @@ NinjasUI::NinjasUI()
 
      Window &window = getParentWindow();
 
-
+     // slice number selector
      fSpinBox = new SpinBox ( window, spinboxSize );
      fSpinBox->setId ( paramNumberOfSlices );
      fSpinBox->setRange ( 1.0f, 128.0f );
@@ -76,7 +76,7 @@ NinjasUI::NinjasUI()
      fSliceButton->setId ( 100 ); // FIXME don't hardcode this
      fSliceButton->setText ( "Slice" );
      fSliceButton->setFontSize ( 14.0f );
-     fSliceButton->setTextColor ( Color ( 255.0f,255.0f,255.0f,255.0f ) );
+     fSliceButton->setTextColor ( ninjasColor );
      fSliceButton->setMargin ( Margin ( 5,0,7,0 ) );
      fSliceButton->setCallback ( this );
 
@@ -180,16 +180,16 @@ void NinjasUI::positionWidgets()
      //const float width = getWidth();
      //const float height = getHeight();
 
-     fSpinBox->setAbsolutePos ( 222,486 );
-     fSliceButton->setAbsolutePos ( 222,451 );
+     fSpinBox->setAbsolutePos ( 302, 450 );
+     fSliceButton->setAbsolutePos ( 302, 531 );
 
      fKnobAttack->setAbsolutePos ( 791, 465 );
      fKnobDecay->setAbsolutePos ( 883, 465 );
      fKnobSustain->setAbsolutePos ( 975, 465 );
      fKnobRelease->setAbsolutePos ( 1067, 465 );
 
-     fSliceModeSlider->setAbsolutePos ( 275, 489 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 293, 484 );
+     fSliceModeSlider->setAbsolutePos ( 215, 458 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 235, 453 );
 
      fSwitchFwd->setAbsolutePos ( 592, 449 );
      fSwitchRev->setAbsolutePos ( 654, 449 );
@@ -697,7 +697,7 @@ void NinjasUI::onNanoDisplay()
      closePath();
 
      beginPath();
-     rect ( 252,431,60,18 ); // slices
+     rect ( 230,431,100,18 ); // slices
      fill();
      closePath();
 
@@ -738,7 +738,7 @@ void NinjasUI::onNanoDisplay()
      fillColor ( Color ( 255,221,85,255 ) );
      // const uint adsr_label_offset = 15;
      text ( 56,445,"sample",NULL );
-     text ( 253,445,"slices",NULL );
+     text ( 234,445,"slice tool",NULL );
      text ( 436,445,"states",NULL );
      text ( 589,444,"playmodes",NULL );
      text ( 795,455,"attack",NULL );
