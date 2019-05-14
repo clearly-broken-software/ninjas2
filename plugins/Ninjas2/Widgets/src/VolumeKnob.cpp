@@ -7,7 +7,7 @@ VolumeKnob::VolumeKnob(Window &parent, Size<uint> size) noexcept : NanoKnob(pare
 
 {
     const float radius = size.getHeight() / 2.0f;
-    const float gaugeWidth = 3.5f;
+    const float gaugeWidth = 1.5 + radius / 20;
     const float diameter = (radius - gaugeWidth) * 2.0f - 4;
 
     fKnobICol = Color(86, 92, 95, 255);
@@ -17,7 +17,7 @@ VolumeKnob::VolumeKnob(Window &parent, Size<uint> size) noexcept : NanoKnob(pare
 
     fKnobDiameter = diameter;
 
-    fGrowAnimation = new FloatTransition(0.100f, &fKnobDiameter, fKnobDiameter - 7);
+    fGrowAnimation = new FloatTransition(0.100f, &fKnobDiameter, fKnobDiameter * 0.9);
     fHoverAnimation = new ColorTransition(0.200f, &fKnobOCol, fKnobTargetOCol);
 
     parent.addIdleCallback(this);
@@ -27,7 +27,7 @@ VolumeKnob::VolumeKnob(NanoWidget *widget, Size<uint> size) noexcept : NanoKnob(
 
 {
     const float radius = size.getHeight() / 2.0f;
-    const float gaugeWidth = 3.5f;
+    const float gaugeWidth = 1.5 + radius / 20;
     const float diameter = (radius - gaugeWidth) * 2.0f - 4;
 
     fKnobICol = Color(86, 92, 95, 255);
@@ -37,7 +37,7 @@ VolumeKnob::VolumeKnob(NanoWidget *widget, Size<uint> size) noexcept : NanoKnob(
 
     fKnobDiameter = diameter;
 
-    fGrowAnimation = new FloatTransition(0.100f, &fKnobDiameter, fKnobDiameter - 7);
+    fGrowAnimation = new FloatTransition(0.100f, &fKnobDiameter, fKnobDiameter * 0.9);
     fHoverAnimation = new ColorTransition(0.200f, &fKnobOCol, fKnobTargetOCol);
 
     widget->getParentWindow().addIdleCallback(this);
@@ -112,11 +112,11 @@ void VolumeKnob::draw()
 
     const float radius = height / 2.0f;
 
-    const float indicatorLineHeight = fKnobDiameter / 2.0f - 8;
-    const float indicatorLineWidth = 3.0f;
+    const float indicatorLineHeight = fKnobDiameter / 2.0f * 0.95;
+    const float indicatorLineWidth = 0.5 + radius / 20;
     const float indicatorLineMarginTop = 4.0f;
 
-    const float gaugeWidth = 3.5f;
+    const float gaugeWidth = 1.5 + radius / 20;
     Color gaugeColor = Color(0, 0, 40, 255);
     gaugeColor.interpolate(color, 0.4f);
 
