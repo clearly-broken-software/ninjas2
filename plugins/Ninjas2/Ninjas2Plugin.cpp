@@ -69,6 +69,7 @@ NinjasPlugin::NinjasPlugin()
      //slices       = 1;
      //currentSlice = 0;
      slicemode    = 0;
+     sliceSensitivity = 0.5;
 
      samplerate = getSampleRate();
      sampleChannels = 1;
@@ -226,6 +227,15 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.name   = "Slice Mode";
           parameter.symbol  = "slicemode";
           parameter.midiCC = 111;
+          break;
+     }
+     case paramSliceSensitivity: {
+          parameter.hints = kParameterIsInteger;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 1.0f;
+          parameter.name = "Slice Onset Detection Sensitivity";
+          parameter.symbol = "sliceSensitivity";
           break;
      }
 
@@ -475,6 +485,10 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           return;
      }
 
+     if (strcmp(key, "sliceSensitivity") == 0) {
+         getOnsets();
+     }
+
      if ( strcmp ( key, "sliceButton" ) == 0 ) {
           if ( strcmp ( value, "true" ) == 0 ) {
                printf ( "NinjasPlugin::setState(%s,%s)\n",key, value );
@@ -698,6 +712,9 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
      case paramSliceMode:
           return_Value = slicemode;
           break;
+     case paramSliceSensitivity:
+          return_Value = sliceSensitivity;
+          break;
      case paramProgramGrid:
           return_Value = programGrid;
           break;
@@ -739,6 +756,9 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           break;
      case paramSliceMode:
           slicemode = ( int ) value;
+          break;
+     case paramSliceSensitivity:
+          sliceSensitivity = value;
           break;
      case paramProgramGrid:
           programGrid = value;
@@ -1040,6 +1060,7 @@ void NinjasPlugin::getOnsets ()
      std::vector<float> tmp_sample_vector;
      //   tmp_sample_vector.resize ( sampleSize *sampleChannels);
 
+     printf("ONSETS PLUGIN");
      int hop_size = 256;
      int win_s = 512;
      fvec_t ftable;               // 1. create fvec without allocating it
@@ -1058,7 +1079,8 @@ void NinjasPlugin::getOnsets ()
      }
 
      // create onset object
-     aubio_onset_t  * onset = new_aubio_onset ( "complex", win_s, hop_size, samplerate );
+     aubio_onset_t  * onset = new_aubio_onset ( "specdiff", win_s, hop_size, samplerate );
+     aubio_onset_set_threshold ( onset, 1 - sliceSensitivity ) ;
      while ( readptr < tmp_sample_vector.size() ) {
           ftable.data = &tmp_sample_vector[readptr];
           aubio_onset_do ( onset , &ftable, out );

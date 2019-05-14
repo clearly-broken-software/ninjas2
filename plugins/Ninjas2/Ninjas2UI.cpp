@@ -301,6 +301,9 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      case paramSliceMode:
           fSliceModeSlider->setDown ( value > 0.5f );
           break;
+     case paramSliceSensitivity:
+          fKnobSliceSensitivity->setValue ( value );
+          break;
      case paramProgramGrid:
        //   printf ( "UI paramProgramGrid %f\n",value );
           programGrid = value;
@@ -425,6 +428,13 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
           if ( oldValue != value )
                setProgramGrid ( programNumber );
           p_Release[currentSlice]=value;
+          break;
+     }
+     case paramSliceSensitivity: {
+          setParameterValue ( KnobID,value );
+          if (sample_is_loaded) {
+              getOnsets(sampleSize, sampleChannels, sampleVector, onsets );
+          }
           break;
      }
      default:
@@ -1260,6 +1270,7 @@ void NinjasUI::recallSliceSettings ( int slice )
      fKnobDecay->setValue ( p_Decay[slice] );
      fKnobSustain->setValue ( p_Sustain[slice] );
      fKnobRelease->setValue ( p_Release[slice] );
+
      fSwitchFwd->setDown ( p_playMode[slice] == ONE_SHOT_FWD );
      fSwitchRev->setDown ( p_playMode[slice] == ONE_SHOT_REV );
      fSwitchLoopFwd->setDown ( p_playMode[slice] == LOOP_FWD );
