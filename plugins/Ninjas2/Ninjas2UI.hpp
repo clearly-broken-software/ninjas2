@@ -90,7 +90,6 @@ private:
      const NinjasPlugin * plugin;
      void loadSample (bool fromUser );
      std::vector<short int> waveform;
-     void getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets );
      void createSlicesRaw ();
      void createSlicesOnsets ();
      int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );

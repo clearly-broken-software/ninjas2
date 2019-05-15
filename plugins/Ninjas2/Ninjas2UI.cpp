@@ -1214,47 +1214,6 @@ void NinjasUI::recallSliceSettings ( int slice )
      fSwitchLoopRev->setDown ( p_playMode[slice] == LOOP_REV );
 }
 
-void NinjasUI::getOnsets ( int64_t size, int channels, std::vector<float> & sampleVector, std::vector<uint_t> & onsets )
-{
-     // temp sample vector
-     std::vector<float> tmp_sample_vector;
-     onsets.resize ( 0 ); // wipe onsets
-     uint_t samplerate = getSampleRate();
-     int hop_size = 256;
-     int win_s = 512;
-
-     fvec_t ftable;               // 1. create fvec without allocating it
-     uintptr_t readptr = 0;
-     ftable.length = hop_size;    // 2. set ftable length
-     fvec_t * out = new_fvec ( 2 ); // output position
-
-     if ( channels == 2 ) { // create mono sample
-          for ( int i=0, j=0 ; i <= size; i++ ) {
-               // sum to mono
-               float sum_mono = ( sampleVector[j] + sampleVector[j+1] ) * 0.5f;
-               tmp_sample_vector.push_back ( sum_mono );
-               j+=2;
-          }
-     } else {
-          tmp_sample_vector = sampleVector;
-     }
-
-     // create onset object/
-     aubio_onset_t  * onset = new_aubio_onset ( "complex", win_s, hop_size, samplerate );
-     while ( readptr < tmp_sample_vector.size() ) {
-          ftable.data = &tmp_sample_vector[readptr];
-          aubio_onset_do ( onset , &ftable, out );
-          if ( out->data[0] != 0 ) {
-               onsets.push_back ( aubio_onset_get_last ( onset ) );
-          }
-          readptr += hop_size;
-     }
-     del_aubio_onset ( onset );
-     // del_fvec ( &ftable );
-     // del_fvec ( out );
-     aubio_cleanup();
-}
-
 void NinjasUI::createSlicesRaw ()
 {
      long double sliceSize = ( long double ) ( sampleSize ) / ( long double ) slices;
