@@ -433,7 +433,7 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
      case paramSliceSensitivity: {
           setParameterValue ( KnobID,value );
           if (sample_is_loaded) {
-              getOnsets(sampleSize, sampleChannels, sampleVector, onsets );
+              plugin->getOnsets();
           }
           break;
      }
