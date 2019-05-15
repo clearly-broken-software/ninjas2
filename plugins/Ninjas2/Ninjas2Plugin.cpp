@@ -733,7 +733,7 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
-     printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
+  //   printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
      int voice = ( Programs[programNumber].currentSlice + 60 ) % 128;
 
      switch ( index ) {
@@ -759,6 +759,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           break;
      case paramSliceSensitivity:
           sliceSensitivity = value;
+	  getOnsets();
           break;
      case paramProgramGrid:
           programGrid = value;
@@ -1060,7 +1061,7 @@ void NinjasPlugin::getOnsets ()
      std::vector<float> tmp_sample_vector;
      //   tmp_sample_vector.resize ( sampleSize *sampleChannels);
 
-     printf("ONSETS PLUGIN");
+  //   printf("ONSETS PLUGIN");
      int hop_size = 256;
      int win_s = 512;
      fvec_t ftable;               // 1. create fvec without allocating it
@@ -1081,6 +1082,7 @@ void NinjasPlugin::getOnsets ()
      // create onset object
      aubio_onset_t  * onset = new_aubio_onset ( "specdiff", win_s, hop_size, samplerate );
      aubio_onset_set_threshold ( onset, 1 - sliceSensitivity ) ;
+     onsets.clear();
      while ( readptr < tmp_sample_vector.size() ) {
           ftable.data = &tmp_sample_vector[readptr];
           aubio_onset_do ( onset , &ftable, out );
@@ -1089,6 +1091,7 @@ void NinjasPlugin::getOnsets ()
           }
           readptr += hop_size;
      }
+     printf("onsets # = %i\n",onsets.size());
      del_aubio_onset ( onset );
      // TODO .. del_fvec stuff ?
      // del_fvec ( &ftable );

@@ -110,6 +110,7 @@ private:
      void setProgramGrid ( int program );
      void ProgramGrid( int grid);
      void getProgram( int program);
+     void getOnsets();
 
      float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
      

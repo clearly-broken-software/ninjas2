@@ -267,7 +267,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSpinBox->setValue ( value );
           break;
           // Play Modes
-     case paramPlayMode:{
+     case paramPlayMode: {
           int v = value;
           fSwitchFwd->setDown ( v == 0 );
           fSwitchRev->setDown ( v == 1 );
@@ -275,7 +275,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSwitchLoopRev->setDown ( v == 3 );
           break;
      }
-    case paramAttack:
+     case paramAttack:
           fKnobAttack->setValue ( value );
           p_Attack[currentSlice] = value;
           break;
@@ -305,7 +305,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fKnobSliceSensitivity->setValue ( value );
           break;
      case paramProgramGrid:
-       //   printf ( "UI paramProgramGrid %f\n",value );
+          //   printf ( "UI paramProgramGrid %f\n",value );
           programGrid = value;
           ProgramGrid ( value );
           break;
@@ -326,7 +326,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      }
      case paramSigLoadProgram: {
           if ( ( int ) value != sig_LoadProgram ) {
-          //     printf ( "NinjasUI::parameterChanged(%i, %i)\n",index, ( int ) value );
+               //     printf ( "NinjasUI::parameterChanged(%i, %i)\n",index, ( int ) value );
                sig_LoadProgram = ( int ) value;
                if ( value > 0.5f ) {
                     getProgram ( programNumber );
@@ -337,12 +337,12 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      }
 
      case paramCurrentSlice: {
-          if ( ( int ) value != -1  && !mouseEditSlice) {
+          if ( ( int ) value != -1  && !mouseEditSlice ) {
                currentSlice = std::min ( ( int ) value,slices-1 );
-	       printf ( "paramCurrentSlice: %i\n", currentSlice );
-	       
+               printf ( "paramCurrentSlice: %i\n", currentSlice );
+
                setState ( "sig_CurrentSlice", "-1" );
-	       recallSliceSettings( currentSlice);
+               recallSliceSettings ( currentSlice );
                repaint();
           }
           break;
@@ -353,7 +353,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 
 void NinjasUI::stateChanged ( const char* key, const char* value )
 {
-    // printf ( "stateChanged ( %s )\n", key );
+     // printf ( "stateChanged ( %s )\n", key );
      if ( std::strcmp ( value, "empty" ) == 0 ) {
           //      printf ( "state value is empty, returning\n" );
           return;
@@ -432,9 +432,8 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
      }
      case paramSliceSensitivity: {
           setParameterValue ( KnobID,value );
-          if (sample_is_loaded) {
-              plugin->getOnsets();
-          }
+          getOnsets();
+          //repaint();
           break;
      }
      default:
@@ -477,15 +476,15 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      bool oldValue;
      const bool value = nanoSwitch->isDown() ? true : false;
      const uint buttonId = nanoSwitch->getId();
-  /*   printf("nanoSwitchClicked( %i )\n",buttonId);
-     printf("value %i\n",value);
- */   // printf("paramCount %i\n", paramCount);
+     /*   printf("nanoSwitchClicked( %i )\n",buttonId);
+        printf("value %i\n",value);
+     */   // printf("paramCount %i\n", paramCount);
 
      // check if parameter is changed
      switch ( buttonId ) {
      case 200: {
           oldValue = p_playMode[currentSlice]==ONE_SHOT_FWD;
-	  
+
           if ( oldValue != value ) {
                setProgramGrid ( programNumber );
           }
@@ -538,20 +537,20 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
           editParameter ( paramPlayMode, false );
-	  
+
           break;
      }
      case 202: {
           p_playMode[currentSlice] = LOOP_FWD;
           editParameter ( paramPlayMode, true );
           setParameterValue ( paramPlayMode, LOOP_FWD );
-	  
-	  fSwitchFwd->setDown ( false );
+
+          fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( true );
           fSwitchLoopRev->setDown ( false );
           editParameter ( paramPlayMode, false );
-	  printf("playmode %i\n",LOOP_FWD );
+          printf ( "playmode %i\n",LOOP_FWD );
           break;
      }
      case 203: {
@@ -566,10 +565,9 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      case paramSliceMode: {
-          if ( slicemethod != value )
-          {
-             fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
-             slicemodeChanged=true;
+          if ( slicemethod != value ) {
+               fLabelsBoxSliceModeSlider->setSelectedIndex ( ( int ) value );
+               slicemodeChanged=true;
           }
           setParameterValue ( paramSliceMode, value );
           slicemethod = value;
@@ -635,7 +633,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      switch ( NanoButtonID ) {
      case 100: { //FIXME EVIL MAGIC NUMBER
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
-          if ( slices != tempSlices || slicemodeChanged) {
+          if ( slices != tempSlices || slicemodeChanged ) {
                slices = tempSlices;
                fSpinBox->setDigitsColor ( false ); // set digits to black
                editParameter ( paramNumberOfSlices,true );
@@ -988,18 +986,18 @@ void NinjasUI::drawPlayheads()
 
                int sample_pos = plugin->voices[i].playbackIndex;
                float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
-               int pixel_pos = (slice_start + float(sample_pos) / sampleChannels
-                                            - float(waveView.start))
-                                   / samples_per_pixel;
+               int pixel_pos = ( slice_start + float ( sample_pos ) / sampleChannels
+                                 - float ( waveView.start ) )
+                               / samples_per_pixel;
 
-               if (pixel_pos < 0 || pixel_pos + display_left > display_right) {
+               if ( pixel_pos < 0 || pixel_pos + display_left > display_right ) {
                     continue;
                }
 
-               int gain = std::min(int(255 * plugin->voices[i].adsr.adsr_gain), 255);
+               int gain = std::min ( int ( 255 * plugin->voices[i].adsr.adsr_gain ), 255 );
 
                beginPath();
-               strokeColor (255, 255, 255, gain);
+               strokeColor ( 255, 255, 255, gain );
                moveTo ( pixel_pos + display_left , display_top );
                lineTo ( pixel_pos + display_left , display_bottom );
                stroke();
@@ -1031,7 +1029,7 @@ void NinjasUI::drawCurrentSlice()
 
           // highlight selected slice
           if ( firstSlice == currentSlice && slices > 1 ) {
-            //   printf ( "NinjasUI::drawCurrentSlice() %i : %i, %i\n",a_slices[firstSlice].sliceStart,a_slices[firstSlice].sliceEnd );
+               //   printf ( "NinjasUI::drawCurrentSlice() %i : %i, %i\n",a_slices[firstSlice].sliceStart,a_slices[firstSlice].sliceEnd );
                beginPath();
 
                fillPaint ( linearGradient (
@@ -1198,6 +1196,12 @@ void NinjasUI::loadSample ( bool fromUser )
      return;
 
 }
+
+void NinjasUI::getOnsets()
+{
+     onsets = plugin->onsets;
+}
+
 
 void NinjasUI::getVisibleSlices ( int &firstSlice, int &lastSlice )
 {
@@ -1412,44 +1416,43 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
      float samples_per_pixel;
 
      // We either zoom in/out, or ...
-     if (zoom_delta != 0.0) {
-         // old zoom factor
-         uint center = int(pow(waveView.max_zoom, waveView.zoom) * (float(x)) + float(waveView.start));
+     if ( zoom_delta != 0.0 ) {
+          // old zoom factor
+          uint center = int ( pow ( waveView.max_zoom, waveView.zoom ) * ( float ( x ) ) + float ( waveView.start ) );
 
-         waveView.zoom += zoom_delta;
-         if (waveView.zoom < 0.0f)
-              waveView.zoom = 0.0f;
-         if (waveView.zoom > 1.0f)
-              waveView.zoom = 1.0f;
-         samples_per_pixel =  pow(waveView.max_zoom, waveView.zoom);
+          waveView.zoom += zoom_delta;
+          if ( waveView.zoom < 0.0f )
+               waveView.zoom = 0.0f;
+          if ( waveView.zoom > 1.0f )
+               waveView.zoom = 1.0f;
+          samples_per_pixel =  pow ( waveView.max_zoom, waveView.zoom );
 
-         start = int (float (center)  - (float (x)  *  samples_per_pixel));
+          start = int ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
      }
 
      // ... we scroll left or right.
-     else if (scroll_delta != 0.0) {
-         if ((scroll_delta < 0 && waveView.start == 0) ||
-             (scroll_delta > 0 && waveView.end == waveform.size())) {
-             // can't scroll any further
-             return false;
-         }
+     else if ( scroll_delta != 0.0 ) {
+          if ( ( scroll_delta < 0 && waveView.start == 0 ) ||
+                    ( scroll_delta > 0 && waveView.end == waveform.size() ) ) {
+               // can't scroll any further
+               return false;
+          }
 
-         samples_per_pixel =  pow(waveView.max_zoom, waveView.zoom);
+          samples_per_pixel =  pow ( waveView.max_zoom, waveView.zoom );
 
-         float scroll_distance = 20 * scroll_delta * samples_per_pixel;
+          float scroll_distance = 20 * scroll_delta * samples_per_pixel;
 
-         start = waveView.start + scroll_distance;
-     }
-     else {
-         // this probably shouldn't happen.
-         return false;
+          start = waveView.start + scroll_distance;
+     } else {
+          // this probably shouldn't happen.
+          return false;
      }
 
      // and ensure we stay in view.
-     uint length = int(samples_per_pixel * float(display_width));
+     uint length = int ( samples_per_pixel * float ( display_width ) );
 
      waveView.end = start + length;
-     if (waveView.end > waveform.size()) {
+     if ( waveView.end > waveform.size() ) {
           waveView.end = waveform.size();
           start = waveView.end - length;
      }
@@ -1520,7 +1523,7 @@ void NinjasUI::selectSlice()
           if ( a_slices[i].bothHitBox.contains ( mouseX + display_left, mouseY + display_top ) ) {
                currentEditSlice = a_slices[i];
                currentSlice = i;
-	       mouseEditSlice = true;
+               mouseEditSlice = true;
                editSliceStartEnd = both;
                repaint();
                return;
@@ -1658,7 +1661,7 @@ void NinjasUI::setProgramGrid ( int program )
      // check if bit 2^program is flipped already
      // if not set bit to 1
      //
- //    printf ( "setProgramGrid(%i) programGrid = %i\n",program,programGrid );
+//    printf ( "setProgramGrid(%i) programGrid = %i\n",program,programGrid );
      if ( program < 16 ) {
           programGrid |= 1UL << program;
           ProgramGrid ( programGrid );
@@ -1685,7 +1688,7 @@ void NinjasUI::getProgram ( int program )
 {
      currentSlice = plugin->Programs[program].currentSlice;
      slices = plugin->Programs[program].slices;
-   //  printf ( "NinjasUI::getProgram( %i ) , slices %i \n" , program, slices );
+     //  printf ( "NinjasUI::getProgram( %i ) , slices %i \n" , program, slices );
 
      for ( int i=0, voice = 0; i < 128 ; i++ ) {
           voice = ( i+60 ) % 128;
@@ -1699,7 +1702,7 @@ void NinjasUI::getProgram ( int program )
           p_Decay[i]=plugin->Programs[program].Decay[voice];
           p_Sustain[i]=plugin->Programs[program].Sustain[voice];
           p_Release[i]=plugin->Programs[program].Release[voice];
-        }
+     }
      fSpinBox->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
