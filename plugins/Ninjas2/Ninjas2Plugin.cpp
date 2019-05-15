@@ -40,7 +40,7 @@ START_NAMESPACE_DISTRHO
 
 // constructor
 NinjasPlugin::NinjasPlugin()
-     : Plugin ( paramCount, 0, 25 ) // parameters, programs (presets) , states
+     : Plugin ( paramCount, 0, 26 ) // parameters, programs (presets) , states
 {
      // init parameters
 
@@ -57,8 +57,8 @@ NinjasPlugin::NinjasPlugin()
 
      // pitchbend
      pitchbend       = 8192 ;  // center
-     pitchbend_range = 24 ; // TODO should be user configurable
-     pitchbend_step  = ( float ) 16384 / ( float ) pitchbend_range;
+     pitchbendDepth = 24 ;
+     pitchbendStep  = 16384.0f / pitchbendDepth;
 
      //
      gain = 1.0f;
@@ -84,8 +84,8 @@ NinjasPlugin::NinjasPlugin()
      programGrid=0;
      sig_SampleLoaded = false;
      sig_LoadProgram = false;
+     sig_currentSlice = -1;
      initPrograms();
-
      //for debugging , autoload sample
      //  filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
      //   loadSample ( filepath );
@@ -126,6 +126,16 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.max = 1.0f;
           parameter.name = "sigLoadProgram";
           parameter.symbol = "sigLoadProgram";
+          break;
+     }
+
+     case paramCurrentSlice: {
+          parameter.hints = kParameterIsOutput|kParameterIsInteger;
+          parameter.ranges.def = -1.0f;
+          parameter.ranges.min = -1.0f;
+          parameter.ranges.max = 127.0f;
+          parameter.name   = "Current Slice (output)";
+          parameter.symbol  = "currentSlice";
           break;
      }
 
@@ -180,46 +190,25 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.midiCC = 106;
           break;
      }
-     case paramOneShotFwd: {
-          parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-          parameter.ranges.def = 1.0f;
-          parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 1.0f;
-          parameter.name   = "One Shot Forward";
-          parameter.symbol  = "one_shot_fwd";
-          parameter.midiCC = 107;
-          break;
-     }
-     case paramOneShotRev: {
-          parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
+     case paramPlayMode: {
+          parameter.hints = kParameterIsAutomable|kParameterIsInteger;
           parameter.ranges.def = 0.0f;
           parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 1.0f;
-          parameter.name   = "One Shot Reverse";
-          parameter.symbol  = "one_shot_rev";
-          parameter.midiCC = 108;
+          parameter.ranges.max = 3.0f;
+          parameter.enumValues.count = 4;
+          parameter.enumValues.restrictedMode = true;
+          parameter.enumValues.values = new ParameterEnumerationValue[4] {
+               ParameterEnumerationValue ( 0.0f,"One Shot Forward" ),
+               ParameterEnumerationValue ( 1.0f,"One Shot Reverse" ),
+               ParameterEnumerationValue ( 2.0f,"Loop Forward" ),
+               ParameterEnumerationValue ( 3.0f,"Loop Reverse" )
+          };
+
+          parameter.name = "Play Mode";
+          parameter.symbol = "playmode";
           break;
      }
-     case paramLoopFwd: {
-          parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-          parameter.ranges.def = 0.0f;
-          parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 1.0f;
-          parameter.name   = "Looped Play Forward";
-          parameter.symbol  = "loop_fwd";
-          parameter.midiCC = 109;
-          break;
-     }
-     case paramLoopRev: {
-          parameter.hints      = kParameterIsAutomable|kParameterIsBoolean ;
-          parameter.ranges.def = 0.0f;
-          parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 1.0f;
-          parameter.name   = "Looped Play Reverse";
-          parameter.symbol  = "loop_rev";
-          parameter.midiCC = 110;
-          break;
-     }
+
      case paramLoadSample: {
           parameter.hints = kParameterIsAutomable|kParameterIsBoolean;
           parameter.ranges.def = 0.0f;
@@ -247,6 +236,15 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.ranges.max = 65535.0f; // 16 bits
           parameter.name = "Program Grid";
           parameter.symbol = "programGrid";
+          break;
+     }
+     case paramPitchbendDepth: {
+          parameter.hints = kParameterIsAutomable|kParameterIsInteger;
+          parameter.ranges.def = 24.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 24.0f;
+          parameter.name = "Pitchbend Depth";
+          parameter.symbol = "pitchbendDepth";
           break;
      }
      default: {
@@ -386,6 +384,10 @@ void NinjasPlugin::initState ( uint32_t index, String& stateKey, String& default
           defaultStateValue = "empty";
           break;
      }
+     case 25: {
+          stateKey = "sig_CurrentSlice";
+          defaultStateValue = "-1";
+     }
 //
      } // switch
 } // initState
@@ -457,9 +459,9 @@ String NinjasPlugin::getState ( const char* key ) const
      if ( std::strcmp ( key, "program15" ) == 0 ) {
           return String ( serializeProgram ( 15 ).c_str() );
      }
-     
+
      if ( std::strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
-       return String (!bypass); // if not bypassed sample is loaded. UI should reload sample when state restored
+          return String ( !bypass ); // if not bypassed sample is loaded. UI should reload sample when state restored
      }
      return String ( "empty" );
 }
@@ -467,7 +469,7 @@ String NinjasPlugin::getState ( const char* key ) const
 
 void NinjasPlugin::setState ( const char* key, const char* value )
 {
-     //   printf ( "setState ( %s )\n",key);
+     printf ( "setState ( %s )\n",key );
      if ( strcmp ( value, "empty" ) == 0 ) {
           //       printf ( "state is empty, returning\n" );
           return;
@@ -475,8 +477,8 @@ void NinjasPlugin::setState ( const char* key, const char* value )
 
      if ( strcmp ( key, "sliceButton" ) == 0 ) {
           if ( strcmp ( value, "true" ) == 0 ) {
-	    printf ("NinjasPlugin::setState(%s,%s)\n",key, value);
-	    printf ("program = %i, slices = %i\n",programNumber,Programs[programNumber].slices);
+               printf ( "NinjasPlugin::setState(%s,%s)\n",key, value );
+               printf ( "program = %i, slices = %i\n",programNumber,Programs[programNumber].slices );
                switch ( slicemode ) {
                case 0:
                     createSlicesRaw();
@@ -624,7 +626,9 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      }
 
      if ( strcmp ( key, "currentSlice" ) == 0 ) {
+
           Programs[programNumber].currentSlice = std::stoi ( value );
+          printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
      }
 
      if ( strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
@@ -634,6 +638,11 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      if ( strcmp ( key, "sig_LoadProgram" ) == 0 ) {
           sig_LoadProgram = false;
      }
+
+     if ( strcmp ( key, "sig_CurrentSlice" ) == 0 ) {
+          sig_currentSlice = -1;
+     }
+
 }
 /* --------------------------------------------------------------------------------------------------------
 * Internal data
@@ -665,6 +674,12 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
           return_Value = ( float ) sig_LoadProgram;
           break;
      }
+
+     case paramCurrentSlice: {
+          return_Value = sig_currentSlice;
+          break;
+     }
+
      case paramNumberOfSlices:
           return_Value = ( float ) Programs[programNumber].slices;
           break;
@@ -680,36 +695,14 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
      case paramRelease:
           return_Value = Programs[programNumber].Release[voice];
           break;
-     case paramOneShotFwd: // one shot forward
-          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == ONE_SHOT_FWD )
-               return_Value = 1.0f;
-          else
-               return_Value = 0.0f;
-          break;
-     case paramOneShotRev: // one shot Reverse
-          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == ONE_SHOT_REV )
-               return_Value = 1.0f;
-          else
-               return_Value = 0.0f;
-          break;
-     case paramLoopFwd: // Loop Fwd
-          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == LOOP_FWD )
-               return_Value = 1.0f;
-          else
-               return_Value = 0.0f;
-          break;
-     case paramLoopRev: // Loop Rev
-          if ( Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode == LOOP_REV )
-               return_Value = 1.0f;
-          else
-               return_Value = 0.0f;
-          break;
      case paramSliceMode:
           return_Value = slicemode;
           break;
      case paramProgramGrid:
           return_Value = programGrid;
           break;
+     case paramPitchbendDepth:
+          return_Value = pitchbendDepth;
      }
      return return_Value;
 
@@ -742,42 +735,6 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      case paramRelease:
           Programs[programNumber].Release[voice] = value;
           break;
-     case paramOneShotFwd: // one shot forward
-          if ( value == 1 ) {
-               Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode =  ONE_SHOT_FWD;
-               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 1;
-               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 0;
-          }
-          break;
-     case paramOneShotRev: // one shot Reverse
-          if ( value == 1 ) {
-               Programs[programNumber].a_slices[ Programs[programNumber].currentSlice].playmode = ONE_SHOT_REV;
-               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 1;
-               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 0;
-          }
-          break;
-     case paramLoopFwd: // Loop Fwd
-          if ( value == 1 ) {
-               Programs[programNumber].a_slices[ Programs[programNumber].currentSlice].playmode = LOOP_FWD;
-               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 1;
-               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 0;
-          }
-          break;
-     case paramLoopRev: // Loop Rev
-          if ( value == 1 ) {
-               Programs[programNumber].a_slices[ Programs[programNumber].currentSlice].playmode = LOOP_REV;
-               Programs[programNumber].OneShotFwd[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].OneShotRev[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].LoopFwd[Programs[programNumber].currentSlice] = 0;
-               Programs[programNumber].LoopRev[Programs[programNumber].currentSlice] = 1;
-          }
-          break;
      case paramLoadSample:
           break;
      case paramSliceMode:
@@ -789,6 +746,18 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      case paramProgramNumber: {
           printf ( "setParameterValue ProgramNumber %f // programNumber =%f\n",value,programNumber );
           programNumber = value;
+          break;
+     }
+     case paramPlayMode: {
+          printf ( "NinjasPlugin::setParameterValue(%i,%f)\n",index,value );
+
+          Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = static_cast<slicePlayMode> ( value );
+          printf ( "NinjasPlugin::setParameterValue %i \n", Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode );
+          break;
+     }
+     case paramPitchbendDepth: {
+          pitchbendDepth = value;
+          pitchbendStep  = 16384.0f / pitchbendDepth;
           break;
      }
      default:
@@ -872,7 +841,11 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                               voices[data1].multiplierIndex = 0;
                          }
 
-                         float transpose = ( pitchbend/pitchbend_step ) -12;
+                         // set sig_currentSlice
+                         sig_currentSlice = index;
+
+
+                         float transpose = ( pitchbend / pitchbendStep ) - ( pitchbendDepth/2 );
                          voices[data1].multiplier=pow ( 2.0, transpose / 12.0 );
                          break;
 
@@ -882,11 +855,11 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          pitchbend = ( data2 * 128 ) + data1;
                          break;
                     }
-                    
-		    case 0xc0: { // program change
-		      programNumber = data1 % 16;
-		      break;
-		    }
+
+                    case 0xc0: { // program change
+                         programNumber = data1 % 16;
+                         break;
+                    }
 
                     } // switch
 
@@ -963,7 +936,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          mixer.samples++;
 
                          // increase sample reading position
-                         float transpose = ( pitchbend/pitchbend_step ) -12;
+                         float transpose = ( pitchbend/pitchbendStep ) - ( pitchbendDepth/2 );
                          voices[i].multiplier=pow ( 2.0, transpose / 12.0 );
                          float multiplier = voices[i].multiplier;
 
@@ -1121,6 +1094,28 @@ void NinjasPlugin::createSlicesOnsets ()
           if ( i == Programs[programNumber].slices -1 ) {
                Programs[programNumber].a_slices[i].sliceEnd = end * sampleChannels ;
           }
+     }
+     // purge zero lenght slices
+     
+     int totalSlices = 0;
+     Slice temp[Programs[programNumber].slices];
+     for ( int i = 0; i < Programs[programNumber].slices; i++ ) {
+          int64_t start = Programs[programNumber].a_slices[i].sliceStart;
+          int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
+          int64_t length = end - start;
+    //      printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
+          if ( length > 0 ) {
+               temp[totalSlices]=Programs[programNumber].a_slices[i];
+               totalSlices++;
+          }
+     }
+     Programs[programNumber].slices = totalSlices;
+     for ( int i = 0 ; i < totalSlices; i++ ) {
+          Programs[programNumber].a_slices[i]=temp[i];
+          int64_t start = Programs[programNumber].a_slices[i].sliceStart;
+          int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
+          int64_t length = end - start;
+  //        printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
      }
 }
 

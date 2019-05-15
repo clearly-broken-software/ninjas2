@@ -116,6 +116,7 @@ private:
   bool sliceButton;
   bool sig_SampleLoaded; // set to true when sample loaded, UI loads (new) sample -> use state to flip to false
   bool sig_LoadProgram;
+  
 
   
 
@@ -201,7 +202,7 @@ private:
   
   //Slice a_slices[128];
   //int slices; // number of slices
-  //int currentSlice;
+  int sig_currentSlice;
   
   // empty sample object
   std::vector<float> sampleVector; // this holds the sample data
@@ -209,8 +210,8 @@ private:
   sf_count_t sampleSize; // in frames !!
 
   int pitchbend;
-  int pitchbend_range;
-  float pitchbend_step;
+  float pitchbendDepth;
+  float pitchbendStep;
   float gain;
   std::string filepath; // = "";
   bool bypass; // {true};
