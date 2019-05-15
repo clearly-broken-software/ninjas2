@@ -802,7 +802,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          break;
                     }
 
-                    case 0x90 : {
+                    case 0x90 : { // note on
                          //c4 is 60
                          int index = ( data1 + 68 ) % 128;
                          if ( index < 0 || index > Programs[programNumber].slices -1 ) {
@@ -810,6 +810,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          }
                          // new note .. let's activate
                          voices[data1].active = true;
+                         voices[data1].notenumber = index;
                          voices[data1].velocity = data2;
                          voices[data1].gain = ( float ) data2 / 127.0f;
 

@@ -649,8 +649,7 @@ void NinjasUI::onNanoDisplay()
 
      closePath();
 
-     // waveform display back
-
+     // waveform display background
      beginPath();
      fillPaint (
           linearGradient
@@ -667,6 +666,7 @@ void NinjasUI::onNanoDisplay()
      closePath();
 
 
+     // parameter boxes
      beginPath();
      strokeWidth ( 2.0f );
      strokeColor ( Color ( 255,221,85,255 ) );
@@ -684,7 +684,6 @@ void NinjasUI::onNanoDisplay()
 
      // adsr box
      roundedRect ( 768 ,450 , 400, 110,  4 );
-
 
      stroke();
      closePath();
@@ -732,6 +731,7 @@ void NinjasUI::onNanoDisplay()
      fill();
      closePath();
 
+     // Settings labels
      beginPath();
      fontFaceId ( fNanoFont );
      fontSize ( 22 );
@@ -763,6 +763,7 @@ void NinjasUI::onNanoDisplay()
 
           drawOnsets();
           drawRuler();
+          drawPlayheads();
      }
      // ninjas_logo
      const float logo_offset_x = display_left;
@@ -792,6 +793,13 @@ void NinjasUI::onNanoDisplay()
      fill();
      closePath();
 }
+
+
+void NinjasUI::idleCallback()
+{
+     repaint();
+}
+
 
 void NinjasUI::drawWaveform()
 {
@@ -947,6 +955,39 @@ void NinjasUI::drawRuler()
      stroke();
      closePath();
 }
+
+
+void NinjasUI::drawPlayheads()
+{
+     // loop through active voices
+     for ( int i = 0 ; i < 128 ; i++ ) {
+          if ( plugin->voices[i].active ) {
+               int slice_num = plugin->voices[i].notenumber;
+               float slice_start = a_slices[slice_num].sliceStart;
+
+               int sample_pos = plugin->voices[i].playbackIndex;
+               float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
+               int pixel_pos = (slice_start + float(sample_pos) / sampleChannels
+                                            - float(waveView.start))
+                                   / samples_per_pixel;
+
+               if (pixel_pos < 0 || pixel_pos + display_left > display_right) {
+                    continue;
+               }
+
+               int gain = std::min(int(255 * plugin->voices[i].adsr.adsr_gain), 255);
+
+               beginPath();
+               strokeColor (255, 255, 255, gain);
+               moveTo ( pixel_pos + display_left , display_top );
+               lineTo ( pixel_pos + display_left , display_bottom );
+               stroke();
+               closePath();
+          }
+     }
+
+}
+
 
 void NinjasUI::drawCurrentSlice()
 {
