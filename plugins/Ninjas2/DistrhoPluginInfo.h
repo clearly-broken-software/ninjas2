@@ -40,16 +40,17 @@ enum Parameters
     paramSigLoadProgram, // 2
     paramCurrentSlice, // 3
     paramNumberOfSlices, // 4
-    paramAttack, // 5
-    paramDecay, // 6
-    paramSustain, // 7
-    paramRelease, // 8
-    paramLoadSample, // 13
-    paramSliceMode, // 14
-    paramProgramGrid, // 15
-    paramPlayMode,
-    paramPitchbendDepth,
-    paramCount // 16
+    paramSliceSensitivity, // 5
+    paramAttack, // 6
+    paramDecay, // 7
+    paramSustain, // 8
+    paramRelease, // 9
+    paramLoadSample, // 10
+    paramSliceMode, // 11
+    paramProgramGrid, // 12
+    paramPlayMode, // 13
+    paramPitchbendDepth, // 14
+    paramCount // 15
 };
 
 

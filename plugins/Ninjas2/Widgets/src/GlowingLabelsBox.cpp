@@ -20,14 +20,14 @@ void GlowingLabelsBox::onNanoDisplay()
     const float height = getHeight();
 
     //Box background
-    beginPath();
+    // beginPath();
 
-    fillColor(Color(17, 17, 17, 255));
+    // fillColor(Color(17, 17, 17, 255));
 
-    rect(0, 0, width, height);
-    fill();
+    // rect(0, 0, width, height);
+    // fill();
 
-    closePath();
+    // closePath();
 
     const float labelSize = 14.0f;
     const float labelMarginLeft = 4.0f;

@@ -2,13 +2,15 @@
 
 START_NAMESPACE_DISTRHO
 
+// TODO: Add all common colours to a central location, include them.
+const Color ninjasColor = Color ( 222,205,135,255 );
 
 SpinBox::SpinBox ( Window &parent, Size<uint> size ) noexcept :
 NanoSpinBox ( parent, size ),
             fText ( "+" ),
             fMargin ( Margin ( 0,0,0,0 ) ),
             fAlign ( ALIGN_TOP | ALIGN_LEFT ),
-            fTextColor ( Color ( 255,255,255,255 ) ),
+            fTextColor (ninjasColor),
             fFontSize ( 16.0f ),
             fFontId ( 0 ),
             fDigitsColor( Color (255,50,50,255))
@@ -19,7 +21,7 @@ NanoSpinBox ( parent, size ),
      decButton.setHeight(h/3);
      decButton.setPos(0, h/3 * 2);
      fDigitsClr0 = Color (255,50,50,255);
-     fDigitsClr1 = Color (0,0,0,255);
+     fDigitsClr1 = ninjasColor;
      loadSharedResources();
      parent.addIdleCallback ( this );
 }
@@ -29,7 +31,7 @@ NanoSpinBox ( widget, size ),
 fText ( "A" ),
 fMargin ( Margin ( 0,0,0,0 ) ),
 fAlign ( ALIGN_TOP | ALIGN_LEFT ),
-fTextColor ( Color ( 255,255,255,255 ) ),
+fTextColor (ninjasColor),
 fFontSize ( 16.0f ),
 fFontId ( 0 ),
 fDigitsColor( Color (255,50,50,255))
@@ -92,7 +94,7 @@ void SpinBox::draw()
 
 // digit background
      beginPath();
-     fillColor(Color(250,250,250,255));
+     fillColor(Color(40, 40, 40, 255));
      rect(margin,h/3,w-doubleMargin,h/3);
      fill();
      closePath();
@@ -113,7 +115,7 @@ void SpinBox::draw()
      }
      fontSize(26);
      fText = "+";
-     fillColor ( Color (200,200,200,255) );
+     fillColor (ninjasColor);
      textAlign ( fAlign );
      text ( 10, 0 , fText, NULL );
      closePath();

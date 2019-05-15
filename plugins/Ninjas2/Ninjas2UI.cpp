@@ -59,24 +59,30 @@ NinjasUI::NinjasUI()
 
      // knobs
      const Size<uint> knobSize = Size<uint> ( 80, 80 );
+     const Size<uint> knobSizeSmall = Size<uint> ( 40, 40 );
      const Size<uint> spinboxSize = Size<uint> ( 40,80 );
      const Color ninjasColor = Color ( 222,205,135,255 );
 
      Window &window = getParentWindow();
 
-
+     // slice number selector
      fSpinBox = new SpinBox ( window, spinboxSize );
      fSpinBox->setId ( paramNumberOfSlices );
      fSpinBox->setRange ( 1.0f, 128.0f );
      fSpinBox->setStep ( 1.0f );
      fSpinBox->setCallback ( this );
 
+     fKnobSliceSensitivity = new VolumeKnob ( window, knobSizeSmall );
+     fKnobSliceSensitivity->setId ( paramSliceSensitivity );
+     fKnobSliceSensitivity->setRange ( 0.001f, 1.0f );
+     fKnobSliceSensitivity->setColor ( ninjasColor );
+     fKnobSliceSensitivity->setCallback ( this );
 
      fSliceButton = new TextButton ( window, Size<uint> ( 40,30 ) );
      fSliceButton->setId ( 100 ); // FIXME don't hardcode this
      fSliceButton->setText ( "Slice" );
      fSliceButton->setFontSize ( 14.0f );
-     fSliceButton->setTextColor ( Color ( 255.0f,255.0f,255.0f,255.0f ) );
+     fSliceButton->setTextColor ( ninjasColor );
      fSliceButton->setMargin ( Margin ( 5,0,7,0 ) );
      fSliceButton->setCallback ( this );
 
@@ -112,6 +118,9 @@ NinjasUI::NinjasUI()
 
      fLabelsBoxSliceModeSlider = new GlowingLabelsBox ( window, Size<uint> ( 58, 42 ) );
      fLabelsBoxSliceModeSlider->setLabels ( {"RAW", "ONSETS"} );
+     fLabelsBoxSliceSensitivity = new GlowingLabelsBox ( window, Size<uint> ( 84, 21 ) );
+     fLabelsBoxSliceSensitivity->setLabels ( {"SENSITIVITY" } );
+
      fLabelsBoxLoadSample = new GlowingLabelsBox ( window, Size<uint> ( 90, 70 ) );
      fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
@@ -180,16 +189,18 @@ void NinjasUI::positionWidgets()
      //const float width = getWidth();
      //const float height = getHeight();
 
-     fSpinBox->setAbsolutePos ( 222,486 );
-     fSliceButton->setAbsolutePos ( 222,451 );
+     fSliceModeSlider->setAbsolutePos ( 217, 458 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 236, 453 );
+     fKnobSliceSensitivity->setAbsolutePos ( 237, 505 );
+     fLabelsBoxSliceSensitivity->setAbsolutePos ( 215, 543 );
+
+     fSpinBox->setAbsolutePos ( 307, 450 );
+     fSliceButton->setAbsolutePos ( 307, 532 );
 
      fKnobAttack->setAbsolutePos ( 791, 465 );
      fKnobDecay->setAbsolutePos ( 883, 465 );
      fKnobSustain->setAbsolutePos ( 975, 465 );
      fKnobRelease->setAbsolutePos ( 1067, 465 );
-
-     fSliceModeSlider->setAbsolutePos ( 275, 489 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 293, 484 );
 
      fSwitchFwd->setAbsolutePos ( 592, 449 );
      fSwitchRev->setAbsolutePos ( 654, 449 );
@@ -289,6 +300,9 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           break;
      case paramSliceMode:
           fSliceModeSlider->setDown ( value > 0.5f );
+          break;
+     case paramSliceSensitivity:
+          fKnobSliceSensitivity->setValue ( value );
           break;
      case paramProgramGrid:
        //   printf ( "UI paramProgramGrid %f\n",value );
@@ -414,6 +428,13 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
           if ( oldValue != value )
                setProgramGrid ( programNumber );
           p_Release[currentSlice]=value;
+          break;
+     }
+     case paramSliceSensitivity: {
+          setParameterValue ( KnobID,value );
+          if (sample_is_loaded) {
+              plugin->getOnsets();
+          }
           break;
      }
      default:
@@ -697,7 +718,7 @@ void NinjasUI::onNanoDisplay()
      closePath();
 
      beginPath();
-     rect ( 252,431,60,18 ); // slices
+     rect ( 230,431,100,18 ); // slices
      fill();
      closePath();
 
@@ -738,7 +759,7 @@ void NinjasUI::onNanoDisplay()
      fillColor ( Color ( 255,221,85,255 ) );
      // const uint adsr_label_offset = 15;
      text ( 56,445,"sample",NULL );
-     text ( 253,445,"slices",NULL );
+     text ( 234,445,"slice tool",NULL );
      text ( 436,445,"states",NULL );
      text ( 589,444,"playmodes",NULL );
      text ( 795,455,"attack",NULL );
@@ -1249,6 +1270,7 @@ void NinjasUI::recallSliceSettings ( int slice )
      fKnobDecay->setValue ( p_Decay[slice] );
      fKnobSustain->setValue ( p_Sustain[slice] );
      fKnobRelease->setValue ( p_Release[slice] );
+
      fSwitchFwd->setDown ( p_playMode[slice] == ONE_SHOT_FWD );
      fSwitchRev->setDown ( p_playMode[slice] == ONE_SHOT_REV );
      fSwitchLoopFwd->setDown ( p_playMode[slice] == LOOP_FWD );

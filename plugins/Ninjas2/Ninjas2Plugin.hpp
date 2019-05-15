@@ -137,6 +137,7 @@ private:
   SLICEMODE enum_slicemode;
   //temp FIXME
   int slicemode;
+  float sliceSensitivity;
 
   enum stage_of_ADSR
   {
