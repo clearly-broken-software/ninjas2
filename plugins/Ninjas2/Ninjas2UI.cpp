@@ -1456,31 +1456,60 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
           return false; // can't zoom anyway
 
      x -= display_left; // off set in pixels
-     // find sample index mouse is hovering at
-     // old zoom factor
-     uint center = int ( pow ( waveView.max_zoom,waveView.zoom ) * ( float ( x ) ) + float ( waveView.start ) );
-     // new zoom factor
-     float delta = -ev.delta.getY() *0.05f;
 
-     waveView.zoom += delta;
-     if ( waveView.zoom < 0.0f )
-          waveView.zoom = 0.0f;
-     if ( waveView.zoom > 1.0f )
-          waveView.zoom = 1.0f;
-     float samples_per_pixel =  pow ( waveView.max_zoom,waveView.zoom );
-     uint length = int ( samples_per_pixel * float ( display_width ) );
-     waveView.start = uint ( float ( center )  - ( float ( x )  *  samples_per_pixel ) );
-//     if ( waveView.start < 0 )
-//         waveView.start = 0;
-     waveView.end = waveView.start+length;
-     if ( waveView.end > waveform.size() ) {
-          waveView.end = waveform.size();
-          waveView.start = waveView.end-length;
+     // left-right scroll factor
+     float scroll_delta = -ev.delta.getX();
+     // zoom factor
+     float zoom_delta = -ev.delta.getY() * 0.05f;
+
+     // we use a signed int to be able to handle temporary negative starts.
+     int start;
+     float samples_per_pixel;
+
+     // We either zoom in/out, or ...
+     if (zoom_delta != 0.0) {
+         // old zoom factor
+         uint center = int(pow(waveView.max_zoom, waveView.zoom) * (float(x)) + float(waveView.start));
+
+         waveView.zoom += zoom_delta;
+         if (waveView.zoom < 0.0f)
+              waveView.zoom = 0.0f;
+         if (waveView.zoom > 1.0f)
+              waveView.zoom = 1.0f;
+         samples_per_pixel =  pow(waveView.max_zoom, waveView.zoom);
+
+         start = int (float (center)  - (float (x)  *  samples_per_pixel));
      }
-     // std::cout << "waveView.max_zoom = " << waveView.max_zoom << " waveView.zoom = "<< waveView.zoom << std::endl;
-     // std::cout << "samples_per_pixel = " << samples_per_pixel << std::endl;
-     // std::cout << "length = " << length << " center = " << center << std::endl;
-     // std::cout << "waveView.start = " << waveView.start << " waveView.end = " << waveView.end << std::endl;
+
+     // ... we scroll left or right.
+     else if (scroll_delta != 0.0) {
+         if ((scroll_delta < 0 && waveView.start == 0) ||
+             (scroll_delta > 0 && waveView.end == waveform.size())) {
+             // can't scroll any further
+             return false;
+         }
+
+         samples_per_pixel =  pow(waveView.max_zoom, waveView.zoom);
+
+         float scroll_distance = 20 * scroll_delta * samples_per_pixel;
+
+         start = waveView.start + scroll_distance;
+     }
+     else {
+         // this probably shouldn't happen.
+         return false;
+     }
+
+     // and ensure we stay in view.
+     uint length = int(samples_per_pixel * float(display_width));
+
+     waveView.end = start + length;
+     if (waveView.end > waveform.size()) {
+          waveView.end = waveform.size();
+          start = waveView.end - length;
+     }
+     waveView.start = start < 0 ? 0 : start;
+
      repaint();
      return true;
 }
