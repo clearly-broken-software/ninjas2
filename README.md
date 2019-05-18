@@ -21,6 +21,8 @@ User can play the slices using midi notes and change the pitch with midi pitchbe
 #### Features:
 + #### Implemented:
   + load samples in audio formats as provided by [libsndfile](http://www.mega-nerd.com/libsndfile/)
+  + load mp3
+  + highlight slice when midi note is received
   + maximum of 128 slices
      * slices 0 to 67 are mapped to midi note 60 to 127
      * slices 68 to 127 are mapped to midi note 0 to 58
@@ -40,16 +42,14 @@ User can play the slices using midi notes and change the pitch with midi pitchbe
     * normal click restores state
     * shift click copies current state to new location
 + #### To be implemented:
-  + mp3 import
+  + play marker in waveform display
   + exponential curves in ADSR
-  + highlight slice when midi note is received
   + adding a bar:beat:ticks ruler for easier lining up slice points
 + #### Things to rework:
   + adding and removing slice points in the waveform display, currently only the control can be used for that.
     * the control should display the number of slices.
 + #### Possible features
   + timestretch and pitch samples using [rubberband](https://github.com/breakfastquay/rubberband)
-  + play marker in waveform display
   + overlay slice info on slices in waveform display
   + resizable user interface
 
