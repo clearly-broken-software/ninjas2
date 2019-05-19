@@ -80,7 +80,7 @@ protected:
      bool onMotion ( const MotionEvent& ) override;
 
 private:
-     ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
+     ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity, fKnobPitchbendDepth;
      ScopedPointer<SpinBox> fSpinBox;
      ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
      ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxSliceSensitivity, fLabelsBoxLoadSample;

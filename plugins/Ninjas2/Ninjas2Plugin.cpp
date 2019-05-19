@@ -250,9 +250,9 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
      }
      case paramPitchbendDepth: {
           parameter.hints = kParameterIsAutomable|kParameterIsInteger;
-          parameter.ranges.def = 24.0f;
+          parameter.ranges.def = 12.0f;
           parameter.ranges.min = 0.0f;
-          parameter.ranges.max = 24.0f;
+          parameter.ranges.max = 12.0f;
           parameter.name = "Pitchbend Depth";
           parameter.symbol = "pitchbendDepth";
           break;
@@ -719,7 +719,7 @@ float NinjasPlugin::getParameterValue ( uint32_t index ) const
           return_Value = programGrid;
           break;
      case paramPitchbendDepth:
-          return_Value = pitchbendDepth;
+          return_Value = pitchbendDepth/2;
      }
      return return_Value;
 
@@ -777,7 +777,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           break;
      }
      case paramPitchbendDepth: {
-          pitchbendDepth = value;
+          pitchbendDepth = value*2;
           pitchbendStep  = 16384.0f / pitchbendDepth;
           break;
      }

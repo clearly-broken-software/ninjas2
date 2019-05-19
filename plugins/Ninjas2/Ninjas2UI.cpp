@@ -110,6 +110,17 @@ NinjasUI::NinjasUI()
      fKnobRelease->setColor ( ninjasColor );
      fKnobRelease->setCallback ( this );
 
+     fKnobPitchbendDepth = new VolumeKnob ( window,knobSize );
+     fKnobPitchbendDepth->setId ( paramPitchbendDepth );
+     //  fKnobPitchbendDepth->setDefault(12.0f);
+     fKnobPitchbendDepth->setStep ( 1.0f );
+     fKnobPitchbendDepth->setRange ( 0.0, 12.0f );
+     fKnobPitchbendDepth->setColor ( ninjasColor );
+     fKnobPitchbendDepth->setCallback ( this );
+
+
+
+
      //slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
 
      fSliceModeSlider = new BipolarModeSwitch ( window, Size<uint> ( 16, 34 ) );
@@ -189,24 +200,27 @@ void NinjasUI::positionWidgets()
      //const float width = getWidth();
      //const float height = getHeight();
 
-     fSliceModeSlider->setAbsolutePos ( 217, 458 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 236, 453 );
-     fKnobSliceSensitivity->setAbsolutePos ( 237, 505 );
-     fLabelsBoxSliceSensitivity->setAbsolutePos ( 215, 543 );
+     fSwitchLoadSample->setAbsolutePos ( 51+24, 470+18 );
 
-     fSpinBox->setAbsolutePos ( 307, 450 );
-     fSliceButton->setAbsolutePos ( 307, 532 );
+     fSliceModeSlider->setAbsolutePos ( 217-36, 458 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 236-36, 453 );
+     fKnobSliceSensitivity->setAbsolutePos ( 237-36, 505 );
+     fLabelsBoxSliceSensitivity->setAbsolutePos ( 215-36, 543 );
+     fSpinBox->setAbsolutePos ( 307-36, 450 );
+     fSliceButton->setAbsolutePos ( 307-36, 532 );
+
+     fKnobPitchbendDepth->setAbsolutePos ( 476+25,465 );
 
      fKnobAttack->setAbsolutePos ( 791, 465 );
      fKnobDecay->setAbsolutePos ( 883, 465 );
      fKnobSustain->setAbsolutePos ( 975, 465 );
      fKnobRelease->setAbsolutePos ( 1067, 465 );
 
-     fSwitchFwd->setAbsolutePos ( 592, 449 );
-     fSwitchRev->setAbsolutePos ( 654, 449 );
-     fSwitchLoopFwd->setAbsolutePos ( 592, 511 );
-     fSwitchLoopRev->setAbsolutePos ( 654, 511 );
-     fSwitchLoadSample->setAbsolutePos ( 51+24, 470+18 );
+     fSwitchFwd->setAbsolutePos ( 592+34, 449 );
+     fSwitchRev->setAbsolutePos ( 654+34, 449 );
+     fSwitchLoopFwd->setAbsolutePos ( 592+34, 511 );
+     fSwitchLoopRev->setAbsolutePos ( 654+34, 511 );
+
      fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
 
      // set coordinates for grid
@@ -216,7 +230,7 @@ void NinjasUI::positionWidgets()
      for ( int y = 0 ; y < 4 ; ++y ) {
           for ( int x = 0 ; x < 4 ; ++x ) {
                int index = y * 4 + x;
-               fGrid[index]->setAbsolutePos ( 412+x*30,448+y*30 );
+               fGrid[index]->setAbsolutePos ( 412-70+x*30,448+y*30 );
           } // for x
      } // for y
 }
@@ -347,6 +361,9 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           }
           break;
      }
+     case paramPitchbendDepth: {
+          fKnobPitchbendDepth->setValue ( value );
+     }
      }
      // repaint();
 }
@@ -435,6 +452,9 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
           getOnsets();
           //repaint();
           break;
+     }
+     case paramPitchbendDepth: {
+       setParameterValue(KnobID,value);
      }
      default:
           setParameterValue ( KnobID,value );
@@ -693,13 +713,16 @@ void NinjasUI::onNanoDisplay()
      roundedRect ( 31, 440, 130, 130, 4 );
 
      // slices box
-     roundedRect ( 207, 440 ,153, 130, 4 );
+     roundedRect ( 171, 440 ,153, 130, 4 );
 
-     // states box
-     roundedRect ( 405 ,440 , 130 , 130 , 4 );
+     // programs box
+     roundedRect ( 334 ,440 , 130 , 130 , 4 );
+
+     // pitchend boxes
+     roundedRect ( 475, 440, 130, 130, 4 );
 
      // playmode box
-     roundedRect ( 582 ,440 , 130 , 130,  4 );
+     roundedRect ( 616 ,440 , 130 , 130,  4 );
 
      // adsr box
      roundedRect ( 768 ,450 , 400, 110,  4 );
@@ -716,17 +739,23 @@ void NinjasUI::onNanoDisplay()
      closePath();
 
      beginPath();
-     rect ( 230,431,100,18 ); // slices
+     rect ( 230-36,431,100,18 ); // slices
      fill();
      closePath();
 
      beginPath();
-     rect ( 435 ,431, 70, 18 ); // states
+     rect ( 348 ,431, 106, 18 ); // programs
+     fill();
+     closePath();
+     
+     beginPath();
+     rect ( 487 ,431, 106, 18 ); // programs 
      fill();
      closePath();
 
+
      beginPath();
-     rect ( 588,431, 118, 18 ); // playmodes
+     rect ( 588+34,431, 118, 18 ); // playmodes
      fill();
      closePath();
 
@@ -751,21 +780,28 @@ void NinjasUI::onNanoDisplay()
      closePath();
 
      // Settings labels
-     beginPath();
+     
      fontFaceId ( fNanoFont );
      fontSize ( 22 );
      fillColor ( Color ( 255,221,85,255 ) );
-     // const uint adsr_label_offset = 15;
      text ( 56,445,"sample",NULL );
-     text ( 234,445,"slice tool",NULL );
-     text ( 436,445,"states",NULL );
-     text ( 589,444,"playmodes",NULL );
+     text ( 234-36,445,"slice tool",NULL );
+     text ( 349,445,"programs",NULL );
+     text ( 489, 445, "pitchbend", NULL );
+     text ( 589+34,444,"playmodes",NULL );
      text ( 795,455,"attack",NULL );
      text ( 890,455,"decay",NULL );
      text ( 975,455,"sustain",NULL );
      text ( 1067,455,"release",NULL );
      closePath();
-
+     
+     // pitchbend depth labels
+     beginPath();
+     fontSize ( 18 );fillColor ( Color ( 255,221,85,255 ) );
+     text (492,545,"0",NULL );
+     text (577,545,"12", NULL);
+     closePath();
+     
 
      if ( sample_is_loaded ) {
           drawCurrentSlice();
