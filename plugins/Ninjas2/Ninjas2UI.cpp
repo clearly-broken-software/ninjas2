@@ -452,7 +452,7 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
           break;
      }
      case paramPitchbendDepth: {
-       setParameterValue(KnobID,value);
+          setParameterValue ( KnobID,value );
      }
      default:
           setParameterValue ( KnobID,value );
@@ -746,9 +746,9 @@ void NinjasUI::onNanoDisplay()
      rect ( 348 ,431, 106, 18 ); // programs
      fill();
      closePath();
-     
+
      beginPath();
-     rect ( 487 ,431, 106, 18 ); // programs 
+     rect ( 487 ,431, 106, 18 ); // programs
      fill();
      closePath();
 
@@ -779,7 +779,7 @@ void NinjasUI::onNanoDisplay()
      closePath();
 
      // Settings labels
-     
+
      fontFaceId ( fNanoFont );
      fontSize ( 22 );
      fillColor ( Color ( 255,221,85,255 ) );
@@ -793,14 +793,15 @@ void NinjasUI::onNanoDisplay()
      text ( 975,455,"sustain",NULL );
      text ( 1067,455,"release",NULL );
      closePath();
-     
+
      // pitchbend depth labels
      beginPath();
-     fontSize ( 18 );fillColor ( Color ( 255,221,85,255 ) );
-     text (492,545,"0",NULL );
-     text (577,545,"12", NULL);
+     fontSize ( 18 );
+     fillColor ( Color ( 255,221,85,255 ) );
+     text ( 492,545,"0",NULL );
+     text ( 577,545,"12", NULL );
      closePath();
-     
+
 
      if ( sample_is_loaded ) {
           drawCurrentSlice();
@@ -1202,14 +1203,14 @@ void NinjasUI::loadSample ( bool fromUser )
 
      if ( sampleChannels == 2 ) { // sum to mono
 
-          for ( uint i=0, j=0 ; i < size; i++ ) {
+          for ( int i=0, j=0 ; i < size; i++ ) {
                float sum_mono = ( plugin->sampleVector[j] + plugin->sampleVector[j+1] ) * 0.5f;
                waveform.push_back ( sum_mono * 175.0f );
                j+=2;
           }
      } else {
           waveform.resize ( size );
-          for ( uint i=0; i < size; i++ ) {
+          for ( int i=0; i < size; i++ ) {
                waveform[i] =  plugin->sampleVector[i] * 175.0f;
           }
      }
