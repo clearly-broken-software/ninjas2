@@ -31,9 +31,7 @@ NinjasUI::NinjasUI()
 {
      void* pi =  getPluginInstancePointer();
      plugin = static_cast<NinjasPlugin*> ( pi );
-     //std::cout << plugin->slices << std::endl;
-     //  std::cout << plugin->Programs[0].program_slices << std::endl;
-
+     getParentWindow().addIdleCallback ( this );
      samplerate = getSampleRate();
      initParameters();
      initSlices();
@@ -853,7 +851,12 @@ void NinjasUI::onNanoDisplay()
 
 void NinjasUI::idleCallback()
 {
-     repaint();
+     int needRepaint {0};
+     for ( int i=0; i < 128; i++ )
+          needRepaint += plugin->voices[i].active;
+
+     if ( needRepaint )
+          repaint();
 }
 
 
