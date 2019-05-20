@@ -1320,6 +1320,9 @@ void NinjasUI::recallSliceSettings ( int slice )
      fSwitchRev->setDown ( p_playMode[slice] == ONE_SHOT_REV );
      fSwitchLoopFwd->setDown ( p_playMode[slice] == LOOP_FWD );
      fSwitchLoopRev->setDown ( p_playMode[slice] == LOOP_REV );
+     
+     setParameterValue(paramPlayMode,p_playMode[slice]);
+          
 }
 
 void NinjasUI::createSlicesRaw ()
