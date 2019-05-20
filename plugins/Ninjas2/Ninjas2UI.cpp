@@ -494,10 +494,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      bool oldValue;
      const bool value = nanoSwitch->isDown() ? true : false;
      const uint buttonId = nanoSwitch->getId();
-     /*   printf("nanoSwitchClicked( %i )\n",buttonId);
-        printf("value %i\n",value);
-     */   // printf("paramCount %i\n", paramCount);
-
+ //    printf("NinjasUI::nanoSwitchClicked( %i )\n",buttonId);
+     
      // check if parameter is changed
      switch ( buttonId ) {
      case 200: {
@@ -529,10 +527,11 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           }
           break;
      }
-     }
+    }
 
      switch ( buttonId ) {
      case 200: {
+  //        printf("playmode ONE_SHOT_FWD\n");
           p_playMode[currentSlice] = ONE_SHOT_FWD;
           editParameter ( paramPlayMode, true );
           setParameterValue ( paramPlayMode, ONE_SHOT_FWD );
@@ -546,6 +545,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      case 201: {
+  //     printf("playmode ONE_SHOT_REV\n");
           p_playMode[currentSlice] = ONE_SHOT_REV;
           editParameter ( paramPlayMode, true );
           setParameterValue ( paramPlayMode, ONE_SHOT_REV );
@@ -559,6 +559,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           break;
      }
      case 202: {
+  //         printf("playmode LOOP_FWD\n");
           p_playMode[currentSlice] = LOOP_FWD;
           editParameter ( paramPlayMode, true );
           setParameterValue ( paramPlayMode, LOOP_FWD );
@@ -568,10 +569,10 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           fSwitchLoopFwd->setDown ( true );
           fSwitchLoopRev->setDown ( false );
           editParameter ( paramPlayMode, false );
-          printf ( "playmode %i\n",LOOP_FWD );
           break;
      }
      case 203: {
+ //      printf("playmode LOOP_REV\n");
           p_playMode[currentSlice] = LOOP_REV;
           editParameter ( paramPlayMode, true );
           setParameterValue ( paramPlayMode, LOOP_REV );
@@ -1718,7 +1719,7 @@ void NinjasUI::setProgramGrid ( int program )
 
 void NinjasUI::ProgramGrid ( int grid )
 {
-     printf ( "ProgramGrid(%i)\n",grid );
+  //   printf ( "ProgramGrid(%i)\n",grid );
      for ( int b= 0; b<16; b++ ) {
           bool testBit = grid & ( int ) pow ( 2,b );
           if ( testBit ) {

@@ -642,7 +642,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      if ( strcmp ( key, "currentSlice" ) == 0 ) {
 
           Programs[programNumber].currentSlice = std::stoi ( value );
-    //      printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
+   //       printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
      }
 
      if ( strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
@@ -733,7 +733,7 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
-  //   printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
+ //    printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
      int voice = ( Programs[programNumber].currentSlice + 60 ) % 128;
 
      switch ( index ) {
@@ -770,10 +770,8 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           break;
      }
      case paramPlayMode: {
-    //      printf ( "NinjasPlugin::setParameterValue(%i,%f)\n",index,value );
-
           Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = static_cast<slicePlayMode> ( value );
-     //     printf ( "NinjasPlugin::setParameterValue %i \n", Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode );
+  //        printf ( "NinjasPlugin::setParameterValue paramPlayMode = %i\n", Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode);
           break;
      }
      case paramPitchbendDepth: {
@@ -794,7 +792,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 {
      float* const outL = outputs[0]; // output ports , stereo
      float* const outR = outputs[1];
-     float* const outPrograms = outputs[2];
      uint32_t framesDone = 0;
      uint32_t curEventIndex = 0; // index for midi event to process
      while ( framesDone < frames ) { // we have frames to process !!
@@ -1138,9 +1135,9 @@ void NinjasPlugin::createSlicesOnsets ()
      Programs[programNumber].slices = totalSlices;
      for ( int i = 0 ; i < totalSlices; i++ ) {
           Programs[programNumber].a_slices[i]=temp[i];
-          int64_t start = Programs[programNumber].a_slices[i].sliceStart;
-          int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
-          int64_t length = end - start;
+  //        int64_t start = Programs[programNumber].a_slices[i].sliceStart;
+  //        int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
+  //        int64_t length = end - start;
   //        printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
      }
 }
@@ -1176,7 +1173,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
    //       printf ( "samples %i\n", info.samples );
           // fill samplevector
           sampleVector.clear();
-          for ( int i =0 ; i < info.samples ; i++ ) {
+          for ( uint i =0 ; i < info.samples ; i++ ) {
                // printf("j = %i\n",j);
                sampleVector.push_back ( * ( info.buffer+i ) );
 
