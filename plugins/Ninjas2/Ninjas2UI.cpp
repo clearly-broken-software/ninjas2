@@ -353,7 +353,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      case paramCurrentSlice: {
           if ( ( int ) value != -1  && !mouseEditSlice ) {
                currentSlice = std::min ( ( int ) value,slices-1 );
-               printf ( "paramCurrentSlice: %i\n", currentSlice );
+               //       printf ( "paramCurrentSlice: %i\n", currentSlice );
 
                setState ( "sig_CurrentSlice", "-1" );
                recallSliceSettings ( currentSlice );
@@ -676,6 +676,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
 
 void NinjasUI::onNanoDisplay()
 {
+// printf("NinjasUI::onNanoDisplay() %i\n", debugCounter++);
      const float width = getWidth();
      const float height = getHeight();
 
@@ -1187,7 +1188,7 @@ void NinjasUI::drawOnsets()
 
 void NinjasUI::loadSample ( bool fromUser )
 {
-     printf ( "NinjasUI::loadSample(%i) called \n",fromUser );
+//    printf ( "NinjasUI::loadSample(%i) called \n",fromUser );
      // sample data
      waveform.clear();
      int size = plugin->sampleSize;
@@ -1730,9 +1731,6 @@ void NinjasUI::getProgram ( int program )
           voice = ( i+60 ) % 128;
           a_slices[i].sliceStart = plugin->Programs[program].a_slices[i].sliceStart / plugin->sampleChannels;
           a_slices[i].sliceEnd = plugin->Programs[program].a_slices[i].sliceEnd / plugin->sampleChannels;
-          if ( i < slices ) {
-               printf ( "slice %i : %i - %i\n", i , a_slices[i].sliceStart, a_slices[i].sliceEnd );
-          }
           a_slices[i].playmode = static_cast<slicePlayMode> ( plugin->Programs[program].a_slices[i].playmode );
           p_Attack[i]=plugin->Programs[program].Attack[voice];
           p_Decay[i]=plugin->Programs[program].Decay[voice];
