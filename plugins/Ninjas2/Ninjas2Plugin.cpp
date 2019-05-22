@@ -1002,8 +1002,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          }
                          // Clickfade: make sure that the end of the sample sounds nice.
                          case CLICKFADE: {
-                              printf("pos: %i, sliceEnd: %i, samplechannels: %i\n",
-                                     pos, sliceEnd, sampleChannels);
                               if (voices[i].adsr.adsr_gain > 0.0f) {
                                    voices[i].adsr.adsr_gain += - float(sampleChannels) / clickfadeSamples;
                               } else {
@@ -1011,7 +1009,6 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                                    voices[i].adsr.adsr_gain = 0.0f;
                                    voices[i].active = false;
                               }
-                              printf("adsr_gain: %f\n" , voices[i].adsr.adsr_gain);
                               break;
                          }
                          }
