@@ -144,7 +144,8 @@ private:
     ATTACK,
     DECAY,
     SUSTAIN,
-    RELEASE
+    RELEASE,
+    CLICKFADE
   };
 
   enum slicePlayMode
