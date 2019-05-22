@@ -1424,8 +1424,8 @@ void NinjasUI::insertSlice(const int targetSlice, const int position)
 {
      // TODO: First slice is initialised to maxint.
      // Possible this should be fixed elsewhere.
-     if (a_slices[0].sliceEnd > waveform.size()) {
-          a_slices[0].sliceEnd = waveform.size();
+     if (a_slices[0].sliceEnd > waveform.size() - sampleChannels) {
+          a_slices[0].sliceEnd = waveform.size() - sampleChannels;
      }
 
      for (int i = slices ; i > targetSlice ; i--) {
