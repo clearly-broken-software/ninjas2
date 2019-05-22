@@ -1402,11 +1402,18 @@ void NinjasUI::removeSlice(const int targetSlice)
 {
      a_slices[targetSlice].sliceEnd = a_slices[targetSlice + 1].sliceEnd;
      for (int i = targetSlice + 1 ; i <= slices ; i++) {
-          // Shift slices forward
           a_slices[i].sliceStart = a_slices[i + 1].sliceStart;
           a_slices[i].sliceEnd = a_slices[i + 1].sliceEnd;
      }
      slices -= 1;
+
+     fSpinBox->setDigitsColor(true); // set digits to red
+
+     // Update Plugin slices
+     editParameter(paramNumberOfSlices, true);
+     setParameterValue(paramNumberOfSlices, slices);
+     editParameter(paramNumberOfSlices, false);
+     editSlice();
 
      repaint();
 }
@@ -1414,14 +1421,27 @@ void NinjasUI::removeSlice(const int targetSlice)
 
 void NinjasUI::insertSlice(const int targetSlice, const int position)
 {
+     // TODO: First slice is initialised to maxint.
+     // Possible this should be fixed elsewhere.
+     if (a_slices[0].sliceEnd > waveform.size()) {
+          a_slices[0].sliceEnd = waveform.size();
+     }
+
      for (int i = slices ; i > targetSlice ; i--) {
-          // Shift slices back
           a_slices[i].sliceStart = a_slices[i - 1].sliceStart;
           a_slices[i].sliceEnd = a_slices[i - 1].sliceEnd;
      }
      a_slices[targetSlice].sliceEnd = position;
      a_slices[targetSlice + 1].sliceStart = position;
      slices += 1;
+
+     fSpinBox->setDigitsColor(true); // set digits to red
+
+     // Update Plugin slices
+     editParameter(paramNumberOfSlices, true);
+     setParameterValue(paramNumberOfSlices, slices);
+     editParameter(paramNumberOfSlices, false);
+     editSlice();
 
      repaint();
 }
@@ -1465,7 +1485,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
 
                } else if (right - 10 < mouseX && mouseX <= right) {
                     // Close to the end of a slice - delete and expand next slice
-                    if (currentSlice >= slices) {
+                    if (currentSlice >= slices - 1) {
                          // Can't delete last slice at end!
                          return false;
                     }
