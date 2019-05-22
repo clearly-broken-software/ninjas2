@@ -652,7 +652,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
      switch ( NanoButtonID ) {
      case 100: { //FIXME EVIL MAGIC NUMBER
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
-          if ( slices != tempSlices || slicemodeChanged ) {
+          if ( sample_is_loaded && (slices != tempSlices || slicemodeChanged)) {
                slices = tempSlices;
                fSpinBox->setDigitsColor ( false ); // set digits to black
                editParameter ( paramNumberOfSlices,true );
