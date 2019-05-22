@@ -1400,13 +1400,6 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
 void NinjasUI::removeSlice(const int targetSlice)
 {
-     printf("slices: %i, removing slice %i\n" , slices, targetSlice);
-     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
-     printf("\n");
-     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
-     printf("\n");
-
-     printf("slices: %i, %i\n", slices, targetSlice);
      a_slices[targetSlice].sliceEnd = a_slices[targetSlice + 1].sliceEnd;
      for (int i = targetSlice + 1 ; i <= slices ; i++) {
           // Shift slices forward
@@ -1415,25 +1408,12 @@ void NinjasUI::removeSlice(const int targetSlice)
      }
      slices -= 1;
 
-     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
-     printf("\n");
-     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
-     printf("\n");
-     printf("slices: %i\n" , slices);
-
      repaint();
 }
 
 
 void NinjasUI::insertSlice(const int targetSlice, const int position)
 {
-     printf("slices: %i\n" , slices);
-     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
-     printf("\n");
-     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
-     printf("\n");
-
-     printf("slices: %i, %i\n", slices, targetSlice);
      for (int i = slices ; i > targetSlice ; i--) {
           // Shift slices back
           a_slices[i].sliceStart = a_slices[i - 1].sliceStart;
@@ -1442,12 +1422,6 @@ void NinjasUI::insertSlice(const int targetSlice, const int position)
      a_slices[targetSlice].sliceEnd = position;
      a_slices[targetSlice + 1].sliceStart = position;
      slices += 1;
-
-     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
-     printf("\n");
-     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
-     printf("\n");
-     printf("slices: %i\n" , slices);
 
      repaint();
 }
@@ -1468,25 +1442,20 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
      }
 
      if (ev.press && click_time < 250) {
-          // TODO: Double click sometimes triggers twice, deleting a slice..
           // Double click
-          printf("click time  %i\n", click_time);
 
           double view = waveView.end - waveView.start; // set these when zooming in
           double pixels_per_sample = display_length / view;
           int currentSlice = 0, lastSlice = 0;
           getVisibleSlices(currentSlice, lastSlice);
-          printf("cs: %i ; ls: %i \n" , currentSlice, lastSlice);
 
           for (uint left, right ; currentSlice < lastSlice ; currentSlice++ ) {
                mouseX = ev.pos.getX()-display_left;
                left = ( a_slices[currentSlice].sliceStart - waveView.start ) * pixels_per_sample;
                right = ( a_slices[currentSlice].sliceEnd - waveView.start ) * pixels_per_sample;
-               printf("l: %u ; m: %u ; r: %u \n" , left, mouseX, right);
 
                if (left < mouseX && mouseX < left + 10) {
                     // Close to the start of a slice - delete and expand previous slice.
-                    printf("Left end of slice %i!\n", currentSlice);
                     if (currentSlice == 0) {
                          // Can't delete the first slice at start!
                          return false;
@@ -1495,7 +1464,6 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
 
                } else if (right - 10 < mouseX && mouseX < right) {
                     // Close to the end of a slice - delete and expand next slice
-                    printf("Right end of slice %i!\n", currentSlice);
                     if (currentSlice >= slices) {
                          // Can't delete last slice at end!
                          return false;
@@ -1504,7 +1472,6 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
 
                } else if (left + 10 <= mouseX && mouseX <= right - 10 ) {
                     // In the middle of a slice - split slice at mouse
-                    printf("Middle of slice %i!\n", currentSlice);
                     int position = mouseX / pixels_per_sample + waveView.start;
                     // TODO: Onset snapping
                     insertSlice(currentSlice, position);
