@@ -1398,21 +1398,57 @@ std::string NinjasUI::toTime ( double time, double round_up )
 }
 
 
-void NinjasUI::removeSlice(const int slice)
+void NinjasUI::removeSlice(const int targetSlice)
 {
-     std::copy(a_slices + currentSlice, a_slices + slices, a_slices + currentSlice - 1);
-     a_slices[currentSlice].sliceStart = a_slices[currentSlice - 1].sliceEnd;
+     printf("slices: %i, removing slice %i\n" , slices, targetSlice);
+     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
+     printf("\n");
+     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
+     printf("\n");
+
+     printf("slices: %i, %i\n", slices, targetSlice);
+     a_slices[targetSlice].sliceEnd = a_slices[targetSlice + 1].sliceEnd;
+     for (int i = targetSlice + 1 ; i <= slices ; i++) {
+          // Shift slices forward
+          a_slices[i].sliceStart = a_slices[i + 1].sliceStart;
+          a_slices[i].sliceEnd = a_slices[i + 1].sliceEnd;
+     }
      slices -= 1;
+
+     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
+     printf("\n");
+     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
+     printf("\n");
+     printf("slices: %i\n" , slices);
+
      repaint();
 }
 
 
-void NinjasUI::insertSlice(const int slice, const int position)
+void NinjasUI::insertSlice(const int targetSlice, const int position)
 {
-     std::copy(a_slices + currentSlice, a_slices + slices, a_slices + currentSlice + 1);
-     a_slices[currentSlice].sliceEnd = position;
-     a_slices[currentSlice + 1].sliceStart = position;
-     slices -= 1;
+     printf("slices: %i\n" , slices);
+     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
+     printf("\n");
+     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
+     printf("\n");
+
+     printf("slices: %i, %i\n", slices, targetSlice);
+     for (int i = slices ; i > targetSlice ; i--) {
+          // Shift slices back
+          a_slices[i].sliceStart = a_slices[i - 1].sliceStart;
+          a_slices[i].sliceEnd = a_slices[i - 1].sliceEnd;
+     }
+     a_slices[targetSlice].sliceEnd = position;
+     a_slices[targetSlice + 1].sliceStart = position;
+     slices += 1;
+
+     for(auto x: a_slices){std::cout<<x.sliceStart<<", ";};
+     printf("\n");
+     for(auto x: a_slices){std::cout<<x.sliceEnd<<", ";};
+     printf("\n");
+     printf("slices: %i\n" , slices);
+
      repaint();
 }
 
@@ -1431,7 +1467,8 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
           lastClick = ev.time;
      }
 
-     if (click_time < 250) {
+     if (ev.press && click_time < 250) {
+          // TODO: Double click sometimes triggers twice, deleting a slice..
           // Double click
           printf("click time  %i\n", click_time);
 
@@ -1454,8 +1491,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
                          // Can't delete the first slice at start!
                          return false;
                     }
-                    removeSlice(currentSlice);
-                    return true;
+                    removeSlice(currentSlice - 1);
 
                } else if (right - 10 < mouseX && mouseX < right) {
                     // Close to the end of a slice - delete and expand next slice
@@ -1464,20 +1500,19 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
                          // Can't delete last slice at end!
                          return false;
                     }
-                    removeSlice(currentSlice + 1);
-                    return true;
+                    removeSlice(currentSlice);
 
                } else if (left + 10 <= mouseX && mouseX <= right - 10 ) {
                     // In the middle of a slice - split slice at mouse
                     printf("Middle of slice %i!\n", currentSlice);
                     int position = mouseX / pixels_per_sample + waveView.start;
+                    // TODO: Onset snapping
                     insertSlice(currentSlice, position);
                }
           }
 
-          return false;
-
-          // TODO: Onset snapping
+          selectSlice();
+          return;
      }
 
      if ( !mouseDragging ) {
