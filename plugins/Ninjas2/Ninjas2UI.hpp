@@ -90,7 +90,7 @@ private:
      ScopedPointer<TextButton> fSliceButton;
 
      const NinjasPlugin * plugin;
-     void loadSample (bool fromUser );
+     void loadSample ( bool fromUser );
      std::vector<short int> waveform;
      void createSlicesRaw ();
      void createSlicesOnsets ();
@@ -108,12 +108,12 @@ private:
      void editSlice();
      bool sampleIsInSlice ( long unsigned int sample );
      void setProgramGrid ( int program );
-     void ProgramGrid( int grid);
-     void getProgram( int program);
+     void ProgramGrid ( int grid );
+     void getProgram ( int program );
      void getOnsets();
 
      float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
-     
+
      std::string dirnameOf ( const std::string& fname );
      std::string toTime ( double time, double round_up );
      int programNumber; // 0 - 15
@@ -134,7 +134,7 @@ private:
      //temp FIXME
      int slicemode;
      bool slicemodeChanged;
-     
+
      enum slicePlayMode {
           ONE_SHOT_FWD ,
           ONE_SHOT_REV,
@@ -142,11 +142,13 @@ private:
           LOOP_REV
      };
      slicePlayMode p_playMode[128];
-     
+     bool fwd,rev,loop,loop_rev;
+
+
      struct Slice {
           unsigned long int sliceStart;
           unsigned long int sliceEnd;
-	  slicePlayMode playmode;
+          slicePlayMode playmode;
           Rectangle<int> bothHitBox = Rectangle<int> ( 0,0,20,20 );
           Rectangle<int> startHitBox = Rectangle<int> ( 0,0,10,10 );
           Rectangle<int> endHitBox  = Rectangle<int> ( 0,0,10,10 );
@@ -202,7 +204,7 @@ private:
      std::string stateSlice;
      Rectangle<int> display;
      bool mouseMoveWaveform;
-   //  int currentProgram;
+     //  int currentProgram;
      uint programGrid;
      bool sliceButton;
      bool sig_LoadProgram {false};
@@ -228,7 +230,7 @@ private:
      DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
      void initParameters();
      void initSlices();
-     
+
 };
 
 // -----------------------------------------------------------------------

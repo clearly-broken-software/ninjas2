@@ -285,6 +285,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fSwitchRev->setDown ( v == 1 );
           fSwitchLoopFwd->setDown ( v == 2 );
           fSwitchLoopRev->setDown ( v == 3 );
+          p_playMode[currentSlice]=static_cast<slicePlayMode> ( v );
           break;
      }
      case paramAttack:
@@ -351,8 +352,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      case paramCurrentSlice: {
           if ( ( int ) value != -1  && !mouseEditSlice ) {
                currentSlice = std::min ( ( int ) value,slices-1 );
-               //       printf ( "paramCurrentSlice: %i\n", currentSlice );
-
+               //     printf ( "paramCurrentSlice: %i\n", currentSlice );
                setState ( "sig_CurrentSlice", "-1" );
                recallSliceSettings ( currentSlice );
                repaint();
@@ -494,8 +494,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
      bool oldValue;
      const bool value = nanoSwitch->isDown() ? true : false;
      const uint buttonId = nanoSwitch->getId();
- //    printf("NinjasUI::nanoSwitchClicked( %i )\n",buttonId);
-     
+//    printf("NinjasUI::nanoSwitchClicked( %i )\n",buttonId);
+
      // check if parameter is changed
      switch ( buttonId ) {
      case 200: {
@@ -527,60 +527,60 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           }
           break;
      }
-    }
+     }
 
      switch ( buttonId ) {
      case 200: {
-  //        printf("playmode ONE_SHOT_FWD\n");
+          //        printf("playmode ONE_SHOT_FWD\n");
           p_playMode[currentSlice] = ONE_SHOT_FWD;
-          editParameter ( paramPlayMode, true );
-          setParameterValue ( paramPlayMode, ONE_SHOT_FWD );
-
+          editParameter ( paramOneShotForward, true );
+          fwd = !fwd;
+          setParameterValue ( paramOneShotForward, fwd );
           fSwitchFwd->setDown ( true );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
-
-          editParameter ( paramPlayMode, false );
+          editParameter ( paramOneShotForward, false );
           break;
      }
      case 201: {
-  //     printf("playmode ONE_SHOT_REV\n");
+          //     printf("playmode ONE_SHOT_REV\n");
           p_playMode[currentSlice] = ONE_SHOT_REV;
-          editParameter ( paramPlayMode, true );
-          setParameterValue ( paramPlayMode, ONE_SHOT_REV );
-
+          editParameter ( paramOneShotReverse, true );
+          rev = !rev;
+          setParameterValue ( paramOneShotReverse, rev );
           fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( true );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( false );
-          editParameter ( paramPlayMode, false );
+          editParameter ( paramOneShotReverse, false );
 
           break;
      }
      case 202: {
-  //         printf("playmode LOOP_FWD\n");
+          //         printf("playmode LOOP_FWD\n");
           p_playMode[currentSlice] = LOOP_FWD;
-          editParameter ( paramPlayMode, true );
-          setParameterValue ( paramPlayMode, LOOP_FWD );
-
+          editParameter ( paramLoopForward, true );
+          loop = !loop;
+          setParameterValue ( paramLoopForward, loop );
           fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( true );
           fSwitchLoopRev->setDown ( false );
-          editParameter ( paramPlayMode, false );
+          editParameter ( paramLoopForward, false );
           break;
      }
      case 203: {
- //      printf("playmode LOOP_REV\n");
+//      printf("playmode LOOP_REV\n");
           p_playMode[currentSlice] = LOOP_REV;
-          editParameter ( paramPlayMode, true );
-          setParameterValue ( paramPlayMode, LOOP_REV );
+          editParameter ( paramLoopReverse, true );
+          loop_rev = !loop_rev;
+          setParameterValue ( paramLoopReverse, loop_rev );
           fSwitchFwd->setDown ( false );
           fSwitchRev->setDown ( false );
           fSwitchLoopFwd->setDown ( false );
           fSwitchLoopRev->setDown ( true );
-          editParameter ( paramPlayMode, false );
+          editParameter ( paramLoopReverse, false );
           break;
      }
      case paramSliceMode: {
@@ -1321,9 +1321,6 @@ void NinjasUI::recallSliceSettings ( int slice )
      fSwitchRev->setDown ( p_playMode[slice] == ONE_SHOT_REV );
      fSwitchLoopFwd->setDown ( p_playMode[slice] == LOOP_FWD );
      fSwitchLoopRev->setDown ( p_playMode[slice] == LOOP_REV );
-     
-     setParameterValue(paramPlayMode,p_playMode[slice]);
-          
 }
 
 void NinjasUI::createSlicesRaw ()
@@ -1719,7 +1716,7 @@ void NinjasUI::setProgramGrid ( int program )
 
 void NinjasUI::ProgramGrid ( int grid )
 {
-  //   printf ( "ProgramGrid(%i)\n",grid );
+     //   printf ( "ProgramGrid(%i)\n",grid );
      for ( int b= 0; b<16; b++ ) {
           bool testBit = grid & ( int ) pow ( 2,b );
           if ( testBit ) {

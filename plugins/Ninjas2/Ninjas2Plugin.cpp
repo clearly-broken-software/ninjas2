@@ -257,6 +257,43 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           parameter.symbol = "pitchbendDepth";
           break;
      }
+     case paramOneShotForward: {
+          parameter.hints = kParameterIsBoolean;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 1.0f;
+          parameter.name = "One Shot Forward";
+          parameter.symbol = "OneShotForward";
+          break;
+     }
+     case paramOneShotReverse: {
+          parameter.hints = kParameterIsBoolean;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 1.0f;
+          parameter.name = "One Shot Reverse";
+          parameter.symbol = "OneShotReverse";
+          break;
+     }
+     case paramLoopForward: {
+          parameter.hints = kParameterIsBoolean;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 1.0f;
+          parameter.name = "Loop Forward";
+          parameter.symbol = "LoopForward";
+          break;
+     }
+     case paramLoopReverse: {
+          parameter.hints = kParameterIsBoolean;
+          parameter.ranges.def = 0.0f;
+          parameter.ranges.min = 0.0f;
+          parameter.ranges.max = 1.0f;
+          parameter.name = "Loop Reverse";
+          parameter.symbol = "LoopReverse";
+
+          break;
+     }
      default: {
           printf ( "unexpected parameter %i \n",index );
           parameter.name = "describe it";
@@ -414,7 +451,7 @@ String NinjasPlugin::getState ( const char* key ) const
          }
      */
      if ( std::strcmp ( key, "programNumber" ) == 0 ) {
-     //     printf ( "programNumber = %i", programNumber );
+          //     printf ( "programNumber = %i", programNumber );
           return String ( programNumber );
      }
 
@@ -485,14 +522,14 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           return;
      }
 
-     if (strcmp(key, "sliceSensitivity") == 0) {
-         getOnsets();
+     if ( strcmp ( key, "sliceSensitivity" ) == 0 ) {
+          getOnsets();
      }
 
      if ( strcmp ( key, "sliceButton" ) == 0 ) {
           if ( strcmp ( value, "true" ) == 0 ) {
-          //     printf ( "NinjasPlugin::setState(%s,%s)\n",key, value );
-          //     printf ( "program = %i, slices = %i\n",programNumber,Programs[programNumber].slices );
+               //     printf ( "NinjasPlugin::setState(%s,%s)\n",key, value );
+               //     printf ( "program = %i, slices = %i\n",programNumber,Programs[programNumber].slices );
                switch ( slicemode ) {
                case 0:
                     createSlicesRaw();
@@ -642,7 +679,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      if ( strcmp ( key, "currentSlice" ) == 0 ) {
 
           Programs[programNumber].currentSlice = std::stoi ( value );
-   //       printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
+          //       printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
      }
 
      if ( strcmp ( key, "sig_SampleLoaded" ) == 0 ) {
@@ -733,7 +770,7 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
- //    printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
+//    printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
      int voice = ( Programs[programNumber].currentSlice + 60 ) % 128;
 
      switch ( index ) {
@@ -759,24 +796,40 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
           break;
      case paramSliceSensitivity:
           sliceSensitivity = value;
-	  getOnsets();
+          getOnsets();
           break;
      case paramProgramGrid:
           programGrid = value;
           break;
      case paramProgramNumber: {
-      //    printf ( "setParameterValue ProgramNumber %f // programNumber =%f\n",value,programNumber );
+          //    printf ( "setParameterValue ProgramNumber %f // programNumber =%f\n",value,programNumber );
           programNumber = value;
           break;
      }
      case paramPlayMode: {
           Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = static_cast<slicePlayMode> ( value );
-  //        printf ( "NinjasPlugin::setParameterValue paramPlayMode = %i\n", Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode);
+          //        printf ( "NinjasPlugin::setParameterValue paramPlayMode = %i\n", Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode);
           break;
      }
      case paramPitchbendDepth: {
           pitchbendDepth = value*2;
           pitchbendStep  = 16384.0f / pitchbendDepth;
+          break;
+     }
+     case paramOneShotForward: {
+          Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = ONE_SHOT_FWD;
+          break;
+     }
+     case paramOneShotReverse: {
+          Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = ONE_SHOT_REV;
+          break;
+     }
+     case paramLoopForward: {
+          Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = LOOP_FWD;
+          break;
+     }
+     case paramLoopReverse: {
+          Programs[programNumber].a_slices[Programs[programNumber].currentSlice].playmode = LOOP_REV;
           break;
      }
      default:
@@ -862,6 +915,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                          // set sig_currentSlice
                          sig_currentSlice = index;
+			 Programs[programNumber].currentSlice = index;
 
 
                          float transpose = ( pitchbend / pitchbendStep ) - ( pitchbendDepth/2 );
@@ -1058,7 +1112,7 @@ void NinjasPlugin::getOnsets ()
      std::vector<float> tmp_sample_vector;
      //   tmp_sample_vector.resize ( sampleSize *sampleChannels);
 
-  //   printf("ONSETS PLUGIN");
+     //   printf("ONSETS PLUGIN");
      int hop_size = 256;
      int win_s = 512;
      fvec_t ftable;               // 1. create fvec without allocating it
@@ -1088,7 +1142,7 @@ void NinjasPlugin::getOnsets ()
           }
           readptr += hop_size;
      }
-  //   printf("onsets # = %i\n",onsets.size());
+     //   printf("onsets # = %i\n",onsets.size());
      del_aubio_onset ( onset );
      // TODO .. del_fvec stuff ?
      // del_fvec ( &ftable );
@@ -1119,14 +1173,14 @@ void NinjasPlugin::createSlicesOnsets ()
           }
      }
      // purge zero lenght slices
-     
+
      int totalSlices = 0;
      Slice temp[Programs[programNumber].slices];
      for ( int i = 0; i < Programs[programNumber].slices; i++ ) {
           int64_t start = Programs[programNumber].a_slices[i].sliceStart;
           int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
           int64_t length = end - start;
-    //      printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
+          //      printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
           if ( length > 0 ) {
                temp[totalSlices]=Programs[programNumber].a_slices[i];
                totalSlices++;
@@ -1135,10 +1189,10 @@ void NinjasPlugin::createSlicesOnsets ()
      Programs[programNumber].slices = totalSlices;
      for ( int i = 0 ; i < totalSlices; i++ ) {
           Programs[programNumber].a_slices[i]=temp[i];
-  //        int64_t start = Programs[programNumber].a_slices[i].sliceStart;
-  //        int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
-  //        int64_t length = end - start;
-  //        printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
+          //        int64_t start = Programs[programNumber].a_slices[i].sliceStart;
+          //        int64_t end = Programs[programNumber].a_slices[i].sliceEnd;
+          //        int64_t length = end - start;
+          //        printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
      }
 }
 
@@ -1157,9 +1211,9 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
      // get extension
      std::string ext = fp.substr ( fp.find_last_of ( "." ) + 1 );
      std::transform ( ext.begin(), ext.end(), ext.begin(), ::tolower );
-   //  printf ( "extension = %s \n",ext.c_str() );
+     //  printf ( "extension = %s \n",ext.c_str() );
      if ( ext == "mp3" ) {
-   //       printf ( "file is an mp3\n" );
+          //       printf ( "file is an mp3\n" );
           mp3dec_t mp3d;
           mp3dec_file_info_t info;
           if ( mp3dec_load ( &mp3d, fp.c_str(), &info, NULL, NULL ) ) {
@@ -1168,9 +1222,9 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
           }
           file_samplerate = info.hz;
           sampleChannels = info.channels;
-   //       printf ( "sample channels %i\n", info.channels );
-   //       printf ( "samplerate %i\n", info.hz );
-   //       printf ( "samples %i\n", info.samples );
+          //       printf ( "sample channels %i\n", info.channels );
+          //       printf ( "samplerate %i\n", info.hz );
+          //       printf ( "samples %i\n", info.samples );
           // fill samplevector
           sampleVector.clear();
           for ( uint i =0 ; i < info.samples ; i++ ) {
@@ -1226,7 +1280,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
 
 
      if ( fromUser ) {
-        //  printf ( "loadSample(%s) by user\n",fp.c_str() );
+          //  printf ( "loadSample(%s) by user\n",fp.c_str() );
           programNumber = 0;
           createSlicesRaw();
           for ( int p=1; p <16; p++ ) {
@@ -1239,7 +1293,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
 void NinjasPlugin::setProgram ( int oldProgram, int newProgram )
 {
 //   //TODO refactor or create new function
- //    printf ( "NinjasPlugin::setProgram(%i)\n",newProgram );
+//    printf ( "NinjasPlugin::setProgram(%i)\n",newProgram );
      Programs[newProgram]=Programs[oldProgram];
 
 
@@ -1303,7 +1357,7 @@ std::string NinjasPlugin::serializeProgram ( int program ) const
 void NinjasPlugin::deserializeProgram ( const int program, const char* string )
 {
      if ( strcmp ( string, "empty" ) == 0 ) {
-     //     std::cout << "programsString is empty" << std::endl;
+          //     std::cout << "programsString is empty" << std::endl;
           return;
      }
      const char *p = string;

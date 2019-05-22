@@ -50,7 +50,11 @@ enum Parameters
     paramProgramGrid, // 12
     paramPlayMode, // 13
     paramPitchbendDepth, // 14
-    paramCount // 15
+    paramOneShotForward, // 15
+    paramOneShotReverse, // 16
+    paramLoopForward, // 17
+    paramLoopReverse, // 18
+    paramCount // 19
 };
 
 
