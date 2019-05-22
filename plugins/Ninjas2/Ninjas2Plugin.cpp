@@ -593,7 +593,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           for ( int iValue = std::strtol ( p, &end,10 ), index = 0; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
                p = end;
                if ( errno == ERANGE ) {
-                    std::cout << "range error, got ";
+                    std::cout << "slices range error, got " << p << std::endl;
                     errno = 0;
                }
                if ( start )
@@ -614,7 +614,7 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           for ( int iValue = std::strtol ( p, &end,10 ); p != end; iValue = std::strtol ( p, &end, 10 ) ) {
                p = end;
                if ( errno == ERANGE ) {
-                    std::cout << "range error, got ";
+                    std::cout << "storeProgram range error, got " << p << std::endl;
                     errno = 0;
                }
                v.push_back ( iValue );
@@ -1366,7 +1366,7 @@ void NinjasPlugin::deserializeProgram ( const int program, const char* string )
      for ( int iValue = std::strtol ( p, &end,10 ) ; p != end; iValue = std::strtol ( p, &end, 10 ) ) {
           p = end;
           if ( errno == ERANGE ) {
-               std::cout << "range error, got ";
+               std::cout << "deserializeProgram range error, got " << p << std::endl;
                errno = 0;
           }
           // common
