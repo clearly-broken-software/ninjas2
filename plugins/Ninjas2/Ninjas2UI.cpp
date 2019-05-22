@@ -1397,6 +1397,26 @@ std::string NinjasUI::toTime ( double time, double round_up )
      return "0.000";
 }
 
+
+void NinjasUI::removeSlice(const int slice)
+{
+     std::copy(a_slices + currentSlice, a_slices + slices, a_slices + currentSlice - 1);
+     a_slices[currentSlice].sliceStart = a_slices[currentSlice - 1].sliceEnd;
+     slices -= 1;
+     repaint();
+}
+
+
+void NinjasUI::insertSlice(const int slice, const int position)
+{
+     std::copy(a_slices + currentSlice, a_slices + slices, a_slices + currentSlice + 1);
+     a_slices[currentSlice].sliceEnd = position;
+     a_slices[currentSlice + 1].sliceStart = position;
+     slices -= 1;
+     repaint();
+}
+
+
 bool NinjasUI::onMouse ( const MouseEvent& ev )
 {
      // check if mouse in waveform display
@@ -1404,6 +1424,61 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
      mouseY = ev.pos.getY();
      if ( ev.press && !display.contains ( mouseX,mouseY ) )
           return false;
+
+     int click_time = 9999;
+     if (ev.press) {
+          click_time = ev.time - lastClick;
+          lastClick = ev.time;
+     }
+
+     if (click_time < 250) {
+          // Double click
+          printf("click time  %i\n", click_time);
+
+          double view = waveView.end - waveView.start; // set these when zooming in
+          double pixels_per_sample = display_length / view;
+          int currentSlice = 0, lastSlice = 0;
+          getVisibleSlices(currentSlice, lastSlice);
+          printf("cs: %i ; ls: %i \n" , currentSlice, lastSlice);
+
+          for (uint left, right ; currentSlice < lastSlice ; currentSlice++ ) {
+               mouseX = ev.pos.getX()-display_left;
+               left = ( a_slices[currentSlice].sliceStart - waveView.start ) * pixels_per_sample;
+               right = ( a_slices[currentSlice].sliceEnd - waveView.start ) * pixels_per_sample;
+               printf("l: %u ; m: %u ; r: %u \n" , left, mouseX, right);
+
+               if (left < mouseX && mouseX < left + 10) {
+                    // Close to the start of a slice - delete and expand previous slice.
+                    printf("Left end of slice %i!\n", currentSlice);
+                    if (currentSlice == 0) {
+                         // Can't delete the first slice at start!
+                         return false;
+                    }
+                    removeSlice(currentSlice);
+                    return true;
+
+               } else if (right - 10 < mouseX && mouseX < right) {
+                    // Close to the end of a slice - delete and expand next slice
+                    printf("Right end of slice %i!\n", currentSlice);
+                    if (currentSlice >= slices) {
+                         // Can't delete last slice at end!
+                         return false;
+                    }
+                    removeSlice(currentSlice + 1);
+                    return true;
+
+               } else if (left + 10 <= mouseX && mouseX <= right - 10 ) {
+                    // In the middle of a slice - split slice at mouse
+                    printf("Middle of slice %i!\n", currentSlice);
+                    int position = mouseX / pixels_per_sample + waveView.start;
+                    insertSlice(currentSlice, position);
+               }
+          }
+
+          return false;
+
+          // TODO: Onset snapping
+     }
 
      if ( !mouseDragging ) {
           if ( ev.press && ev.button == 2 ) { // middle click
@@ -1430,6 +1505,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
           mouseEditSlice = false;
      }
 
+     lastClick = ev.time;
 
      return false;
 }

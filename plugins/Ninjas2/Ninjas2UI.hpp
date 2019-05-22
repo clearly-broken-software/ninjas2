@@ -94,6 +94,8 @@ private:
      std::vector<short int> waveform;
      void createSlicesRaw ();
      void createSlicesOnsets ();
+     void removeSlice(const int slice);
+     void insertSlice(const int slice, const int position);
      int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
      void recallSliceSettings ( int slice );
      void drawWaveform();
@@ -123,6 +125,7 @@ private:
      uint mouseX;
      uint mouseY;
      int mouseDistance;
+     int lastClick;
 
      enum SLICEMODE {
           RAW,
