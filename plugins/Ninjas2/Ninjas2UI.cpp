@@ -1398,6 +1398,56 @@ std::string NinjasUI::toTime ( double time, double round_up )
      return "0.000";
 }
 
+
+void NinjasUI::removeSlice(const int targetSlice)
+{
+     a_slices[targetSlice].sliceEnd = a_slices[targetSlice + 1].sliceEnd;
+     for (int i = targetSlice + 1 ; i <= slices ; i++) {
+          a_slices[i].sliceStart = a_slices[i + 1].sliceStart;
+          a_slices[i].sliceEnd = a_slices[i + 1].sliceEnd;
+     }
+     slices -= 1;
+
+     fSpinBox->setDigitsColor(true); // set digits to red
+
+     // Update Plugin slices
+     editParameter(paramNumberOfSlices, true);
+     setParameterValue(paramNumberOfSlices, slices);
+     editParameter(paramNumberOfSlices, false);
+     editSlice();
+
+     repaint();
+}
+
+
+void NinjasUI::insertSlice(const int targetSlice, const int position)
+{
+     // TODO: First slice is initialised to maxint.
+     // Possible this should be fixed elsewhere.
+     if (a_slices[0].sliceEnd > waveform.size()) {
+          a_slices[0].sliceEnd = waveform.size();
+     }
+
+     for (int i = slices ; i > targetSlice ; i--) {
+          a_slices[i].sliceStart = a_slices[i - 1].sliceStart;
+          a_slices[i].sliceEnd = a_slices[i - 1].sliceEnd;
+     }
+     a_slices[targetSlice].sliceEnd = position;
+     a_slices[targetSlice + 1].sliceStart = position;
+     slices += 1;
+
+     fSpinBox->setDigitsColor(true); // set digits to red
+
+     // Update Plugin slices
+     editParameter(paramNumberOfSlices, true);
+     setParameterValue(paramNumberOfSlices, slices);
+     editParameter(paramNumberOfSlices, false);
+     editSlice();
+
+     repaint();
+}
+
+
 bool NinjasUI::onMouse ( const MouseEvent& ev )
 {
      // check if mouse in waveform display
@@ -1405,6 +1455,56 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
      mouseY = ev.pos.getY();
      if ( ev.press && !display.contains ( mouseX,mouseY ) )
           return false;
+
+     int click_time = 9999;
+     if (ev.press) {
+          click_time = ev.time - lastClick;
+          lastClick = ev.time;
+     }
+
+     if (ev.press && click_time < 250) {
+          // Double click
+
+          double view = waveView.end - waveView.start; // set these when zooming in
+          double pixels_per_sample = display_length / view;
+          int currentSlice = 0, lastSlice = 0;
+          getVisibleSlices(currentSlice, lastSlice);
+
+          for (uint left, right ; currentSlice < lastSlice ; currentSlice++ ) {
+               mouseX = ev.pos.getX()-display_left;
+               left = ( a_slices[currentSlice].sliceStart - waveView.start ) * pixels_per_sample;
+               right = ( a_slices[currentSlice].sliceEnd - waveView.start ) * pixels_per_sample;
+
+               if (left < mouseX && mouseX < left + 10) {
+                    // Close to the start of a slice - delete and expand previous slice.
+                    if (currentSlice == 0) {
+                         // Can't delete the first slice at start!
+                         return false;
+                    }
+                    removeSlice(currentSlice - 1);
+                    break;
+
+               } else if (right - 10 < mouseX && mouseX <= right) {
+                    // Close to the end of a slice - delete and expand next slice
+                    if (currentSlice >= slices - 1) {
+                         // Can't delete last slice at end!
+                         return false;
+                    }
+                    removeSlice(currentSlice);
+                    break;
+
+               } else if (left + 10 <= mouseX && mouseX <= right - 10 ) {
+                    // In the middle of a slice - split slice at mouse
+                    int position = mouseX / pixels_per_sample + waveView.start;
+                    // TODO: Onset snapping
+                    insertSlice(currentSlice, position);
+                    break;
+               }
+          }
+
+          selectSlice();
+          return true;
+     }
 
      if ( !mouseDragging ) {
           if ( ev.press && ev.button == 2 ) { // middle click
@@ -1431,6 +1531,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
           mouseEditSlice = false;
      }
 
+     lastClick = ev.time;
 
      return false;
 }
