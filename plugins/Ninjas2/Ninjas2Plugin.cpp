@@ -230,8 +230,8 @@ void NinjasPlugin::initParameter ( uint32_t index, Parameter& parameter )
           break;
      }
      case paramSliceSensitivity: {
-          parameter.hints = kParameterIsInteger;
-          parameter.ranges.def = 0.0f;
+          parameter.hints = kParameterIsAutomable;
+          parameter.ranges.def = 0.5f;
           parameter.ranges.min = 0.0f;
           parameter.ranges.max = 1.0f;
           parameter.name = "Slice Onset Detection Sensitivity";
