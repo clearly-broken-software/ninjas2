@@ -1461,25 +1461,28 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
                          return false;
                     }
                     removeSlice(currentSlice - 1);
+                    break;
 
-               } else if (right - 10 < mouseX && mouseX < right) {
+               } else if (right - 10 < mouseX && mouseX <= right) {
                     // Close to the end of a slice - delete and expand next slice
                     if (currentSlice >= slices) {
                          // Can't delete last slice at end!
                          return false;
                     }
                     removeSlice(currentSlice);
+                    break;
 
                } else if (left + 10 <= mouseX && mouseX <= right - 10 ) {
                     // In the middle of a slice - split slice at mouse
                     int position = mouseX / pixels_per_sample + waveView.start;
                     // TODO: Onset snapping
                     insertSlice(currentSlice, position);
+                    break;
                }
           }
 
           selectSlice();
-          return;
+          return true;
      }
 
      if ( !mouseDragging ) {
