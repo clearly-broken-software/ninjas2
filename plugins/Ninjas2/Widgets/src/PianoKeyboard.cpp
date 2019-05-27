@@ -39,9 +39,21 @@ bool PianoKeyboard::onMouse ( const MouseEvent & ev )
 {
     
   bool hover = contains(ev.pos);
-  printf ( "button = %i\n",ev.button );
+  if (hover)
+  {
+      fCallback->pianoKeyboardClicked(this);
+  }
   return hover;
 }
+
+bool PianoKeyboard::onMotion ( const Widget::MotionEvent& ev)
+{
+  int x = ev.pos.getX();
+  int y = ev.pos.getY();
+ // printf("mouse x,y : %i,%i\n",x,y);
+    return true;
+}
+
 
 
 
