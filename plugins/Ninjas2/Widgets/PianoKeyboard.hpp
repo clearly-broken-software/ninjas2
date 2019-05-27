@@ -24,6 +24,7 @@ public:
 
 protected:
     void onNanoDisplay() override;
+    bool onMouse(const MouseEvent & ev ) override;
 
 private:
     Callback* fCallback;
