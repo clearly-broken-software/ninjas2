@@ -40,6 +40,8 @@
 #include "PlayModeSwitch.hpp"
 #include "StateSwitch.hpp"
 
+#include "PianoKeyboard.hpp"
+
 #include "Ninjas2Resources.hpp"
 #include "Ninjas2Plugin.hpp"
 
@@ -52,6 +54,7 @@ class NinjasUI : public UI,
      public NanoSwitch::Callback,
      public NanoSpinBox::Callback,
      public NanoButton::Callback,
+     public PianoKeyboard::Callback,
      public IdleCallback {
 public:
      NinjasUI();
@@ -75,6 +78,7 @@ protected:
      void nanoSpinBoxValueChanged ( NanoSpinBox *nanoSpinBox, const float value ) override;
      void nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) override;
      void nanoButtonClicked ( NanoButton* nanoButton ) override;
+     void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard ) override;
      bool onMouse ( const MouseEvent& ) override;
      bool onScroll ( const ScrollEvent& ) override;
      bool onMotion ( const MotionEvent& ) override;
@@ -88,6 +92,7 @@ private:
      ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
      ScopedPointer<StateSwitch> fGrid[16];
      ScopedPointer<TextButton> fSliceButton;
+     ScopedPointer<PianoKeyboard> fPianoKeyboard;
 
      const NinjasPlugin * plugin;
      void loadSample ( bool fromUser );

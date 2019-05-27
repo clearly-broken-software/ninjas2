@@ -49,6 +49,7 @@ FILES_UI  = \
 	Widgets/src/PlayModeSwitch.cpp \
 	Resources/fonts.cpp \
 	Widgets/src/StateSwitch.cpp \
+	Widgets/src/PianoKeyboard.cpp \
 	Ninjas2UI.cpp \
 	Ninjas2Resources.cpp
 	

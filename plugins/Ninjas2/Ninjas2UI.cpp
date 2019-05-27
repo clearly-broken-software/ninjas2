@@ -175,6 +175,11 @@ NinjasUI::NinjasUI()
           fGrid[i]->setCallback ( this );
           fGrid[i]->setDown ( programNumber == i );
      }
+     
+     fPianoKeyboard = new PianoKeyboard( window, 1);
+     fPianoKeyboard->setId( 400 ); // OH NO MAGIC NUMBER! FIXME
+     fPianoKeyboard->setSize(100,45);
+     fPianoKeyboard->setCallback( this );
 
      positionWidgets();
      // text
@@ -220,6 +225,7 @@ void NinjasUI::positionWidgets()
      fSwitchLoopRev->setAbsolutePos ( 654+34, 511 );
 
      fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
+     fPianoKeyboard->setAbsolutePos(200,0);
 
      // set coordinates for grid
 
@@ -672,6 +678,13 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           // setParameterValue ( paramNumberOfSlices,slices );
      }
 }
+
+void NinjasUI::pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard )
+{
+  int keyboardID = pianoKeyboard->getId();
+ printf("pianoKeyboardClicked %i \n", keyboardID);
+}
+
 
 void NinjasUI::onNanoDisplay()
 {
