@@ -7,7 +7,7 @@ PianoKeyboard::PianoKeyboard ( Window& parent, uint startKey, uint endKey ) noex
 :
 NanoWidget ( parent )
 {
-    initKeys ( startKey,endKey );
+    setKeyRange ( startKey,endKey );
     keyPressed = false;
 }
 
@@ -15,7 +15,7 @@ PianoKeyboard::PianoKeyboard ( NanoWidget * parent, uint startKey, uint endKey )
 :
 NanoWidget ( parent )
 {
-    initKeys ( startKey,endKey );
+    setKeyRange ( startKey,endKey );
     keyPressed = false;
 }
 
@@ -33,7 +33,7 @@ void PianoKeyboard::onNanoDisplay()
         if ( keyColors[lookup] == 0 ) {
             beginPath();
             fillColor ( k.keyColor );
-	    rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
+            rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
             fill();
             stroke();
             closePath();
@@ -46,7 +46,7 @@ void PianoKeyboard::onNanoDisplay()
             fillColor ( k.keyColor );
             rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
             fill();
-	    stroke();
+            stroke();
             closePath();
         }
 
@@ -57,16 +57,15 @@ bool PianoKeyboard::onMouse ( const MouseEvent & ev )
 {
 
     bool hover = contains ( ev.pos );
-    if ( hover) {
-        if ( ev.press && ev.button == 1 ) {
+    if ( hover ) {
+        if ( ev.press && ev.button == 1 ) { // mouse is clicked inside the widget
             keyClicked = DetectKeyClicked ( ev.pos );
             setKeyColor ( keyClicked,pressedColor );
             fCallback->pianoKeyboardClicked ( this );
         }
-
     }
 
-    if ( keyPressed && !ev.press) {
+    if ( keyPressed && !ev.press ) { // mouse is released, no need to check if it is inside the widget
         setKeyColor ( keyClicked, oldColor );
         keyPressed = false;
     }
@@ -74,16 +73,19 @@ bool PianoKeyboard::onMouse ( const MouseEvent & ev )
 }
 
 
-void PianoKeyboard::initKeys ( int startNote, int endNote )
+void PianoKeyboard::setKeyRange ( int startKey, int endKey )
 {
     keys.clear();
-    int numberofkeys = endNote - startNote +1;
+    int numberofkeys = endKey - startKey +1;
+    if ( numberofkeys < 1 ) {
+        return;
+    }
     for ( int i = 0, oldX = 0; i < numberofkeys; i++ ) {
         pianoKey tmpKey;
 
-        int lookup = ( i + startNote ) % 12;
+        int lookup = ( i + startKey ) % 12;
         tmpKey.noteName = noteNames[lookup];
-        tmpKey.noteNumber = i + startNote;
+        tmpKey.noteNumber = i + startKey;
         i == 0 ? tmpKey.key.setX ( 0 ) : tmpKey.key.setX ( oldX + offsets[lookup] );
         tmpKey.key.setY ( 0 );
         oldX = tmpKey.key.getX();
@@ -117,7 +119,7 @@ int PianoKeyboard::DetectKeyClicked ( const Point< int >& p )
     for ( pianoKey k : keys ) {
         int lookup = k.noteNumber %12;
         if ( !keyColors[lookup] && k.key.contains ( x,y ) ) {
-             keyPressed = true;
+            keyPressed = true;
             return k.noteNumber;
         }
     }
