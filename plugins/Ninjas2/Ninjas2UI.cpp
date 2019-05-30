@@ -176,7 +176,7 @@ NinjasUI::NinjasUI()
         fGrid[i]->setDown ( programNumber == i );
     }
 
-    fPianoKeyboard = new PianoKeyboard ( window, 1 );
+    fPianoKeyboard = new PianoKeyboard ( window, 21, 108 );
     fPianoKeyboard->setId ( 400 ); // OH NO MAGIC NUMBER! FIXME
     fPianoKeyboard->setSize ( 88 * 15 ,28 );
     fPianoKeyboard->setCallback ( this );
@@ -688,9 +688,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
 void NinjasUI::pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard )
 {
     int keyPressed = pianoKeyboard->getKey();
-    pianoKeyboard->setKeyColor ( keyPressed,Color ( 128,0,0,255 ) );
-    printf ( "pianoKeyboardClicked key = %i \n", keyPressed );
-
+    printf ("keyPressed = %i\n",keyPressed);
 }
 
 

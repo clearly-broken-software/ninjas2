@@ -3,21 +3,20 @@
 
 START_NAMESPACE_DISTRHO
 
-PianoKeyboard::PianoKeyboard ( Window& parent, uint oct ) noexcept
+PianoKeyboard::PianoKeyboard ( Window& parent, uint startKey, uint endKey ) noexcept
 :
 NanoWidget ( parent )
-
 {
-    octaves = oct;
-    initKeys ( 60,72 );
+    initKeys ( startKey,endKey );
+    keyPressed = false;
 }
 
-PianoKeyboard::PianoKeyboard ( NanoWidget * parent, uint oct ) noexcept
+PianoKeyboard::PianoKeyboard ( NanoWidget * parent, uint startKey, uint endKey ) noexcept
 :
 NanoWidget ( parent )
 {
-    octaves =oct;
-    initKeys ( 60,72 );
+    initKeys ( startKey,endKey );
+    keyPressed = false;
 }
 
 void PianoKeyboard::setCallback ( Callback* callback ) noexcept {
@@ -33,9 +32,8 @@ void PianoKeyboard::onNanoDisplay()
         int lookup = k.noteNumber % 12;
         if ( keyColors[lookup] == 0 ) {
             beginPath();
-            //printf("painting %s , %i x =%i\n",k.noteName,k.noteNumber, k.key.getX());
             fillColor ( k.keyColor );
-            rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
+	    rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
             fill();
             stroke();
             closePath();
@@ -44,12 +42,11 @@ void PianoKeyboard::onNanoDisplay()
     for ( pianoKey k : keys ) {
         int lookup = k.noteNumber % 12;
         if ( keyColors[lookup] == 1 ) {
-            printf("painting %s , %i x =%i\n",k.noteName,k.noteNumber, k.key.getX());
-	    beginPath();
+            beginPath();
             fillColor ( k.keyColor );
-	     printf("rgb %f,%f,%f\n", k.keyColor.red, k.keyColor.green,k.keyColor.blue);
             rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
             fill();
+	    stroke();
             closePath();
         }
 
@@ -60,26 +57,25 @@ bool PianoKeyboard::onMouse ( const MouseEvent & ev )
 {
 
     bool hover = contains ( ev.pos );
-    if ( hover ) {
+    if ( hover) {
         if ( ev.press && ev.button == 1 ) {
             keyClicked = DetectKeyClicked ( ev.pos );
+            setKeyColor ( keyClicked,pressedColor );
             fCallback->pianoKeyboardClicked ( this );
         }
+
+    }
+
+    if ( keyPressed && !ev.press) {
+        setKeyColor ( keyClicked, oldColor );
+        keyPressed = false;
     }
     return hover;
 }
 
-// bool PianoKeyboard::onMotion ( const Widget::MotionEvent& ev)
-// {
-//   int x = ev.pos.getX();
-//   int y = ev.pos.getY();
-//  // printf("mouse x,y : %i,%i\n",x,y);
-//     return true;
-// }
 
 void PianoKeyboard::initKeys ( int startNote, int endNote )
 {
-  printf("PianoKeyboard::initKeys\n");
     keys.clear();
     int numberofkeys = endNote - startNote +1;
     for ( int i = 0, oldX = 0; i < numberofkeys; i++ ) {
@@ -113,41 +109,33 @@ int PianoKeyboard::DetectKeyClicked ( const Point< int >& p )
     for ( pianoKey k : keys ) {
         int lookup = k.noteNumber %12;
         if ( keyColors[lookup] )
-            //     printf( "key %s, number %i, x = %i\n",k.noteName, k.noteNumber, k.key.getX());
-
             if ( keyColors[lookup] && k.key.contains ( x,y ) ) {
-                printf ( "noteName %s \n",k.noteName );
+                keyPressed = true;
                 return k.noteNumber;
             }
     }
     for ( pianoKey k : keys ) {
         int lookup = k.noteNumber %12;
         if ( !keyColors[lookup] && k.key.contains ( x,y ) ) {
-            printf ( "noteName %s\n",k.noteName );
+             keyPressed = true;
             return k.noteNumber;
         }
     }
     return -1;
 }
 
-void PianoKeyboard::setKeyColor ( int nn, Color kc )
+void PianoKeyboard::setKeyColor ( uint nn, Color kc )
 {
     // stupid naive approuch
-    for ( pianoKey k : keys ) {
+    for ( pianoKey &k : keys ) {
         if ( k.noteNumber == nn ) {
-	  k.keyColor = kc;
-	  printf("key %s %i, r = %f\n",k.noteName, k.noteNumber,k.keyColor.red);
-	  
-	  repaint();
-	  return; 
+            oldColor = k.keyColor;
+            k.keyColor = kc;
+            repaint();
+            return;
         }
     }
 }
-
-
-
-
-
 
 END_NAMESPACE_DISTRHO
 
