@@ -949,14 +949,32 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          int slice = ( i+68 ) %128;
                          int sliceStart = Programs[programNumber].a_slices[slice].sliceStart; //fix this !
                          int sliceEnd = Programs[programNumber].a_slices[slice].sliceEnd;
-                         int pos = voices[i].playbackIndex;
-                         if ( ( sliceStart + pos ) > ( sampleVector.size()-sampleChannels ) ) {
-                              pos = 0;
+                         float frame_pos = voices[i].framePosition;
+                         if ((sliceStart + frame_pos * sampleChannels) > (sampleVector.size() - sampleChannels)) {
+                              frame_pos = 0;
                          }
 
-                         float* sample = &sampleVector.at ( sliceStart+pos );
-                         float sampleL { *sample };
-                         float sampleR { * ( sample + ( sampleChannels -1 ) ) };
+                         // Linear interpolation between samples
+                         int frame_prev = (int) frame_pos;
+                         float frac_weight = (frame_pos - frame_prev);
+                         // printf("MultipierIndex: %f;\n", voices[i].framePosition);
+                         // printf("frame_pos: %f, %i -  %f\n", frame_pos, frame_prev, frac_weight);
+
+                         float *sample = &sampleVector.at(sliceStart + frame_prev);
+
+                         float sampleL_prev { *sample };
+                         float sampleL_next { *(sample + sampleChannels) };
+                         float sampleL = (1 - frac_weight) * sampleL_prev + frac_weight * sampleL_next;
+
+                         // TODO: Fix this for multi-channel samples
+                         float sampleR_prev { *(sample + (sampleChannels - 1)) };
+                         float sampleR_next { *(sample + (sampleChannels - 1) + sampleChannels) };
+                         float sampleR = (1 - frac_weight) * sampleR_prev + frac_weight * sampleR_next;
+                         // printf("L: %f, %f: %f;\tR:%f, %f: %f\n",
+                         //    sampleL_prev, sampleL_next, sampleL,
+                         //    sampleR_prev, sampleR_next, sampleR
+                         //    );
+
                          // process adsr to get the gain back
                          switch ( voices[i].adsr.adsr_stage ) {
                          case ATTACK: {
