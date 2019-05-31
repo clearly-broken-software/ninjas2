@@ -1,6 +1,6 @@
 /*
  * Ninjas 2
- * 
+ *
  * Copyright (C) 2018 Clearly Broken Software
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -38,7 +38,7 @@ class NinjasPlugin : public Plugin
 public:
 
   NinjasPlugin();
-  
+
 protected:
   // -------------------------------------------------------------------
   // Information
@@ -98,7 +98,7 @@ protected:
 
   //void activate() override;
   void run ( const float**, float** outputs, uint32_t frames, const MidiEvent* midiEvents, uint32_t midiEventCount ) override;
-  
+
 
   // -------------------------------------------------------------------
 
@@ -116,9 +116,9 @@ private:
   bool sliceButton;
   bool sig_SampleLoaded; // set to true when sample loaded, UI loads (new) sample -> use state to flip to false
   bool sig_LoadProgram;
-  
 
-  
+
+
 
   // Paramaters for 128 slices
  // float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
@@ -181,7 +181,7 @@ private:
     int playbackIndex;
     ADSR adsr;
   };
-  
+
   Voice voices[128];
 
   struct Mixer
@@ -192,7 +192,7 @@ private:
   };
 
   Mixer mixer;
-  
+
   struct Slice
   {
     unsigned long int sliceStart;
@@ -200,11 +200,11 @@ private:
     slicePlayMode playmode;
     // bool sliceActive;
   };
-  
+
   //Slice a_slices[128];
   //int slices; // number of slices
   int sig_currentSlice;
-  
+
   // empty sample object
   std::vector<float> sampleVector; // this holds the sample data
   int sampleChannels;
@@ -221,7 +221,7 @@ private:
   int programNumber; // float for Param
   unsigned programGrid;
   std::string statePrograms;
-  
+
   struct program {
         int slices; // number of slices ..
         int currentSlice;
@@ -237,9 +237,9 @@ private:
 	bool program_isEmpty;
   };
   program Programs[16];
-  
-  //bool sliceButton; 
-   
+
+  //bool sliceButton;
+
   /*
    * Set our plugin class as non-copyable and add a leak detector just in case.
   */
