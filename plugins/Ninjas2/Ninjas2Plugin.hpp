@@ -176,8 +176,8 @@ private:
     int notenumber;
     int velocity;
     float gain; // linked to adsr
-    float multiplierIndex; // frame of slice (sample) playing
-    float multiplier;
+    float framePosition; // frame of slice (sample) playing
+    float frameDelta;
     int playbackIndex;
     ADSR adsr;
   };

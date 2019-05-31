@@ -904,13 +904,13 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          // if LOOP_REV or ONE_SHOT_REV set playback indici to end of slice
                          if ( Programs[programNumber].a_slices[index].playmode == LOOP_REV || Programs[programNumber].a_slices[index].playmode == ONE_SHOT_REV ) {
                               voices[data1].playbackIndex = Programs[programNumber].a_slices[index].sliceEnd - Programs[programNumber].a_slices[index].sliceStart;
-                              voices[data1].multiplierIndex = ( Programs[programNumber].a_slices[index].sliceEnd - Programs[programNumber].a_slices[index].sliceStart ) / sampleChannels;
+                              voices[data1].framePosition = ( Programs[programNumber].a_slices[index].sliceEnd - Programs[programNumber].a_slices[index].sliceStart ) / sampleChannels;
 
                          }
 
                          else {   // playmode is forward .. playback indici to start
                               voices[data1].playbackIndex = 0;
-                              voices[data1].multiplierIndex = 0;
+                              voices[data1].framePosition = 0;
                          }
 
                          // set sig_currentSlice
@@ -919,7 +919,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
 
                          float transpose = ( pitchbend / pitchbendStep ) - ( pitchbendDepth/2 );
-                         voices[data1].multiplier=pow ( 2.0, transpose / 12.0 );
+                         voices[data1].frameDelta=pow ( 2.0, transpose / 12.0 );
                          break;
 
                     } // case 0x90
@@ -1010,18 +1010,18 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
 
                          // increase sample reading position
                          float transpose = ( pitchbend/pitchbendStep ) - ( pitchbendDepth/2 );
-                         voices[i].multiplier=pow ( 2.0, transpose / 12.0 );
-                         float multiplier = voices[i].multiplier;
+                         voices[i].frameDelta=pow ( 2.0, transpose / 12.0 );
+                         float frameDelta = voices[i].frameDelta;
 
-                         // set multiplier to negative if direction is reverse
+                         // set frameDelta to negative if direction is reverse
 
                          if ( Programs[programNumber].a_slices[slice].playmode == LOOP_REV || Programs[programNumber].a_slices[slice].playmode == ONE_SHOT_REV )
-                              multiplier=-multiplier;
+                              frameDelta=-frameDelta;
 
-                         // add the multiplier, when it's negative this should substract
+                         // add the frameDelta, when it's negative this should substract
 
-                         voices[i].multiplierIndex += multiplier;
-                         int tmp = ( int ) voices[i].multiplierIndex;
+                         voices[i].framePosition += frameDelta;
+                         int tmp = ( int ) voices[i].framePosition;
                          tmp = tmp * sampleChannels;
 
                          // check bounderies according to playmode: loop or oneshot.
@@ -1029,7 +1029,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          case LOOP_FWD: {
                               if ( sliceStart + tmp >= ( sliceEnd-sampleChannels ) ) {
                                    voices[i].playbackIndex = 0;
-                                   voices[i].multiplierIndex = 0;
+                                   voices[i].framePosition = 0;
                               } else {
                                    voices[i].playbackIndex = tmp;
                               }
@@ -1039,7 +1039,7 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          case LOOP_REV: {
                               if ( sliceStart + tmp <= sliceStart ) {
                                    voices[i].playbackIndex = sliceEnd - sliceStart;
-                                   voices[i].multiplierIndex = ( sliceEnd -sliceStart ) / sampleChannels;
+                                   voices[i].framePosition = ( sliceEnd -sliceStart ) / sampleChannels;
                               } else
                                    voices[i].playbackIndex = tmp;
                               break;
