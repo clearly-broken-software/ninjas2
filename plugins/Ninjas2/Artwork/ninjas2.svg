@@ -28,19 +28,19 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1280"
-     inkscape:window-height="998"
+     inkscape:window-width="1920"
+     inkscape:window-height="1029"
      id="namedview5756"
      showgrid="false"
-     inkscape:zoom="2.0788939"
-     inkscape:cx="770.04452"
-     inkscape:cy="131.90394"
-     inkscape:window-x="1920"
+     inkscape:zoom="8.3155756"
+     inkscape:cx="813.5614"
+     inkscape:cy="81.959862"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer11"
+     inkscape:current-layer="layer1"
      inkscape:snap-bbox="true"
-     inkscape:snap-global="true"
+     inkscape:snap-global="false"
      inkscape:bbox-paths="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-bbox-edge-midpoints="true"
@@ -50,6 +50,29 @@
      inkscape:snap-bbox-midpoints="false" />
   <defs
      id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4321">
+      <stop
+         style="stop-color:#565c5f;stop-opacity:1"
+         offset="0"
+         id="stop4323" />
+      <stop
+         style="stop-color:#272a2b;stop-opacity:1"
+         offset="1"
+         id="stop4325" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4315">
+      <stop
+         style="stop-color:#171717;stop-opacity:1"
+         offset="0"
+         id="stop4317" />
+      <stop
+         style="stop-color:#bebebe;stop-opacity:0.11764706"
+         offset="1"
+         id="stop4319" />
+    </linearGradient>
     <linearGradient
        id="linearGradient4617">
       <stop
@@ -280,7 +303,7 @@
       <stop
          id="stop4271"
          offset="0"
-         style="stop-color:#b3b3b3;stop-opacity:1;" />
+         style="stop-color:#b3b3b3;stop-opacity:1" />
     </linearGradient>
     <linearGradient
        gradientTransform="translate(300,190)"
@@ -369,6 +392,24 @@
        x1="542"
        id="linearGradient4624"
        xlink:href="#linearGradient4617" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4315"
+       id="linearGradient4313"
+       x1="788.78955"
+       y1="535.71436"
+       x2="747.862"
+       y2="483.28265"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4321"
+       id="linearGradient4327"
+       x1="750.30756"
+       y1="482.20035"
+       x2="788.78955"
+       y2="535.71436"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata7">
@@ -386,7 +427,8 @@
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="Layer 1"
-     style="display:inline">
+     style="display:none"
+     sodipodi:insensitive="true">
     <g
        style="display:inline"
        id="layer6" />
@@ -423,7 +465,8 @@
      inkscape:groupmode="layer"
      id="layer12"
      inkscape:label="Frames"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <rect
        rx="4"
        style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#d4aa00;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -592,7 +635,8 @@
      inkscape:groupmode="layer"
      id="layer11"
      inkscape:label="Layer 2"
-     style="display:inline">
+     style="display:none"
+     sodipodi:insensitive="true">
     <image
        y="470"
        x="51"
@@ -853,7 +897,7 @@
        id="textPlayModes"
        y="444.29492"
        x="592.64166"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;line-height:125%;font-family:Dungeon;-inkscape-font-specification:Dungeon;letter-spacing:-0.15000001px;word-spacing:0px;fill:#ffdd55;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;line-height:125%;font-family:Dungeon;-inkscape-font-specification:Dungeon;letter-spacing:-0.15000001px;word-spacing:0px;fill:#ffdd55;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
          y="444.29492"
          x="592.64166"
@@ -890,5 +934,34 @@
          x="56.487305"
          y="445.07901"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Dungeon;-inkscape-font-specification:Dungeon;fill:#d4aa00;fill-opacity:1">sample</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Layer 3">
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#b3b3b3;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4289"
+       sodipodi:type="arc"
+       sodipodi:cx="831.26044"
+       sodipodi:cy="508.91446"
+       sodipodi:rx="35.270027"
+       sodipodi:ry="35.270027"
+       sodipodi:start="2.3561945"
+       sodipodi:end="0.78539816"
+       d="m 806.32076,533.85413 a 35.270027,35.270027 0 0 1 0,-49.87935 35.270027,35.270027 0 0 1 49.87935,0 35.270027,35.270027 0 0 1 0,49.87935"
+       sodipodi:open="true" />
+    <circle
+       style="opacity:0.34100001;fill:#ffffff;fill-opacity:1;stroke:#b3b3b3;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4295"
+       r="33.817074"
+       cy="516.97882"
+       cx="758.47394" />
+    <circle
+       style="opacity:1;fill:url(#linearGradient4327);fill-opacity:1;stroke:url(#linearGradient4313);stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4297"
+       cx="831.26044"
+       cy="509.4985"
+       r="32.591434" />
   </g>
 </svg>
