@@ -1201,18 +1201,20 @@ void NinjasUI::loadSample ( bool fromUser )
      sample_is_loaded = true;
      fSwitchLoadSample->setDown ( true );
      sampleChannels = plugin->sampleChannels;
+     float maxSample = getMaxSample(plugin->sampleVector);
+     float ratio = maxSample > 1.0f ? 1.0f/maxSample : 1.0f;
 
      if ( sampleChannels == 2 ) { // sum to mono
 
           for ( int i=0, j=0 ; i < size; i++ ) {
                float sum_mono = ( plugin->sampleVector[j] + plugin->sampleVector[j+1] ) * 0.5f;
-               waveform.push_back ( sum_mono * 175.0f );
+               waveform.push_back ( sum_mono * ratio * 175.0f );
                j+=2;
           }
      } else {
           waveform.resize ( size );
           for ( int i=0; i < size; i++ ) {
-               waveform[i] =  plugin->sampleVector[i] * 175.0f;
+               waveform[i] =  plugin->sampleVector[i] * ratio * 175.0f;
           }
      }
      waveView.start = 0;
@@ -1237,6 +1239,21 @@ void NinjasUI::loadSample ( bool fromUser )
      setState ( "sig_SampleLoaded", "false" );
      return;
 
+}
+
+float NinjasUI::getMaxSample (const std::vector<float> &sampleData)
+{
+    // iterators to minimum and maximum value
+    // we use a reference ( &sampleData) to avoid copying
+    auto result = std::minmax_element(sampleData.begin(),sampleData.end());
+
+    // dereference the values and get absolutes : example -1.3f > 1.3f
+    float minValue = std::fabs(*result.first);
+    float maxValue = std::fabs(*result.second);
+    // get the largest value
+    float returnValue = std::max(minValue,maxValue);
+
+    return returnValue;
 }
 
 void NinjasUI::getOnsets()
