@@ -1,7 +1,7 @@
 # Ninjas 2
 ####  *a 'Clearly Broken :tm:'  Sample Slicer*
 Rewrite of Ninjas, a sample slicer audio plugin.
-This plugin uses the [DPF](https://github.com/DISTRHO/DPF) for the creation of audio plugins in [lv2](http://lv2plug.in/), vst2 and dssi formats. 
+This plugin uses the [DPF](https://github.com/DISTRHO/DPF) for the creation of audio plugins in [lv2](http://lv2plug.in/) and vst2 formats. 
 A stand alone [jack](http://jackaudio.org/) app is also compiled
 
 ![Screenshot of Ninjas2](https://raw.githubusercontent.com/rghvdberg/ninjas2/master/plugins/Ninjas2/Artwork/Ninjas2.png "Ninjas2 Screenshot")
