@@ -1418,6 +1418,9 @@ std::string NinjasUI::toTime ( double time, double round_up )
 
 void NinjasUI::removeSlice(const int targetSlice)
 {
+     // don't remove slice when number of slices == 1
+     if (slices <= 1)
+          return;
      a_slices[targetSlice].sliceEnd = a_slices[targetSlice + 1].sliceEnd;
      for (int i = targetSlice + 1 ; i <= slices ; i++) {
           a_slices[i].sliceStart = a_slices[i + 1].sliceStart;
@@ -1425,7 +1428,8 @@ void NinjasUI::removeSlice(const int targetSlice)
      }
      slices -= 1;
 
-     fSpinBox->setDigitsColor(true); // set digits to red
+     fSpinBox->setDigitsColor(false); // set digits to yellow
+     fSpinBox->setValue(slices);
 
      // Update Plugin slices
      editParameter(paramNumberOfSlices, true);
@@ -1439,6 +1443,9 @@ void NinjasUI::removeSlice(const int targetSlice)
 
 void NinjasUI::insertSlice(const int targetSlice, const int position)
 {
+     // only insert slices when number of slices <128
+     if (slices >= 128)
+          return;
      // TODO: First slice is initialised to maxint.
      // Possible this should be fixed elsewhere.
      if (a_slices[0].sliceEnd > waveform.size() - sampleChannels) {
@@ -1453,7 +1460,8 @@ void NinjasUI::insertSlice(const int targetSlice, const int position)
      a_slices[targetSlice + 1].sliceStart = position;
      slices += 1;
 
-     fSpinBox->setDigitsColor(true); // set digits to red
+     fSpinBox->setDigitsColor(false); // set digits to yellow
+     fSpinBox->setValue(slices); // update digit
 
      // Update Plugin slices
      editParameter(paramNumberOfSlices, true);
