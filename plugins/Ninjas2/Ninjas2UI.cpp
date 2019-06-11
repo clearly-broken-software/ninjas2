@@ -33,8 +33,11 @@ NinjasUI::NinjasUI()
      plugin = static_cast<NinjasPlugin*> ( pi );
      getParentWindow().addIdleCallback ( this );
      samplerate = getSampleRate();
-     initParameters();
-     initSlices();
+     
+     // init is done after sample load
+     // initParameters();
+     // initSlices();
+     
      programNumber = plugin->programNumber;
      sliceButton = 0;
      slicemodeChanged = false;
@@ -1235,6 +1238,9 @@ void NinjasUI::loadSample ( bool fromUser )
           }
           fGrid[0]->setDown ( true );
      }
+     initParameters();
+     initSlices();
+     getProgram( 0);
      repaint();
      setState ( "sig_SampleLoaded", "false" );
      return;

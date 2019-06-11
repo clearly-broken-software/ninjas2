@@ -1287,6 +1287,9 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
                Programs[p]=Programs[0];
           }
      }
+     // init parameters
+     initPrograms();
+
      return 0;
 }
 
