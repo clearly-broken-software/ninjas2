@@ -772,6 +772,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
 //    printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
      int voice = ( Programs[programNumber].currentSlice + 60 ) % 128;
+     printf ("NinjasPlugin::setParameterValue programNumber %i\n",programNumber);
 
      switch ( index ) {
      case paramNumberOfSlices:
@@ -1288,7 +1289,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
           }
      }
      // init parameters
-     initPrograms();
+    // initPrograms();
 
      return 0;
 }
@@ -1312,10 +1313,10 @@ void NinjasPlugin::initPrograms()
           std::fill_n ( Programs[p].Decay,128, 0.001f );
           std::fill_n ( Programs[p].Sustain, 128, 1.0f );
           std::fill_n ( Programs[p].Release, 128, 0.001f );
-          std::fill_n ( Programs[p].OneShotFwd, 128, 1.0f );
-          std::fill_n ( Programs[p].OneShotRev,128, 0.0f );
-          std::fill_n ( Programs[p].LoopFwd, 128, 0.0f );
-          std::fill_n ( Programs[p].LoopRev, 128, 0.0f );
+          // std::fill_n ( Programs[p].OneShotFwd, 128, 1.0f );
+          // std::fill_n ( Programs[p].OneShotRev,128, 0.0f );
+          // std::fill_n ( Programs[p].LoopFwd, 128, 0.0f );
+          // std::fill_n ( Programs[p].LoopRev, 128, 0.0f );
      }
      programNumber = 0;
 }
@@ -1345,14 +1346,14 @@ std::string NinjasPlugin::serializeProgram ( int program ) const
           programsString.append ( " " );
           programsString.append ( std::to_string ( Programs[program].Release[i] ) );
           programsString.append ( " " );
-          programsString.append ( std::to_string ( ( int ) Programs[program].OneShotFwd[i] ) );
-          programsString.append ( " " );
-          programsString.append ( std::to_string ( ( int ) Programs[program].OneShotRev[i] ) );
-          programsString.append ( " " );
-          programsString.append ( std::to_string ( ( int ) Programs[program].LoopFwd[i] ) );
-          programsString.append ( " " );
-          programsString.append ( std::to_string ( ( int ) Programs[program].LoopRev[i] ) );
-          programsString.append ( " " );
+          // programsString.append ( std::to_string ( ( int ) Programs[program].OneShotFwd[i] ) );
+          // programsString.append ( " " );
+          // programsString.append ( std::to_string ( ( int ) Programs[program].OneShotRev[i] ) );
+          // programsString.append ( " " );
+          // programsString.append ( std::to_string ( ( int ) Programs[program].LoopFwd[i] ) );
+          // programsString.append ( " " );
+          // programsString.append ( std::to_string ( ( int ) Programs[program].LoopRev[i] ) );
+          // programsString.append ( " " );
      }
      return programsString;
 }
@@ -1412,21 +1413,21 @@ void NinjasPlugin::deserializeProgram ( const int program, const char* string )
                Programs[program].Release[i]= fValue;
 
                // playmodes
-               iValue = std::strtol ( p, &end,10 );
-               p = end;
-               Programs[program].OneShotFwd[i]= iValue;
+               // iValue = std::strtol ( p, &end,10 );
+               // p = end;
+               // Programs[program].OneShotFwd[i]= iValue;
 
-               iValue = std::strtol ( p, &end,10 );
-               p = end;
-               Programs[program].OneShotRev[i] = iValue;
+               // iValue = std::strtol ( p, &end,10 );
+               // p = end;
+               // Programs[program].OneShotRev[i] = iValue;
 
-               iValue = std::strtol ( p, &end,10 );
-               p = end;
-               Programs[program].LoopFwd[i]= iValue;
+               // iValue = std::strtol ( p, &end,10 );
+               // p = end;
+               // Programs[program].LoopFwd[i]= iValue;
 
-               iValue = std::strtol ( p, &end,10 );
-               p = end;
-               Programs[program].LoopRev[i]= iValue;
+               // iValue = std::strtol ( p, &end,10 );
+               // p = end;
+               // Programs[program].LoopRev[i]= iValue;
           }
      }
 //    printf ( "deserializeProgram(%i) Programs[%i].slices = %i\n",program,program,Programs[program].slices );

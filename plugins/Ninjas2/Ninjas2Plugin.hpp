@@ -230,10 +230,10 @@ private:
         float Decay[128];
         float Sustain[128];
         float Release[128];
-        float OneShotFwd[128];
-        float OneShotRev[128];
-        float LoopFwd[128];
-        float LoopRev[128];
+        // float OneShotFwd[128];
+        // float OneShotRev[128];
+        // float LoopFwd[128];
+        // float LoopRev[128];
 	bool program_isEmpty;
   };
   program Programs[16];

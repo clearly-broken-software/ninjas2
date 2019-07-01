@@ -456,9 +456,11 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
      }
      case paramPitchbendDepth: {
           setParameterValue ( KnobID,value );
+          break;
      }
      default:
           setParameterValue ( KnobID,value );
+          break;
      }
      repaint();
 }
@@ -1862,7 +1864,7 @@ void NinjasUI::getProgram ( int program )
 {
      currentSlice = plugin->Programs[program].currentSlice;
      slices = plugin->Programs[program].slices;
-     //  printf ( "NinjasUI::getProgram( %i ) , slices %i \n" , program, slices );
+     printf ( "NinjasUI::getProgram( %i ) , slices %i \n" , program, slices );
 
      for ( int i=0, voice = 0; i < 128 ; i++ ) {
           voice = ( i+60 ) % 128;
@@ -1874,6 +1876,7 @@ void NinjasUI::getProgram ( int program )
           p_Sustain[i]=plugin->Programs[program].Sustain[voice];
           p_Release[i]=plugin->Programs[program].Release[voice];
      }
+     printf("sliceStart - End %i - %i\n",a_slices[0].sliceStart, a_slices[0].sliceEnd);
      fSpinBox->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
