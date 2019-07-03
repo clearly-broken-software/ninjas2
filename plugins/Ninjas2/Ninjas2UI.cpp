@@ -1875,6 +1875,7 @@ void NinjasUI::getProgram ( int program )
           p_Decay[i]=plugin->Programs[program].Decay[voice];
           p_Sustain[i]=plugin->Programs[program].Sustain[voice];
           p_Release[i]=plugin->Programs[program].Release[voice];
+	  p_playMode[i]=static_cast<slicePlayMode> (plugin->Programs[program].a_slices[i].playmode) ;
      }
      printf("sliceStart - End %i - %i\n",a_slices[0].sliceStart, a_slices[0].sliceEnd);
      fSpinBox->setValue ( slices );
