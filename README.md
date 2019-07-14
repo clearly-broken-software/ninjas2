@@ -50,5 +50,24 @@ User can play the slices using midi notes and change the pitch with midi pitchbe
   + timestretch and pitch samples using [rubberband](https://github.com/breakfastquay/rubberband)
   + overlay slice info on slices in waveform display
   + resizable user interface
+  
+### Build instructions
 
+**Dependencies**
+
++  libgl1-mesa-dev 
++  libx11-dev
++  libsndfile1-dev
++  libsamplerate0-dev
+
+If you want a standalone jack binary install either `libjack-dev` or `libjack-jackd2-dev`
+
+```
+git clone --recursive https://github.com/rghvdberg/ninjas2.git
+cd ninjas
+make
+```
+There is no ~`make install`~, binaries will appear in `/path/to/ninjas2/bin/`, just copy the binaries to a appropiate location.
+
+***
 [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://riot.im/app/#/room/#ninjas:matrix.org?action=chat)
