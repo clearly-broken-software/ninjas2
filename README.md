@@ -64,7 +64,7 @@ If you want a standalone jack binary install either `libjack-dev` or `libjack-ja
 
 ```
 git clone --recursive https://github.com/rghvdberg/ninjas2.git
-cd ninjas
+cd ninjas2
 make
 ```
 There is no ~`make install`~, binaries will appear in `/path/to/ninjas2/bin/`, just copy the binaries to a appropiate location.
