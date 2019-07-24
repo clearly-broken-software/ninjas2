@@ -16,7 +16,7 @@ NAME = ninjas2
 
 BUILD_LV2 ?= true
 BUILD_VST2 ?= true
-BUILD_JACK ?= true
+BUILD_JACK ?= false
 BUILD_DSSI ?= false
 BUILD_LADSPA = false
 

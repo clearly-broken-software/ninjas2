@@ -1,0 +1,98 @@
+libsndfile_la-sndfile.lo: sndfile.c sfconfig.h config.h \
+ /opt/mingw32/i686-w64-mingw32/include/stdlib.h \
+ /opt/mingw32/i686-w64-mingw32/include/crtdefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h \
+ /opt/mingw32/i686-w64-mingw32/include/vadefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h \
+ /opt/mingw32/i686-w64-mingw32/include/limits.h \
+ /opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h \
+ /opt/mingw32/i686-w64-mingw32/include/malloc.h \
+ /opt/mingw32/i686-w64-mingw32/include/string.h \
+ /opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h \
+ /opt/mingw32/i686-w64-mingw32/include/ctype.h \
+ /opt/mingw32/i686-w64-mingw32/include/assert.h sndfile.h \
+ /opt/mingw32/i686-w64-mingw32/include/stdio.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h \
+ /opt/mingw32/i686-w64-mingw32/include/swprintf.inl \
+ /opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h \
+ /opt/mingw32/i686-w64-mingw32/include/stdint.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h \
+ /opt/mingw32/i686-w64-mingw32/include/stddef.h \
+ /opt/mingw32/i686-w64-mingw32/include/sys/types.h sfendian.h \
+ /opt/mingw32/i686-w64-mingw32/include/inttypes.h common.h
+
+sfconfig.h:
+
+config.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stdlib.h:
+
+/opt/mingw32/i686-w64-mingw32/include/crtdefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h:
+
+/opt/mingw32/i686-w64-mingw32/include/vadefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h:
+
+/opt/mingw32/i686-w64-mingw32/include/limits.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h:
+
+/opt/mingw32/i686-w64-mingw32/include/malloc.h:
+
+/opt/mingw32/i686-w64-mingw32/include/string.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h:
+
+/opt/mingw32/i686-w64-mingw32/include/ctype.h:
+
+/opt/mingw32/i686-w64-mingw32/include/assert.h:
+
+sndfile.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stdio.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h:
+
+/opt/mingw32/i686-w64-mingw32/include/swprintf.inl:
+
+/opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stdint.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stddef.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sys/types.h:
+
+sfendian.h:
+
+/opt/mingw32/i686-w64-mingw32/include/inttypes.h:
+
+common.h:

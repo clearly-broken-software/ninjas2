@@ -1,0 +1,3 @@
+utf8/iconvert.lo: utf8/iconvert.c ../../config.h
+
+../../config.h:

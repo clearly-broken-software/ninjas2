@@ -1,0 +1,93 @@
+ogg_encoder_aspect.lo: ogg_encoder_aspect.c ../../config.h \
+ /opt/mingw32/i686-w64-mingw32/include/string.h \
+ /opt/mingw32/i686-w64-mingw32/include/crtdefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h \
+ /opt/mingw32/i686-w64-mingw32/include/vadefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h \
+ /opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h \
+ ../../include/FLAC/assert.h include/private/ogg_encoder_aspect.h \
+ /home/rob/git/ninjas2/deps/include/ogg/ogg.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h \
+ /opt/mingw32/i686-w64-mingw32/include/stddef.h \
+ /home/rob/git/ninjas2/deps/include/ogg/os_types.h \
+ /opt/mingw32/i686-w64-mingw32/include/sys/types.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h \
+ ../../include/FLAC/ordinals.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h \
+ /opt/mingw32/i686-w64-mingw32/include/stdint.h \
+ ../../include/FLAC/stream_encoder.h \
+ /opt/mingw32/i686-w64-mingw32/include/stdio.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h \
+ /opt/mingw32/i686-w64-mingw32/include/swprintf.inl \
+ /opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h \
+ ../../include/FLAC/export.h ../../include/FLAC/format.h \
+ ../../include/FLAC/ordinals.h ../../include/FLAC/stream_decoder.h \
+ include/private/ogg_mapping.h
+
+../../config.h:
+
+/opt/mingw32/i686-w64-mingw32/include/string.h:
+
+/opt/mingw32/i686-w64-mingw32/include/crtdefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h:
+
+/opt/mingw32/i686-w64-mingw32/include/vadefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h:
+
+../../include/FLAC/assert.h:
+
+include/private/ogg_encoder_aspect.h:
+
+/home/rob/git/ninjas2/deps/include/ogg/ogg.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stddef.h:
+
+/home/rob/git/ninjas2/deps/include/ogg/os_types.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sys/types.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h:
+
+../../include/FLAC/ordinals.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stdint.h:
+
+../../include/FLAC/stream_encoder.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stdio.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h:
+
+/opt/mingw32/i686-w64-mingw32/include/swprintf.inl:
+
+/opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h:
+
+../../include/FLAC/export.h:
+
+../../include/FLAC/format.h:
+
+../../include/FLAC/ordinals.h:
+
+../../include/FLAC/stream_decoder.h:
+
+include/private/ogg_mapping.h:

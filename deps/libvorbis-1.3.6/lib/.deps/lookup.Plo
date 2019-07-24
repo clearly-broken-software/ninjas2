@@ -1,0 +1,64 @@
+lookup.lo: lookup.c /opt/mingw32/i686-w64-mingw32/include/math.h \
+ /opt/mingw32/i686-w64-mingw32/include/crtdefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h \
+ /opt/mingw32/i686-w64-mingw32/include/vadefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h lookup.h \
+ lookup_data.h os.h ../config.h \
+ /home/rob/git/ninjas2/deps/include/ogg/os_types.h \
+ /opt/mingw32/i686-w64-mingw32/include/sys/types.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h misc.h \
+ ../include/vorbis/codec.h /home/rob/git/ninjas2/deps/include/ogg/ogg.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h \
+ /opt/mingw32/i686-w64-mingw32/include/stddef.h \
+ /opt/mingw32/i686-w64-mingw32/include/malloc.h \
+ /opt/mingw32/i686-w64-mingw32/include/memory.h \
+ /opt/mingw32/i686-w64-mingw32/include/sec_api/memory_s.h
+
+/opt/mingw32/i686-w64-mingw32/include/math.h:
+
+/opt/mingw32/i686-w64-mingw32/include/crtdefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h:
+
+/opt/mingw32/i686-w64-mingw32/include/vadefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h:
+
+lookup.h:
+
+lookup_data.h:
+
+os.h:
+
+../config.h:
+
+/home/rob/git/ninjas2/deps/include/ogg/os_types.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sys/types.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h:
+
+misc.h:
+
+../include/vorbis/codec.h:
+
+/home/rob/git/ninjas2/deps/include/ogg/ogg.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stddef.h:
+
+/opt/mingw32/i686-w64-mingw32/include/malloc.h:
+
+/opt/mingw32/i686-w64-mingw32/include/memory.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sec_api/memory_s.h:

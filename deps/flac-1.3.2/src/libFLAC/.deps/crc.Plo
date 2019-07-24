@@ -1,0 +1,41 @@
+crc.lo: crc.c ../../config.h include/private/crc.h \
+ ../../include/FLAC/ordinals.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h \
+ /opt/mingw32/i686-w64-mingw32/include/stdint.h \
+ /opt/mingw32/i686-w64-mingw32/include/crtdefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h \
+ /opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h \
+ /opt/mingw32/i686-w64-mingw32/include/vadefs.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h \
+ /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h \
+ /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h \
+ /opt/mingw32/i686-w64-mingw32/include/stddef.h
+
+../../config.h:
+
+include/private/crc.h:
+
+../../include/FLAC/ordinals.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stdint.h:
+
+/opt/mingw32/i686-w64-mingw32/include/crtdefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h:
+
+/opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h:
+
+/opt/mingw32/i686-w64-mingw32/include/vadefs.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h:
+
+/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h:
+
+/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h:
+
+/opt/mingw32/i686-w64-mingw32/include/stddef.h:
