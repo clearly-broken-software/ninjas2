@@ -62,9 +62,9 @@ include ../../dpf/Makefile.plugins.mk
 # Extra flags
 
 BASE_FLAGS += -I. -I../../aubio/src -I./Widgets -I./Utils -I./Structures
-BASE_FLAGS += $(shell pkg-config --cflags sndfile samplerate)
-LINK_FLAGS += $(shell pkg-config --libs sndfile samplerate)
-LINK_FLAGS += -L../../aubio/ -l:libaubio.a
+BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate)
+LINK_FLAGS += $(shell $(PKG_CONFIG) --libs sndfile samplerate)
+LINK_FLAGS += ../../aubio/libaubio.a
 
 # Set PARANOID_MODE=true to make the build error out on warnings
 ifeq ($(PARANOID_MODE),true)
