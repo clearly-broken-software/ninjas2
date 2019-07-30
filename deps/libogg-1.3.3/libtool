@@ -66,8 +66,8 @@ ECHO="printf %s\\n"
 PATH_SEPARATOR=":"
 
 # The host system.
-host_alias=i686-w64-mingw32
-host=i686-w64-mingw32
+host_alias=x86_64-w64-mingw32
+host=x86_64-w64-mingw32
 host_os=mingw32
 
 # The build system.
@@ -91,7 +91,7 @@ EGREP="/bin/grep -E"
 FGREP="/bin/grep -F"
 
 # A BSD- or MS-compatible name lister.
-NM="/opt/mingw32/bin/i686-w64-mingw32-nm -B"
+NM="/opt/mingw64/bin/x86_64-w64-mingw32-nm -B"
 
 # Whether we need soft or hard links.
 LN_S="ln -s"
@@ -121,7 +121,7 @@ to_host_file_cmd=func_convert_file_nix_to_w32
 to_tool_file_cmd=func_convert_file_noop
 
 # An object symbol dumper.
-OBJDUMP="i686-w64-mingw32-objdump"
+OBJDUMP="x86_64-w64-mingw32-objdump"
 
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method="file_magic ^x86 archive import|^x86 DLL"
@@ -136,13 +136,13 @@ file_magic_glob=""
 want_nocaseglob="no"
 
 # DLL creation program.
-DLLTOOL="i686-w64-mingw32-dlltool"
+DLLTOOL="x86_64-w64-mingw32-dlltool"
 
 # Command to associate shared and link libraries.
 sharedlib_from_linklib_cmd="func_cygming_dll_for_implib"
 
 # The archiver.
-AR="i686-w64-mingw32-ar"
+AR="x86_64-w64-mingw32-ar"
 
 # Flags to create an archive.
 AR_FLAGS="cru"
@@ -151,10 +151,10 @@ AR_FLAGS="cru"
 archiver_list_spec="@"
 
 # A symbol stripping program.
-STRIP="i686-w64-mingw32-strip"
+STRIP="x86_64-w64-mingw32-strip"
 
 # Commands used to install an old-style archive.
-RANLIB="i686-w64-mingw32-ranlib"
+RANLIB="x86_64-w64-mingw32-ranlib"
 old_postinstall_cmds="chmod 644 \$oldlib~\$RANLIB \$tool_oldlib"
 old_postuninstall_cmds=""
 
@@ -162,13 +162,13 @@ old_postuninstall_cmds=""
 lock_old_archive_extraction=no
 
 # A C compiler.
-LTCC="i686-w64-mingw32-gcc"
+LTCC="x86_64-w64-mingw32-gcc"
 
 # LTCC compiler flags.
-LTCFLAGS="-O20 -fsigned-char -O2 -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -DFLUIDSYNTH_NOT_A_DLL -I/home/rob/git/ninjas2/deps/include -I/opt/mingw32/include"
+LTCFLAGS="-O20 -fsigned-char -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
-global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*_\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 _\\2 \\2/p' | sed '/ __gnu_lto/d'"
+global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p' | sed '/ __gnu_lto/d'"
 
 # Transform the output of nm in a proper C declaration.
 global_symbol_to_cdecl="sed -n -e 's/^T .* \\(.*\\)\$/extern int \\1();/p' -e 's/^[ABCDGIRSTW][ABCDGIRSTW]* .* \\(.*\\)\$/extern char \\1;/p'"
@@ -292,7 +292,7 @@ finish_eval=""
 hardcode_into_libs=no
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/opt/mingw32/lib/gcc /opt/mingw32/i686-w64-mingw32/lib "
+sys_lib_search_path_spec="/opt/mingw64/lib/gcc /opt/mingw64/x86_64-w64-mingw32/lib "
 
 # Detected run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
@@ -310,12 +310,12 @@ dlopen_self=unknown
 dlopen_self_static=unknown
 
 # Commands to strip libraries.
-old_striplib="i686-w64-mingw32-strip --strip-debug"
-striplib="i686-w64-mingw32-strip --strip-unneeded"
+old_striplib="x86_64-w64-mingw32-strip --strip-debug"
+striplib="x86_64-w64-mingw32-strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="/opt/mingw32/i686-w64-mingw32/bin/ld"
+LD="/opt/mingw64/x86_64-w64-mingw32/bin/ld"
 
 # How to create reloadable object files.
 reload_flag=" -r"
@@ -325,7 +325,7 @@ reload_cmds="\$LD\$reload_flag -o \$output\$reload_objs"
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$tool_oldlib"
 
 # A language specific compiler.
-CC="i686-w64-mingw32-gcc"
+CC="x86_64-w64-mingw32-gcc"
 
 # Is the compiler the GNU compiler?
 with_gcc=yes

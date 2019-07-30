@@ -41,13 +41,13 @@ macro_version=2.4.6
 macro_revision=2.4.6
 
 # Assembler program.
-AS="i686-w64-mingw32-as"
+AS="x86_64-w64-mingw32-as"
 
 # DLL creation program.
-DLLTOOL="i686-w64-mingw32-dlltool"
+DLLTOOL="x86_64-w64-mingw32-dlltool"
 
 # Object dumper program.
-OBJDUMP="i686-w64-mingw32-objdump"
+OBJDUMP="x86_64-w64-mingw32-objdump"
 
 # Whether or not to build static libraries.
 build_old_libs=yes
@@ -74,8 +74,8 @@ ECHO="printf %s\\n"
 PATH_SEPARATOR=":"
 
 # The host system.
-host_alias=i686-w64-mingw32
-host=i686-w64-mingw32
+host_alias=x86_64-w64-mingw32
+host=x86_64-w64-mingw32
 host_os=mingw32
 
 # The build system.
@@ -99,7 +99,7 @@ EGREP="/bin/grep -E"
 FGREP="/bin/grep -F"
 
 # A BSD- or MS-compatible name lister.
-NM="/opt/mingw32/bin/i686-w64-mingw32-nm -B"
+NM="/opt/mingw64/bin/x86_64-w64-mingw32-nm -B"
 
 # Whether we need soft or hard links.
 LN_S="ln -s"
@@ -144,7 +144,7 @@ want_nocaseglob="no"
 sharedlib_from_linklib_cmd="func_cygming_dll_for_implib"
 
 # The archiver.
-AR="i686-w64-mingw32-ar"
+AR="x86_64-w64-mingw32-ar"
 
 # Flags to create an archive.
 AR_FLAGS="cru"
@@ -153,10 +153,10 @@ AR_FLAGS="cru"
 archiver_list_spec="@"
 
 # A symbol stripping program.
-STRIP="i686-w64-mingw32-strip"
+STRIP="x86_64-w64-mingw32-strip"
 
 # Commands used to install an old-style archive.
-RANLIB="i686-w64-mingw32-ranlib"
+RANLIB="x86_64-w64-mingw32-ranlib"
 old_postinstall_cmds="chmod 644 \$oldlib~\$RANLIB \$tool_oldlib"
 old_postuninstall_cmds=""
 
@@ -164,13 +164,13 @@ old_postuninstall_cmds=""
 lock_old_archive_extraction=no
 
 # A C compiler.
-LTCC="i686-w64-mingw32-gcc -std=gnu99"
+LTCC="x86_64-w64-mingw32-gcc -std=gnu99"
 
 # LTCC compiler flags.
-LTCFLAGS="-O3 -funroll-loops  -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -DFLUIDSYNTH_NOT_A_DLL -I/home/rob/git/ninjas2/deps/include -I/opt/mingw32/include -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -Wdeclaration-after-statement -D_FORTIFY_SOURCE=2 -msse2 -mstackrealign"
+LTCFLAGS="-O3 -funroll-loops -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -Wdeclaration-after-statement -D_FORTIFY_SOURCE=2 -msse2"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
-global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*_\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 _\\2 \\2/p' | sed '/ __gnu_lto/d'"
+global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p' | sed '/ __gnu_lto/d'"
 
 # Transform the output of nm in a proper C declaration.
 global_symbol_to_cdecl="sed -n -e 's/^T .* \\(.*\\)\$/extern int \\1();/p' -e 's/^[ABCDGIRSTW][ABCDGIRSTW]* .* \\(.*\\)\$/extern char \\1;/p'"
@@ -294,7 +294,7 @@ finish_eval=""
 hardcode_into_libs=no
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/opt/mingw32/lib/gcc /opt/mingw32/i686-w64-mingw32/lib "
+sys_lib_search_path_spec="/opt/mingw64/lib/gcc /opt/mingw64/x86_64-w64-mingw32/lib "
 
 # Detected run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
@@ -312,12 +312,12 @@ dlopen_self=unknown
 dlopen_self_static=unknown
 
 # Commands to strip libraries.
-old_striplib="i686-w64-mingw32-strip --strip-debug"
-striplib="i686-w64-mingw32-strip --strip-unneeded"
+old_striplib="x86_64-w64-mingw32-strip --strip-debug"
+striplib="x86_64-w64-mingw32-strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="/opt/mingw32/i686-w64-mingw32/bin/ld"
+LD="/opt/mingw64/x86_64-w64-mingw32/bin/ld"
 
 # How to create reloadable object files.
 reload_flag=" -r"
@@ -327,7 +327,7 @@ reload_cmds="\$LD\$reload_flag -o \$output\$reload_objs"
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$tool_oldlib"
 
 # A language specific compiler.
-CC="i686-w64-mingw32-gcc -std=gnu99"
+CC="x86_64-w64-mingw32-gcc -std=gnu99"
 
 # Is the compiler the GNU compiler?
 with_gcc=yes
@@ -11685,7 +11685,7 @@ build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # ### BEGIN LIBTOOL TAG CONFIG: CXX
 
 # The linker used to build libraries.
-LD="/opt/mingw32/i686-w64-mingw32/bin/ld"
+LD="/opt/mingw64/x86_64-w64-mingw32/bin/ld"
 
 # How to create reloadable object files.
 reload_flag=" -r"
@@ -11695,7 +11695,7 @@ reload_cmds="\$LD\$reload_flag -o \$output\$reload_objs"
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$tool_oldlib"
 
 # A language specific compiler.
-CC="i686-w64-mingw32-g++"
+CC="x86_64-w64-mingw32-g++"
 
 # Is the compiler the GNU compiler?
 with_gcc=yes
@@ -11822,17 +11822,17 @@ file_list_spec=""
 hardcode_action=immediate
 
 # The directories searched by this compiler when creating a shared library.
-compiler_lib_search_dirs="/opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0 /opt/mingw32/bin/../lib/gcc /opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0/../../../../i686-w64-mingw32/lib/../lib /opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0/../../../../i686-w64-mingw32/lib"
+compiler_lib_search_dirs="/opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0 /opt/mingw64/bin/../lib/gcc /opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0/../../../../x86_64-w64-mingw32/lib/../lib /opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0/../../../../x86_64-w64-mingw32/lib"
 
 # Dependencies to place before and after the objects being linked to
 # create a shared library.
-predep_objects="/opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0/../../../../i686-w64-mingw32/lib/../lib/dllcrt2.o /opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0/crtbegin.o"
-postdep_objects="/opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0/crtend.o"
+predep_objects="/opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0/../../../../x86_64-w64-mingw32/lib/../lib/dllcrt2.o /opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0/../../../../x86_64-w64-mingw32/lib/../lib/crtbegin.o"
+postdep_objects="/opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0/../../../../x86_64-w64-mingw32/lib/../lib/crtend.o"
 predeps=""
 postdeps="-lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt"
 
 # The library search path used internally by the compiler when linking
 # a shared library.
-compiler_lib_search_path="-L/opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0 -L/opt/mingw32/bin/../lib/gcc -L/opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0/../../../../i686-w64-mingw32/lib/../lib -L/opt/mingw32/bin/../lib/gcc/i686-w64-mingw32/4.9.0/../../../../i686-w64-mingw32/lib"
+compiler_lib_search_path="-L/opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0 -L/opt/mingw64/bin/../lib/gcc -L/opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0/../../../../x86_64-w64-mingw32/lib/../lib -L/opt/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.0/../../../../x86_64-w64-mingw32/lib"
 
 # ### END LIBTOOL TAG CONFIG: CXX

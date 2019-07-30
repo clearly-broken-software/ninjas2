@@ -1,7 +1,7 @@
 #!/bin/sh
 # echo-install-dirs.  Generated from echo-install-dirs.in by configure.
 
-prefix=/home/rob/git/ninjas2/deps
+prefix=/home/rob/git/ninjas2/deps/ninjas2-w64
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 bindir=${exec_prefix}/bin

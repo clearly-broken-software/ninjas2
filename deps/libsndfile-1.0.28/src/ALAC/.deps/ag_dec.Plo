@@ -1,86 +1,86 @@
 ALAC/ag_dec.lo: ALAC/ag_dec.c \
- /opt/mingw32/i686-w64-mingw32/include/math.h \
- /opt/mingw32/i686-w64-mingw32/include/crtdefs.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h \
- /opt/mingw32/i686-w64-mingw32/include/vadefs.h \
- /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h \
- /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h \
- /opt/mingw32/i686-w64-mingw32/include/stdio.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h \
- /opt/mingw32/i686-w64-mingw32/include/swprintf.inl \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h \
- /opt/mingw32/i686-w64-mingw32/include/stdlib.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h \
- /opt/mingw32/i686-w64-mingw32/include/limits.h \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h \
- /opt/mingw32/i686-w64-mingw32/include/malloc.h \
- /opt/mingw32/i686-w64-mingw32/include/string.h \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h ALAC/aglib.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h \
- /opt/mingw32/i686-w64-mingw32/include/stdint.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h \
- /opt/mingw32/i686-w64-mingw32/include/stddef.h ALAC/ALACBitUtilities.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/math.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/vadefs.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/stdio.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_push.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdio_s.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_pop.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/stdlib.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/limits.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/syslimits.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/limits.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/malloc.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/string.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h ALAC/aglib.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/stdint.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/stdint.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/stddef.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/stddef.h ALAC/ALACBitUtilities.h \
  ALAC/ALACAudioTypes.h sfendian.h sfconfig.h config.h \
- /opt/mingw32/i686-w64-mingw32/include/inttypes.h
+ /opt/mingw64/x86_64-w64-mingw32/include/inttypes.h
 
-/opt/mingw32/i686-w64-mingw32/include/math.h:
+/opt/mingw64/x86_64-w64-mingw32/include/math.h:
 
-/opt/mingw32/i686-w64-mingw32/include/crtdefs.h:
+/opt/mingw64/x86_64-w64-mingw32/include/crtdefs.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h:
 
-/opt/mingw32/i686-w64-mingw32/include/vadefs.h:
+/opt/mingw64/x86_64-w64-mingw32/include/vadefs.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h:
 
-/opt/mingw32/i686-w64-mingw32/include/stdio.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stdio.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_push.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h:
 
-/opt/mingw32/i686-w64-mingw32/include/swprintf.inl:
+/opt/mingw64/x86_64-w64-mingw32/include/swprintf.inl:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdio_s.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_pop.h:
 
-/opt/mingw32/i686-w64-mingw32/include/stdlib.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stdlib.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/limits.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/syslimits.h:
 
-/opt/mingw32/i686-w64-mingw32/include/limits.h:
+/opt/mingw64/x86_64-w64-mingw32/include/limits.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
 
-/opt/mingw32/i686-w64-mingw32/include/malloc.h:
+/opt/mingw64/x86_64-w64-mingw32/include/malloc.h:
 
-/opt/mingw32/i686-w64-mingw32/include/string.h:
+/opt/mingw64/x86_64-w64-mingw32/include/string.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h:
 
 ALAC/aglib.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stdint.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/stdint.h:
 
-/opt/mingw32/i686-w64-mingw32/include/stdint.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stdint.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/stddef.h:
 
-/opt/mingw32/i686-w64-mingw32/include/stddef.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stddef.h:
 
 ALAC/ALACBitUtilities.h:
 
@@ -92,4 +92,4 @@ sfconfig.h:
 
 config.h:
 
-/opt/mingw32/i686-w64-mingw32/include/inttypes.h:
+/opt/mingw64/x86_64-w64-mingw32/include/inttypes.h:

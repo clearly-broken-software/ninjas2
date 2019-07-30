@@ -40,7 +40,7 @@ echo -n "    Pedantic header test           : "
 # Only do this if the compiler is GCC.
 if test -n "4" ; then
 
-	CC=`echo "i686-w64-mingw32-gcc -std=gnu99" | sed "s/.*shave cc //"`
+	CC=`echo "x86_64-w64-mingw32-gcc -std=gnu99" | sed "s/.*shave cc //"`
 	# Compile with -Werror and -pedantic.
 	$CC -std=c99 -Werror -pedantic -I../src -c ../tests/sfversion.c -o /dev/null
 

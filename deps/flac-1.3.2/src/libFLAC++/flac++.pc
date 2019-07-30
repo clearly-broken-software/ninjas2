@@ -1,4 +1,4 @@
-prefix=/home/rob/git/ninjas2/deps
+prefix=/home/rob/git/ninjas2/deps/ninjas2-w64
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

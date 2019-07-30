@@ -180,7 +180,7 @@
 #define HAVE_WRITE 1
 
 /* The host triplet of the compiled binary. */
-#define HOST_TRIPLET "i686-w64-mingw32"
+#define HOST_TRIPLET "x86_64-w64-mingw32"
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
@@ -243,10 +243,10 @@
 #define SIZEOF_SHORT 2
 
 /* The size of `size_t', as computed by sizeof. */
-#define SIZEOF_SIZE_T 4
+#define SIZEOF_SIZE_T 8
 
 /* The size of `void*', as computed by sizeof. */
-#define SIZEOF_VOIDP 4
+#define SIZEOF_VOIDP 8
 
 /* The size of `wchar_t', as computed by sizeof. */
 #define SIZEOF_WCHAR_T 2

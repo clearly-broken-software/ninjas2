@@ -8,7 +8,7 @@ EXEEXT = .exe
 
 PACKAGE_VERSION = 1.0.28
 
-HOST_TRIPLET = i686-w64-mingw32
+HOST_TRIPLET = x86_64-w64-mingw32
 
 SRC_BINDIR = src/
 TEST_BINDIR = tests/

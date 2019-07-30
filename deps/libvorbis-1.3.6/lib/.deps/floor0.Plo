@@ -1,79 +1,83 @@
-floor0.lo: floor0.c /opt/mingw32/i686-w64-mingw32/include/stdlib.h \
- /opt/mingw32/i686-w64-mingw32/include/crtdefs.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h \
- /opt/mingw32/i686-w64-mingw32/include/vadefs.h \
- /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h \
- /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h \
- /opt/mingw32/i686-w64-mingw32/include/limits.h \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h \
- /opt/mingw32/i686-w64-mingw32/include/malloc.h \
- /opt/mingw32/i686-w64-mingw32/include/string.h \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h \
- /opt/mingw32/i686-w64-mingw32/include/math.h \
- /home/rob/git/ninjas2/deps/include/ogg/ogg.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h \
- /opt/mingw32/i686-w64-mingw32/include/stddef.h \
- /home/rob/git/ninjas2/deps/include/ogg/os_types.h \
- /opt/mingw32/i686-w64-mingw32/include/sys/types.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h \
+floor0.lo: floor0.c /opt/mingw64/x86_64-w64-mingw32/include/stdlib.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/vadefs.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/limits.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/syslimits.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/limits.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/malloc.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/string.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/math.h \
+ /home/rob/git/ninjas2/deps/ninjas2-w64/include/ogg/ogg.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/stddef.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/stddef.h \
+ /home/rob/git/ninjas2/deps/ninjas2-w64/include/ogg/os_types.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sys/types.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h \
  ../include/vorbis/codec.h codec_internal.h envelope.h mdct.h codebook.h \
  psy.h smallft.h backends.h bitrate.h os.h ../config.h misc.h \
- /opt/mingw32/i686-w64-mingw32/include/memory.h \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/memory_s.h highlevel.h \
- registry.h lpc.h lsp.h scales.h \
- /opt/mingw32/i686-w64-mingw32/include/stdio.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h \
- /opt/mingw32/i686-w64-mingw32/include/swprintf.inl \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h
+ /opt/mingw64/x86_64-w64-mingw32/include/memory.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/memory_s.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/emmintrin.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/xmmintrin.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/mmintrin.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/mm_malloc.h \
+ highlevel.h registry.h lpc.h lsp.h scales.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/stdio.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_push.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdio_s.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_pop.h
 
-/opt/mingw32/i686-w64-mingw32/include/stdlib.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stdlib.h:
 
-/opt/mingw32/i686-w64-mingw32/include/crtdefs.h:
+/opt/mingw64/x86_64-w64-mingw32/include/crtdefs.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h:
 
-/opt/mingw32/i686-w64-mingw32/include/vadefs.h:
+/opt/mingw64/x86_64-w64-mingw32/include/vadefs.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/limits.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/syslimits.h:
 
-/opt/mingw32/i686-w64-mingw32/include/limits.h:
+/opt/mingw64/x86_64-w64-mingw32/include/limits.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
 
-/opt/mingw32/i686-w64-mingw32/include/malloc.h:
+/opt/mingw64/x86_64-w64-mingw32/include/malloc.h:
 
-/opt/mingw32/i686-w64-mingw32/include/string.h:
+/opt/mingw64/x86_64-w64-mingw32/include/string.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h:
 
-/opt/mingw32/i686-w64-mingw32/include/math.h:
+/opt/mingw64/x86_64-w64-mingw32/include/math.h:
 
-/home/rob/git/ninjas2/deps/include/ogg/ogg.h:
+/home/rob/git/ninjas2/deps/ninjas2-w64/include/ogg/ogg.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include/stddef.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/stddef.h:
 
-/opt/mingw32/i686-w64-mingw32/include/stddef.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stddef.h:
 
-/home/rob/git/ninjas2/deps/include/ogg/os_types.h:
+/home/rob/git/ninjas2/deps/ninjas2-w64/include/ogg/os_types.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sys/types.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sys/types.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_off_t.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h:
 
 ../include/vorbis/codec.h:
 
@@ -99,9 +103,17 @@ os.h:
 
 misc.h:
 
-/opt/mingw32/i686-w64-mingw32/include/memory.h:
+/opt/mingw64/x86_64-w64-mingw32/include/memory.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/memory_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/memory_s.h:
+
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/emmintrin.h:
+
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/xmmintrin.h:
+
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/mmintrin.h:
+
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include/mm_malloc.h:
 
 highlevel.h:
 
@@ -113,12 +125,12 @@ lsp.h:
 
 scales.h:
 
-/opt/mingw32/i686-w64-mingw32/include/stdio.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stdio.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_print_push.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_push.h:
 
-/opt/mingw32/i686-w64-mingw32/include/swprintf.inl:
+/opt/mingw64/x86_64-w64-mingw32/include/swprintf.inl:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/stdio_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdio_s.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_print_pop.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_print_pop.h:

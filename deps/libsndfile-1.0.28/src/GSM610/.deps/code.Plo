@@ -1,49 +1,49 @@
 GSM610/code.lo: GSM610/code.c \
- /opt/mingw32/i686-w64-mingw32/include/stdlib.h \
- /opt/mingw32/i686-w64-mingw32/include/crtdefs.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h \
- /opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h \
- /opt/mingw32/i686-w64-mingw32/include/vadefs.h \
- /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h \
- /opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h \
- /opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h \
- /opt/mingw32/i686-w64-mingw32/include/limits.h \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h \
- /opt/mingw32/i686-w64-mingw32/include/malloc.h \
- /opt/mingw32/i686-w64-mingw32/include/string.h \
- /opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/stdlib.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/vadefs.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/limits.h \
+ /opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/syslimits.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/limits.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/malloc.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/string.h \
+ /opt/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
  GSM610/gsm610_priv.h
 
-/opt/mingw32/i686-w64-mingw32/include/stdlib.h:
+/opt/mingw64/x86_64-w64-mingw32/include/stdlib.h:
 
-/opt/mingw32/i686-w64-mingw32/include/crtdefs.h:
+/opt/mingw64/x86_64-w64-mingw32/include/crtdefs.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_mac.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h:
 
-/opt/mingw32/i686-w64-mingw32/include/_mingw_secapi.h:
+/opt/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h:
 
-/opt/mingw32/i686-w64-mingw32/include/vadefs.h:
+/opt/mingw64/x86_64-w64-mingw32/include/vadefs.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_directx.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_directx.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sdks/_mingw_ddk.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/limits.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/limits.h:
 
-/opt/mingw32/lib/gcc/i686-w64-mingw32/4.9.0/include-fixed/syslimits.h:
+/opt/mingw64/lib/gcc/x86_64-w64-mingw32/4.9.0/include-fixed/syslimits.h:
 
-/opt/mingw32/i686-w64-mingw32/include/limits.h:
+/opt/mingw64/x86_64-w64-mingw32/include/limits.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/stdlib_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
 
-/opt/mingw32/i686-w64-mingw32/include/malloc.h:
+/opt/mingw64/x86_64-w64-mingw32/include/malloc.h:
 
-/opt/mingw32/i686-w64-mingw32/include/string.h:
+/opt/mingw64/x86_64-w64-mingw32/include/string.h:
 
-/opt/mingw32/i686-w64-mingw32/include/sec_api/string_s.h:
+/opt/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h:
 
 GSM610/gsm610_priv.h:

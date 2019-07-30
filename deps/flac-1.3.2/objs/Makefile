@@ -103,7 +103,7 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = x86_64-pc-linux-gnu
-host_triplet = i686-w64-mingw32
+host_triplet = x86_64-w64-mingw32
 subdir = objs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/add_cflags.m4 \
@@ -209,28 +209,28 @@ am__relativize = \
 ACLOCAL = ${SHELL} /home/rob/git/ninjas2/deps/flac-1.3.2/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
-AR = i686-w64-mingw32-ar
-AS = i686-w64-mingw32-as
+AR = x86_64-w64-mingw32-ar
+AS = x86_64-w64-mingw32-as
 AUTOCONF = ${SHELL} /home/rob/git/ninjas2/deps/flac-1.3.2/missing autoconf
 AUTOHEADER = ${SHELL} /home/rob/git/ninjas2/deps/flac-1.3.2/missing autoheader
 AUTOMAKE = ${SHELL} /home/rob/git/ninjas2/deps/flac-1.3.2/missing automake-1.15
 AWK = gawk
-CC = i686-w64-mingw32-gcc -std=gnu99
-CCAS = i686-w64-mingw32-gcc -std=gnu99
+CC = x86_64-w64-mingw32-gcc -std=gnu99
+CCAS = x86_64-w64-mingw32-gcc -std=gnu99
 CCASDEPMODE = depmode=gcc3
-CCASFLAGS = -O2 -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -DFLUIDSYNTH_NOT_A_DLL -I/home/rob/git/ninjas2/deps/include -I/opt/mingw32/include
+CCASFLAGS = -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include
 CCDEPMODE = depmode=gcc3
-CFLAGS = -O3 -funroll-loops  -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -DFLUIDSYNTH_NOT_A_DLL -I/home/rob/git/ninjas2/deps/include -I/opt/mingw32/include -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -Wdeclaration-after-statement -D_FORTIFY_SOURCE=2 -msse2 -mstackrealign
-CPP = i686-w64-mingw32-gcc -std=gnu99 -E
-CPPFLAGS = -DNDEBUG -D__MSVCRT_VERSION__=0x0601 -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/include -I/opt/mingw32/include
-CXX = i686-w64-mingw32-g++
-CXXCPP = i686-w64-mingw32-g++ -E
+CFLAGS = -O3 -funroll-loops -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -Wdeclaration-after-statement -D_FORTIFY_SOURCE=2 -msse2
+CPP = x86_64-w64-mingw32-gcc -std=gnu99 -E
+CPPFLAGS = -DNDEBUG -D__MSVCRT_VERSION__=0x0601 -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include
+CXX = x86_64-w64-mingw32-g++
+CXXCPP = x86_64-w64-mingw32-g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -O2 -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -DFLUIDSYNTH_NOT_A_DLL -I/home/rob/git/ninjas2/deps/include -I/opt/mingw32/include -fvisibility-inlines-hidden -Wall -Wextra -Wcast-align -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Wsign-promo -Wundef  -Weffc++
+CXXFLAGS = -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fvisibility-inlines-hidden -Wall -Wextra -Wcast-align -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Wsign-promo -Wundef  -Weffc++
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-DLLTOOL = i686-w64-mingw32-dlltool
+DLLTOOL = x86_64-w64-mingw32-dlltool
 DOCBOOK_TO_MAN = 
 DOXYGEN = doxygen
 DSYMUTIL = 
@@ -254,8 +254,8 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /opt/mingw32/i686-w64-mingw32/bin/ld
-LDFLAGS = -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/lib -L/opt/mingw32/lib
+LD = /opt/mingw64/x86_64-w64-mingw32/bin/ld
+LDFLAGS = -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib
 LIBICONV = 
 LIBOBJS = 
 LIBS = 
@@ -270,13 +270,13 @@ MAKEINFO = ${SHELL} /home/rob/git/ninjas2/deps/flac-1.3.2/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
 NASM = 
-NM = /opt/mingw32/bin/i686-w64-mingw32-nm -B
+NM = /opt/mingw64/bin/x86_64-w64-mingw32-nm -B
 NMEDIT = 
-OBJDUMP = i686-w64-mingw32-objdump
+OBJDUMP = x86_64-w64-mingw32-objdump
 OBJEXT = o
 OBJ_FORMAT = win32
-OGG_CFLAGS = -I/home/rob/git/ninjas2/deps/include
-OGG_LIBS = -L/home/rob/git/ninjas2/deps/lib -logg
+OGG_CFLAGS = -I/home/rob/git/ninjas2/deps/ninjas2-w64/include
+OGG_LIBS = -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -logg
 OGG_PACKAGE = ogg
 OTOOL = 
 OTOOL64 = 
@@ -288,11 +288,11 @@ PACKAGE_TARNAME = flac
 PACKAGE_URL = https://www.xiph.org/flac/
 PACKAGE_VERSION = 1.3.2
 PATH_SEPARATOR = :
-RANLIB = i686-w64-mingw32-ranlib
+RANLIB = x86_64-w64-mingw32-ranlib
 SED = /bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
-STRIP = i686-w64-mingw32-strip
+STRIP = x86_64-w64-mingw32-strip
 VERSION = 1.3.2
 XMMS_CFLAGS = 
 XMMS_CONFIG = no
@@ -330,9 +330,9 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i686-w64-mingw32
-host_alias = i686-w64-mingw32
-host_cpu = i686
+host = x86_64-w64-mingw32
+host_alias = x86_64-w64-mingw32
+host_cpu = x86_64
 host_os = mingw32
 host_vendor = w64
 htmldir = ${docdir}
@@ -347,7 +347,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /home/rob/git/ninjas2/deps
+prefix = /home/rob/git/ninjas2/deps/ninjas2-w64
 program_transform_name = s,x,x,
 psdir = ${docdir}
 runstatedir = ${localstatedir}/run
@@ -355,7 +355,7 @@ sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 srcdir = .
 sysconfdir = ${prefix}/etc
-target_alias = i686-w64-mingw32
+target_alias = x86_64-w64-mingw32
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..

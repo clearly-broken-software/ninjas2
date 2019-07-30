@@ -20,6 +20,8 @@ BUILD_JACK ?= false
 BUILD_DSSI ?= false
 BUILD_LADSPA = false
 
+WINDOWS=true
+
 # --------------------------------------------------------------
 # Files to build
 
@@ -62,10 +64,9 @@ include ../../dpf/Makefile.plugins.mk
 # Extra flags
 
 BASE_FLAGS += -I. -I../../aubio/src -I./Widgets -I./Utils -I./Structures
-BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate)
-LINK_FLAGS += $(shell $(PKG_CONFIG) --libs sndfile samplerate)
+BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate vorbis)
+LINK_FLAGS += $(shell $(PKG_CONFIG) --libs --static flac sndfile samplerate vorbis)
 LINK_FLAGS += ../../aubio/libaubio.a
-
 # Set PARANOID_MODE=true to make the build error out on warnings
 ifeq ($(PARANOID_MODE),true)
 BASE_FLAGS += -Wall -Wextra -Werror

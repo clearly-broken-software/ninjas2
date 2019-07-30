@@ -39,11 +39,7 @@
 
 enum Parameters
 {  
-    paramProgramNumber = 0, // 0
-    paramSigSampleLoaded, // 1
-    paramSigLoadProgram, // 2
-    paramCurrentSlice, // 3
-    paramNumberOfSlices, // 4
+    paramNumberOfSlices = 0, // 4
     paramSliceSensitivity, // 5
     paramAttack, // 6
     paramDecay, // 7
@@ -58,6 +54,10 @@ enum Parameters
     paramOneShotReverse, // 16
     paramLoopForward, // 17
     paramLoopReverse, // 18
+    paramProgramNumber, // 0
+    paramSigSampleLoaded, // 1
+    paramSigLoadProgram, // 2
+    paramCurrentSlice, // 3
     paramCount // 19
 };
 
