@@ -1,3 +1,0 @@
-utf8/charset.lo: utf8/charset.c ../../config.h
-
-../../config.h:

@@ -4738,7 +4738,7 @@ configure:18749: $? = 0
 configure:18749: result: yes
 configure:18749: checking for fstat64
 configure:18749: x86_64-w64-mingw32-gcc -std=gnu99 -o conftest.exe -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib conftest.c  >&5
-/tmp/cc8cJApt.o:conftest.c:(.text.startup.main+0xa): undefined reference to `fstat64'
+/tmp/cc56oNiZ.o:conftest.c:(.text.startup.main+0xa): undefined reference to `fstat64'
 collect2: error: ld returned 1 exit status
 configure:18749: $? = 1
 configure: failed program was:
@@ -4848,7 +4848,7 @@ configure:18749: $? = 0
 configure:18749: result: yes
 configure:18749: checking for fsync
 configure:18749: x86_64-w64-mingw32-gcc -std=gnu99 -o conftest.exe -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib conftest.c  >&5
-/tmp/cc0zIcqy.o:conftest.c:(.text.startup.main+0xa): undefined reference to `fsync'
+/tmp/ccWnUDa4.o:conftest.c:(.text.startup.main+0xa): undefined reference to `fsync'
 collect2: error: ld returned 1 exit status
 configure:18749: $? = 1
 configure: failed program was:
@@ -4973,7 +4973,7 @@ configure:18773: $? = 0
 configure:18773: result: yes
 configure:18773: checking for gmtime_r
 configure:18773: x86_64-w64-mingw32-gcc -std=gnu99 -o conftest.exe -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib conftest.c  >&5
-/tmp/ccFe0R3G.o:conftest.c:(.text.startup.main+0xa): undefined reference to `gmtime_r'
+/tmp/ccnNvqNd.o:conftest.c:(.text.startup.main+0xa): undefined reference to `gmtime_r'
 collect2: error: ld returned 1 exit status
 configure:18773: $? = 1
 configure: failed program was:
@@ -5087,7 +5087,7 @@ configure:18773: $? = 0
 configure:18773: result: yes
 configure:18773: checking for localtime_r
 configure:18773: x86_64-w64-mingw32-gcc -std=gnu99 -o conftest.exe -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib conftest.c  >&5
-/tmp/ccqg4ggN.o:conftest.c:(.text.startup.main+0xa): undefined reference to `localtime_r'
+/tmp/ccaoeVJi.o:conftest.c:(.text.startup.main+0xa): undefined reference to `localtime_r'
 collect2: error: ld returned 1 exit status
 configure:18773: $? = 1
 configure: failed program was:
@@ -5202,7 +5202,7 @@ configure:18773: $? = 0
 configure:18773: result: yes
 configure:18785: checking for mmap
 configure:18785: x86_64-w64-mingw32-gcc -std=gnu99 -o conftest.exe -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib conftest.c  >&5
-/tmp/cctR72fS.o:conftest.c:(.text.startup.main+0xa): undefined reference to `mmap'
+/tmp/cclleqGn.o:conftest.c:(.text.startup.main+0xa): undefined reference to `mmap'
 collect2: error: ld returned 1 exit status
 configure:18785: $? = 1
 configure: failed program was:
@@ -5322,7 +5322,7 @@ configure:18796: $? = 0
 configure:18796: result: yes
 configure:18808: checking for pipe
 configure:18808: x86_64-w64-mingw32-gcc -std=gnu99 -o conftest.exe -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib conftest.c  >&5
-/tmp/ccUdsq3Z.o:conftest.c:(.text.startup.main+0xa): undefined reference to `pipe'
+/tmp/ccbwuCnv.o:conftest.c:(.text.startup.main+0xa): undefined reference to `pipe'
 collect2: error: ld returned 1 exit status
 configure:18808: $? = 1
 configure: failed program was:
@@ -5436,7 +5436,7 @@ configure: failed program was:
 configure:18808: result: no
 configure:18808: checking for waitpid
 configure:18808: x86_64-w64-mingw32-gcc -std=gnu99 -o conftest.exe -O3 -mtune=generic -msse -msse2 -mfpmath=sse -fvisibility=hidden -fdata-sections -ffunction-sections -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -DPIC -DNDEBUG -DPTW32_STATIC_LIB -I/home/rob/git/ninjas2/deps/ninjas2-w64/include -I/opt/mingw64/include -fdata-sections -ffunction-sections -Wl,--gc-sections -Wl,-O1 -Wl,--as-needed -Wl,--strip-all -L/home/rob/git/ninjas2/deps/ninjas2-w64/lib -L/opt/mingw64/lib conftest.c  >&5
-/tmp/cc4bDay2.o:conftest.c:(.text.startup.main+0xa): undefined reference to `waitpid'
+/tmp/cciMoP6y.o:conftest.c:(.text.startup.main+0xa): undefined reference to `waitpid'
 collect2: error: ld returned 1 exit status
 configure:18808: $? = 1
 configure: failed program was:
@@ -5719,7 +5719,6 @@ config.status:1381: creating sndfile.pc
 config.status:1381: creating src/sndfile.h
 config.status:1381: creating echo-install-dirs
 config.status:1381: creating src/config.h
-config.status:1562: src/config.h is unchanged
 config.status:1610: executing depfiles commands
 config.status:1610: executing libtool commands
 configure:23879: result:
