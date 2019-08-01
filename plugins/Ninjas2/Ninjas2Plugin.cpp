@@ -31,9 +31,9 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <cerrno>
-//#define MINIMP3_IMPLEMENTATION
-//#define MINIMP3_FLOAT_OUTPUT
-//#include "minimp3_ex.h"
+#define MINIMP3_IMPLEMENTATION
+#define MINIMP3_FLOAT_OUTPUT
+#include "minimp3_ex.h"
 
 #include "DistrhoPluginInfo.h"
 
@@ -1219,7 +1219,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
      //  printf ( "extension = %s \n",ext.c_str() );
      if ( ext == "mp3" ) {
           printf ( "file is an mp3\n" );
-      /*     mp3dec_t mp3d;
+          mp3dec_t mp3d;
           mp3dec_file_info_t info;
           if ( mp3dec_load ( &mp3d, fp.c_str(), &info, NULL, NULL ) ) {
                std::cout << "Can't load sample " << fp << std::endl;
@@ -1238,7 +1238,7 @@ int NinjasPlugin::loadSample ( std::string fp, bool fromUser )
 
           }
 
-          sampleSize = sampleVector.size() /sampleChannels; */
+          sampleSize = sampleVector.size() /sampleChannels; 
      } else {
           SndfileHandle fileHandle ( fp , SFM_READ,  SF_FORMAT_WAV | SF_FORMAT_FLOAT , 2 , 44100 );
 
