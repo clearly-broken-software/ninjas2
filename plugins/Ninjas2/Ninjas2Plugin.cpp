@@ -1139,7 +1139,7 @@ void NinjasPlugin::getOnsets ()
      aubio_onset_t  * onset = new_aubio_onset ( "specdiff", win_s, hop_size, samplerate );
      aubio_onset_set_threshold ( onset, 1 - sliceSensitivity ) ;
      onsets.clear();
-     while ( readptr < tmp_sample_vector.size() ) {
+     while ( readptr + hop_size <= tmp_sample_vector.size() ) {
           ftable.data = &tmp_sample_vector[readptr];
           aubio_onset_do ( onset , &ftable, out );
           if ( out->data[0] != 0 ) {
