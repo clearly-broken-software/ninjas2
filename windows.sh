@@ -172,10 +172,10 @@ cleanup_pkgs
 
 #unset NOSSE
 
-#export ARCH=32
-#export ARCH_PREFIX=32
-#build_base
-#cleanup_pkgs
+export ARCH=32
+export ARCH_PREFIX=32
+build_base
+cleanup_pkgs
 
 export ARCH=64
 export ARCH_PREFIX=64
