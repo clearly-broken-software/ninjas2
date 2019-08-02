@@ -65,16 +65,16 @@ BASE_FLAGS += -I. -I./Widgets -I./Utils -I./Structures
 
 # TODO: change pkg-config to $(PKG_CONFIG) with updated DPF
 ifeq ($(USE_SYSTEM_AUBIO),true)
-BASE_FLAGS += $(shell pkg-config --cflags-only-other aubio) \
-              -I$(shell pkg-config --variable includedir aubio)/aubio
-LINK_FLAGS += $(shell pkg-config --libs aubio)
+BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags-only-other aubio) \
+              -I$(shell $(PKG_CONFIG) --variable includedir aubio)/aubio
+LINK_FLAGS += $(shell $(PKG_CONFIG) --libs aubio)
 else
 BASE_FLAGS += -I../../aubio/src
 LINK_FLAGS += -L../../aubio/ -l:libaubio.a
 endif
 
-BASE_FLAGS += $(shell pkg-config --cflags sndfile samplerate)
-LINK_FLAGS += $(shell pkg-config --libs sndfile samplerate)
+BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate)
+LINK_FLAGS += $(shell $(PKG_CONFIG) --libs sndfile samplerate)
 
 # Set PARANOID_MODE=true to make the build error out on warnings
 ifeq ($(PARANOID_MODE),true)
