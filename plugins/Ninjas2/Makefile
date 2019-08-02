@@ -95,7 +95,7 @@ TARGETS += ladspa
 endif
 
 ifeq ($(BUILD_DSSI),true)
-ifeq ($(HAVE_DGL),true)
+ifeq ($(HAVE_OPENGL),true)
 ifeq ($(HAVE_LIBLO),true)
 TARGETS += dssi
 endif
@@ -103,7 +103,7 @@ endif
 endif
 
 ifeq ($(BUILD_LV2),true)
-ifeq ($(HAVE_DGL),true)
+ifeq ($(HAVE_OPENGL),true)
 TARGETS += lv2
 else
 TARGETS += lv2_dsp

@@ -29,7 +29,7 @@ ifeq ($(USE_SYSTEM_AUBIO),true)
 	$(MAKE) -C aubio
 endif
 
-ifeq ($(HAVE_DGL),true)
+ifeq ($(HAVE_OPENGL),true)
 	$(MAKE) -C dpf/dgl
 endif
 
@@ -51,7 +51,7 @@ clean:
 ifeq ($(USE_SYSTEM_AUBIO),true)
 	$(MAKE) clean -C aubio
 endif
-ifeq ($(HAVE_DGL),true)
+ifeq ($(HAVE_OPENGL),true)
 	$(MAKE) clean -C dpf/dgl
 endif
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
