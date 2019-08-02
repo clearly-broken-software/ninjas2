@@ -7,6 +7,7 @@
 #
 
 include dpf/Makefile.base.mk
+WINDOWS=true
 
 all: libs plugins gen
 
