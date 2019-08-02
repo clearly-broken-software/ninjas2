@@ -20,8 +20,6 @@ BUILD_JACK ?= true
 BUILD_DSSI ?= false
 BUILD_LADSPA = false
 
-WINDOWS=true
-
 # --------------------------------------------------------------
 # Files to build
 
