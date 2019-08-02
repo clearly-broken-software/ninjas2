@@ -25,7 +25,7 @@ ifeq (,$(wildcard dpf/dgl))
 	$(error $(MISSING_SUBMODULES_ERROR))
 endif
 
-ifeq ($(USE_SYSTEM_AUBIO),true)
+ifneq ($(USE_SYSTEM_AUBIO),true)
 	$(MAKE) -C aubio
 endif
 
@@ -48,7 +48,7 @@ dpf/utils/lv2_ttl_generator:
 # --------------------------------------------------------------
 
 clean:
-ifeq ($(USE_SYSTEM_AUBIO),true)
+ifneq ($(USE_SYSTEM_AUBIO),true)
 	$(MAKE) clean -C aubio
 endif
 ifeq ($(HAVE_OPENGL),true)
