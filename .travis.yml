@@ -1,5 +1,9 @@
 language: c++
 
+branches:
+  except:
+    - automatic
+
 cache:
   directories:
     - download
