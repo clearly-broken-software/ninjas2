@@ -1,0 +1,27 @@
+language: cpp
+compiler: gcc
+sudo: require
+dist: trusty
+
+install:
+  - sudo apt-get -y install libgl1-mesa-dev libx11-dev libsndfile1-dev libsamplerate0-dev libjack-jackd2-dev
+
+script:
+  - git submodule update --init --recursive
+  - make -j$(nproc)
+  - mkdir -p ./appdir/usr ; cp -r ./bin ./appdir/usr/
+  - mkdir -p appdir/usr/share/icons/scalable/apps/ ; touch appdir/usr/share/icons/scalable/apps/ninjas2.svg  # FIXME: "make install" should do this
+  - mkdir -p appdir/usr/share/applications/ ; cp ninjas2.desktop appdir/usr/share/applications/  # FIXME: "make install" should do this
+  - find appdir/
+  - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+
+after_success:
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh ninjas2*.AppImage*
+  
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)/

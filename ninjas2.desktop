@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=ninjas2
+Comment=Rewrite of Ninjas sample slicer
+Exec=ninjas2
+Icon=ninjas2
+Terminal=true
+Type=Application
+Categories=AudioVideo;
