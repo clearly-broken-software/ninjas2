@@ -79,6 +79,13 @@ matrix:
         - install -d release
         - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
 
+before_deploy:
+  - >
+    if test "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false"; then
+      export TRAVIS_TAG=automatic
+      git tag -f "$TRAVIS_TAG"
+    fi
+
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
