@@ -70,7 +70,7 @@ BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags-only-other aubio) \
 LINK_FLAGS += $(shell $(PKG_CONFIG) --libs aubio)
 else
 BASE_FLAGS += -I../../aubio/src
-LINK_FLAGS += -L../../aubio/ -l:libaubio.a
+LINK_FLAGS += ../../aubio/libaubio.a
 endif
 
 BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate)
