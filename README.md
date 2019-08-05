@@ -71,3 +71,4 @@ There is no ~`make install`~, binaries will appear in `/path/to/ninjas2/bin/`, j
 
 ***
 [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://riot.im/app/#/room/#ninjas:matrix.org?action=chat)
+[![Build Status](https://travis-ci.org/rghvdberg/ninjas2.svg?branch=master)](https://travis-ci.org/rghvdberg/ninjas2)
