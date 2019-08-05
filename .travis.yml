@@ -1,98 +1,82 @@
 language: c++
-
 branches:
   except:
-    - automatic
-
+  - automatic
 cache:
   directories:
-    - download
-
+  - download
 matrix:
   include:
+  - os: linux
+    sudo: required
+    dist: trusty
+    env:
+    - _BUILD=win32
+    - _MINGW=mingw32
+    - _HOST=i686-w64-mingw32
+    before_install:
+    - sudo add-apt-repository ppa:kxstudio-debian/kxstudio -y
+    - sudo add-apt-repository ppa:kxstudio-debian/mingw -y
+    - sudo add-apt-repository ppa:kxstudio-debian/toolchain -y
+    - sudo apt-get update -qq
+    - sudo apt-get install kxstudio-repos
+    - sudo apt-get update -qq
+    install:
+    - 'sudo apt-get install -y g++ pkg-config "${_MINGW}"-x-gcc "${_MINGW}"-x-pkgconfig
+      wine
 
-    # Windows 32 bits
-    - os: linux
-      sudo: required
-      dist: trusty
-      env:
-        - _BUILD=win32
-        - _MINGW=mingw32
-        - _HOST=i686-w64-mingw32
-      before_install:
-        - sudo add-apt-repository ppa:kxstudio-debian/kxstudio -y
-        - sudo add-apt-repository ppa:kxstudio-debian/mingw -y
-        - sudo add-apt-repository ppa:kxstudio-debian/toolchain -y
-        - sudo apt-get update -qq
-        - sudo apt-get install kxstudio-repos
-        - sudo apt-get update -qq
-      install:
-        - >
-          sudo apt-get install -y
-          g++
-          pkg-config
-          "${_MINGW}"-x-gcc
-          "${_MINGW}"-x-pkgconfig
-          wine
-      script:
-        - bash .travis/script-mingw.sh
-        - cp -drfv bin ninjas2-"$_BUILD"
-        - rm -f ninjas2-"$_BUILD"/README
-        - install -d release
-        - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
+'
+    script:
+    - bash .travis/script-mingw.sh
+    - cp -drfv bin ninjas2-"$_BUILD"
+    - rm -f ninjas2-"$_BUILD"/README
+    - install -d release
+    - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
+  - os: linux
+    sudo: required
+    dist: trusty
+    env:
+    - _BUILD=win64
+    - _MINGW=mingw64
+    - _HOST=x86_64-w64-mingw32
+    before_install:
+    - sudo add-apt-repository ppa:kxstudio-debian/kxstudio -y
+    - sudo add-apt-repository ppa:kxstudio-debian/mingw -y
+    - sudo add-apt-repository ppa:kxstudio-debian/toolchain -y
+    - sudo apt-get update -qq
+    - sudo apt-get install kxstudio-repos
+    - sudo apt-get update -qq
+    install:
+    - 'sudo apt-get install -y g++ pkg-config "${_MINGW}"-x-gcc "${_MINGW}"-x-pkgconfig
+      wine
 
-    # Windows 64 bits
-    - os: linux
-      sudo: required
-      dist: trusty
-      env:
-        - _BUILD=win64
-        - _MINGW=mingw64
-        - _HOST=x86_64-w64-mingw32
-      before_install:
-        - sudo add-apt-repository ppa:kxstudio-debian/kxstudio -y
-        - sudo add-apt-repository ppa:kxstudio-debian/mingw -y
-        - sudo add-apt-repository ppa:kxstudio-debian/toolchain -y
-        - sudo apt-get update -qq
-        - sudo apt-get install kxstudio-repos
-        - sudo apt-get update -qq
-      install:
-        - >
-          sudo apt-get install -y
-          g++
-          pkg-config
-          "${_MINGW}"-x-gcc
-          "${_MINGW}"-x-pkgconfig
-          wine
-      script:
-        - bash .travis/script-mingw.sh
-        - cp -drfv bin ninjas2-"$_BUILD"
-        - rm -f ninjas2-"$_BUILD"/README
-        - install -d release
-        - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
-
-    # macOS
-    - os: osx
-      sudo: required
-      env:
-        - _BUILD=macos
-      script:
-        - bash .travis/script-macos.sh
-        - cp -av bin ninjas2-"$_BUILD"
-        - rm -f ninjas2-"$_BUILD"/README
-        - install -d release
-        - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
-
+'
+    script:
+    - bash .travis/script-mingw.sh
+    - cp -drfv bin ninjas2-"$_BUILD"
+    - rm -f ninjas2-"$_BUILD"/README
+    - install -d release
+    - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
+  - os: osx
+    sudo: required
+    env:
+    - _BUILD=macos
+    script:
+    - bash .travis/script-macos.sh
+    - cp -av bin ninjas2-"$_BUILD"
+    - rm -f ninjas2-"$_BUILD"/README
+    - install -d release
+    - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
 before_deploy:
-  - >
-    if test "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false"; then
-      export TRAVIS_TAG=automatic
-      git tag -f "$TRAVIS_TAG"
-    fi
-
+- |
+  if test "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false"; then
+    export TRAVIS_TAG=automatic
+    git tag -f "$TRAVIS_TAG"
+  fi
 deploy:
   provider: releases
-  api_key: $GITHUB_TOKEN
+  api_key:
+    secure: Dlnfxkq54d3d81IvhPBN/h/FC3mwVMHqOyjRN2NIVqlVF6hDBtQoX7r7qejcDp/v+27ammymjLlIcIwY2vN8oFfE9wZmfpw4pTSjgDSrw6DdE+dBOX0q/EDJcTzOmyOkow/J1bhHXHhvHb9BT/3l67c8CvoflNt3V4ocGY3qMhV6LzbLAxFfPDl9vAyz7RBg/twRzoZal1Ii+Lerrd85hqRgmRsBBzWrjxoRDztHhF2b4kHLRNH4L06iXZ/V++92pXSA0YGJlFwtwXrJS+dTzZsaHk7K86GufR5MDgpUqEdz8ZJ/w3oTF4YyfF/FNRaiRDDwnSX03Oy4Ydtg4HM4oR0jZMsS+xRK57BT/WU9WYu3nyMBaEx49+MWOn74VqqJrK5RAA80QlGrqgI6nZKTUXEFAIttODkXTsk1Cbt8E/QMyheYcVzJ1J5gIjyCgG6vgAx0s8bCzjiVWGT3BU3c2ROa1JVf+83qenbuCkh3/to8XA0rNL4Se+VDOlQcWTDA+/3aBsYIsbT4JTnxpLd3+iYkVbKeVPopdIzFmHccDXk2TWF/va3xJqRzq+uQnZiZU1KQyIY2HDHoow12Clb243AvB+3JTJ9342lFvUDXyTEybs6iDuSEdNkqs19iLHop2WITa9ZmzbgoQSM8oHIz2sE2yYklEcyYjAyAzR1hvDM=
   file: release/*
   file_glob: true
   skip_cleanup: true
@@ -101,10 +85,6 @@ deploy:
   overwrite: true
   on:
     branch: master
-
-# TODO: replace me $GITHUB_TOKEN (a personal access token with repo rights)
-#  travis login --com
-#  travis encrypt GITHUB_TOKEN=<the-token-value> --com --add
 env:
   global:
     secure: OPYFFPt8s80w2PbPWp7/uyvLsk7YCNQa9qnuIJTYA379Yj6KtGXV/OgMX7GNB5nJnxI2ZbXEyLrO6vdQDap2b+9875HPDqzyJu0qPwRB/XwDnLAfNZWJ0Yb8wbyx9FJLl1b1vfZQquwkKKGF7tKxO5Jc7kKwxEgzm+kO3yYA5UqZIh2Af0ZLyiuEboSFEDkAfqxv3c2cuJwcIFg7aoHJRfsoxVOuiN5yIjjnBizTsMDTkRU3dmm3+Hp7ITK9R60LiIH8DS1Tf+y7Dqcorgaewda/WFNFX+RBhfAJkR/Ph9OnAtuUpyfw32+Tu5/6C4i/Ua0IvFyygHPVxoL3Ezg3Cb+R1mTiwXETxTKisL4inFVYTejQ06vRwB/blAqNj0sWoigv5OCrtWobd3qE5AnZumVnQfoTTdJh4Dt9mFl1TDejDQQ6mqg9pJN0AG6iqLJy7+rzEuag4ArSYI1pwpr4iSNew9YaR9f+3vEZW8yQBx04+tY1zPx6wlUhmx9aR9DzNzVUCkQrv9mpo4dqVfnTLtx73KQf9IffNGiTv+//m5nlfL9mN4Sv0sgO1jcAltI4raXQ8dAJfbcbezeShylIYRMUclwjKxk8+LenKPn2FUXHUyNfqqYFQ8puPZbZ9J+B8O31xzHGK4S6yl8qluC1dIyCQ5O2kxYKNcxmvaO8f4c=
