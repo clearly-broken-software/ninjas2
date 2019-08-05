@@ -24,6 +24,7 @@
 #include "Animation.hpp"
 #include "Window.hpp"
 #include "../Resources/fonts.hpp"
+#include <string>
 
 START_NAMESPACE_DISTRHO
 
