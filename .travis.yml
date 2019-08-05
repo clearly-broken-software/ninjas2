@@ -92,7 +92,7 @@ before_deploy:
 
 deploy:
   provider: releases
-  api_key: $GITHUB_TOKEN
+  api_key: e0a624a312b88ec8b9ab2ef7633827239ba50aa3
   file: release/*
   file_glob: true
   skip_cleanup: true
@@ -107,4 +107,5 @@ deploy:
 #  travis encrypt GITHUB_TOKEN=<the-token-value> --com --add
 env:
   global:
-    secure: KQIx0K9HNyKwGW793K6LzGIY38E9Ax2JLyzzu62T/u1JGQYSZ0z4V4suVzMcDAPbq1dsmn6ni4jEWPJyC7jgwwAdU52tv7YqYIXAf1ZbnbPL3Tykuh3DPNKwGVlimZzd4gl7C+Qg+gMYdu0mVYceB0i+T6F+U/O23sTwDsX7rtpegEj56jRPc5+VCjpNTDnGifHvtNaXgnPMx6Gf9nW/IsXNCGfdnQSPLPGHnNLmNLJvIJX3AbXgTgE66vT8+8ZcGcTg3W5YKOp6qnEUb3fo8qFdrG39yKBdf4qguy2zSAktPVozn7GshyCmo6GtLbPcti+nLN/BfcqJvazb3NWJ2ivevg/FnNxQtu8/UCB4gLIS+LRsvndhGT/FcpnW/WhOolgmQJnwFPU/0sRY63/gixWWN3/wzX/2mwwbkFWbJ6nYW0sO7YR4YCrEwzxAVF8ZzoWVvZFFLt2vkEGK1/rnWGca3+Xx3LPudnIa3dbvlVhJWYzLpWshHa+YdZtB0G34t2azquMIQVbll1EpgiuE0slZ1SIKnMqGftLxsDPq2gAc1Zu7g9mx4IzsHBoDaVI5ENr+X6iT6KMLEJWJJJbrn+zTSHu0L+ITjdkr2YA6IXYVQoie7lcjh2j7iMs4Jsc/RO+nbBtegUImAfrmD3bsku/BXGpZYKmeg2F6+eCJM+Q=
+    secure: aavJSLnvxBe8U3JuJFXnG0xsllyULSngiX9F4HnvwsPHP4JSMsKEdgOjHrnKogYnk7U5jzWFvMxma3Xg5SJoWQhOxvrLiRFfXIwxVUblF1j+ycgUWr+xrin5kZQBRGrb4A3citqdFnUjuCKTfU2is44MLuhBGWSQ+B76VYH1wK5lgZdZ+KeWHIQvnCMDSfm551jYah+qq851EtNnEyvYoy+9/ABo9thFNz1uoIsjhd5HUyV5eVezHFS+Rb2BjrOXts2jD0/UjyO81QhGJIrd9hF1IbcVs6XAczldFCLOjF+bsbanaFURt7unFjnjTuwADujuxZLiWK5VeOzUE/9Xo1awhUvKuW61AuiThiWH2/ET7VYFkQU3JYm4h19Q/X22sXCST5wLTkOcGgYooKOj4Orx6AAg2NzmRfwQrgUziYMXhSiZMCjzY8vm4eCCC/9MQXreU05LF9pR6oh7ZuwLEjM+XeMC+UH5VdAge/u+cGVKV7AQXD54N+WwLVxTk1YPd5P27rGYXhrWgvEytULnW6CdELHiCzWJ3c4LORS3aoBffGewJFKhhcXFoVisv+KWcu5OFvVJceHFdgiYyDsr9zgMDF/oSgEltZYlAXJ5dJ7t4l3RMkaFziZJAo1MT+0w50ruRbL6d1ixeEyu1nR9WicJzF2huyXho+h1+s7NhqQ=
+
