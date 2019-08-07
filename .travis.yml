@@ -67,6 +67,39 @@ matrix:
     - rm -f ninjas2-"$_BUILD"/README
     - install -d release
     - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
+  - os: linux
+    sudo: required
+    dist: trusty
+    env:
+    - _BITS=64
+    - _BUILD=linux64
+    before_install:
+    - sudo apt-get update -qq
+    install:
+    - sudo apt-get install mesa-common-dev libx11-dev libsamplerate0-dev libsndfile1-dev
+    script:
+    - bash .travis/script-linux.sh
+    - cp -drfv bin ninjas2-"$_BUILD"
+    - rm -f ninjas2-"$_BUILD"/README
+    - install -d release
+    - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
+  - os: linux
+    sudo: required
+    dist: trusty
+    env:
+    - _BITS=32
+    - _BUILD=linux32
+    before_install:
+    - sudo dpkg --add-architecture i386
+    - sudo apt-get update -qq
+    install:
+      - sudo apt-get install mesa-common-dev:i386 libx11-dev:i386 libsamplerate0-dev:i386 libsndfile1-dev:i386 libc6-dev-i386 lib32stdc++-4.8-dev libc6:i386 libstdc++6:i386
+    script:
+    - bash .travis/script-linux.sh
+    - cp -drfv bin ninjas2-"$_BUILD"
+    - rm -f ninjas2-"$_BUILD"/README
+    - install -d release
+    - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
 before_deploy:
 - |
   if test "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false"; then
