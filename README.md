@@ -37,7 +37,7 @@ User can play the slices using midi notes and change the pitch with midi pitchbe
   + user editable slice start and end points
     * **note**: slices can not overlap
     * dragging the top marker edits both start and end point, keeping the slices continuous
-    * dragging the bottom markers edits the the start or end point of a slice.
+    * dragging the bottom markers edits the start or end point of a slice.
   + programs : store and retrieve up to 16 configurations of slices
     * normal click restores state
     * shift click copies current state to new location
