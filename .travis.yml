@@ -76,7 +76,7 @@ matrix:
     before_install:
     - sudo apt-get update -qq
     install:
-    - sudo apt-get install mesa-common-dev libx11-dev libsamplerate0-dev libsndfile1-dev
+    - sudo apt-get install libgl1-mesa-dev libx11-dev libsamplerate0-dev libsndfile1-dev
     script:
     - bash .travis/script-linux.sh
     - cp -drfv bin ninjas2-"$_BUILD"
@@ -93,7 +93,7 @@ matrix:
     - sudo dpkg --add-architecture i386
     - sudo apt-get update -qq
     install:
-      - sudo apt-get install mesa-common-dev:i386 libx11-dev:i386 libsamplerate0-dev:i386 libsndfile1-dev:i386 libc6-dev-i386 lib32stdc++-4.8-dev libc6:i386 libstdc++6:i386
+      - sudo apt-get install libgl1-mesa-dev:i386 libx11-dev:i386 libsamplerate0-dev:i386 libsndfile1-dev:i386 libc6-dev-i386 lib32stdc++-4.8-dev libc6:i386 libstdc++6:i386
     script:
     - bash .travis/script-linux.sh
     - cp -drfv bin ninjas2-"$_BUILD"
