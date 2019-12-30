@@ -84,8 +84,8 @@ protected:
      bool onMotion ( const MotionEvent& ) override;
 
 private:
-     ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity, fKnobPitchbendDepth;
-     ScopedPointer<SpinBox> fSpinBox;
+     ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
+     ScopedPointer<SpinBox> fSpinBoxSlices, fSpinBoxPitchBendDepth;
      ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
      ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxSliceSensitivity, fLabelsBoxLoadSample;
      ScopedPointer<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
@@ -219,14 +219,16 @@ private:
 
      // need static constexpr apparently because of std::array ..
 
-     static constexpr unsigned int display_left = 30;
-     static constexpr unsigned int display_width = 1140;
-     static constexpr unsigned int display_right = 30 + display_width;
-     static constexpr unsigned int display_top = 600 - 200 - 350;
-     static constexpr unsigned int display_bottom = 600-200 ;
+     static constexpr unsigned int display_left = 25;   
+     static constexpr unsigned int display_top = 50;
+    static constexpr unsigned int display_width = 950;
+     static constexpr unsigned int display_right = display_left + display_width;
+     static constexpr unsigned int display_height = 315;
+           
+     static constexpr unsigned int display_bottom = display_top + display_height ;
      static constexpr unsigned int display_center = ( display_bottom - display_top ) / 2 + display_top;
-     static constexpr unsigned int display_length = display_right - display_left;
-     static constexpr unsigned int display_height = ( display_bottom - display_top ) /2;
+     
+     //static constexpr unsigned int display_height = ( display_bottom - display_top ) /2;
      //static constexpr unsigned int waveform_length = display_length * 2;
 
      // font

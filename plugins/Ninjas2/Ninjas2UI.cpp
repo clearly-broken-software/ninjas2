@@ -30,7 +30,7 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 NinjasUI::NinjasUI()
-     : UI ( 1200, 600 )
+     : UI ( 1000, 600 )
 {
      void* pi =  getPluginInstancePointer();
      plugin = static_cast<NinjasPlugin*> ( pi );
@@ -62,19 +62,19 @@ NinjasUI::NinjasUI()
      mouseEditSlice = false;
 
      // knobs
-     const Size<uint> knobSize = Size<uint> ( 80, 80 );
+     const Size<uint> knobSize = Size<uint> ( 59, 59 );
      const Size<uint> knobSizeSmall = Size<uint> ( 40, 40 );
-     const Size<uint> spinboxSize = Size<uint> ( 40,80 );
+     const Size<uint> spinboxSize = Size<uint> ( 48,76 );
      const Color ninjasColor = Color ( 222,205,135,255 );
 
      Window &window = getParentWindow();
 
      // slice number selector
-     fSpinBox = new SpinBox ( window, spinboxSize );
-     fSpinBox->setId ( paramNumberOfSlices );
-     fSpinBox->setRange ( 1.0f, 128.0f );
-     fSpinBox->setStep ( 1.0f );
-     fSpinBox->setCallback ( this );
+     fSpinBoxSlices = new SpinBox ( window, spinboxSize );
+     fSpinBoxSlices->setId ( paramNumberOfSlices );
+     fSpinBoxSlices->setRange ( 1.0f, 128.0f );
+     fSpinBoxSlices->setStep ( 1.0f );
+     fSpinBoxSlices->setCallback ( this );
 
      fKnobSliceSensitivity = new VolumeKnob ( window, knobSizeSmall );
      fKnobSliceSensitivity->setId ( paramSliceSensitivity );
@@ -114,13 +114,13 @@ NinjasUI::NinjasUI()
      fKnobRelease->setColor ( ninjasColor );
      fKnobRelease->setCallback ( this );
 
-     fKnobPitchbendDepth = new VolumeKnob ( window,knobSize );
-     fKnobPitchbendDepth->setId ( paramPitchbendDepth );
+    fSpinBoxPitchBendDepth= new SpinBox ( window,spinboxSize );
+    fSpinBoxPitchBendDepth->setId ( paramPitchbendDepth );
      //  fKnobPitchbendDepth->setDefault(12.0f);
-     fKnobPitchbendDepth->setStep ( 1.0f );
-     fKnobPitchbendDepth->setRange ( 0.0, 12.0f );
-     fKnobPitchbendDepth->setColor ( ninjasColor );
-     fKnobPitchbendDepth->setCallback ( this );
+     fSpinBoxPitchBendDepth->setStep ( 1.0f );
+     fSpinBoxPitchBendDepth->setRange ( 0.0, 12.0f );
+     fSpinBoxPitchBendDepth->setColor ( ninjasColor );
+     fSpinBoxPitchBendDepth->setCallback ( this );
 
 
 
@@ -136,15 +136,15 @@ NinjasUI::NinjasUI()
      fLabelsBoxSliceSensitivity = new GlowingLabelsBox ( window, Size<uint> ( 84, 21 ) );
      fLabelsBoxSliceSensitivity->setLabels ( {"SENSITIVITY" } );
 
-     fLabelsBoxLoadSample = new GlowingLabelsBox ( window, Size<uint> ( 90, 70 ) );
-     fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
+     //fLabelsBoxLoadSample = new GlowingLabelsBox ( window, Size<uint> ( 90, 70 ) );
+     //fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
      // switches
 
      // play modes
 
-     const Size<uint> switchSize = Size<uint> ( 50, 50 );
-     const Size<uint> gridSize = Size<uint> ( 25, 25 );
+     const Size<uint> switchSize = Size<uint> ( 44, 44 );
+     const Size<uint> gridSize = Size<uint> ( 30, 30 );
 
 
      fSwitchFwd = new PlayModeSwitch ( window, switchSize );
@@ -170,9 +170,10 @@ NinjasUI::NinjasUI()
 
      // sample load button
 
-     fSwitchLoadSample = new RemoveDCSwitch ( window, switchSize );
+ /*     fSwitchLoadSample = new RemoveDCSwitch ( window, switchSize );
      fSwitchLoadSample->setId ( paramLoadSample );
      fSwitchLoadSample->setCallback ( this );
+      */
 
      // grid
      for ( int i = 0; i < 16; ++i ) {
@@ -185,7 +186,7 @@ NinjasUI::NinjasUI()
      positionWidgets();
      // text
      loadSharedResources();
-     fNanoFont = createFontFromMemory ( "dungeon",fonts::dungeon_ttf,fonts::dungeon_ttf_size, false );
+     fNanoFont = findFont(NANOVG_DEJAVU_SANS_TTF);
      // logos
      imgNinjasLogo = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1 );
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
@@ -204,28 +205,28 @@ void NinjasUI::positionWidgets()
      //const float width = getWidth();
      //const float height = getHeight();
 
-     fSwitchLoadSample->setAbsolutePos ( 51+24, 470+18 );
+   //  fSwitchLoadSample->setAbsolutePos ( 51+24, 470+18 );
 
-     fSliceModeSlider->setAbsolutePos ( 217-36, 458 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 236-36, 453 );
-     fKnobSliceSensitivity->setAbsolutePos ( 237-36, 505 );
-     fLabelsBoxSliceSensitivity->setAbsolutePos ( 215-36, 543 );
-     fSpinBox->setAbsolutePos ( 307-36, 450 );
-     fSliceButton->setAbsolutePos ( 307-36, 532 );
+     fSliceModeSlider->setAbsolutePos ( 420, 449 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 442, 449 );
+     //fKnobSliceSensitivity->setAbsolutePos ( 237-36, 505 );
+     //fLabelsBoxSliceSensitivity->setAbsolutePos ( 215-36, 543 );
+     fSpinBoxSlices->setAbsolutePos ( 345, 446 );
+     fSliceButton->setAbsolutePos ( 345, 410 );
 
-     fKnobPitchbendDepth->setAbsolutePos ( 476+25,465 );
+     fSpinBoxPitchBendDepth->setAbsolutePos ( 72,436 );
 
-     fKnobAttack->setAbsolutePos ( 791, 465 );
-     fKnobDecay->setAbsolutePos ( 883, 465 );
-     fKnobSustain->setAbsolutePos ( 975, 465 );
-     fKnobRelease->setAbsolutePos ( 1067, 465 );
+     fKnobAttack->setAbsolutePos ( 671, 439 );
+     fKnobDecay->setAbsolutePos ( 743, 439 );
+     fKnobSustain->setAbsolutePos ( 815, 439 );
+     fKnobRelease->setAbsolutePos ( 888, 439 );
 
-     fSwitchFwd->setAbsolutePos ( 592+34, 449 );
-     fSwitchRev->setAbsolutePos ( 654+34, 449 );
-     fSwitchLoopFwd->setAbsolutePos ( 592+34, 511 );
-     fSwitchLoopRev->setAbsolutePos ( 654+34, 511 );
+     fSwitchFwd->setAbsolutePos ( 537, 422 );
+     fSwitchRev->setAbsolutePos ( 537, 475 );
+     fSwitchLoopFwd->setAbsolutePos ( 590, 422 );
+     fSwitchLoopRev->setAbsolutePos ( 590, 475 );
 
-     fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
+     //fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
 
      // set coordinates for grid
 
@@ -234,7 +235,7 @@ void NinjasUI::positionWidgets()
      for ( int y = 0 ; y < 4 ; ++y ) {
           for ( int x = 0 ; x < 4 ; ++x ) {
                int index = y * 4 + x;
-               fGrid[index]->setAbsolutePos ( 412-70+x*30,448+y*30 );
+               fGrid[index]->setAbsolutePos ( 185 +x*30,413+y*30 );
           } // for x
      } // for y
 }
@@ -282,7 +283,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 //      }
      switch ( index ) {
      case paramNumberOfSlices:
-          fSpinBox->setValue ( value );
+          fSpinBoxSlices->setValue ( value );
           break;
           // Play Modes
      case paramPlayMode: {
@@ -310,13 +311,13 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           fKnobRelease->setValue ( value );
           p_Release[currentSlice] = value;
           break;
-     case paramLoadSample:
+     /* case paramLoadSample:
           if ( sample_is_loaded ) {
                fSwitchLoadSample->setDown ( true );
           } else {
                fSwitchLoadSample->setDown ( false );
           }
-          break;
+          break; */
      case paramSliceMode:
           fSliceModeSlider->setDown ( value > 0.5f );
           break;
@@ -366,7 +367,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           break;
      }
      case paramPitchbendDepth: {
-          fKnobPitchbendDepth->setValue ( value );
+          fSpinBoxSlices->setValue ( value );
      }
      }
      // repaint();
@@ -477,9 +478,9 @@ void NinjasUI::nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float v
      case paramNumberOfSlices: {
           tempSlices = value;
           if ( tempSlices == slices )
-               fSpinBox->setDigitsColor ( false );
+               fSpinBoxSlices->setDigitsColor ( false );
           else
-               fSpinBox->setDigitsColor ( true );
+               fSpinBoxSlices->setDigitsColor ( true );
 
           break;
      }
@@ -600,7 +601,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           slicemethod = value;
           break;
      }
-     case paramLoadSample: {
+     /* case paramLoadSample: {
           filebrowseropts.title = "Load audio file";
           filebrowseropts.startDir = directory.c_str();
           getParentWindow().openFileBrowser ( filebrowseropts );
@@ -613,7 +614,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           }
 
           break;
-     }
+     } */
 
 
      } // switch (buttonId)
@@ -662,7 +663,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
           if ( sample_is_loaded && (slices != tempSlices || slicemodeChanged)) {
                slices = tempSlices;
-               fSpinBox->setDigitsColor ( false ); // set digits to black
+               fSpinBoxPitchBendDepth->setDigitsColor ( false ); // set digits to black
                editParameter ( paramNumberOfSlices,true );
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
@@ -689,7 +690,7 @@ void NinjasUI::onNanoDisplay()
 
      beginPath();
 
-     fillColor ( Color ( 40,40,40, 255 ) );
+     fillColor ( Color ( 0x0a,0x0a,0x0a, 0xff ) );
 
      rect ( 0, 0, width, height );
      fill();
@@ -698,102 +699,70 @@ void NinjasUI::onNanoDisplay()
 
      // waveform display background
      beginPath();
-     fillPaint (
-          linearGradient
-          (
-               display_top + display_length / 2 , display_top ,
-               display_top + display_length / 2 , display_bottom ,
-               Color ( 100,100,100,255 ) ,
-               Color ( 60,60,60,255 )
-          )
-     );
-
-     rect ( display_left, display_top, display_length, display_bottom - display_top );
+     fillColor(0x36,0x36,0x36,0xff);
+     roundedRect ( display_left, display_top, display_width, display_height, 4 );
      fill();
      closePath();
 
 
      // parameter boxes
+     
+     // global
      beginPath();
-     strokeWidth ( 2.0f );
-     strokeColor ( Color ( 255,221,85,255 ) );
-     // sample box
-     roundedRect ( 31, 440, 130, 130, 4 );
-
-     // slices box
-     roundedRect ( 171, 440 ,153, 130, 4 );
-
-     // programs box
-     roundedRect ( 334 ,440 , 130 , 130 , 4 );
-
-     // pitchend boxes
-     roundedRect ( 475, 440, 130, 130, 4 );
-
-     // playmode box
-     roundedRect ( 616 ,440 , 130 , 130,  4 );
-
-     // adsr box
-     roundedRect ( 768 ,450 , 400, 110,  4 );
-
-     stroke();
-     closePath();
-
-     // box labels back
-     fillColor ( Color ( 40,40,40, 255 ) );
-
-     beginPath();
-     rect ( 55,431, 80, 18 ); // sample
+     // global
+     fillColor ( Color ( 0x90,0x00,0x00,0xff ) );
+     roundedRect ( 25, 375, 300, 160, 4 );
      fill();
      closePath();
-
+     // slicing
      beginPath();
-     rect ( 230-36,431,100,18 ); // slices
+     roundedRect (330, 375, 185, 160,4);
      fill();
      closePath();
-
-     beginPath();
-     rect ( 348 ,431, 106, 18 ); // programs
-     fill();
-     closePath();
-
-     beginPath();
-     rect ( 487 ,431, 106, 18 ); // programs
-     fill();
-     closePath();
-
-
-     beginPath();
-     rect ( 588+34,431, 118, 18 ); // playmodes
-     fill();
-     closePath();
-
-     beginPath();
-     rect ( 794,441, 70, 15 ); // attack
-     fill();
-     closePath();
-
-     beginPath();
-     rect ( 889,441, 66, 18 ); // decay
-     fill();
-     closePath();
-
-     beginPath();
-     rect ( 974,441, 80, 18 ); // sustain
-     fill();
-     closePath();
-
-     beginPath();
-     rect ( 1066,441, 80, 18 ); // release
-     fill();
-     closePath();
+    // slice
+    beginPath();
+    roundedRect ( 520,375, 455, 160, 4);
+    fill();
+    closePath();
+    fillColor ( 0x28,0x00,0x00,0xff);
+    // pitchbend
+    beginPath();
+    roundedRect( 26,395,140,139,4);
+    fill();
+    closePath();
+    // programs
+    beginPath();
+    roundedRect (167,395,157,139,4);
+    fill();
+    closePath();
+    // slicing action (button + # of slices)
+    beginPath();
+    roundedRect(331,395,78,139,4);
+    fill();
+    closePath();
+    // slicing type
+    beginPath();
+    roundedRect(410,395,104,139,4);
+    fill();
+    closePath();
+    // playmode
+    beginPath();
+    roundedRect(521,395,122,139,4);
+    fill();
+    closePath();
+    // adsr
+    beginPath();
+    roundedRect(644,395,330,139,4);
+    fill();
+    closePath(); 
 
      // Settings labels
 
      fontFaceId ( fNanoFont );
-     fontSize ( 22 );
-     fillColor ( Color ( 255,221,85,255 ) );
-     text ( 56,445,"sample",NULL );
-     text ( 234-36,445,"slice tool",NULL );
+     fontSize ( 16 );
+     fillColor ( Color ( 0xec,0xec,0xec,0xff ) );
+     text ( 144,375 + 15 ,"GLOBAL",NULL );
+   /*   text ( 234-36,445,"slice tool",NULL );
      text ( 349,445,"programs",NULL );
      text ( 489, 445, "pitchbend", NULL );
      text ( 589+34,444,"playmodes",NULL );
@@ -801,18 +770,9 @@ void NinjasUI::onNanoDisplay()
      text ( 890,455,"decay",NULL );
      text ( 975,455,"sustain",NULL );
      text ( 1067,455,"release",NULL );
-     closePath();
+    */  closePath();
 
-     // pitchbend depth labels
-     beginPath();
-     fontSize ( 18 );
-     fillColor ( Color ( 255,221,85,255 ) );
-     text ( 492,545,"0",NULL );
-     text ( 577,545,"12", NULL );
-     closePath();
-
-
-     if ( sample_is_loaded ) {
+        if ( sample_is_loaded ) {
           drawCurrentSlice();
           drawWaveform();
           drawSliceMarkers();
@@ -875,7 +835,7 @@ void NinjasUI::drawWaveform()
 //  waveView.end = 1140;
      double view = waveView.end - waveView.start; // set these when zooming in
 
-     double samples_per_pixel =  view / ( double ) display_length;
+     double samples_per_pixel =  view / ( double ) display_width;
      float fIndex;
      uint iIndex;
 
@@ -899,7 +859,7 @@ void NinjasUI::drawWaveform()
      strokeWidth ( 1.0f );
 
 
-     for ( uint16_t i = 0 ; i < display_length ; i++ ) {
+     for ( uint16_t i = 0 ; i < display_width ; i++ ) {
 
           fIndex = float ( waveView.start ) + ( float ( i ) * samples_per_pixel );
           iIndex = fIndex;
@@ -939,7 +899,7 @@ void NinjasUI::drawWaveform()
 void NinjasUI::drawRuler()
 {
      uint view = waveView.end - waveView.start; // set these when zooming in
-     double samples_per_pixel = double ( view ) / double ( display_length );
+     double samples_per_pixel = double ( view ) / double ( display_width );
      double time_per_pixel = samples_per_pixel / samplerate;
      double round_up = 0.1; // do something clever here
      double wave_start_time = double ( waveView.start ) / samplerate;
@@ -1062,7 +1022,7 @@ void NinjasUI::drawCurrentSlice()
 {
      //FIXME refactor this .. somehow
      double view = waveView.end - waveView.start; // set these when zooming in
-     double pixels_per_sample =  display_length / view;
+     double pixels_per_sample =  display_width / view;
      int firstSlice = 0, lastSlice = 0;
      getVisibleSlices ( firstSlice,lastSlice );
      for ( uint left,right; firstSlice < lastSlice; firstSlice++ ) {
@@ -1088,7 +1048,7 @@ void NinjasUI::drawCurrentSlice()
                                 Color ( 234,151,139,128 )
                            )
                          );
-               rect ( left+display_left,display_top,right - left,display_height*2 );
+               rect ( left+display_left,display_top,right - left,display_height );
                fill();
                closePath();
           }
@@ -1100,7 +1060,7 @@ void NinjasUI::drawCurrentSlice()
 void NinjasUI::drawSliceMarkers()
 {
      double view = waveView.end - waveView.start; // set these when zooming in
-     double pixels_per_sample =  display_length / view;
+     double pixels_per_sample =  display_width / view;
      int firstSlice = 0, lastSlice = 0;
      getVisibleSlices ( firstSlice,lastSlice );
 
@@ -1178,7 +1138,7 @@ void NinjasUI::drawSliceMarkers()
 void NinjasUI::drawOnsets()
 {
      double view = waveView.end - waveView.start;
-     double pixels_per_sample =  display_length / view;
+     double pixels_per_sample =  display_width / view;
      beginPath();
      strokeColor ( 30,30,30,255 );
      strokeWidth ( 0.8f );
@@ -1439,8 +1399,8 @@ void NinjasUI::removeSlice(const int targetSlice)
      }
      slices -= 1;
 
-     fSpinBox->setDigitsColor(false); // set digits to yellow
-     fSpinBox->setValue(slices);
+     fSpinBoxPitchBendDepth->setDigitsColor(false); // set digits to yellow
+     fSpinBoxPitchBendDepth->setValue(slices);
 
      // Update Plugin slices
      editParameter(paramNumberOfSlices, true);
@@ -1471,8 +1431,8 @@ void NinjasUI::insertSlice(const int targetSlice, const int position)
      a_slices[targetSlice + 1].sliceStart = position;
      slices += 1;
 
-     fSpinBox->setDigitsColor(false); // set digits to yellow
-     fSpinBox->setValue(slices); // update digit
+     fSpinBoxPitchBendDepth->setDigitsColor(false); // set digits to yellow
+     fSpinBoxPitchBendDepth->setValue(slices); // update digit
 
      // Update Plugin slices
      editParameter(paramNumberOfSlices, true);
@@ -1502,7 +1462,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
           // Double click
 
           double view = waveView.end - waveView.start; // set these when zooming in
-          double pixels_per_sample = display_length / view;
+          double pixels_per_sample = display_width / view;
           int currentSlice = 0, lastSlice = 0;
           getVisibleSlices(currentSlice, lastSlice);
 
@@ -1580,7 +1540,7 @@ bool NinjasUI::onScroll ( const ScrollEvent& ev )
      if ( !display.contains ( x,y ) )
           return false; // get outta here
 
-     if ( waveform.size() <= display_length )
+     if ( waveform.size() <= display_width )
           return false; // can't zoom anyway
 
      x -= display_left; // off set in pixels
@@ -1647,7 +1607,7 @@ bool NinjasUI::onMotion ( const MotionEvent& ev )
           return false;
      }
      if ( mouseMoveWaveform ) {
-          if ( waveform.size() <= display_length )
+          if ( waveform.size() <= display_width )
                return false; // can't move anyway
 
           if ( waveView.zoom == 1.0f )
@@ -1728,7 +1688,7 @@ void NinjasUI::selectSlice()
 
      // convert mouseX to sample
      double view = waveView.end - waveView.start;
-     double samples_per_pixel =  view / display_length ;
+     double samples_per_pixel =  view / display_width ;
      uint64_t mouseSample = mouseX * samples_per_pixel + waveView.start;
 
      std::vector<uint_t> sliceStarts, sliceEnds;
@@ -1757,7 +1717,7 @@ void NinjasUI::selectSlice()
 void NinjasUI::editCurrentSlice()
 {
      double view = waveView.end - waveView.start;
-     double samples_per_pixel =  view / display_length ;
+     double samples_per_pixel =  view / display_width ;
      uint64_t mouseSample = double ( mouseX ) * samples_per_pixel + double ( waveView.start ) ;
      switch ( editSliceStartEnd ) {
      case start: {
@@ -1881,7 +1841,7 @@ void NinjasUI::getProgram ( int program )
 	  p_playMode[i]=static_cast<slicePlayMode> (plugin->Programs[program].a_slices[i].playmode) ;
      }
   //   printf("sliceStart - End %i - %i\n",a_slices[0].sliceStart, a_slices[0].sliceEnd);
-     fSpinBox->setValue ( slices );
+     fSpinBoxPitchBendDepth->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
      // toggle switches
