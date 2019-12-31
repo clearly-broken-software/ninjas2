@@ -183,6 +183,12 @@ NinjasUI::NinjasUI()
         fGrid[i]->setDown ( programNumber == i );
     }
 
+     fPianoKeyboard = new PianoKeyboard( window, 60-3*12, 60+3*12+11);
+     fPianoKeyboard->setId( 400 ); // OH NO MAGIC NUMBER! FIXME
+     fPianoKeyboard->setSize(924,54);
+     fPianoKeyboard->setCallback( this );
+
+
      positionWidgets();
      // text
      loadSharedResources();
@@ -192,22 +198,9 @@ NinjasUI::NinjasUI()
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
      //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
-     if ( !plugin->bypass )
+     if ( !plugin->bypass ){
           loadSample ( false );
-
-    positionWidgets();
-    // text
-    loadSharedResources();
-    fNanoFont = createFontFromMemory ( "dungeon",fonts::dungeon_ttf,fonts::dungeon_ttf_size, false );
-    // logos
-    imgNinjasLogo = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1 );
-    imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
-    // for debugging , autoload sample
-    //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
-    if ( !plugin->bypass ) {
-        loadSample ( false );
-    }
-
+     }
     getProgram ( programNumber );
 
 
@@ -238,6 +231,9 @@ void NinjasUI::positionWidgets()
      fSwitchRev->setAbsolutePos ( 537, 475 );
      fSwitchLoopFwd->setAbsolutePos ( 590, 422 );
      fSwitchLoopRev->setAbsolutePos ( 590, 475 );
+     
+     fPianoKeyboard->setAbsolutePos (38,545);
+
 
      //fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
 
@@ -777,20 +773,27 @@ void NinjasUI::onNanoDisplay()
     closePath(); 
 
      // Settings labels
-
+     beginPath();
      fontFaceId ( fNanoFont );
-     fontSize ( 16 );
+     fontSize ( 18 );
      fillColor ( Color ( 0xec,0xec,0xec,0xff ) );
      text ( 144,375 + 15 ,"GLOBAL",NULL );
-   /*   text ( 234-36,445,"slice tool",NULL );
-     text ( 349,445,"programs",NULL );
-     text ( 489, 445, "pitchbend", NULL );
-     text ( 589+34,444,"playmodes",NULL );
-     text ( 795,455,"attack",NULL );
-     text ( 890,455,"decay",NULL );
-     text ( 975,455,"sustain",NULL );
-     text ( 1067,455,"release",NULL );
-    */  closePath();
+     text ( 392,378,"SLICING",NULL );
+     text ( 712,378,"SLICE 000",NULL );
+     
+     closePath();
+     beginPath();
+     fontSize ( 14 );
+     textAlign(ALIGN_CENTER);
+     textBox (63, 405, 100.0f,"PITCHBEND DEPTH", NULL);
+     //text ( 63, 405, "PITCHBEND DEPTH", NULL );
+     text ( 214,399,"PROGRAMS",NULL );
+     text ( 551,407,"PLAYMODE",NULL );
+     text ( 679,420,"ATTACK",NULL );
+     text ( 754,420,"DECAY",NULL );
+     text ( 822,420,"SUSTAIN",NULL );
+     text ( 894,420,"RELEASE",NULL );
+     closePath();
 
         if ( sample_is_loaded ) {
           drawCurrentSlice();

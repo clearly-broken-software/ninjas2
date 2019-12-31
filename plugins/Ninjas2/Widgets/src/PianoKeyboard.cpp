@@ -92,11 +92,11 @@ void PianoKeyboard::setKeyRange ( int startKey, int endKey )
 
         if ( keyColors[lookup] ) { // true == black key
             tmpKey.keyColor = Color ( 0,0,0,255 ) ;
-            tmpKey.key.setSize ( Size<uint> ( 9,14 ) );
+            tmpKey.key.setSize ( Size<uint> ( 12,28 ) );
 
         } else { // false == white
             tmpKey.keyColor = Color ( 255,255,255,255 );
-            tmpKey.key.setSize ( Size<uint> ( 15,26 ) );
+            tmpKey.key.setSize ( Size<uint> ( 20,54 ) );
         }
 
         keys.push_back ( tmpKey );

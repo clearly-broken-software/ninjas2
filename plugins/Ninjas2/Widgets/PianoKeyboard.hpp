@@ -45,7 +45,7 @@ private:
     // lookup tables
     const char* noteNames [12] {"C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"};
     const bool  keyColors [12] { 0,   1,  0,   1,  0,  0,   1,  0,   1,   0,  1,  0 }; // 0 == white, 1 == black
-    int           offsets [12] {14,   9,  5,  11,  3, 14,   9,  3,  10,   4,  9,  5 }; // relative offsets (for example : the C# is 9 pixels to the right of C)
+    int           offsets [12] {20,   13,  5,  13,  5, 20,   13,  5,  13,   5,  13,  5 }; // relative offsets (for example : the C# is 9 pixels to the right of C)
 
     std::vector<pianoKey> keys; 
     Color oldColor; 

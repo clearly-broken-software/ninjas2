@@ -110,6 +110,7 @@ void SpinBox::draw()
      // top half
 
      beginPath();
+     
      Paint bg_top=linearGradient(w/2, margin , w/2, h * (1 - 0.86), col_1_00,col_0_86);
      fillPaint(bg_top);
      strokeColor(Color (0,0,0,255));
@@ -126,29 +127,37 @@ void SpinBox::draw()
      closePath(); 
      // border grey
      beginPath();
+     //translate(0.5f, 0.5f);
      strokeWidth (margin);
      strokeColor ( 0x33,0x33,0x33,0xff);
+     //strokeColor (green);
+
      roundedRect ( margin, margin, w - doubleMargin, h - doubleMargin, 4.0f);
      stroke();
      closePath();
      // border black
-     beginPath();
+/*      beginPath();
      strokeWidth (1);
      strokeColor ( 0x00,0x00,0x00,0xff);
-     roundedRect ( doubleMargin , doubleMargin  , w - doubleMargin *2 , h - doubleMargin *2 , 1.0f);
+     roundedRect ( doubleMargin , doubleMargin  , w - doubleMargin *2 , h - doubleMargin *2 , 4.0f);
      stroke();
      closePath();
-     beginPath();
+     */
+     beginPath(); 
+     translate(0.5f, 0.5f);
+     const float borderWidth =1.0f;
      strokeWidth (1);
      strokeColor ( 0x00,0x00,0x00,0xff);
-     roundedRect ( doubleMargin , doubleMargin  , w - doubleMargin *2 , h - doubleMargin *2 , 1.0f);
+     fillColor (red);
+     roundedRect ( doubleMargin - borderWidth, doubleMargin - borderWidth, w - 7  , h - 7, 3.0f );
      stroke();
+     //fill();
      closePath();
   
    // digit background
      beginPath();
      fillColor(Color(0, 0, 0, 255));
-     rect( doubleMargin, 24.667, w - 2 * doubleMargin, 26.667);
+     rect( doubleMargin, 24.667, w - 2 * doubleMargin - 1, 26.667);
      fill();
 
      // incButton
