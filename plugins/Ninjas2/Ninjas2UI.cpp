@@ -142,13 +142,11 @@ NinjasUI::NinjasUI()
 
     fFileOpenButton = new TextButton ( window, Size<uint>(43,34));
     fFileOpenButton->setId ( 999 ); // FIXME don't hardcode this
-    fSliceButton->setFontSize ( 32.0f );
+    fFileOpenButton->setFontSize ( 24.0f );
     fFileOpenButton->setFontId(1);
     fFileOpenButton->setText(u8"\xEF\x81\xBC");
-    fSliceButton->setFontSize ( 32.0f );
-    fSliceButton->setTextColor ( Color(255,255,255,255) );
-    //fSliceButton->setMargin ( Margin ( 5,0,7,0 ) );
-    fSliceButton->setCallback ( this );
+    fFileOpenButton->setTextColor ( Color(255,255,255,255) );
+    fFileOpenButton->setCallback ( this );
     
     //fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
