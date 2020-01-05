@@ -45,7 +45,10 @@ NinjasUI::NinjasUI()
      sliceButton = 0;
      slicemodeChanged = false;
 
-    // sample
+     // fonts
+     loadSharedResources();
+     fNanoFont = findFont(NANOVG_DEJAVU_SANS_TTF);
+     // sample
     sampleSize = 0;
     sampleChannels = 1;
     sample_is_loaded = false;
@@ -82,11 +85,11 @@ NinjasUI::NinjasUI()
     fKnobSliceSensitivity->setColor ( ninjasColor );
     fKnobSliceSensitivity->setCallback ( this );
 
-    fSliceButton = new TextButton ( window, Size<uint> ( 40,30 ) );
+    fSliceButton = new TextButton ( window, Size<uint> ( 48,30 ) );
     fSliceButton->setId ( 100 ); // FIXME don't hardcode this
     fSliceButton->setText ( "Slice" );
     fSliceButton->setFontSize ( 14.0f );
-    fSliceButton->setTextColor ( ninjasColor );
+    fSliceButton->setTextColor ( Color(255,255,255,255) );
     fSliceButton->setMargin ( Margin ( 5,0,7,0 ) );
     fSliceButton->setCallback ( this );
 
@@ -122,12 +125,9 @@ NinjasUI::NinjasUI()
      fSpinBoxPitchBendDepth->setColor ( ninjasColor );
      fSpinBoxPitchBendDepth->setCallback ( this );
 
-
-
-
     //slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
 
-    fSliceModeSlider = new BipolarModeSwitch ( window, Size<uint> ( 16, 34 ) );
+    fSliceModeSlider = new BipolarModeSwitch ( window, Size<uint> ( 20, 40 ) );
     fSliceModeSlider->setCallback ( this );
     fSliceModeSlider->setId ( paramSliceMode );
 
@@ -136,8 +136,21 @@ NinjasUI::NinjasUI()
     fLabelsBoxSliceSensitivity = new GlowingLabelsBox ( window, Size<uint> ( 84, 21 ) );
     fLabelsBoxSliceSensitivity->setLabels ( {"SENSITIVITY" } );
 
-     //fLabelsBoxLoadSample = new GlowingLabelsBox ( window, Size<uint> ( 90, 70 ) );
-     //fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
+    fFilePathBox = new FilePathBox( window, Size<uint> (600,33));
+    fFilePathBox->setFontSize(18);
+    fFilePathBox->setLabels({"no sample loaded"});
+
+    fFileOpenButton = new TextButton ( window, Size<uint>(43,34));
+    fFileOpenButton->setId ( 999 ); // FIXME don't hardcode this
+    fSliceButton->setFontSize ( 32.0f );
+    fFileOpenButton->setFontId(1);
+    fFileOpenButton->setText(u8"\xEF\x81\xBC");
+    fSliceButton->setFontSize ( 32.0f );
+    fSliceButton->setTextColor ( Color(255,255,255,255) );
+    //fSliceButton->setMargin ( Margin ( 5,0,7,0 ) );
+    fSliceButton->setCallback ( this );
+    
+    //fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
 
     // switches
 
@@ -169,6 +182,7 @@ NinjasUI::NinjasUI()
     fSwitchLoopRev->setCallback ( this );
 
     // sample load button
+    
 
  /*     fSwitchLoadSample = new RemoveDCSwitch ( window, switchSize );
      fSwitchLoadSample->setId ( paramLoadSample );
@@ -191,16 +205,18 @@ NinjasUI::NinjasUI()
 
      positionWidgets();
      // text
-     loadSharedResources();
-     fNanoFont = findFont(NANOVG_DEJAVU_SANS_TTF);
+     
+
      // logos
      imgNinjasLogo = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1 );
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
-     //loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg" ) );
+     loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav" ) );
+     
      if ( !plugin->bypass ){
           loadSample ( false );
      }
+     uiFileBrowserSelected("/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav");
     getProgram ( programNumber );
 
 
@@ -213,11 +229,14 @@ void NinjasUI::positionWidgets()
 
    //  fSwitchLoadSample->setAbsolutePos ( 51+24, 470+18 );
 
-     fSliceModeSlider->setAbsolutePos ( 420, 449 );
-     fLabelsBoxSliceModeSlider->setAbsolutePos ( 442, 449 );
-     //fKnobSliceSensitivity->setAbsolutePos ( 237-36, 505 );
-     //fLabelsBoxSliceSensitivity->setAbsolutePos ( 215-36, 543 );
+     fSliceModeSlider->setAbsolutePos ( 424, 412 );
+     fLabelsBoxSliceModeSlider->setAbsolutePos ( 446, 412 );
+     
+     fKnobSliceSensitivity->setAbsolutePos ( 443, 450+16 );
+     fLabelsBoxSliceSensitivity->setAbsolutePos ( 420, 450+38+16 );
+    
      fSpinBoxSlices->setAbsolutePos ( 345, 446 );
+     
      fSliceButton->setAbsolutePos ( 345, 410 );
 
      fSpinBoxPitchBendDepth->setAbsolutePos ( 72,436 );
@@ -233,6 +252,9 @@ void NinjasUI::positionWidgets()
      fSwitchLoopRev->setAbsolutePos ( 590, 475 );
      
      fPianoKeyboard->setAbsolutePos (38,545);
+
+     fFilePathBox->setAbsolutePos (160,10);
+     fFileOpenButton->setAbsolutePos(768,9);
 
 
      //fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
@@ -417,6 +439,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
         // if a file was selected, tell DSP
         directory = dirnameOf ( filename );
         setState ( "filepathFromUI", filename );
+        fFilePathBox->setLabels({filename});
         //   loadSample ( String ( filename ), true );
     }
 }
@@ -691,9 +714,10 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
     }
 }
 
-void NinjasUI::pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard )
+void NinjasUI::pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard , int velocity)
 {
     int keyPressed = pianoKeyboard->getKey();
+    sendNote(0,keyPressed,velocity);
     printf ("keyPressed = %i\n",keyPressed);
 }
 
@@ -777,22 +801,24 @@ void NinjasUI::onNanoDisplay()
      fontFaceId ( fNanoFont );
      fontSize ( 18 );
      fillColor ( Color ( 0xec,0xec,0xec,0xff ) );
-     text ( 144,375 + 15 ,"GLOBAL",NULL );
-     text ( 392,378,"SLICING",NULL );
-     text ( 712,378,"SLICE 000",NULL );
+     text ( 144,390 ,"GLOBAL",NULL );
+     text ( 392,390,"SLICING",NULL );
+     char out [32];
+     sprintf(out,"SLICE %03i",currentSlice+1);
+     text ( 712,390,out,NULL );
      
      closePath();
      beginPath();
      fontSize ( 14 );
      textAlign(ALIGN_CENTER);
-     textBox (63, 405, 100.0f,"PITCHBEND DEPTH", NULL);
+     textBox (63-17, 405+9, 100.0f,"PITCHBEND DEPTH", NULL); // 80,412 in gimp
      //text ( 63, 405, "PITCHBEND DEPTH", NULL );
-     text ( 214,399,"PROGRAMS",NULL );
-     text ( 551,407,"PLAYMODE",NULL );
-     text ( 679,420,"ATTACK",NULL );
-     text ( 754,420,"DECAY",NULL );
-     text ( 822,420,"SUSTAIN",NULL );
-     text ( 894,420,"RELEASE",NULL );
+     text ( 214+32,399+11,"PROGRAMS",NULL );
+     text ( 551+32,407+8,"PLAYMODE",NULL );
+     text ( 679+21.5,420+10,"ATTACK",NULL );
+     text ( 754+21-3,420+10,"DECAY",NULL );
+     text ( 822+21+2,420+10,"SUSTAIN",NULL );
+     text ( 894+21+3,420+10,"RELEASE",NULL );
      closePath();
 
         if ( sample_is_loaded ) {
@@ -1196,7 +1222,7 @@ void NinjasUI::loadSample ( bool fromUser )
     int size = plugin->sampleSize;
 
      sample_is_loaded = true;
-     fSwitchLoadSample->setDown ( true );
+     //fSwitchLoadSample->setDown ( true );
      sampleChannels = plugin->sampleChannels;
      float maxSample = getMaxSample(plugin->sampleVector);
      float ratio = maxSample > 1.0f ? 1.0f/maxSample : 1.0f;
@@ -1205,13 +1231,13 @@ void NinjasUI::loadSample ( bool fromUser )
 
           for ( int i=0, j=0 ; i < size; i++ ) {
                float sum_mono = ( plugin->sampleVector[j] + plugin->sampleVector[j+1] ) * 0.5f;
-               waveform.push_back ( sum_mono * ratio * 175.0f );
+               waveform.push_back ( sum_mono * ratio * float(display_height / 2) );
                j+=2;
           }
      } else {
           waveform.resize ( size );
           for ( int i=0; i < size; i++ ) {
-               waveform[i] =  plugin->sampleVector[i] * ratio * 175.0f;
+               waveform[i] =  plugin->sampleVector[i] * ratio *  float(display_height / 2);
           }
      }
      waveView.start = 0;

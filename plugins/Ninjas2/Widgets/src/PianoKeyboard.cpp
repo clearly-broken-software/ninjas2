@@ -61,12 +61,13 @@ bool PianoKeyboard::onMouse ( const MouseEvent & ev )
         if ( ev.press && ev.button == 1 ) { // mouse is clicked inside the widget
             keyClicked = DetectKeyClicked ( ev.pos );
             setKeyColor ( keyClicked,pressedColor );
-            fCallback->pianoKeyboardClicked ( this );
+            fCallback->pianoKeyboardClicked ( this, 64 );
         }
     }
 
     if ( keyPressed && !ev.press ) { // mouse is released, no need to check if it is inside the widget
         setKeyColor ( keyClicked, oldColor );
+        fCallback->pianoKeyboardClicked( this, 0); // 0 == note off
         keyPressed = false;
     }
     return hover;

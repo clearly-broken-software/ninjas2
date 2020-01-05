@@ -92,11 +92,11 @@ NinjasPlugin::NinjasPlugin()
      sig_currentSlice = -1;
      initPrograms();
      //for debugging , autoload sample
-     //  filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/sample.ogg";
-     //   loadSample ( filepath );
-     //   getOnsets ();
-     //  createSlicesRaw();
-     //  bypass = false;
+     filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav";
+     loadSample ( filepath, true );
+     getOnsets ();
+     createSlicesRaw();
+     bypass = false;
 }
 
 // Init
@@ -882,6 +882,12 @@ void NinjasPlugin::run ( const float**, float** outputs, uint32_t frames,       
                          //c4 is 60
                          int index = ( data1 + 68 ) % 128;
                          if ( index < 0 || index > Programs[programNumber].slices -1 ) {
+                              break;
+                         }
+                         // if velocity == 0 it's actually a note off event
+                         if (data2 == 0)
+                         {
+                              voices[data1].adsr.adsr_stage = stage_of_ADSR::RELEASE;
                               break;
                          }
                          // new note .. let's activate

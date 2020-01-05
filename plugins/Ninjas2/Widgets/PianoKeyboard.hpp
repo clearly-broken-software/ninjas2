@@ -14,7 +14,7 @@ public:
     {
     public:
         virtual ~Callback() {}
-        virtual void pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard ) = 0;
+        virtual void pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard , int velocity) = 0;
     };
     void setCallback ( Callback* callback ) noexcept;
     int getKey() {
