@@ -86,7 +86,7 @@ NinjasUI::NinjasUI()
     fKnobSliceSensitivity->setCallback ( this );
 
     fSliceButton = new TextButton ( window, Size<uint> ( 48,30 ) );
-    fSliceButton->setId ( 100 ); // FIXME don't hardcode this
+    fSliceButton->setId ( widgetSliceButton ); // FIXME don't hardcode this
     fSliceButton->setText ( "Slice" );
     fSliceButton->setFontSize ( 14.0f );
     fSliceButton->setTextColor ( Color(255,255,255,255) );
@@ -119,7 +119,7 @@ NinjasUI::NinjasUI()
 
     fSpinBoxPitchBendDepth= new SpinBox ( window,spinboxSize );
     fSpinBoxPitchBendDepth->setId ( paramPitchbendDepth );
-     //  fKnobPitchbendDepth->setDefault(12.0f);
+     //fSpinBoxPitchBendDepth->setValue()
      fSpinBoxPitchBendDepth->setStep ( 1.0f );
      fSpinBoxPitchBendDepth->setRange ( 0.0, 12.0f );
      fSpinBoxPitchBendDepth->setColor ( ninjasColor );
@@ -141,15 +141,12 @@ NinjasUI::NinjasUI()
     fFilePathBox->setLabels({"no sample loaded"});
 
     fFileOpenButton = new TextButton ( window, Size<uint>(43,34));
-    fFileOpenButton->setId ( 999 ); // FIXME don't hardcode this
+    fFileOpenButton->setId ( paramLoadSample ); 
     fFileOpenButton->setFontSize ( 24.0f );
     fFileOpenButton->setFontId(1);
     fFileOpenButton->setText(u8"\xEF\x81\xBC");
     fFileOpenButton->setTextColor ( Color(255,255,255,255) );
     fFileOpenButton->setCallback ( this );
-    
-    //fLabelsBoxLoadSample->setLabels ( {"Load Sample" } );
-
     // switches
 
     // play modes
@@ -159,33 +156,25 @@ NinjasUI::NinjasUI()
 
 
     fSwitchFwd = new PlayModeSwitch ( window, switchSize );
-    fSwitchFwd->setId ( 200 ); //FIXME EVIL MAGIC NUMBERS !!!
+    fSwitchFwd->setId ( widgetSwitchFwd ); 
     fSwitchFwd->setLabel ( u8"\xEF\x81\x90" ); // see
     fSwitchFwd->setCallback ( this );
 
 
     fSwitchRev = new PlayModeSwitch ( window, switchSize );
-    fSwitchRev->setId ( 201 );
+    fSwitchRev->setId ( widgetSwitchLoopRev );
     fSwitchRev->setLabel ( u8"\xEF\x81\x89" );
     fSwitchRev->setCallback ( this );
 
     fSwitchLoopFwd = new PlayModeSwitch ( window, switchSize );
-    fSwitchLoopFwd->setId ( 202 );
+    fSwitchLoopFwd->setId ( widgetSwitchLoopRev );
     fSwitchLoopFwd->setLabel ( u8"\xEF\x80\x9E" );
     fSwitchLoopFwd->setCallback ( this );
 
     fSwitchLoopRev = new PlayModeSwitch ( window, switchSize );
-    fSwitchLoopRev->setId ( 203 );
+    fSwitchLoopRev->setId ( widgetSwitchLoopRev );
     fSwitchLoopRev->setLabel ( u8"\xEF\x83\xA2" );
     fSwitchLoopRev->setCallback ( this );
-
-    // sample load button
-    
-
- /*     fSwitchLoadSample = new RemoveDCSwitch ( window, switchSize );
-     fSwitchLoadSample->setId ( paramLoadSample );
-     fSwitchLoadSample->setCallback ( this );
-      */
 
     // grid
     for ( int i = 0; i < 16; ++i ) {
@@ -196,25 +185,23 @@ NinjasUI::NinjasUI()
     }
 
      fPianoKeyboard = new PianoKeyboard( window, 60-3*12, 60+3*12+11);
-     fPianoKeyboard->setId( 400 ); // OH NO MAGIC NUMBER! FIXME
+     fPianoKeyboard->setId( widgetPianoKeyboard ); 
      fPianoKeyboard->setSize(924,54);
      fPianoKeyboard->setCallback( this );
 
-
      positionWidgets();
-     // text
-     
-
+   
      // logos
      imgNinjasLogo = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ninjas2logoData,Ninjas2Resources::ninjas2logoDataSize,1 );
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
-     loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav" ) );
+     /*loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav" ) );
      
      if ( !plugin->bypass ){
           loadSample ( false );
      }
      uiFileBrowserSelected("/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav");
+     */
     getProgram ( programNumber );
 
 
@@ -396,7 +383,7 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           break;
      }
      case paramPitchbendDepth: {
-          fSpinBoxSlices->setValue ( value );
+          fSpinBoxPitchBendDepth->setValue ( value );
      }
      }
      // repaint();
@@ -437,6 +424,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
         // if a file was selected, tell DSP
         directory = dirnameOf ( filename );
         setState ( "filepathFromUI", filename );
+        printf("%s\n",filename);
         fFilePathBox->setLabels({filename});
         //   loadSample ( String ( filename ), true );
     }
@@ -488,10 +476,7 @@ void NinjasUI::nanoKnobValueChanged ( NanoKnob* knob, const float value )
           //repaint();
           break;
      }
-     case paramPitchbendDepth: {
-          setParameterValue ( KnobID,value );
-          break;
-     }
+  
      default:
           setParameterValue ( KnobID,value );
           break;
@@ -512,6 +497,10 @@ void NinjasUI::nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float v
           else
                fSpinBoxSlices->setDigitsColor ( true );
 
+        break;
+    }
+    case paramPitchbendDepth: {
+        fSpinBoxPitchBendDepth->setValue(value);
         break;
     }
 
@@ -537,7 +526,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 
     // check if parameter is changed
     switch ( buttonId ) {
-    case 200: {
+    case widgetSwitchFwd: {
         oldValue = p_playMode[currentSlice]==ONE_SHOT_FWD;
 
         if ( oldValue != value ) {
@@ -545,21 +534,21 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
         }
         break;
     }
-    case 201: {
+    case widgetSwitchRev: {
         oldValue = p_playMode[currentSlice]==ONE_SHOT_REV;
         if ( oldValue != value ) {
             setProgramGrid ( programNumber );
         }
         break;
     }
-    case 202: {
+    case widgetSwitchLoopFwd: {
         oldValue = p_playMode[currentSlice]==LOOP_FWD;
         if ( oldValue != value ) {
             setProgramGrid ( programNumber );
         }
         break;
     }
-    case 203: {
+    case widgetSwitchLoopRev: {
         oldValue = p_playMode[currentSlice]==LOOP_REV;
         if ( oldValue != value ) {
             setProgramGrid ( programNumber );
@@ -569,7 +558,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
     }
 
     switch ( buttonId ) {
-    case 200: {
+    case widgetSwitchFwd: {
         //        printf("playmode ONE_SHOT_FWD\n");
         p_playMode[currentSlice] = ONE_SHOT_FWD;
         editParameter ( paramOneShotForward, true );
@@ -582,7 +571,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
         editParameter ( paramOneShotForward, false );
         break;
     }
-    case 201: {
+    case widgetSwitchRev: {
         //     printf("playmode ONE_SHOT_REV\n");
         p_playMode[currentSlice] = ONE_SHOT_REV;
         editParameter ( paramOneShotReverse, true );
@@ -596,7 +585,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
 
         break;
     }
-    case 202: {
+    case widgetSwitchLoopFwd: {
         //         printf("playmode LOOP_FWD\n");
         p_playMode[currentSlice] = LOOP_FWD;
         editParameter ( paramLoopForward, true );
@@ -609,7 +598,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
         editParameter ( paramLoopForward, false );
         break;
     }
-    case 203: {
+    case widgetSwitchLoopRev: {
 //      printf("playmode LOOP_REV\n");
           p_playMode[currentSlice] = LOOP_REV;
           editParameter ( paramLoopReverse, true );
@@ -631,20 +620,12 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
           slicemethod = value;
           break;
      }
-     /* case paramLoadSample: {
+      case paramLoadSample: {
           filebrowseropts.title = "Load audio file";
           filebrowseropts.startDir = directory.c_str();
           getParentWindow().openFileBrowser ( filebrowseropts );
-
-        if ( sample_is_loaded ) {
-            fSwitchLoadSample->setDown ( true );
-
-        } else {
-            fSwitchLoadSample->setDown ( false );
-        }
-
           break;
-     } */
+     } 
 
 
     } // switch (buttonId)
@@ -689,7 +670,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
 {
      int NanoButtonID = nanoButton->getId();
      switch ( NanoButtonID ) {
-     case 100: { //FIXME EVIL MAGIC NUMBER
+     case widgetSliceButton: { //FIXME EVIL MAGIC NUMBER
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
           if ( sample_is_loaded && (slices != tempSlices || slicemodeChanged)) {
                slices = tempSlices;
@@ -705,6 +686,13 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
 
         }
         break;
+    }
+    case paramLoadSample: {
+        filebrowseropts.title = "Load audio file";
+          filebrowseropts.startDir = directory.c_str();
+          getParentWindow().openFileBrowser ( filebrowseropts );
+          break;
+
     }
     default:
         std::printf ( "describe it\n" );

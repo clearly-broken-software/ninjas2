@@ -37,7 +37,7 @@
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:InstrumentPlugin"
 
-enum Parameters
+enum Parameters // exposed to the host 
 {  
     paramNumberOfSlices = 0, // 4
     paramSliceSensitivity, // 5
@@ -59,6 +59,19 @@ enum Parameters
     paramSigLoadProgram, // 2
     paramCurrentSlice, // 3
     paramCount // 19
+};
+
+// the grid gets paramCount + n where n = 0 .. 15
+
+enum Widgets // used internally
+{
+ widgetSliceButton = 100,
+ //widgetFileOpenButton,
+ widgetSwitchFwd,
+ widgetSwitchRev,
+ widgetSwitchLoopFwd,
+ widgetSwitchLoopRev,
+ widgetPianoKeyboard
 };
 
 
