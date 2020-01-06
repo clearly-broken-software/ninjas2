@@ -27,9 +27,14 @@ START_NAMESPACE_DISTRHO
 LabelBox::LabelBox(NanoWidget *widget, Size<uint> size) noexcept : NanoWidget(widget)
 {
     setSize(size);
-
-    //using namespace WOLF_FONTS;
-    //createFontFromMemory("chivo_bold", (const uchar *)chivo_bold, chivo_bold_size, 0);
+    loadSharedResources();
+   
+}
+LabelBox::LabelBox(Window &parent,  Size<uint> size) noexcept : NanoWidget(parent)
+{
+    setSize(size);
+    loadSharedResources();
+    
 }
 
 void LabelBox::onNanoDisplay()
@@ -37,42 +42,30 @@ void LabelBox::onNanoDisplay()
     const float width = getWidth();
     const float height = getHeight();
     const float verticalMargin = 6.0f;
-    const float boxOutlineWidth = 2.0f;
+    const float boxOutlineWidth = 1.0f;
 
     //Box background
     beginPath();
 
-    fillColor(Color(34, 34, 34, 255));
-    strokeColor(Color(64, 64, 64, 255));
+    fillColor(boxColor);
+    strokeColor(borderColor);
     strokeWidth(boxOutlineWidth);
 
-    rect(0, 0, width, height);
+    roundedRect(boxOutlineWidth, boxOutlineWidth, width - 2 * boxOutlineWidth, height - 2 * boxOutlineWidth, 4.0f);
     fill();
     stroke();
 
     closePath();
-
-    //Shadow at top of box
-    beginPath();
-
-    strokeColor(0,0,0,255);
-    strokeWidth(boxOutlineWidth);
-
-    moveTo(boxOutlineWidth, boxOutlineWidth);
-    lineTo(width - boxOutlineWidth, boxOutlineWidth);
-    stroke();
-
-    closePath();
-
+    
     //Text
     beginPath();
 
-    fontFace("chivo_bold");
-    fontSize(16.0f);
-    fillColor(Color(255, 255, 255, 255));
-    textAlign(ALIGN_CENTER | ALIGN_MIDDLE);
+    fontFace("__dpf_dejavusans_ttf__");
+    fontSize(fFontSize);
+    fillColor(textColor);
+    textAlign(ALIGN_LEFT | ALIGN_MIDDLE);
 
-    text(std::round(width / 2.0f), std::round(height / 2.0f + verticalMargin / 2.0f - 2), fText, NULL);
+    text(4, std::round(height / 2.0f + verticalMargin / 2.0f - 2), fText, NULL);
 
     closePath();
 }
@@ -105,6 +98,19 @@ void LabelBox::setFontId(NanoVG::FontId fontId)
 NanoVG::FontId LabelBox::getFontId()
 {
     return fFontId;
+}
+
+void LabelBox::setBoxColor(const Color color)
+{
+    boxColor = color;
+}
+void LabelBox::setBorderColor(const Color color)
+{
+    borderColor = color;
+}
+void LabelBox::setTextColor(const Color color)
+{
+    textColor = color;
 }
 
 END_NAMESPACE_DISTRHO

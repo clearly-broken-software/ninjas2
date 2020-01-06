@@ -137,9 +137,12 @@ NinjasUI::NinjasUI()
     fLabelsBoxSliceSensitivity = new GlowingLabelsBox ( window, Size<uint> ( 84, 21 ) );
     fLabelsBoxSliceSensitivity->setLabels ( {"SENSITIVITY" } );
 
-    fFilePathBox = new FilePathBox( window, Size<uint> (600,33));
+    fFilePathBox = new LabelBox( window, Size<uint>(600,33));
     fFilePathBox->setFontSize(18);
-    fFilePathBox->setLabels({"no sample loaded"});
+    fFilePathBox->setText({"no sample loaded"});
+    fFilePathBox->setBoxColor(Color(77,77,77));
+    fFilePathBox->setBorderColor(Color(144,0,0));
+    fFilePathBox->setTextColor(Color(249,249,249));
 
     fFileOpenButton = new TextButton ( window, Size<uint>(43,34));
     fFileOpenButton->setId ( paramLoadSample ); 
@@ -427,7 +430,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
         directory = dirnameOf ( filename );
         setState ( "filepathFromUI", filename );
         printf("%s\n",filename);
-        fFilePathBox->setLabel(filename, 0);
+        fFilePathBox->setText(filename);
         
         //   loadSample ( String ( filename ), true );
     }

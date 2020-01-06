@@ -50,7 +50,7 @@ FILES_UI  = \
 	Resources/fonts.cpp \
 	Widgets/src/StateSwitch.cpp \
 	Widgets/src/PianoKeyboard.cpp \
-	Widgets/src/FilePathBox.cpp \
+	Widgets/src/LabelBox.cpp \
 	Ninjas2UI.cpp \
 	Ninjas2Resources.cpp
 	

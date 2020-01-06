@@ -45,7 +45,7 @@
 #include "StateSwitch.hpp"
 
 #include "PianoKeyboard.hpp"
-#include "FilePathBox.hpp"
+#include "LabelBox.hpp"
 
 #include "Ninjas2Resources.hpp"
 #include "Ninjas2Plugin.hpp"
@@ -98,7 +98,7 @@ private:
      ScopedPointer<StateSwitch> fGrid[16];
      ScopedPointer<TextButton> fSliceButton,fFileOpenButton;
      ScopedPointer<PianoKeyboard> fPianoKeyboard;
-     ScopedPointer<FilePathBox> fFilePathBox;
+     ScopedPointer<LabelBox> fFilePathBox;
 
      const NinjasPlugin * plugin;
      void loadSample ( bool fromUser );

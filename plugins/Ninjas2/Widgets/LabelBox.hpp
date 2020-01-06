@@ -29,15 +29,20 @@ class LabelBox : public NanoWidget
 {
   public:
     explicit LabelBox(NanoWidget *widget, Size<uint> size) noexcept;
+    explicit LabelBox(Window &parent, Size<uint> size) noexcept;
 
     void setFontSize(float fontSize);
     float getFontSize();
 
-    void setText(const char *text);
+    void setText( const char *text);
     const char *getText();
 
     void setFontId(NanoVG::FontId fontId);
     NanoVG::FontId getFontId();
+
+    void setBoxColor(const Color color);
+    void setBorderColor(const Color color);
+    void setTextColor(const Color color);
 
   protected:
     void onNanoDisplay() override;
@@ -46,7 +51,7 @@ class LabelBox : public NanoWidget
     const char *fText;
     float fFontSize;
     NanoVG::FontId fFontId;
-
+    Color boxColor, borderColor, textColor;
     DISTRHO_LEAK_DETECTOR(LabelBox)
 };
 
