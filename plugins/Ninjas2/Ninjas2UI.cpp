@@ -162,12 +162,12 @@ NinjasUI::NinjasUI()
 
 
     fSwitchRev = new PlayModeSwitch ( window, switchSize );
-    fSwitchRev->setId ( widgetSwitchLoopRev );
+    fSwitchRev->setId ( widgetSwitchRev );
     fSwitchRev->setLabel ( u8"\xEF\x81\x89" );
     fSwitchRev->setCallback ( this );
 
     fSwitchLoopFwd = new PlayModeSwitch ( window, switchSize );
-    fSwitchLoopFwd->setId ( widgetSwitchLoopRev );
+    fSwitchLoopFwd->setId ( widgetSwitchLoopFwd );
     fSwitchLoopFwd->setLabel ( u8"\xEF\x80\x9E" );
     fSwitchLoopFwd->setCallback ( this );
 
