@@ -92,8 +92,10 @@ NinjasPlugin::NinjasPlugin()
      sig_currentSlice = -1;
      initPrograms();
      //for debugging , autoload sample
+     /*
      filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav";
-     loadSample ( filepath, true );
+     loadSample ( filepath, true ); 
+     */
      getOnsets ();
      createSlicesRaw();
      bypass = false;
