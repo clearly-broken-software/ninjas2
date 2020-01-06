@@ -51,8 +51,8 @@ void FilePathBox::onNanoDisplay()
     closePath();
 
     const float labelSize = getFontSize();
-    const float labelMarginLeft = 4.0f;
-    const float labelMarginTop = 4.0f;
+    const float labelMarginLeft = 7.0f;
+    const float labelMarginTop = 7.0f;
     const float labelVerticalSpacing = labelSize + 7.0f;
 
     //Text
@@ -63,11 +63,11 @@ void FilePathBox::onNanoDisplay()
         fontFace(NANOVG_DEJAVU_SANS_TTF);
         fontSize(labelSize);
 
-        const Color fontColor = (i == getSelectedIndex()) ? Color(235, 196, 74, 255) : Color(158, 158, 158, 255);
+        const Color fontColor = (i == getSelectedIndex()) ? Color(0xEC, 0xEc, 0xEC, 255) : Color(158, 158, 158, 255);
 
         fillColor(fontColor);
         textAlign(ALIGN_LEFT | ALIGN_TOP);
-
+      
         text(labelMarginLeft, labelVerticalSpacing * i + labelMarginTop, getLabels()[i], NULL);
 
         closePath();
