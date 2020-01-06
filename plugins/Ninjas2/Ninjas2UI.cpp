@@ -426,7 +426,8 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
         directory = dirnameOf ( filename );
         setState ( "filepathFromUI", filename );
         printf("%s\n",filename);
-        fFilePathBox->setLabels({filename});
+        fFilePathBox->setLabel(filename, 0);
+        
         //   loadSample ( String ( filename ), true );
     }
 }

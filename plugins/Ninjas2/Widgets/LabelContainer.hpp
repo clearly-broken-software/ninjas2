@@ -36,6 +36,9 @@ public:
     
     void setLabels(std::vector<const char*>labels);
     std::vector<const char*> getLabels();
+    void setLabel(const char* label, uint index);
+
+    
 
     void setFontSize(float fontSize);
     float getFontSize();

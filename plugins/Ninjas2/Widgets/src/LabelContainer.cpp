@@ -83,4 +83,17 @@ NanoVG::FontId LabelContainer::getFontId()
     return fFontId;
 }
 
+void LabelContainer::setLabel(const char* label, uint index)
+{
+    // check if index is out of bound
+    if (index > getLabelCount())
+    {
+        printf ("label index %i out of range\n", index);
+        printf ("label count %i\n",getLabelCount());
+        return;
+    }
+    fLabels[index] = label;
+    printf("current label %s\n",fLabels[index]);
+}
+
 END_NAMESPACE_DISTRHO
