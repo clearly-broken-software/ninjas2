@@ -57,8 +57,8 @@ NinjasUI::NinjasUI()
     waveView.start = 0;
     waveView.end = 0;
     waveView.zoom = 1.0f;
-    display.setSize ( 1140,350 );
-    display.setPos ( 30,50 );
+    display.setSize ( display_width,display_height );
+    display.setPos ( display_left,display_top );
 
     // mouse
     mouseDragging = false;
