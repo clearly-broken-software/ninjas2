@@ -75,8 +75,8 @@ BASE_FLAGS += -I../../aubio/src
 LINK_FLAGS += ../../aubio/libaubio.a
 endif
 
-BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate)
-LINK_FLAGS += $(shell $(PKG_CONFIG) --libs sndfile samplerate)
+BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate freetype2)
+LINK_FLAGS += $(shell $(PKG_CONFIG) --libs sndfile samplerate freetype2)
 
 # Set PARANOID_MODE=true to make the build error out on warnings
 ifeq ($(PARANOID_MODE),true)
