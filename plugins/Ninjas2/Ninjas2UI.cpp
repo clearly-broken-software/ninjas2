@@ -121,9 +121,10 @@ NinjasUI::NinjasUI()
     fSpinBoxPitchBendDepth->setId ( paramPitchbendDepth );
      //fSpinBoxPitchBendDepth->setValue()
      fSpinBoxPitchBendDepth->setStep ( 1.0f );
-     fSpinBoxPitchBendDepth->setRange ( 0.0, 12.0f );
-     fSpinBoxPitchBendDepth->setColor ( ninjasColor );
+     fSpinBoxPitchBendDepth->setRange ( 1.0, 12.0f );
+     //fSpinBoxPitchBendDepth->setColor ( ninjasColor );
      fSpinBoxPitchBendDepth->setCallback ( this );
+     fSpinBoxPitchBendDepth->setDigitsColor(false); // set to white
 
     //slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
 
@@ -674,7 +675,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
           if ( sample_is_loaded && (slices != tempSlices || slicemodeChanged)) {
                slices = tempSlices;
-               fSpinBoxPitchBendDepth->setDigitsColor ( false ); // set digits to black
+               fSpinBoxSlices->setDigitsColor ( false ); // set digits to black
                editParameter ( paramNumberOfSlices,true );
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
@@ -1247,6 +1248,7 @@ void NinjasUI::loadSample ( bool fromUser )
      initParameters();
      initSlices();
      getProgram( 0);
+     fSpinBoxSlices->setDigitsColor(false);
      repaint();
      setState ( "sig_SampleLoaded", "false" );
      return;
@@ -1441,8 +1443,8 @@ void NinjasUI::removeSlice ( const int targetSlice )
      }
      slices -= 1;
 
-     fSpinBoxPitchBendDepth->setDigitsColor(false); // set digits to yellow
-     fSpinBoxPitchBendDepth->setValue(slices);
+     fSpinBoxSlices->setDigitsColor(false); // set digits to yellow
+     fSpinBoxSlices->setValue(slices);
 
     // Update Plugin slices
     editParameter ( paramNumberOfSlices, true );
@@ -1473,8 +1475,8 @@ void NinjasUI::insertSlice ( const int targetSlice, const int position )
     a_slices[targetSlice + 1].sliceStart = position;
     slices += 1;
 
-     fSpinBoxPitchBendDepth->setDigitsColor(false); // set digits to yellow
-     fSpinBoxPitchBendDepth->setValue(slices); // update digit
+     fSpinBoxSlices->setDigitsColor(false); // set digits to yellow
+     fSpinBoxSlices->setValue(slices); // update digit
 
     // Update Plugin slices
     editParameter ( paramNumberOfSlices, true );
@@ -1896,7 +1898,7 @@ void NinjasUI::getProgram ( int program )
 	  p_playMode[i]=static_cast<slicePlayMode> (plugin->Programs[program].a_slices[i].playmode) ;
      }
   //   printf("sliceStart - End %i - %i\n",a_slices[0].sliceStart, a_slices[0].sliceEnd);
-     fSpinBoxPitchBendDepth->setValue ( slices );
+     fSpinBoxSlices->setValue ( slices );
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
      // toggle switches
