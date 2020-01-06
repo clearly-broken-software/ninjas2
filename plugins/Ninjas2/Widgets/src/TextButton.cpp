@@ -84,7 +84,7 @@ void TextButton::draw()
    
      // border black
      beginPath(); 
-     translate(0.5f, 0.5f);
+     //translate(0.5f, 0.5f);
      const float borderWidth =1.0f;
      strokeWidth (1);
      strokeColor ( 0x00,0x00,0x00,0xff);
@@ -108,7 +108,7 @@ void TextButton::draw()
      const float th = bounds.getHeight();
      const float x = w /2 - tw /2.0f;
      const float y = h /2 - th /2.0f;
-     translate(0.5f,0.5f);
+    // translate(0.5f,0.5f);
      fillColor(0,0,0);
      text ( x+1,y+1 , fText, NULL );
      fillColor ( fTextColor );
