@@ -95,10 +95,11 @@ NinjasPlugin::NinjasPlugin()
      /*
      filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav";
      loadSample ( filepath, true ); 
-     */
+     
      getOnsets ();
      createSlicesRaw();
      bypass = false;
+     */
 }
 
 // Init

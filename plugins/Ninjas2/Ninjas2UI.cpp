@@ -197,12 +197,13 @@ NinjasUI::NinjasUI()
      imgClearlyBroken = createImageFromMemory ( ( uchar* ) Ninjas2Resources::ClearlyBrokenData,Ninjas2Resources::ClearlyBrokenDataSize,1 );
      // for debugging , autoload sample
      /*loadSample ( String ( "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav" ) );
-     
+       uiFileBrowserSelected("/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav");
+     */
      if ( !plugin->bypass ){
+         printf("bypass = %i",plugin->bypass);
           loadSample ( false );
      }
-     uiFileBrowserSelected("/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav");
-     */
+   
     getProgram ( programNumber );
 
 
