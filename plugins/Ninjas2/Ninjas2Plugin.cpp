@@ -535,8 +535,11 @@ void NinjasPlugin::setState ( const char* key, const char* value )
 
      if ( strcmp ( key, "sliceButton" ) == 0 ) {
           if ( strcmp ( value, "true" ) == 0 ) {
-               //     printf ( "NinjasPlugin::setState(%s,%s)\n",key, value );
-               //     printf ( "program = %i, slices = %i\n",programNumber,Programs[programNumber].slices );
+               std::fill_n ( Programs[programNumber].a_slices, 128, Slice() );
+               std::fill_n ( Programs[programNumber].Attack, 128, 0.001f );
+               std::fill_n ( Programs[programNumber].Decay,128, 0.001f );
+               std::fill_n ( Programs[programNumber].Sustain, 128, 1.0f );
+               std::fill_n ( Programs[programNumber].Release, 128, 0.001f );
                switch ( slicemode ) {
                case 0:
                     createSlicesRaw();
