@@ -429,7 +429,7 @@ void NinjasUI::uiFileBrowserSelected ( const char* filename )
         // if a file was selected, tell DSP
         directory = dirnameOf ( filename );
         setState ( "filepathFromUI", filename );
-        printf("%s\n",filename);
+        //printf("%s\n",filename);
         fFilePathBox->setText(filename);
         
         //   loadSample ( String ( filename ), true );
@@ -680,7 +680,7 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
           // printf("nanoButtonClicked slices %i, tempSlices %i\n",slices,tempSlices);
           if ( sample_is_loaded && (slices != tempSlices || slicemodeChanged)) {
                slices = tempSlices;
-               fSpinBoxSlices->setDigitsColor ( false ); // set digits to black
+               fSpinBoxSlices->setDigitsColor ( false ); // set digits to white
                editParameter ( paramNumberOfSlices,true );
                setParameterValue ( paramNumberOfSlices, slices );
                editParameter ( paramNumberOfSlices,false );
