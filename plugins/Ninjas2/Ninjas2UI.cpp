@@ -203,8 +203,10 @@ NinjasUI::NinjasUI()
        uiFileBrowserSelected("/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav");
      */
      if ( !plugin->bypass ){
-         printf("bypass = %i",plugin->bypass);
-          loadSample ( false );
+         //printf("bypass = %i",plugin->bypass);
+         loadSample ( false );
+         fFilePathBox->setText(plugin->filepath.c_str());
+
      }
    
     getProgram ( programNumber );
