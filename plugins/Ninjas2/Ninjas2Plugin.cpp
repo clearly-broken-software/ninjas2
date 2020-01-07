@@ -579,8 +579,8 @@ void NinjasPlugin::setState ( const char* key, const char* value )
           // load file in sample memory
           if ( !loadSample ( filepath, true ) ) {
                // sample loaded ok, slice it up and set bool
+               initPrograms();
                getOnsets ();
-
                if ( slicemode == 0 )
                     createSlicesRaw ();
                else
