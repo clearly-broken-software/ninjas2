@@ -31,6 +31,7 @@ NanoSpinBox::NanoSpinBox(Window &parent, Size<uint> size) noexcept
       fLeftMouseDown(false),
       fIsHovered(false),
       fColor(Color(255, 0, 0, 255)),
+      fHasFocus(false),
       fCallback(nullptr)
 {
     setSize(size);
@@ -52,6 +53,7 @@ NanoSpinBox::NanoSpinBox(NanoWidget *widget, Size<uint> size) noexcept
       fLeftMouseDown(false),
       fIsHovered(false),
       fColor(Color(255, 0, 0, 255)),
+      fHasFocus(false),
       fCallback(nullptr)
 {
     setSize(size);

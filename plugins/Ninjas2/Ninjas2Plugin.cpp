@@ -72,7 +72,7 @@ NinjasPlugin::NinjasPlugin()
      // slices
      //slices       = 1;
      //currentSlice = 0;
-     slicemode    = 0;
+     slicemode    = RAW;
      sliceSensitivity = 0.5;
 
      samplerate = getSampleRate();
@@ -90,6 +90,11 @@ NinjasPlugin::NinjasPlugin()
      sig_SampleLoaded = false;
      sig_LoadProgram = false;
      sig_currentSlice = -1;
+     // init mixer
+     mixer.leftChannel = 0.0f;
+     mixer.rightChannel = 0.0f;
+     mixer.samples = 0;
+
      initPrograms();
      //for debugging , autoload sample
      /*
@@ -541,10 +546,10 @@ void NinjasPlugin::setState ( const char* key, const char* value )
                std::fill_n ( Programs[programNumber].Sustain, 128, 1.0f );
                std::fill_n ( Programs[programNumber].Release, 128, 0.001f );
                switch ( slicemode ) {
-               case 0:
+               case RAW:
                     createSlicesRaw();
                     break;
-               case 1:
+               case ONSETS:
                     createSlicesOnsets();
                     break;
                default:
@@ -803,7 +808,7 @@ void NinjasPlugin::setParameterValue ( uint32_t index, float value )
      case paramLoadSample:
           break;
      case paramSliceMode:
-          slicemode = ( int ) value;
+          slicemode = ( SLICEMODE ) value;
           break;
      case paramSliceSensitivity:
           sliceSensitivity = value;
