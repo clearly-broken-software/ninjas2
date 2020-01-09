@@ -884,7 +884,6 @@ void NinjasUI::idleCallback()
 
 void NinjasUI::drawWaveform()
 {
-//  waveView.end = 1140;
     double view = waveView.end - waveView.start; // set these when zooming in
 
      double samples_per_pixel =  view / ( double ) display_width;
@@ -1088,7 +1087,7 @@ void NinjasUI::drawCurrentSlice()
                left = ( a_slices[firstSlice].sliceStart - waveView.start ) * pixels_per_sample;
           }
           if ( a_slices[firstSlice].sliceEnd > waveView.end ) {
-               right = 1140;
+               right = display_right;
           } else {
                right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * pixels_per_sample;
           }
@@ -1127,7 +1126,7 @@ void NinjasUI::drawSliceMarkers()
             left = ( a_slices[firstSlice].sliceStart - waveView.start ) * pixels_per_sample;
         }
         if ( a_slices[firstSlice].sliceEnd > waveView.end ) {
-            right = 1140;
+            right = display_right;
         } else {
             right = ( a_slices[firstSlice].sliceEnd - waveView.start ) * pixels_per_sample;
         }
