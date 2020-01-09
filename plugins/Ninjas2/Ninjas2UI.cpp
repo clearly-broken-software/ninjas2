@@ -1195,7 +1195,7 @@ void NinjasUI::drawOnsets()
      double view = waveView.end - waveView.start;
      double pixels_per_sample =  display_width / view;
      beginPath();
-     strokeColor ( 30,30,30,255 );
+     strokeColor ( 255,64,64,255 );
      strokeWidth ( 0.8f );
      for ( std::vector<uint_t>::iterator it = onsets.begin() ; it != onsets.end(); ++it ) {
           auto onset = *it;
