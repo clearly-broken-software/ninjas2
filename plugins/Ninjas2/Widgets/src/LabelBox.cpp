@@ -20,8 +20,6 @@
 #include "LabelBox.hpp"
 #include "Mathf.hpp"
 
-//#include "Fonts/chivo_bold.hpp"
-
 START_NAMESPACE_DISTRHO
 
 LabelBox::LabelBox(NanoWidget *widget, Size<uint> size) noexcept : NanoWidget(widget)
@@ -64,9 +62,8 @@ void LabelBox::onNanoDisplay()
     fontSize(fFontSize);
     fillColor(textColor);
     textAlign(ALIGN_LEFT | ALIGN_MIDDLE);
-
+    printf("getText() = %s\n",getText());
     text(4, std::round(height / 2.0f + verticalMargin / 2.0f - 2), fText, NULL);
-
     closePath();
 }
 
@@ -82,7 +79,9 @@ float LabelBox::getFontSize()
 
 void LabelBox::setText(const char *text)
 {
+    printf("setText(%s)\n",text);
     fText = text;
+ //   printf("fText =%s\n",fText);
 }
 
 const char *LabelBox::getText()
