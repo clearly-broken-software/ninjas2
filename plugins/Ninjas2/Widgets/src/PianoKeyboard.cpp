@@ -32,22 +32,55 @@ void PianoKeyboard::onNanoDisplay()
         int lookup = k.noteNumber % 12;
         if ( keyColors[lookup] == 0 ) {
             beginPath();
-            fillColor ( k.keyColor );
+            if(k.hasSlice){
+                fillColor ( k.keyColor );
+                }
+            else {
+                fillColor (Color(166,166,166));
+            }
             rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
             fill();
             stroke();
             closePath();
+            if (k.currentSlice){
+                beginPath();
+                fillColor(Color(0xd2,0,0));
+                const float xcenter = k.key.getX() + k.key.getWidth()/2;
+                const float ycenter = k.key.getY() + k.key.getHeight()/2 + 10;
+                const float radius = k.key.getWidth()/3;
+                circle(xcenter,ycenter,radius);
+                fill();
+                closePath();
+            }
+            
         }
     }
+    // black keys
     for ( pianoKey k : keys ) {
         int lookup = k.noteNumber % 12;
         if ( keyColors[lookup] == 1 ) {
             beginPath();
-            fillColor ( k.keyColor );
+            if(k.hasSlice){
+                fillColor ( k.keyColor );
+                }
+            else {
+                fillColor (Color(107,107,107));
+            }
             rect ( k.key.getX(),k.key.getY(),k.key.getWidth(),k.key.getHeight() );
             fill();
             stroke();
             closePath();
+            if (k.currentSlice){
+                beginPath();
+                fillColor(Color(0xb0,0,0));
+                const float xcenter = k.key.getX() + k.key.getWidth()/2;
+                const float ycenter = k.key.getY() + k.key.getHeight()/2;
+                const float radius = k.key.getWidth()/3;
+                circle(xcenter,ycenter,radius);
+                fill();
+                closePath();
+            }
+
         }
 
     }
@@ -103,6 +136,7 @@ void PianoKeyboard::setKeyRange ( int startKey, int endKey )
         keys.push_back ( tmpKey );
     }
 
+
 }
 
 int PianoKeyboard::DetectKeyClicked ( const Point< int >& p )
@@ -139,6 +173,39 @@ void PianoKeyboard::setKeyColor ( uint nn, Color kc )
         }
     }
 }
+void PianoKeyboard::setActiveKeyIndicator ( uint nn )
+{
+    // stupid naive approuch
+    for ( pianoKey &k : keys ) {
+        if ( k.noteNumber == nn ) {
+            k.currentSlice = true;
+        }
+        else {
+            k.currentSlice = false;
+        }
+         
+    }
+    
+}
+void PianoKeyboard::setSlices( int s)
+{
+    // slices = s;
+    // set all keys to hasSlice == false
+    for (pianoKey &k : keys){
+        k.hasSlice = false;
+    }
+    for (int i=0 ; i < s; i++)
+    {
+    const int nn = (i + 60) % 128;
+    for (pianoKey &k : keys) {
+        if (k.noteNumber == nn)
+        {
+        k.hasSlice = true;
+        }
+        }
+    }
+}
+
 
 END_NAMESPACE_DISTRHO
 

@@ -382,9 +382,12 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      case paramCurrentSlice: {
           if ( ( int ) value != -1  && !mouseEditSlice ) {
                currentSlice = std::min ( ( int ) value,slices-1 );
-               //     printf ( "paramCurrentSlice: %i\n", currentSlice );
+              // printf ( "paramCurrentSlice: %i\n", currentSlice );
                setState ( "sig_CurrentSlice", "-1" );
                recallSliceSettings ( currentSlice );
+               const uint nn = (currentSlice + 60 ) % 128;
+               fPianoKeyboard->setActiveKeyIndicator(nn);
+
                repaint();
           }
           break;
@@ -413,7 +416,9 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
     if ( std::strcmp ( key, "currentSlice" ) == 0 )  {
         if ( std::strcmp ( value, "empty" ) ) {
             currentSlice = std::stoi ( value );
+            printf("stateChanged currentSlice = %i\n", currentSlice);
             recallSliceSettings ( currentSlice );
+          
         }
     }
 
@@ -690,6 +695,9 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                setState ( "paramSigLoadProgram", "true" ) ;
                setProgramGrid ( programNumber );
                slicemodeChanged=false;
+               fPianoKeyboard->setSlices(slices);
+               const uint nn = (currentSlice + 60) % 128;
+               fPianoKeyboard->setActiveKeyIndicator( nn );
                //   getProgram ( programNumber );
 
         }
@@ -712,8 +720,7 @@ void NinjasUI::pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard , int velocit
 {
     int keyPressed = pianoKeyboard->getKey();
     sendNote(0,keyPressed,velocity);
-    printf ("keyPressed = %i\n",keyPressed);
-}
+ }
 
 
 void NinjasUI::onNanoDisplay()
@@ -1258,6 +1265,7 @@ void NinjasUI::loadSample ( bool fromUser )
      fSpinBoxSlices->setDigitsColor(false);
      repaint();
      setState ( "sig_SampleLoaded", "false" );
+     fPianoKeyboard->setSlices(1);
      return;
 
 }
@@ -1551,6 +1559,7 @@ bool NinjasUI::onMouse ( const MouseEvent& ev )
         }
 
         selectSlice();
+
         return true;
     }
 
@@ -1774,6 +1783,8 @@ void NinjasUI::selectSlice()
 
     setState ( "currentSlice", std::to_string ( currentSlice ).c_str() );
     recallSliceSettings ( currentSlice );
+    const int nn = (currentSlice + 60) % 128;
+    fPianoKeyboard->setActiveKeyIndicator(nn);
     repaint();
 }
 void NinjasUI::editCurrentSlice()
