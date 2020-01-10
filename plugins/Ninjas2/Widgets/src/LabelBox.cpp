@@ -62,8 +62,8 @@ void LabelBox::onNanoDisplay()
     fontSize(fFontSize);
     fillColor(textColor);
     textAlign(ALIGN_LEFT | ALIGN_MIDDLE);
-    printf("getText() = %s\n",getText());
-    text(4, std::round(height / 2.0f + verticalMargin / 2.0f - 2), fText, NULL);
+    printf("getText() = %s\n",getText().c_str());
+    text(4, std::round(height / 2.0f + verticalMargin / 2.0f - 2), fText.c_str(), NULL);
     closePath();
 }
 
@@ -77,14 +77,14 @@ float LabelBox::getFontSize()
     return fFontSize;
 }
 
-void LabelBox::setText(const char *text)
+void LabelBox::setText(const std::string text)
 {
-    printf("setText(%s)\n",text);
+    printf("setText(%s)\n",text.c_str());
     fText = text;
  //   printf("fText =%s\n",fText);
 }
 
-const char *LabelBox::getText()
+const std::string LabelBox::getText()
 {
     return fText;
 }
