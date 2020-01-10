@@ -205,6 +205,7 @@ NinjasUI::NinjasUI()
      if ( !plugin->bypass ){
          //printf("bypass = %i",plugin->bypass);
          loadSample ( false );
+         directory = dirnameOf(plugin->filepath);
          fFilePathBox->setText(plugin->filepath.c_str());
 
      }
