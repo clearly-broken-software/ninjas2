@@ -35,7 +35,7 @@ class LabelBox : public NanoWidget
     void setFontSize(float fontSize);
     float getFontSize();
 
-    void setText(const std::string text);
+    void setText( std::string text);
     const std::string getText();
 
     void setFontId(NanoVG::FontId fontId);
@@ -49,7 +49,7 @@ class LabelBox : public NanoWidget
     void onNanoDisplay() override;
 
   private:
-    const std::string fText;
+    std::string fText;
     float fFontSize;
     NanoVG::FontId fFontId;
     Color boxColor, borderColor, textColor;
