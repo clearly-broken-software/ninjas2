@@ -2,7 +2,6 @@ language: c++
 branches:
   except:
   - automatic
-  - develop
 cache:
   directories:
   - download
