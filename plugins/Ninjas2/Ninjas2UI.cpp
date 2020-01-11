@@ -139,7 +139,7 @@ NinjasUI::NinjasUI()
 
     fFilePathBox = new LabelBox( window, Size<uint>(600,33));
     fFilePathBox->setFontSize(18);
-    fFilePathBox->setText({"no sample loaded"});
+    fFilePathBox->setText("no sample loaded");
     fFilePathBox->setBoxColor(Color(77,77,77));
     fFilePathBox->setBorderColor(Color(144,0,0));
     fFilePathBox->setTextColor(Color(249,249,249));
