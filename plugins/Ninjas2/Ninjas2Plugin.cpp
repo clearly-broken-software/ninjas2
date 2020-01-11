@@ -692,9 +692,8 @@ void NinjasPlugin::setState ( const char* key, const char* value )
      }
 
      if ( strcmp ( key, "currentSlice" ) == 0 ) {
-
           Programs[programNumber].currentSlice = std::stoi ( value );
-          //       printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
+       // printf ( "NinjasPlugin::setState Programs[%i].currentSlice = %i\n",programNumber,Programs[programNumber].currentSlice );
      }
 
      if ( strcmp ( key, "sig_SampleLoaded" ) == 0 ) {

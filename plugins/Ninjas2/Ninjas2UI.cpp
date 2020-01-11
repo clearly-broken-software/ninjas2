@@ -383,12 +383,13 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
      case paramCurrentSlice: {
           if ( ( int ) value != -1  && !mouseEditSlice ) {
                currentSlice = std::min ( ( int ) value,slices-1 );
-              // printf ( "paramCurrentSlice: %i\n", currentSlice );
                setState ( "sig_CurrentSlice", "-1" );
                recallSliceSettings ( currentSlice );
-               const uint nn = (currentSlice + 60 ) % 128;
-               fPianoKeyboard->setActiveKeyIndicator(nn);
-
+               if (slices > 1)
+               {
+                   const uint nn = (currentSlice + 60 ) % 128;
+                   fPianoKeyboard->setActiveKeyIndicator(nn);
+               }
                repaint();
           }
           break;
@@ -698,13 +699,27 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                setProgramGrid ( programNumber );
                slicemodeChanged=false;
                fPianoKeyboard->setSlices(slices);
-               if (currentSlice <= slices)
+               if (currentSlice < slices)
+               {
                  fPianoKeyboard->setActiveKeyIndicator( (currentSlice + 60) % 128 );
+               }
                else 
-               // out of range for keyboard, so no key gets the indicator
-               fPianoKeyboard->setActiveKeyIndicator( 128 );
-        }
-        break;
+               {
+                   setState("currentSlice","0"); // reset currentSlice;
+                   if (slices == 1)
+                   {
+                       // only one slice, do not indicate active key
+                       fPianoKeyboard->setActiveKeyIndicator( 128 );
+                   }
+                   else
+                   {
+                       // set basenote as active key
+                       fPianoKeyboard->setActiveKeyIndicator( 60 ); 
+                   }
+               }
+               
+               }
+               break;
     }
     case paramLoadSample: {
         filebrowseropts.title = "Load audio file";
