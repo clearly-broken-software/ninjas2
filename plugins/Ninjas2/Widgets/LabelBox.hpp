@@ -20,6 +20,7 @@
 #ifndef WOLF_LABEL_BOX_HPP_INCLUDED
 #define WOLF_LABEL_BOX_HPP_INCLUDED
 
+#include <string>
 #include "Widget.hpp"
 #include "NanoVG.hpp"
 
@@ -34,8 +35,8 @@ class LabelBox : public NanoWidget
     void setFontSize(float fontSize);
     float getFontSize();
 
-    void setText( const char *text);
-    const char *getText();
+    void setText(const std::string text);
+    const std::string getText();
 
     void setFontId(NanoVG::FontId fontId);
     NanoVG::FontId getFontId();
@@ -48,7 +49,7 @@ class LabelBox : public NanoWidget
     void onNanoDisplay() override;
 
   private:
-    const char *fText;
+    const std::string fText;
     float fFontSize;
     NanoVG::FontId fFontId;
     Color boxColor, borderColor, textColor;
