@@ -637,7 +637,8 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
       case paramLoadSample: {
           filebrowseropts.title = "Load audio file";
           filebrowseropts.startDir = directory.c_str();
-          getParentWindow().openFileBrowser ( filebrowseropts );
+          filebrowseropts.buttons.showPlaces = 2;
+            getParentWindow().openFileBrowser ( filebrowseropts );
           break;
      } 
 
@@ -697,18 +698,20 @@ void NinjasUI::nanoButtonClicked ( NanoButton* nanoButton )
                setProgramGrid ( programNumber );
                slicemodeChanged=false;
                fPianoKeyboard->setSlices(slices);
-               const uint nn = (currentSlice + 60) % 128;
-               fPianoKeyboard->setActiveKeyIndicator( nn );
-               //   getProgram ( programNumber );
-
+               if (currentSlice <= slices)
+                 fPianoKeyboard->setActiveKeyIndicator( (currentSlice + 60) % 128 );
+               else 
+               // out of range for keyboard, so no key gets the indicator
+               fPianoKeyboard->setActiveKeyIndicator( 128 );
         }
         break;
     }
     case paramLoadSample: {
         filebrowseropts.title = "Load audio file";
-          filebrowseropts.startDir = directory.c_str();
-          getParentWindow().openFileBrowser ( filebrowseropts );
-          break;
+        filebrowseropts.startDir = directory.c_str();
+        filebrowseropts.buttons.showPlaces = 2;
+        getParentWindow().openFileBrowser ( filebrowseropts );
+        break;
 
     }
     default:
