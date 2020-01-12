@@ -302,12 +302,14 @@ void NinjasUI::initSlices()
  */
 void NinjasUI::parameterChanged ( uint32_t index, float value )
 {
-//      if ( index != paramProgramNumber ) {
-//           printf ( "UI::parameterChanged( %i, %f )\n",index, value );
-//      }
+     //printf ( "UI::parameterChanged( %i, %f )\n",index, value );
+
      switch ( index ) {
      case paramNumberOfSlices:
+          printf("paramNumberOfSlices value %f\n",value);
+
           fSpinBoxSlices->setValue ( value );
+          fPianoKeyboard->setSlices( (int) value);
           break;
           // Play Modes
      case paramPlayMode: {
@@ -1492,6 +1494,7 @@ void NinjasUI::removeSlice ( const int targetSlice )
 
      fSpinBoxSlices->setDigitsColor(false); // set digits to yellow
      fSpinBoxSlices->setValue(slices);
+     fPianoKeyboard->setSlices(slices);
 
     // Update Plugin slices
     editParameter ( paramNumberOfSlices, true );
@@ -1524,6 +1527,7 @@ void NinjasUI::insertSlice ( const int targetSlice, const int position )
 
      fSpinBoxSlices->setDigitsColor(false); // set digits to yellow
      fSpinBoxSlices->setValue(slices); // update digit
+     fPianoKeyboard->setSlices(slices);
 
     // Update Plugin slices
     editParameter ( paramNumberOfSlices, true );
@@ -1947,8 +1951,8 @@ void NinjasUI::getProgram ( int program )
           p_Release[i]=plugin->Programs[program].Release[voice];
 	  p_playMode[i]=static_cast<slicePlayMode> (plugin->Programs[program].a_slices[i].playmode) ;
      }
-  //   printf("sliceStart - End %i - %i\n",a_slices[0].sliceStart, a_slices[0].sliceEnd);
      fSpinBoxSlices->setValue ( slices );
+     fPianoKeyboard->setSlices( slices);
      tempSlices = slices;
      recallSliceSettings ( currentSlice );
      // toggle switches
