@@ -306,8 +306,6 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
 
      switch ( index ) {
      case paramNumberOfSlices:
-          printf("paramNumberOfSlices value %f\n",value);
-
           fSpinBoxSlices->setValue ( value );
           fPianoKeyboard->setSlices( (int) value);
           break;
