@@ -586,13 +586,20 @@ void NinjasPlugin::setState ( const char* key, const char* value )
                // sample loaded ok, slice it up and set bool
                initPrograms();
                getOnsets ();
-               if ( slicemode == 0 )
+               if ( slicemode == RAW )
                     createSlicesRaw ();
                else
                     createSlicesOnsets ();
 
                bypass = false;
                sig_SampleLoaded = true;
+               
+               for (int i=1; i <16 ; i++)
+               {
+                    Programs[i].a_slices[0].sliceStart=0;
+                    Programs[i].a_slices[0].sliceEnd=sampleSize*sampleChannels;
+               }
+                
 
           } else {
                bypass = true;
