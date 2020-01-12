@@ -62,7 +62,24 @@ void LabelBox::onNanoDisplay()
     fontSize(fFontSize);
     fillColor(textColor);
     textAlign(ALIGN_LEFT | ALIGN_MIDDLE);
-    text(4, std::round(height / 2.0f + verticalMargin / 2.0f - 2), fText.c_str(), NULL);
+    // strip string until it fits
+    Rectangle<float> bounds;
+    textBounds(0,0,fText.c_str(),NULL,bounds);
+    std::string tempText = fText;
+    for (int i = 0; i < fText.size(); i++) // maybe i = 1 ??
+    {
+        textBounds(0,0,tempText.c_str(),NULL,bounds);
+        // too large ?
+        if (bounds.getWidth() > width - boxOutlineWidth * 4)
+        {
+            // remove 1st character
+            tempText = fText.substr(i);
+        }
+        else
+        break;
+    }
+    
+    text(4, std::round(height / 2.0f + verticalMargin / 2.0f - 2), tempText.c_str(), NULL);
     closePath();
 }
 
