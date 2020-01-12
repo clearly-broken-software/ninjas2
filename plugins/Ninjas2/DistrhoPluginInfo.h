@@ -39,26 +39,26 @@
 
 enum Parameters // exposed to the host 
 {  
-    paramNumberOfSlices = 0, // 4
-    paramSliceSensitivity, // 5
-    paramAttack, // 6
-    paramDecay, // 7
-    paramSustain, // 8
-    paramRelease, // 9
-    paramLoadSample, // 10
-    paramSliceMode, // 11
-    paramProgramGrid, // 12
-    paramPlayMode, // 13
-    paramPitchbendDepth, // 14
-    paramOneShotForward, // 15
-    paramOneShotReverse, // 16
-    paramLoopForward, // 17
-    paramLoopReverse, // 18
-    paramProgramNumber, // 0
-    paramSigSampleLoaded, // 1
-    paramSigLoadProgram, // 2
-    paramCurrentSlice, // 3
-    paramCount // 19
+    paramNumberOfSlices = 0, 
+    paramSliceSensitivity, 
+    paramAttack, 
+    paramDecay,
+    paramSustain,
+    paramRelease,
+    paramLoadSample,
+    paramSliceMode,
+    paramProgramGrid,
+    paramPlayMode,
+    paramPitchbendDepth,
+    paramOneShotForward,
+    paramOneShotReverse,
+    paramLoopForward,
+    paramLoopReverse,
+    paramProgramNumber,
+    paramSigSampleLoaded,
+    paramSigLoadProgram,
+    paramCurrentSlice,
+    paramCount
 };
 
 // the grid gets paramCount + n where n = 0 .. 15
@@ -66,7 +66,6 @@ enum Parameters // exposed to the host
 enum Widgets // used internally
 {
  widgetSliceButton = 100,
- //widgetFileOpenButton,
  widgetSwitchFwd,
  widgetSwitchRev,
  widgetSwitchLoopFwd,
