@@ -791,10 +791,8 @@ When a parameter is marked as automable, you must ensure no non-realtime operati
 */
 void NinjasPlugin::setParameterValue ( uint32_t index, float value )
 {
-//    printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
+ //    printf ( "NinjasPlugin::setParameterValue ( %i, %f ) \n",index,value );
      int voice = ( Programs[programNumber].currentSlice + 60 ) % 128;
-//     printf ("NinjasPlugin::setParameterValue programNumber %i\n",programNumber);
-
      switch ( index ) {
      case paramNumberOfSlices:
           Programs[programNumber].slices = ( int ) value;
@@ -1222,6 +1220,7 @@ void NinjasPlugin::createSlicesOnsets ()
           //        int64_t length = end - start;
           //        printf ( "NinjasPlugin::createSlicesOnsets() Slice %i : %i - %i , length = %i\n",i,start,end,length );
      }
+     //FIXME paramNumberOfSlices isn't updated 
 }
 
 int64_t NinjasPlugin::find_nearest ( std::vector<uint_t> & haystack, uint_t needle )
