@@ -357,10 +357,26 @@ void NinjasUI::parameterChanged ( uint32_t index, float value )
           if ( ( int ) value != programNumber ) {
                programNumber = value;
                getProgram ( programNumber );
-               // toggle switches
-               //     printf("UI : paramProgramNumber %f \n", value );
+               if (slices > 1){
+                    fPianoKeyboard->setActiveKeyIndicator((currentSlice + 60) % 128);
+               }
+               else
+               {
+                   if (slices == 1)
+                   {
+                       // only one slice, do not indicate active key
+                       fPianoKeyboard->setActiveKeyIndicator( 128 );
+                   }
+                   else
+                   {
+                       // set basenote as active key
+                       fPianoKeyboard->setActiveKeyIndicator( 60 ); 
+                   }
+               }
+               fPianoKeyboard->setSlices(slices);
+            
           }
-          break;
+     break;  
      }
      case paramSigSampleLoaded: {
           if ( ( int ) value == 1 ) {
@@ -412,6 +428,7 @@ void NinjasUI::stateChanged ( const char* key, const char* value )
     if ( std::strcmp ( key, "paramProgramNumber" ) == 0 ) {
         programNumber = std::stoi ( value );
         getProgram ( programNumber );
+        printf("stateChanged programNubmer : slices %i, currentSLice %i\n",slices, currentSlice);
         //TODO check if program button is set after state change, maybe make function;
     }
 
@@ -671,10 +688,7 @@ void NinjasUI::nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev 
         }
         // toggle the switches
     toggleswitches:
-        ;
-//           for ( uint i = 0; i <= 15; i++ ) {
-//                fGrid[i]->setDown ( i+paramCount == buttonId );
-//           }
+    ;
     }
 
 
