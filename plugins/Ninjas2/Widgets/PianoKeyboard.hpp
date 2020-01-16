@@ -14,7 +14,7 @@ public:
     {
     public:
         virtual ~Callback() {}
-        virtual void pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard ) = 0;
+        virtual void pianoKeyboardClicked ( PianoKeyboard* pianoKeyboard , int velocity) = 0;
     };
     void setCallback ( Callback* callback ) noexcept;
     int getKey() {
@@ -25,6 +25,8 @@ public:
     explicit PianoKeyboard ( NanoWidget *widget, uint startKey, uint endKey ) noexcept;
     void setKeyColor ( uint noteNumber, Color keyColor );
     void setKeyRange ( int startKey, int endKey);
+    void setActiveKeyIndicator (uint noteNumber); //needs better name
+    void setSlices(int slices);
 
 
 protected:
@@ -35,12 +37,15 @@ private:
     
     int DetectKeyClicked ( const Point<int>& );
     int keyClicked;
+    int slices;
 
     struct pianoKey {
         Rectangle<uint> key;
         Color keyColor;
         const char* noteName;
         uint noteNumber;
+        bool currentSlice = false;
+        bool hasSlice = false;
     };
     // lookup tables
     const char* noteNames [12] {"C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"};

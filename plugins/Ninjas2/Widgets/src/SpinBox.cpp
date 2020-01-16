@@ -144,7 +144,7 @@ void SpinBox::draw()
      closePath();
      */
      beginPath(); 
-     translate(0.5f, 0.5f);
+   //  translate(0.5f, 0.5f);
      const float borderWidth =1.0f;
      strokeWidth (1);
      strokeColor ( 0x00,0x00,0x00,0xff);

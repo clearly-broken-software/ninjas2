@@ -45,6 +45,7 @@
 #include "StateSwitch.hpp"
 
 #include "PianoKeyboard.hpp"
+#include "LabelBox.hpp"
 
 #include "Ninjas2Resources.hpp"
 #include "Ninjas2Plugin.hpp"
@@ -82,7 +83,7 @@ protected:
      void nanoSpinBoxValueChanged ( NanoSpinBox *nanoSpinBox, const float value ) override;
      void nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) override;
      void nanoButtonClicked ( NanoButton* nanoButton ) override;
-     void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard ) override;
+     void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard , int velocity ) override;
      bool onMouse ( const MouseEvent& ) override;
      bool onScroll ( const ScrollEvent& ) override;
      bool onMotion ( const MotionEvent& ) override;
@@ -95,8 +96,9 @@ private:
      ScopedPointer<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
      ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
      ScopedPointer<StateSwitch> fGrid[16];
-     ScopedPointer<TextButton> fSliceButton;
+     ScopedPointer<TextButton> fSliceButton,fFileOpenButton;
      ScopedPointer<PianoKeyboard> fPianoKeyboard;
+     ScopedPointer<LabelBox> fFilePathBox;
 
      const NinjasPlugin * plugin;
      void loadSample ( bool fromUser );
@@ -239,6 +241,7 @@ private:
      // font
      FontId fNanoFont;
      FontId Labels;
+     FontId fFontAwesome;
 
      NanoImage imgNinjasLogo,imgClearlyBroken;
 

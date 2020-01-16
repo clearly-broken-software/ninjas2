@@ -50,6 +50,7 @@ FILES_UI  = \
 	Resources/fonts.cpp \
 	Widgets/src/StateSwitch.cpp \
 	Widgets/src/PianoKeyboard.cpp \
+	Widgets/src/LabelBox.cpp \
 	Ninjas2UI.cpp \
 	Ninjas2Resources.cpp
 	
@@ -74,8 +75,8 @@ BASE_FLAGS += -I../../aubio/src
 LINK_FLAGS += ../../aubio/libaubio.a
 endif
 
-BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate)
-LINK_FLAGS += $(shell $(PKG_CONFIG) --libs sndfile samplerate)
+BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags sndfile samplerate )
+LINK_FLAGS += $(shell $(PKG_CONFIG) --libs sndfile samplerate )
 
 # Set PARANOID_MODE=true to make the build error out on warnings
 ifeq ($(PARANOID_MODE),true)

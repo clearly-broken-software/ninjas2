@@ -30,12 +30,13 @@ NanoButton ( parent,size ),
            fFontSize ( 12.0f ),
            fFontId( 0 )
 {
-    loadSharedResources();
-}
+      loadSharedResources();
+      createFontFromMemory("fontawesome", fonts::fontawesome_ttf, fonts::fontawesome_ttf_size, false);
+   }
 
 TextButton::TextButton ( NanoWidget* widget, Size< uint > size ) noexcept :
 	   NanoButton ( widget, size ),
-           fText ( "bottun" ),
+           fText ( "button" ),
            fMargin ( Margin ( 0,0,0,0 ) ),
            fAlign ( ALIGN_TOP | ALIGN_LEFT ),
            fTextColor ( Color ( 255,255,255,255 ) ),
@@ -51,31 +52,68 @@ void TextButton::draw()
   float h = getHeight();
   float w = getWidth();
   
-  beginPath();
-  strokeWidth(2.0f);
   const float margin = 2.0f;
   const float doubleMargin = margin * 2.0f;
-  strokeColor(Color(89,82,78,255));
-  const Color icol=Color(86, 92, 95, 255);
-  const Color ocol=Color(39, 42, 43, 255);
-  const Paint bg=linearGradient(w-doubleMargin,margin,w - doubleMargin, h -doubleMargin,icol,ocol);
-  roundedRect ( margin, margin, w - doubleMargin, h - doubleMargin, 4.0f);
-  fillPaint(bg);
+  Color col_1_00=Color(0x99, 0x99, 0x99, 0xff);
+  Color col_0_86=Color(0x2c, 0x2c, 0x2c, 0xff);
+  Color col_0_17=Color(0x2c, 0x2c, 0x2c, 0xff);
+  Color col_0_00=Color(0x00, 0x00, 0x00, 0xff);
+ 
+  // top half
+  beginPath();
+  const Paint bg_top=linearGradient(w/2, margin , w/2, 8, col_1_00,col_0_86);
+  fillPaint(bg_top);
+  roundedRect(margin,margin, w - doubleMargin, h/2, 4.0f);
   fill();
-  stroke();
   closePath();
-  
+  //bottom half
+  beginPath();
+     Paint bg_bottom=linearGradient(w/2, h -8, w/2, h-margin, col_0_17,col_0_00);
+     fillPaint(bg_bottom);
+     roundedRect( margin, h/2 , w - doubleMargin, h/2 - margin, 4.0f);
+     fill();
+     closePath(); 
+ 
+ // borger grey
      beginPath();
+     strokeWidth (margin);
+     strokeColor ( 0x33,0x33,0x33,0xff);
+     roundedRect ( margin, margin, w - doubleMargin, h - doubleMargin, 4.0f);
+     stroke();
+     closePath(); 
+   
+     // border black
+     beginPath(); 
+     //translate(0.5f, 0.5f);
+     const float borderWidth =1.0f;
+     strokeWidth (1);
+     strokeColor ( 0x00,0x00,0x00,0xff);
+     roundedRect ( doubleMargin - borderWidth, doubleMargin - borderWidth, w - 7  , h - 7, 3.0f );
+     stroke();
+     closePath(); 
 
-     if (fFontId > 0)
+     // text
+    beginPath();
+      if (fFontId > 0)
      {
         fontFaceId ( fFontId );
      }
+      
      fontSize ( fFontSize );
      fillColor ( fTextColor );
      textAlign ( fAlign );
-     text ( fMargin.left, fMargin.top, fText, NULL );
-     closePath();
+     Rectangle<float> bounds;
+     textBounds(0,0, fText, NULL, bounds);
+     const float tw = bounds.getWidth();
+     const float th = bounds.getHeight();
+     const float x = w /2 - tw /2.0f;
+     const float y = h /2 - th /2.0f;
+    // translate(0.5f,0.5f);
+     fillColor(0,0,0);
+     text ( x+1,y+1 , fText, NULL );
+     fillColor ( fTextColor );
+     text ( x,y , fText, NULL );
+     closePath(); 
     
 }
 

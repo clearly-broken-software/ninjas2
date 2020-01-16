@@ -197,9 +197,16 @@ void PlayModeSwitch::draw()
     beginPath();
     fontFaceId(fFontAwesome);
     fontSize(20);
+    Rectangle<float> bounds;
+    textBounds(0,0, fLabel.c_str(), NULL, bounds);
+    const float tw = bounds.getWidth();
+    const float th = bounds.getHeight();
+    const float x = getWidth() /2 - tw /2.0f;
+    const float y = getHeight() /2 - th /2.0f;
+
     fillColor(fLabelColor);
     textAlign(ALIGN_TOP | ALIGN_LEFT);
-    text ( 15, 15, fLabel.c_str(), NULL );
+    text ( x+1, y+1, fLabel.c_str(), NULL );
     closePath();
 
 }

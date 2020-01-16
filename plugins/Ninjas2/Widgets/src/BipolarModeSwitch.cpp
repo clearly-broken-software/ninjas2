@@ -33,44 +33,100 @@ void BipolarModeSwitch::drawSocket()
 {
     const float width = getWidth();
     const float height = getHeight();
-
-    const float centerX = width / 2.0f;
-    const float centerY = height / 2.0f;
-
-    const float marginLeftRight = 1.0f;
-    const float marginTopBottom = 2.0f;
-    const float halfMarginTopBottom = marginTopBottom / 2.0f;
-
+    Color colBottom=Color(0x99, 0x99, 0x99, 0xff);
+    Color colMiddle=Color(0x1d, 0x1d, 0x1d, 0xff);
+    Color colTop=Color(0x00, 0x00, 0x00, 0xff);
+    Paint paintTop=linearGradient(   width/2, 0 , width/2, 10 , colTop,colMiddle);
+    Paint paintBottom=linearGradient(width/2, height- 10 , width/2, height,  colMiddle,colBottom);
+  
+  
+    // grey border
     beginPath();
-    fillColor(0, 0, 0, 255);
-
-    ellipse(centerX, centerY, centerX - marginLeftRight, centerY - halfMarginTopBottom);
+    fillColor(0x33, 0x33, 0x33, 0xff);
+    roundedRect(0, 0, width, height, 4.0f);
+    fill();
+    closePath();
+    // black border
+    beginPath();
+    fillColor(0x00, 0x00, 0x00, 0xff);
+    roundedRect(2, 2, width-4, height-4, 4.0f);
+    fill();
+    closePath();
+    // background
+    // top
+    beginPath();
+    fillPaint(paintTop);
+    roundedRect(3,3, width-6, (height -2) /2, 4.0f);
+    fill();
+    // bottom
+    beginPath();
+    fillPaint(paintBottom);
+    roundedRect(3,height/2 -3 , width-6, (height ) /2, 4.0f);
     fill();
 
     closePath();
+
+    
 }
 
 void BipolarModeSwitch::drawHandle()
 {
     const float width = getWidth();
     const float height = getHeight();
-
     const float halfWidth = width / 2.0f;
-
-    const float radius = 6.0f;
-
-    beginPath();
-
-    fillColor(Color(140, 140, 140, 255));
+    float radius = (width - 6) / 2.0f;
+    const Color icol = Color(249,249,249);
+    const Color ocol = Color(204,204,204);
+    
+   // fillColor(Color(0xf9, 0xf9, 0xf9, 0xff));
 
     if (isDown())
-        circle(halfWidth, height - radius, radius);
+    {   // grey border
+        beginPath();
+        fillColor(Color( 0x33, 0x33, 0x33, 0xff));
+        circle(halfWidth, height - (3 + radius), radius);
+        fill();
+        closePath();
+        // black border
+        beginPath();
+        fillColor(Color(0x00, 0x00, 0x00, 0xff));
+        radius = radius - 1;
+        circle(halfWidth, height - (3 + radius + 1) , radius);
+        fill();
+        closePath();
+        // inner circle
+        beginPath();
+        radius = radius - 1 ;
+        fillPaint(Paint (radialGradient(halfWidth,height - (3 + radius + 4  ),0,3,icol, ocol)));
+        circle(halfWidth, height - (3 + radius +2 ) , radius);
+        fill();
+        closePath();
+        }
+ 
     else
-        circle(halfWidth, radius, radius);
+    {
+        // grey border
+        beginPath();
+        fillColor(Color( 0x33, 0x33, 0x33, 0xff));
+        circle(halfWidth, 3 + radius, radius);
+        fill();
+        closePath();
+        // black border
+        beginPath();
+        fillColor(Color(0x00, 0x00, 0x00, 0xff));
+        radius = radius - 1;
+        circle(halfWidth, 3 + radius + 1 , radius);
+        fill();
+        closePath();
+        // inner circle
+        beginPath();
+        radius = radius - 1 ;
+        fillPaint(Paint (radialGradient(halfWidth, 3 + radius  ,0 ,3,icol, ocol)));
+        circle(halfWidth, 3 + radius + 2 , radius);
+        fill();
+        closePath();
+        }
 
-    fill();
-
-    closePath();
 }
 
 void BipolarModeSwitch::draw()

@@ -24,6 +24,7 @@
 #include "Animation.hpp"
 #include "Window.hpp"
 #include "Layout.hpp"
+#include "../Resources/fonts.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -48,7 +49,7 @@ protected:
 private:
   const char* fText;
   Margin fMargin;
-  NanoVG::FontId fFontId;
+  NanoVG::FontId fFontId, fFontAwesome;
   int fAlign;
   Color fTextColor;
   Color fButtonColor;

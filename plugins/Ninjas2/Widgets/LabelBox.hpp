@@ -20,6 +20,7 @@
 #ifndef WOLF_LABEL_BOX_HPP_INCLUDED
 #define WOLF_LABEL_BOX_HPP_INCLUDED
 
+#include <string>
 #include "Widget.hpp"
 #include "NanoVG.hpp"
 
@@ -29,24 +30,29 @@ class LabelBox : public NanoWidget
 {
   public:
     explicit LabelBox(NanoWidget *widget, Size<uint> size) noexcept;
+    explicit LabelBox(Window &parent, Size<uint> size) noexcept;
 
     void setFontSize(float fontSize);
     float getFontSize();
 
-    void setText(const char *text);
-    const char *getText();
+    void setText( std::string text);
+    const std::string getText();
 
     void setFontId(NanoVG::FontId fontId);
     NanoVG::FontId getFontId();
+
+    void setBoxColor(const Color color);
+    void setBorderColor(const Color color);
+    void setTextColor(const Color color);
 
   protected:
     void onNanoDisplay() override;
 
   private:
-    const char *fText;
+    std::string fText;
     float fFontSize;
     NanoVG::FontId fFontId;
-
+    Color boxColor, borderColor, textColor;
     DISTRHO_LEAK_DETECTOR(LabelBox)
 };
 
