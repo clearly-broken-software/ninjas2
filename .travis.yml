@@ -100,16 +100,7 @@ matrix:
     - rm -f ninjas2-"$_BUILD"/README
     - install -d release
     - zip -9 -r release/ninjas2-"$_BUILD".zip ninjas2-"$_BUILD"
-before_deploy:
-- |
-  if test "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false"; then
-    export TRAVIS_TAG=automatic
-    git tag -f "$TRAVIS_TAG"
-  fi
-  if test "$TRAVIS_BRANCH" = "develop" -a "$TRAVIS_PULL_REQUEST" = "false"; then
-    export TRAVIS_TAG=develop
-    git tag -f "$TRAVIS_TAG"
-  fi
+
   
 deploy:
   provider: releases
@@ -123,6 +114,8 @@ deploy:
     branch: 
     - master
     - develop
+    tags:
+    - true
 env:
   global:
   - secure: W2cje+mglxsG8SJGZL4j+McmxrNbXpErSzlF5IUi4YmHazTnVbvX+odsp0qBXdZemV86mhzCB7OTfefUG8+Jw/7HVtLxIuOCF8gLCZWpawt+JyDy32zqGzAMfYJ/cmlO1Lz+B3W7XqpyPG7qPzZX4E2C167JUOuMQFe/DuGEIGwJexht884FEz32iC9+6GQPjdS/dl3rakdwiAriFmwyYBp77Yv5eowYgb5PGYy95yXIJsFvgiFy6/+ygFBW4E/r+0Tgl+6Y3AKRByvy6TfqU0ejB40VwQ1r/4RkcKemioVF73NeQEWKFibsGAYQCVgw/F/ezRloQfFQyG12/CbgqGosXDAQoOZdfkvmhJ5ibxDB2Y/TDSAH57Dh0H3loK8n0FqtPdFQx9g1S+M0Xn1VU5PRZtzCVJ6DJMyhFvQXaLJH58mWJCQUgq4PwkF8QzlkG84Bh84atevpt21m3UAXrHjEdk9rC9BDtxLvu+suyD/WrPe++OAWcWaIz1rJx9STRO8mz82W9skHND3OOXDJx/A6ueatHRVw+lsumVbZOUY7wBZdjJoHVfUPLpK6QrD1XAIN76K11jb2iodLcbX1PFfkNkMcReoHSG7W1sl6MNfbu0JKjfifu/J0kjBtHyn+zjRTTxGw/qfrkF8BAiay0pNV49Yp8JfGiqqgCuM/ZY8=
