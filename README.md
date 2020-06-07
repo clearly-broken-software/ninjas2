@@ -16,7 +16,7 @@ Currently there's no limit on imported sample length.
 User can play the slices using midi notes and change the pitch with midi pitchbend.
 
 #### Downloads:
-Linux, Windows and Mac binaries for several architectures are available [here](https://github.com/rghvdberg/ninjas2/releases/tag/automatic). There are no installers, just unzip and copy the plugin to an appropiate location.
+Linux, Windows and Mac binaries for several architectures are available [here](https://github.com/rghvdberg/ninjas2/releases). There are no installers, just unzip and copy the plugin to an appropiate location.
 
 #### New Features
 + redesigned interface
