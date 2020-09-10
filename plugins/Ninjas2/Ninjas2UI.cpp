@@ -514,7 +514,7 @@ void NinjasUI::nanoSpinBoxValueChanged ( NanoSpinBox* nanoSpinBox, const float v
         break;
     }
     case paramPitchbendDepth: {
-        fSpinBoxPitchBendDepth->setValue(value);
+        setParameterValue ( SpinBoxID,value );
         break;
     }
 
