@@ -57,6 +57,19 @@ endif
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
 	$(MAKE) clean -C plugins/Ninjas2
 
+# --------------------------------------------------------------
+
+install:
+	install -d $(DESTDIR)$(PREFIX)/lib/lv2/
+	install -d $(DESTDIR)$(PREFIX)/lib/vst/
+	install -d $(DESTDIR)$(PREFIX)/bin/
+
+ifeq ($(MACOS),true)
+	cp -r bin/*.vst            $(DESTDIR)$(PREFIX)/lib/vst/
+else
+	install -m 644 bin/*-vst.* $(DESTDIR)$(PREFIX)/lib/vst/
+endif
+	cp -r bin/*.lv2            $(DESTDIR)$(PREFIX)/lib/lv2/
 
 # --------------------------------------------------------------
 
