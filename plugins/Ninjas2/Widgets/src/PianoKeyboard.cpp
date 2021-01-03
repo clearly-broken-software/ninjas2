@@ -103,7 +103,7 @@ bool PianoKeyboard::onMouse ( const MouseEvent & ev )
         fCallback->pianoKeyboardClicked( this, 0); // 0 == note off
         keyPressed = false;
     }
-    return hover;
+    return false;
 }
 
 
