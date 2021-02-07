@@ -85,8 +85,9 @@ If you want a standalone jack binary install either `libjack-dev` or `libjack-ja
 git clone --recursive https://github.com/rghvdberg/ninjas2.git
 cd ninjas2
 make
+make install (optional)
 ```
-There is no ~`make install`~, binaries will appear in `/path/to/ninjas2/bin/`, just copy the binaries to an appropiate location, typically ~/.vst or /usr/lib/vst on linux.
+If you choose not to use the `make install`, you can copy the binaries from `/path/to/ninjas2/bin/` to an appropiate location, typically ~/.vst or /usr/lib/vst on linux.
 
 ***
 [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://riot.im/app/#/room/#ninjas:matrix.org?action=chat)
