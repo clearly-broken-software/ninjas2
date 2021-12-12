@@ -27,16 +27,28 @@ FILES_DSP = \
 	Ninjas2Plugin.cpp
 
 FILES_UI  = \
-	Widgets/src/TextButton.cpp \
-	Widgets/src/NanoButton.cpp \
-	Widgets/src/NanoKnob.cpp \
 	Widgets/src/NanoSwitch.cpp \
+	Widgets/src/RemoveDCSwitch.cpp \
+	Widgets/src/NanoButton.cpp \
+	Widgets/src/NanoWheel.cpp \
+	Widgets/src/NanoKnob.cpp \
+	Widgets/src/VolumeKnob.cpp \
+	Widgets/src/ResizeHandle.cpp \
+	Widgets/src/LabelBox.cpp \
+	Widgets/src/LabelContainer.cpp \
+	Widgets/src/BipolarModeSwitch.cpp \
+	Widgets/src/GlowingLabelsBox.cpp \
+	Widgets/src/NanoLabel.cpp \
+	Widgets/src/SpinBox.cpp \
+	Widgets/src/NanoSpinBox.cpp \
+	Widgets/src/TextButton.cpp \
 	Widgets/src/PlayModeSwitch.cpp \
-	Widgets/src/SliceModeSwitch.cpp \
 	Resources/fonts.cpp \
+	Widgets/src/StateSwitch.cpp \
+	Widgets/src/PianoKeyboard.cpp \
+	Widgets/src/LabelBox.cpp \
 	Ninjas2UI.cpp \
-	Ninjas2Resources.cpp \
-	ExtraEventHandlers.cpp
+	Ninjas2Resources.cpp
 	
 
 # --------------------------------------------------------------

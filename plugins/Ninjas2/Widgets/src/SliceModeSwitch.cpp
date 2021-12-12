@@ -17,29 +17,35 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "BipolarModeSwitch.hpp"
+#include "SliceModeSwitch.hpp"
 
 START_NAMESPACE_DISTRHO
 
-BipolarModeSwitch::BipolarModeSwitch(Window &parent, Size<uint> size) noexcept : NanoSwitch(parent, size)
+SliceModeSwitch::SliceModeSwitch(Widget *widget,
+                                 SwitchEventHandler::Callback *cb) noexcept
+    : NanoSwitch(widget, cb)
 {
 }
 
-BipolarModeSwitch::BipolarModeSwitch(NanoWidget *widget, Size<uint> size) noexcept : NanoSwitch(widget, size)
+void SliceModeSwitch::addLabels(std::vector<std::string> labels)
 {
+
+    for (auto &l : labels)
+    {
+        printf("label %s\n",l.c_str());
+    }
 }
 
-void BipolarModeSwitch::drawSocket()
+void SliceModeSwitch::drawSocket()
 {
     const float width = getWidth();
     const float height = getHeight();
-    Color colBottom=Color(0x99, 0x99, 0x99, 0xff);
-    Color colMiddle=Color(0x1d, 0x1d, 0x1d, 0xff);
-    Color colTop=Color(0x00, 0x00, 0x00, 0xff);
-    Paint paintTop=linearGradient(   width/2, 0 , width/2, 10 , colTop,colMiddle);
-    Paint paintBottom=linearGradient(width/2, height- 10 , width/2, height,  colMiddle,colBottom);
-  
-  
+    Color colBottom = Color(0x99, 0x99, 0x99, 0xff);
+    Color colMiddle = Color(0x1d, 0x1d, 0x1d, 0xff);
+    Color colTop = Color(0x00, 0x00, 0x00, 0xff);
+    Paint paintTop = linearGradient(width / 2, 0, width / 2, 10, colTop, colMiddle);
+    Paint paintBottom = linearGradient(width / 2, height - 10, width / 2, height, colMiddle, colBottom);
+
     // grey border
     beginPath();
     fillColor(0x33, 0x33, 0x33, 0xff);
@@ -49,41 +55,39 @@ void BipolarModeSwitch::drawSocket()
     // black border
     beginPath();
     fillColor(0x00, 0x00, 0x00, 0xff);
-    roundedRect(2, 2, width-4, height-4, 4.0f);
+    roundedRect(2, 2, width - 4, height - 4, 4.0f);
     fill();
     closePath();
     // background
     // top
     beginPath();
     fillPaint(paintTop);
-    roundedRect(3,3, width-6, (height -2) /2, 4.0f);
+    roundedRect(3, 3, width - 6, (height - 2) / 2, 4.0f);
     fill();
     // bottom
     beginPath();
     fillPaint(paintBottom);
-    roundedRect(3,height/2 -3 , width-6, (height ) /2, 4.0f);
+    roundedRect(3, height / 2 - 3, width - 6, (height) / 2, 4.0f);
     fill();
 
     closePath();
-
-    
 }
 
-void BipolarModeSwitch::drawHandle()
+void SliceModeSwitch::drawHandle()
 {
     const float width = getWidth();
     const float height = getHeight();
     const float halfWidth = width / 2.0f;
     float radius = (width - 6) / 2.0f;
-    const Color icol = Color(249,249,249);
-    const Color ocol = Color(204,204,204);
-    
-   // fillColor(Color(0xf9, 0xf9, 0xf9, 0xff));
+    const Color icol = Color(249, 249, 249);
+    const Color ocol = Color(204, 204, 204);
+
+    // fillColor(Color(0xf9, 0xf9, 0xf9, 0xff));
 
     if (isDown())
-    {   // grey border
+    { // grey border
         beginPath();
-        fillColor(Color( 0x33, 0x33, 0x33, 0xff));
+        fillColor(Color(0x33, 0x33, 0x33, 0xff));
         circle(halfWidth, height - (3 + radius), radius);
         fill();
         closePath();
@@ -91,23 +95,23 @@ void BipolarModeSwitch::drawHandle()
         beginPath();
         fillColor(Color(0x00, 0x00, 0x00, 0xff));
         radius = radius - 1;
-        circle(halfWidth, height - (3 + radius + 1) , radius);
+        circle(halfWidth, height - (3 + radius + 1), radius);
         fill();
         closePath();
         // inner circle
         beginPath();
-        radius = radius - 1 ;
-        fillPaint(Paint (radialGradient(halfWidth,height - (3 + radius + 4  ),0,3,icol, ocol)));
-        circle(halfWidth, height - (3 + radius +2 ) , radius);
+        radius = radius - 1;
+        fillPaint(Paint(radialGradient(halfWidth, height - (3 + radius + 4), 0, 3, icol, ocol)));
+        circle(halfWidth, height - (3 + radius + 2), radius);
         fill();
         closePath();
-        }
- 
+    }
+
     else
     {
         // grey border
         beginPath();
-        fillColor(Color( 0x33, 0x33, 0x33, 0xff));
+        fillColor(Color(0x33, 0x33, 0x33, 0xff));
         circle(halfWidth, 3 + radius, radius);
         fill();
         closePath();
@@ -115,21 +119,20 @@ void BipolarModeSwitch::drawHandle()
         beginPath();
         fillColor(Color(0x00, 0x00, 0x00, 0xff));
         radius = radius - 1;
-        circle(halfWidth, 3 + radius + 1 , radius);
+        circle(halfWidth, 3 + radius + 1, radius);
         fill();
         closePath();
         // inner circle
         beginPath();
-        radius = radius - 1 ;
-        fillPaint(Paint (radialGradient(halfWidth, 3 + radius  ,0 ,3,icol, ocol)));
-        circle(halfWidth, 3 + radius + 2 , radius);
+        radius = radius - 1;
+        fillPaint(Paint(radialGradient(halfWidth, 3 + radius, 0, 3, icol, ocol)));
+        circle(halfWidth, 3 + radius + 2, radius);
         fill();
         closePath();
-        }
-
+    }
 }
 
-void BipolarModeSwitch::draw()
+void SliceModeSwitch::onNanoDisplay()
 {
     drawSocket();
     drawHandle();

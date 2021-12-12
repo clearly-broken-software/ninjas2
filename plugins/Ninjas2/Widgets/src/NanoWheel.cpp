@@ -26,7 +26,7 @@ START_NAMESPACE_DISTRHO
 NanoWheel::NanoWheel(NanoWidget *parent, Size<uint> size) noexcept
     : WolfWidget(parent),
       fLeftMouseDown(false),
-      fLeftMouseDownLocation(Point<int>(0, 0)),
+      fLeftMouseDownLocation(Point<double>(0.0, 0.0)),
       fIsHovered(true),
       fValue(0),
       fMin(0),

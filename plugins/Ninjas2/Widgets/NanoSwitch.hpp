@@ -17,47 +17,26 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef WOLF_NANO_SWITCH_HPP_INCLUDED
-#define WOLF_NANO_SWITCH_HPP_INCLUDED
+#ifndef NANO_SWITCH_HPP_INCLUDED
+#define NANO_SWITCH_HPP_INCLUDED
 
-#include "WolfWidget.hpp"
+#include "NanoVG.hpp"
+#include "ExtraEventHandlers.hpp"
 
 START_NAMESPACE_DISTRHO
 
-class NanoSwitch : public WolfWidget
+class NanoSwitch : public NanoSubWidget,
+                   public SwitchEventHandler
 {
-  public:
-    class Callback
-    {
-      public:
-        virtual ~Callback() {}
-        virtual void nanoSwitchClicked(NanoSwitch *nanoSwitch, const MouseEvent &ev) = 0;
-    };
+public:
+  explicit NanoSwitch(Widget *parent,
+                      SwitchEventHandler::Callback *cb);
 
-    explicit NanoSwitch(Window &parent, Size<uint> size) noexcept;
-    explicit NanoSwitch(NanoWidget *widget, Size<uint> size) noexcept;
+protected:
+  virtual void onNanoDisplay() = 0;
 
-    bool isDown() const noexcept;
-    void setDown(bool down) noexcept;
-
-    void setCallback(Callback *callback) noexcept;
-
-  protected:
-    void onNanoDisplay() override;
-    bool onMouse(const MouseEvent &) override;
-    bool onMotion(const MotionEvent &ev) override;
-
-    virtual void draw() = 0;
-
-    virtual void onStateChanged();
-
-  private:
-    bool fIsDown;
-    bool fIsHovered;
-    
-    Callback *fCallback;
-
-    DISTRHO_LEAK_DETECTOR(NanoSwitch)
+private:
+  DISTRHO_LEAK_DETECTOR(NanoSwitch)
 };
 
 END_NAMESPACE_DISTRHO

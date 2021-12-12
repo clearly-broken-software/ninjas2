@@ -139,7 +139,7 @@ void PianoKeyboard::setKeyRange ( int startKey, int endKey )
 
 }
 
-int PianoKeyboard::DetectKeyClicked ( const Point< int >& p )
+int PianoKeyboard::DetectKeyClicked ( const Point< double >& p )
 {
     uint x = p.getX();
     uint y = p.getY();

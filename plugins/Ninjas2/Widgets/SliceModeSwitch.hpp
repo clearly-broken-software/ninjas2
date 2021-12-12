@@ -17,21 +17,33 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef WAVESHAPER_LAYOUT_DEFINED_H
-#define WAVESHAPER_LAYOUT_DEFINED_H
+#ifndef MODE_SWITCH_HPP_INCLUDED
+#define MODE_SWITCH_HPP_INCLUDED
 
-#include "src/DistrhoDefines.h"
+#include "NanoSwitch.hpp"
+#include <initializer_list>
+#include <vector>
+#include <string>
 
 START_NAMESPACE_DISTRHO
 
-struct Margin
+class SliceModeSwitch : public NanoSwitch
 {
-    Margin(float left, float right, float top, float bottom);
+public:
+    explicit SliceModeSwitch(Widget *widget,
+                             SwitchEventHandler::Callback *cb) noexcept;
+    void addLabels(std::vector<std::string> labels);
 
-    float left;
-    float right;
-    float top;
-    float bottom;
+protected:
+    void onNanoDisplay() override;
+
+private:
+    void drawHandle();
+    void drawSocket();
+    void drawLabels();
+    const uint32_t S_WIDTH = 20;
+    const uint32_t S_HEIGHT = 40;
+    DISTRHO_LEAK_DETECTOR(SliceModeSwitch)
 };
 
 END_NAMESPACE_DISTRHO

@@ -57,7 +57,7 @@ class NanoWheel : public WolfWidget
     Callback *fCallback;
 
     bool fLeftMouseDown;
-    Point<int> fLeftMouseDownLocation;
+    Point<double> fLeftMouseDownLocation;
 
     bool fIsHovered;
 

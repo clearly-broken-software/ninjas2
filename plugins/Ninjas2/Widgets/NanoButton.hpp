@@ -17,60 +17,27 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef WOLF_NANO_BUTTON_HPP_INCLUDED
-#define WOLF_NANO_BUTTON_HPP_INCLUDED
+#ifndef NANO_BUTTON_HPP_INCLUDED
+#define NANO_BUTTON_HPP_INCLUDED
 
-#include "WolfWidget.hpp"
-#include "Widget.hpp"
 #include "NanoVG.hpp"
-#include "Window.hpp"
+#include "EventHandlers.hpp"
 
 START_NAMESPACE_DISTRHO
 
-class NanoButton : public WolfWidget
+class NanoButton : public NanoSubWidget,
+                   public ButtonEventHandler
 {
 public:
-    class Callback
-    {
-    public:
-        virtual ~Callback() {}
-        virtual void nanoButtonClicked(NanoButton* nanoButton) = 0;
-    };
-
-    enum ButtonState {
-        kNanoStateNormal = 0,
-        kNanoStateHover,
-        kNanoStateDown
-    };
-
-    explicit NanoButton(Window& parent, Size<uint> size) noexcept;
-    explicit NanoButton(NanoWidget* widget, Size<uint> size) noexcept;
-
-    void setCallback(Callback* callback) noexcept;
-
-    ButtonState getButtonState();
+    explicit NanoButton(Widget *const parent,
+                        ButtonEventHandler::Callback *cb);
 
 protected:
     void onNanoDisplay() override;
-
-    bool leftClick(const MouseEvent &ev);
-    bool middleClick(const MouseEvent &ev);
-    bool rightClick(const MouseEvent &ev);
-
-    bool onMouse(const MouseEvent&) override;
-    bool onMotion(const MotionEvent&) override;
-
-    virtual void draw() = 0;
+    bool onMouse(const MouseEvent &ev) override;
+    bool onMotion(const MotionEvent &ev) override;
 
 private:
-    void setButtonState(ButtonState state);
-    ButtonState fState;
-
-    bool fHasFocus;
-    bool fIsHovered;
-    
-    Callback* fCallback;
-
     DISTRHO_LEAK_DETECTOR(NanoButton)
 };
 

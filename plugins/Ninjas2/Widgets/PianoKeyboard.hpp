@@ -35,7 +35,7 @@ protected:
 
 private:
     
-    int DetectKeyClicked ( const Point<int>& );
+    int DetectKeyClicked ( const Point<double>& );
     int keyClicked;
     int slices;
 

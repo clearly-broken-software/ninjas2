@@ -17,26 +17,25 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef WOLF_GLOWING_LABELS_BOX_HPP_INCLUDED
-#define WOLF_GLOWING_LABELS_BOX_HPP_INCLUDED
-
-#include "Widget.hpp"
-#include "NanoVG.hpp"
-#include "LabelContainer.hpp"
-#include <vector>
+#ifndef MY_KNOB_HPP
+#define MY_KNOB_HPP
+#include "NanoKnob.hpp"
 
 START_NAMESPACE_DISTRHO
 
-class GlowingLabelsBox : public LabelContainer
+class MyKnob : public NanoKnob
 {
-  public:
-    explicit GlowingLabelsBox(Window &parent, Size<uint> size) noexcept;
-    explicit GlowingLabelsBox(NanoWidget *widget, Size<uint> size) noexcept;
+public:
+  explicit MyKnob(Widget *widget, KnobEventHandler::Callback* cb);
+ 
+protected:
+  void onNanoDisplay() override;
 
-  protected:
-    void onNanoDisplay() override;
+private:
+
+  DISTRHO_LEAK_DETECTOR(MyKnob)
 };
 
 END_NAMESPACE_DISTRHO
 
-#endif
+#endif // TEXT_BUTTON_HPP

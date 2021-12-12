@@ -17,7 +17,6 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef NINJAS_UI_HPP_INCLUDED
 #define NINJAS_UI_HPP_INCLUDED
 
@@ -33,19 +32,18 @@
 #include <string>
 #include <cstdlib>
 #include <samplerate.h>
+#include <memory>
 
-//Wolf Widgets
-#include "VolumeKnob.hpp"
-#include "BipolarModeSwitch.hpp"
-#include "GlowingLabelsBox.hpp"
-#include "RemoveDCSwitch.hpp"
-#include "SpinBox.hpp"
+#include "NanoKnob.hpp"
+#include "SliceModeSwitch.hpp"
+// #include "RemoveDCSwitch.hpp"
+// #include "SpinBox.hpp"
 #include "TextButton.hpp"
 #include "PlayModeSwitch.hpp"
-#include "StateSwitch.hpp"
+// #include "StateSwitch.hpp"
 
-#include "PianoKeyboard.hpp"
-#include "LabelBox.hpp"
+// #include "PianoKeyboard.hpp"
+// #include "LabelBox.hpp"
 
 #include "Ninjas2Resources.hpp"
 #include "Ninjas2Plugin.hpp"
@@ -55,12 +53,15 @@ START_NAMESPACE_DISTRHO
 // -----------------------------------------------------------------------
 
 class NinjasUI : public UI,
-     public NanoKnob::Callback,
-     public NanoSwitch::Callback,
-     public NanoSpinBox::Callback,
-     public NanoButton::Callback,
-     public PianoKeyboard::Callback,
-     public IdleCallback {
+                 public ButtonEventHandler::Callback,
+                 public KnobEventHandler::Callback,
+                 public SwitchEventHandler::Callback,
+                 // public NanoKnob::Callback,
+                 // public NanoSpinBox::Callback,
+                 // public NanoButton::Callback,
+                 // public PianoKeyboard::Callback,
+                 public IdleCallback
+{
 public:
      NinjasUI();
 
@@ -70,66 +71,69 @@ protected:
      // -------------------------------------------------------------------
      // DSP Callbacks
 
-     void parameterChanged ( uint32_t index, float value ) override;
-     void uiFileBrowserSelected ( const char* filename ) override;
-     void stateChanged ( const char* key, const char* value ) override;
+     void parameterChanged(uint32_t index, float value) override;
+     void uiFileBrowserSelected(const char *filename) override;
+     void stateChanged(const char *key, const char *value) override;
 
      // -------------------------------------------------------------------
      // Widget Callbacks
 
      void onNanoDisplay() override;
      void idleCallback() override;
-     void nanoKnobValueChanged ( NanoKnob* nanoKnob, const float value ) override;
-     void nanoSpinBoxValueChanged ( NanoSpinBox *nanoSpinBox, const float value ) override;
-     void nanoSwitchClicked ( NanoSwitch* nanoSwitch, const MouseEvent &ev ) override;
-     void nanoButtonClicked ( NanoButton* nanoButton ) override;
-     void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard , int velocity ) override;
-     bool onMouse ( const MouseEvent& ) override;
-     bool onScroll ( const ScrollEvent& ) override;
-     bool onMotion ( const MotionEvent& ) override;
+     void buttonClicked(SubWidget *widget, int button) override;
+     void knobValueChanged(SubWidget *widget, float value) override;
+     void knobDragStarted(SubWidget *widget) override;
+     void knobDragFinished(SubWidget *widget) override;
+
+     // void nanoSpinBoxValueChanged ( NanoSpinBox *nanoSpinBox, const float value ) override;
+     void switchClicked ( SubWidget* widget, bool down) override;
+     // void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard , int velocity ) override;
+     bool onMouse(const MouseEvent &) override;
+     bool onScroll(const ScrollEvent &) override;
+     bool onMotion(const MotionEvent &) override;
 
 private:
-     ScopedPointer<VolumeKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
-     ScopedPointer<SpinBox> fSpinBoxSlices, fSpinBoxPitchBendDepth;
-     ScopedPointer<BipolarModeSwitch> fSliceModeSlider;
-     ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxSliceSensitivity, fLabelsBoxLoadSample;
-     ScopedPointer<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
-     ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
-     ScopedPointer<StateSwitch> fGrid[16];
-     ScopedPointer<TextButton> fSliceButton,fFileOpenButton;
-     ScopedPointer<PianoKeyboard> fPianoKeyboard;
-     ScopedPointer<LabelBox> fFilePathBox;
+     std::unique_ptr<NanoKnob> fKnobAttack , fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
+     // ScopedPointer<SpinBox> fSpinBoxSlices, fSpinBoxPitchBendDepth;
+     std::unique_ptr<SliceModeSwitch> fSliceModeSlider;
+     // ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxSliceSensitivity, fLabelsBoxLoadSample;
+     std::unique_ptr<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
+     // ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
+     // ScopedPointer<StateSwitch> fGrid[16];
+     std::unique_ptr<TextButton> fSliceButton, fFileOpenButton;
+     // ScopedPointer<PianoKeyboard> fPianoKeyboard;
+     // ScopedPointer<LabelBox> fFilePathBox;
 
-     const NinjasPlugin * plugin;
-     void loadSample ( bool fromUser );
+     const NinjasPlugin *plugin;
+     void loadSample(bool fromUser);
      std::vector<short int> waveform;
-     void createSlicesRaw ();
-     void createSlicesOnsets ();
+     void createSlicesRaw();
+     void createSlicesOnsets();
      void removeSlice(const int slice);
      void insertSlice(const int slice, const int position);
-     int64_t find_nearest ( std::vector<uint_t> & haystack, uint_t needle );
-     void recallSliceSettings ( int slice );
+     int64_t find_nearest(std::vector<uint_t> &haystack, uint_t needle);
+     void recallSliceSettings(int slice);
      void drawWaveform();
      void drawRuler();
      void drawOnsets();
      void drawSliceMarkers();
      void drawCurrentSlice();
      void drawPlayheads();
-     void getVisibleSlices ( int &firstSice, int &lastSlice );
+     void getVisibleSlices(int &firstSice, int &lastSlice);
      void selectSlice();
      void editCurrentSlice();
      void editSlice();
-     bool sampleIsInSlice ( long unsigned int sample );
-     void setProgramGrid ( int program );
-     void ProgramGrid ( int grid );
-     void getProgram ( int program );
+     bool sampleIsInSlice(long unsigned int sample);
+     void setProgramGrid(int program);
+     void ProgramGrid(int grid);
+     void getProgram(int program);
      void getOnsets();
-     float getMaxSample( const std::vector<float> &sampleData);
+     float getMaxSample(const std::vector<float> &sampleData);
 
      float p_Attack[128], p_Decay[128], p_Sustain[128], p_Release[128];
 
-     std::string dirnameOf ( const std::string& fname );
-     std::string toTime ( double time, double round_up );
+     std::string dirnameOf(const std::string &fname);
+     std::string toTime(double time, double round_up);
      int programNumber; // 0 - 15
 
      //
@@ -139,7 +143,8 @@ private:
      int mouseDistance;
      int lastClick;
 
-     enum SLICEMODE {
+     enum SLICEMODE
+     {
           RAW,
           ONSETS,
           MANUAL
@@ -150,26 +155,28 @@ private:
      int slicemode;
      bool slicemodeChanged;
 
-     enum slicePlayMode {
-          ONE_SHOT_FWD ,
+     enum slicePlayMode
+     {
+          ONE_SHOT_FWD,
           ONE_SHOT_REV,
           LOOP_FWD,
           LOOP_REV
      };
      slicePlayMode p_playMode[128];
-     bool fwd,rev,loop,loop_rev;
+     bool fwd, rev, loop, loop_rev;
 
-
-     struct Slice {
+     struct Slice
+     {
           unsigned long int sliceStart;
           unsigned long int sliceEnd;
           slicePlayMode playmode;
-          Rectangle<int> bothHitBox = Rectangle<int> ( 0,0,20,20 );
-          Rectangle<int> startHitBox = Rectangle<int> ( 0,0,10,10 );
-          Rectangle<int> endHitBox  = Rectangle<int> ( 0,0,10,10 );
+          Rectangle<int> bothHitBox = Rectangle<int>(0, 0, 20, 20);
+          Rectangle<int> startHitBox = Rectangle<int>(0, 0, 10, 10);
+          Rectangle<int> endHitBox = Rectangle<int>(0, 0, 10, 10);
      };
 
-     struct program {
+     struct program
+     {
           int program_slices; // number of slices ..
           int program_currentslice;
           Slice program_a_slices[128];
@@ -187,7 +194,8 @@ private:
 
      bool slicemethod;
      int currentSlice;
-     enum editslicestartend {
+     enum editslicestartend
+     {
           start = 0,
           end,
           both
@@ -199,9 +207,10 @@ private:
      int tempSlices;
      Slice a_slices[128];
      Slice currentEditSlice;
-     std::vector<uint_t>onsets;
+     std::vector<uint_t> onsets;
 
-     struct WaveView {
+     struct WaveView
+     {
           unsigned long int start;
           unsigned long int end;
           float zoom; // sample lenght / display width
@@ -211,7 +220,7 @@ private:
      WaveView waveView;
      uint64_t sampleSize;
      int sampleChannels;
-     std::vector<float>sampleVector;
+     std::vector<float> sampleVector;
      bool sample_is_loaded;
      double samplerate;
      Window::FileBrowserOptions filebrowseropts;
@@ -222,19 +231,19 @@ private:
      //  int currentProgram;
      uint programGrid;
      bool sliceButton;
-     bool sig_LoadProgram {false};
+     bool sig_LoadProgram{false};
 
      // need static constexpr apparently because of std::array ..
 
-     static constexpr unsigned int display_left = 25;   
+     static constexpr unsigned int display_left = 25;
      static constexpr unsigned int display_top = 50;
-    static constexpr unsigned int display_width = 950;
+     static constexpr unsigned int display_width = 950;
      static constexpr unsigned int display_right = display_left + display_width;
      static constexpr unsigned int display_height = 315;
-           
-     static constexpr unsigned int display_bottom = display_top + display_height ;
-     static constexpr unsigned int display_center = ( display_bottom - display_top ) / 2 + display_top;
-     
+
+     static constexpr unsigned int display_bottom = display_top + display_height;
+     static constexpr unsigned int display_center = (display_bottom - display_top) / 2 + display_top;
+
      //static constexpr unsigned int display_height = ( display_bottom - display_top ) /2;
      //static constexpr unsigned int waveform_length = display_length * 2;
 
@@ -243,16 +252,15 @@ private:
      FontId Labels;
      FontId fFontAwesome;
 
-     NanoImage imgNinjasLogo,imgClearlyBroken;
+     NanoImage imgNinjasLogo, imgClearlyBroken;
 
-     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( NinjasUI )
+     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NinjasUI)
      void initParameters();
      void initSlices();
-
 };
 
 // -----------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO
 
-#endif // 
+#endif //
