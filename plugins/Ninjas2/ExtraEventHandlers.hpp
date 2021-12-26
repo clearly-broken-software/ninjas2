@@ -32,6 +32,12 @@ START_NAMESPACE_DGL
     ```
 */
 
+static float clamp(float x, float upper, float lower)
+{
+    return std::min(upper, std::max(x, lower));
+}
+
+
 // --------------------------------------------------------------------------------------------------------------------
 
 class SwitchEventHandler
@@ -56,7 +62,6 @@ public:
     bool mouseEvent(const Widget::MouseEvent &ev);
 
 protected:
-
 private:
     struct PrivateData;
     PrivateData *const pData;
@@ -131,6 +136,47 @@ private:
     DISTRHO_LEAK_DETECTOR(SliderEventHandler)
 };
 
+class SpinnerEventHandler
+{
+public:
+    class Callback
+    {
+    public:
+        virtual ~Callback() {}
+        virtual void spinnerValueChanged(SubWidget *widget, float value) = 0;
+    };
+
+    explicit SpinnerEventHandler(SubWidget *self);
+    explicit SpinnerEventHandler(SubWidget *self, const SpinnerEventHandler &other);
+    SpinnerEventHandler &operator=(const SpinnerEventHandler &other);
+    ~SpinnerEventHandler();
+
+    float getValue() const noexcept;
+
+    virtual bool setValue(float value, bool sendCallback = false) noexcept;
+
+   void setIncrementArea(const Rectangle<double> &incArea) noexcept;
+   void setDecrementArea(const Rectangle<double> &decArea) noexcept;
+    void setRange(float min, float max) noexcept;
+    void setStep(float step) noexcept;
+    void setCallback(Callback *callback) noexcept;
+
+    Rectangle<double> getIncrementArea() noexcept;
+    Rectangle<double> getDecrementArea() noexcept;
+
+    bool mouseEvent(const Widget::MouseEvent &ev);
+    bool motionEvent(const Widget::MotionEvent &ev);
+    bool scrollEvent(const Widget::ScrollEvent &ev);
+
+protected:
+    // State getState() const noexcept;
+
+private:
+    struct PrivateData;
+    PrivateData *const pData;
+
+    DISTRHO_LEAK_DETECTOR(SpinnerEventHandler)
+};
 // --------------------------------------------------------------------------------------------------------------------
 
 END_NAMESPACE_DGL

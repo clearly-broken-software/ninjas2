@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2018-2019 Rob van den Berg <rghvdberg at gmail dot org>
+ * Copyright (C) 2018-2021 Rob van den Berg <rghvdberg at gmail dot com>
  *
  * This file is part of Ninjas2
  *
- * Nnjas2 is free software: you can redistribute it and/or modify
+ * Ninjas2 is free software: you can redistribute it and/or modify
  * it under the of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -39,29 +39,20 @@
 
 enum Parameters // exposed to the host
 {
-    paramNumberOfSlices = 0,
+    paramLoadSample,
     paramSliceSensitivity,
     paramAttack,
     paramDecay,
     paramSustain,
     paramRelease,
-    paramLoadSample,
     paramSliceMode,
     paramProgramGrid,
     paramPlayMode,
     paramPitchbendDepth,
-    paramOneShotForward,
-    paramOneShotReverse,
-    paramLoopForward,
-    paramLoopReverse,
-    paramProgramNumber,
     paramSigSampleLoaded,
-    paramSigLoadProgram,
     paramCurrentSlice,
     paramCount
 };
-
-// the grid gets paramCount + n where n = 0 .. 15
 
 enum Widgets // used internally
 {
@@ -70,7 +61,8 @@ enum Widgets // used internally
     widgetSwitchRev,
     widgetSwitchLoopFwd,
     widgetSwitchLoopRev,
-    widgetPianoKeyboard
+    widgetPianoKeyboard,
+    widgetNumSlices
 };
 
 enum Ninjas2States
@@ -78,28 +70,9 @@ enum Ninjas2States
     stateFilepathFromUi,
     statePathFromState,
     stateSlices,
-    stateStoreProgram,
-    stateProgram00,
-    stateProgram01,
-    stateProgram02,
-    stateProgram03,
-    stateProgram04,
-    stateProgram05,
-    stateProgram06,
-    stateProgram07,
-    stateProgram08,
-    stateProgram09,
-    stateProgram10,
-    stateProgram11,
-    stateProgram12,
-    stateProgram13,
-    stateProgram14,
-    stateProgram15,
-    stateProgramNumber,
     stateCurrentSlice,
     stateSliceButton,
     stateSigSampleLoaded,
-    stateSigProgramLoaded,
     stateSigCurrentSlice,
     stateCount
 };

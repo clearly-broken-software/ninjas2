@@ -17,30 +17,41 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef NANO_BUTTON_HPP_INCLUDED
-#define NANO_BUTTON_HPP_INCLUDED
-
+#ifndef SPINNER_HPP_INCLUDED
+#define SPINNER_HPP_INCLUDED
 #include "NanoVG.hpp"
-#include "EventHandlers.hpp"
+#include "ExtraEventHandlers.hpp"
+
+#include <string>
 
 START_NAMESPACE_DISTRHO
 
-class NanoButton : public NanoSubWidget,
-                   public ButtonEventHandler
+class Spinner : public NanoSubWidget,
+                public SpinnerEventHandler
 {
 public:
-    explicit NanoButton(Widget *const parent,
-                        ButtonEventHandler::Callback *cb);
+    explicit Spinner(Widget *parent, SpinnerEventHandler::Callback *cb);
+
+    void setBackgroundColor(Color color);
+    void setFontScale(float scale);
+    void setLabel(const std::string &label);
+    void setLabelColor(Color color);
 
 protected:
     void onNanoDisplay() override;
-    bool onMouse(const MouseEvent &ev) override;
-    bool onMotion(const MotionEvent &ev) override;
+    // bool onMouse(const MouseEvent &ev) override;
+    // bool onMotion(const MotionEvent &ev) override;
+    // bool onScroll(const ScrollEvent &ev) override;
 
 private:
-    DISTRHO_LEAK_DETECTOR(NanoButton)
+    Color backgroundColor;
+    Color labelColor;
+    std::string label;
+    float fontScale;
+
+    DISTRHO_LEAK_DETECTOR(Spinner)
 };
 
 END_NAMESPACE_DISTRHO
 
-#endif
+#endif 

@@ -3,7 +3,7 @@
  *
  * This file is part of Ninjas2
  *
- * Nnjas2 is free software: you can redistribute it and/or modify
+ * Ninjas2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -37,7 +37,7 @@
 #include "NanoKnob.hpp"
 #include "SliceModeSwitch.hpp"
 // #include "RemoveDCSwitch.hpp"
-// #include "SpinBox.hpp"
+#include "Spinner.hpp"
 #include "TextButton.hpp"
 #include "PlayModeSwitch.hpp"
 // #include "StateSwitch.hpp"
@@ -56,8 +56,7 @@ class NinjasUI : public UI,
                  public ButtonEventHandler::Callback,
                  public KnobEventHandler::Callback,
                  public SwitchEventHandler::Callback,
-                 // public NanoKnob::Callback,
-                 // public NanoSpinBox::Callback,
+                 public SpinnerEventHandler::Callback,
                  // public NanoButton::Callback,
                  // public PianoKeyboard::Callback,
                  public IdleCallback
@@ -84,16 +83,16 @@ protected:
      void knobValueChanged(SubWidget *widget, float value) override;
      void knobDragStarted(SubWidget *widget) override;
      void knobDragFinished(SubWidget *widget) override;
-
-     // void nanoSpinBoxValueChanged ( NanoSpinBox *nanoSpinBox, const float value ) override;
-     void switchClicked ( SubWidget* widget, bool down) override;
+     void spinnerValueChanged(SubWidget *widget, float value) override;
+     void switchClicked(SubWidget *widget, bool down) override;
      // void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard , int velocity ) override;
      bool onMouse(const MouseEvent &) override;
      bool onScroll(const ScrollEvent &) override;
      bool onMotion(const MotionEvent &) override;
 
 private:
-     std::unique_ptr<NanoKnob> fKnobAttack , fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
+     std::unique_ptr<NanoKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
+     std::unique_ptr<Spinner> fSpinBoxSlices;
      // ScopedPointer<SpinBox> fSpinBoxSlices, fSpinBoxPitchBendDepth;
      std::unique_ptr<SliceModeSwitch> fSliceModeSlider;
      // ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxSliceSensitivity, fLabelsBoxLoadSample;

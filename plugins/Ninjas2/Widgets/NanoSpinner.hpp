@@ -3,7 +3,7 @@
  *
  * This file is part of Ninjas2
  *
- * Nnjas2 is free software: you can redistribute it and/or modify
+ * Ninjas2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -17,34 +17,28 @@
  * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef WOLF_WIDGET_HPP_INCLUDED
-#define WOLF_WIDGET_HPP_INCLUDED
+#ifndef NANO_SPINBOX_HPP_INCLUDED
+#define NANO_SPINBOX_HPP_INCLUDED
 
-#include "Widget.hpp"
 #include "NanoVG.hpp"
+#include "ExtraEventHandlers.hpp"
 
 START_NAMESPACE_DISTRHO
 
-class WolfWidget : public NanoWidget
+class NanoSpinner : public NanoSubWidget,
+                    public SpinnerEventHandler
 {
 public:
-  WolfWidget(Window &parent) noexcept;
-  WolfWidget(NanoWidget *widget) noexcept;
-
-  void setDescription(const char *description);
-  const char *getDescription();
-
-  bool canBeFocused();
-  void setFocus(bool focus);
+    explicit NanoSpinner(Widget *parent, SpinnerEventHandler::Callback *const cb) noexcept;
 
 protected:
-  void mouseWarp(); //TODO: design this
+    void onNanoDisplay() override;
+    bool onMouse(const MouseEvent &) override;
+    bool onMotion(const MotionEvent &) override;
+    bool onScroll(const ScrollEvent &) override;
 
 private:
-  int *fFocusedWidgetId; //only one focused widget at a time
-  const char *fDescription;
-
-  DISTRHO_LEAK_DETECTOR(WolfWidget)
+    DISTRHO_LEAK_DETECTOR(NanoSpinner)
 };
 
 END_NAMESPACE_DISTRHO

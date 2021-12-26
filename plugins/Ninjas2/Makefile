@@ -31,8 +31,10 @@ FILES_UI  = \
 	Widgets/src/NanoButton.cpp \
 	Widgets/src/NanoKnob.cpp \
 	Widgets/src/NanoSwitch.cpp \
+	Widgets/src/NanoSpinner.cpp \
 	Widgets/src/PlayModeSwitch.cpp \
 	Widgets/src/SliceModeSwitch.cpp \
+	Widgets/src/Spinner.cpp \
 	Resources/fonts.cpp \
 	Ninjas2UI.cpp \
 	Ninjas2Resources.cpp \

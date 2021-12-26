@@ -3,7 +3,7 @@
  *
  * This file is part of Ninjas2
  *
- * Nnjas2 is free software: you can redistribute it and/or modify
+ * Ninjas2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -42,7 +42,7 @@ NinjasUI::NinjasUI()
     // initParameters();
     // initSlices();
 
-    programNumber = plugin->programNumber;
+    // programNumber = plugin->programNumber;
     sliceButton = 0;
     slicemodeChanged = false;
 
@@ -72,19 +72,20 @@ NinjasUI::NinjasUI()
     const Color ninjasColor = Color(222, 205, 135, 255);
 
     Window &window = getParentWindow();
-    /* 
-    // slice number selector
-    // fSpinBoxSlices = new SpinBox(window, spinboxSize);
-    // fSpinBoxSlices->setId(paramNumberOfSlices);
-    // fSpinBoxSlices->setRange(1.0f, 128.0f);
-    // fSpinBoxSlices->setStep(1.0f);
-    // fSpinBoxSlices->setCallback(this);
 
+    fSpinBoxSlices.reset(new Spinner(this, this));
+    fSpinBoxSlices->setId(widgetNumSlices);
+    fSpinBoxSlices->setRange(1.0f, 128.0f);
+    fSpinBoxSlices->setStep(1.0f);
+    fSpinBoxSlices->setSize(30, 100);
+
+    /*
     // fKnobSliceSensitivity = new VolumeKnob(window, knobSizeSmall);
     // fKnobSliceSensitivity->setId(paramSliceSensitivity);
     // fKnobSliceSensitivity->setRange(0.001f, 1.0f);
     // fKnobSliceSensitivity->setColor(ninjasColor);
-    // fKnobSliceSensitivity->setCallback(this); */
+    // fKnobSliceSensitivity->setCallback(this); 
+    */
 
     fSliceButton.reset(new TextButton(this, this));
     fSliceButton->setSize(48, 30);
@@ -131,7 +132,7 @@ NinjasUI::NinjasUI()
     fSliceModeSlider.reset(new SliceModeSwitch(this, this));
     fSliceModeSlider->setId(paramSliceMode);
     fSliceModeSlider->setSize(75, 40);
-    fSliceModeSlider->addLabels({"RAW","ONSETS"});
+    fSliceModeSlider->addLabels({"RAW", "ONSETS"});
 
     /*
     fLabelsBoxSliceModeSlider = new GlowingLabelsBox(window, Size<uint>(58, 42));
@@ -306,11 +307,6 @@ void NinjasUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
     {
-    case paramNumberOfSlices:
-        // fSpinBoxSlices->setValue(value);
-        // fPianoKeyboard->setSlices((int)value);
-        break;
-    // Play Modes
     case paramPlayMode:
     {
         // int v = value;
@@ -349,52 +345,11 @@ void NinjasUI::parameterChanged(uint32_t index, float value)
         programGrid = value;
         ProgramGrid(value);
         break;
-    case paramProgramNumber:
-    {
-        if ((int)value != programNumber)
-        {
-            programNumber = value;
-            getProgram(programNumber);
-            if (slices > 1)
-            {
-                // fPianoKeyboard->setActiveKeyIndicator((currentSlice + 60) % 128);
-            }
-            else
-            {
-                if (slices == 1)
-                {
-                    // only one slice, do not indicate active key
-                    // fPianoKeyboard->setActiveKeyIndicator(128);
-                }
-                else
-                {
-                    // set basenote as active key
-                    // fPianoKeyboard->setActiveKeyIndicator(60);
-                }
-            }
-            // fPianoKeyboard->setSlices(slices);
-        }
-        break;
-    }
     case paramSigSampleLoaded:
     {
         if ((int)value == 1)
         {
             loadSample(true);
-        }
-        break;
-    }
-
-    case paramSigLoadProgram:
-    {
-        if ((int)value != sig_LoadProgram)
-        {
-            sig_LoadProgram = (int)value;
-            if (value > 0.5f)
-            {
-                getProgram(programNumber);
-                setState("sig_LoadProgram", "false");
-            }
         }
         break;
     }
@@ -525,35 +480,28 @@ void NinjasUI::knobDragFinished(SubWidget *widget)
 {
 }
 
-// void NinjasUI::nanoSpinBoxValueChanged(NanoSpinBox *nanoSpinBox, const float value)
-// {
-//     int SpinBoxID = nanoSpinBox->getId();
-//     //   setParameterValue ( SpinBoxID,value );
-//     switch (SpinBoxID)
-//     {
+void NinjasUI::spinnerValueChanged(SubWidget *widget, float value)
+{
+    int SpinnerID = widget->getId();
+    //   setParameterValue ( SpinBoxID,value );
+    switch (SpinnerID)
+    {
+    case widgetNumSlices:
+        //
+        break;
 
-//     case paramNumberOfSlices:
-//     {
-//         tempSlices = value;
-//         if (tempSlices == slices)
-//             fSpinBoxSlices->setDigitsColor(false);
-//         else
-//             fSpinBoxSlices->setDigitsColor(true);
-
-//         break;
-//     }
-//     case paramPitchbendDepth:
-//     {
-//         setParameterValue(SpinBoxID, value);
-//         break;
-//     }
-
-//     default:
-//     {
-//         std::printf("describe it\n");
-//     }
-//     }
-// }
+    case paramPitchbendDepth:
+    {
+        setParameterValue(SpinnerID, value);
+        break;
+    }
+        //
+    default:
+    {
+        std::printf("describe it\n");
+    }
+    }
+}
 
 void NinjasUI::switchClicked(SubWidget *nanoSwitch, bool down)
 {
@@ -607,54 +555,54 @@ void NinjasUI::switchClicked(SubWidget *nanoSwitch, bool down)
     case widgetSwitchFwd:
     {
         p_playMode[currentSlice] = ONE_SHOT_FWD;
-        editParameter(paramOneShotForward, true);
+        //   editParameter(paramOneShotForward, true);
         fwd = !fwd;
-        setParameterValue(paramOneShotForward, fwd);
+        //   setParameterValue(paramOneShotForward, fwd);
         fSwitchFwd->setDown(true);
         fSwitchRev->setDown(false);
         fSwitchLoopFwd->setDown(false);
         fSwitchLoopRev->setDown(false);
-        editParameter(paramOneShotForward, false);
+        //   editParameter(paramOneShotForward, false);
         break;
     }
     case widgetSwitchRev:
     {
         p_playMode[currentSlice] = ONE_SHOT_REV;
-        editParameter(paramOneShotReverse, true);
+        //    editParameter(paramOneShotReverse, true);
         rev = !rev;
-        setParameterValue(paramOneShotReverse, rev);
+        //    setParameterValue(paramOneShotReverse, rev);
         fSwitchFwd->setDown(false);
         fSwitchRev->setDown(true);
         fSwitchLoopFwd->setDown(false);
         fSwitchLoopRev->setDown(false);
-        editParameter(paramOneShotReverse, false);
+        //   editParameter(paramOneShotReverse, false);
 
         break;
     }
     case widgetSwitchLoopFwd:
     {
         p_playMode[currentSlice] = LOOP_FWD;
-        editParameter(paramLoopForward, true);
+        //    editParameter(paramLoopForward, true);
         loop = !loop;
-        setParameterValue(paramLoopForward, loop);
+        //    setParameterValue(paramLoopForward, loop);
         fSwitchFwd->setDown(false);
         fSwitchRev->setDown(false);
         fSwitchLoopFwd->setDown(true);
         fSwitchLoopRev->setDown(false);
-        editParameter(paramLoopForward, false);
+        //    editParameter(paramLoopForward, false);
         break;
     }
     case widgetSwitchLoopRev:
     {
         p_playMode[currentSlice] = LOOP_REV;
-        editParameter(paramLoopReverse, true);
+        //    editParameter(paramLoopReverse, true);
         loop_rev = !loop_rev;
-        setParameterValue(paramLoopReverse, loop_rev);
+        //  setParameterValue(paramLoopReverse, loop_rev);
         fSwitchFwd->setDown(false);
         fSwitchRev->setDown(false);
         fSwitchLoopFwd->setDown(false);
         fSwitchLoopRev->setDown(true);
-        editParameter(paramLoopReverse, false);
+        //   editParameter(paramLoopReverse, false);
         break;
     }
         // case paramSliceMode:
@@ -720,12 +668,11 @@ void NinjasUI::buttonClicked(SubWidget *widget, int button)
         {
             slices = tempSlices;
             //            fSpinBoxSlices->setDigitsColor(false); // set digits to white
-            editParameter(paramNumberOfSlices, true);
-            setParameterValue(paramNumberOfSlices, slices);
-            editParameter(paramNumberOfSlices, false);
+            // editParameter(paramNumberOfSlices, true);
+            // setParameterValue(paramNumberOfSlices, slices);
+            // editParameter(paramNumberOfSlices, false);
             setState("sliceButton", "true");
             //setState ( "paramSigLoadProgram", "true" ) ;
-            setProgramGrid(programNumber);
             slicemodeChanged = false;
             //           fPianoKeyboard->setSlices(slices);
             if (currentSlice < slices)
@@ -1558,9 +1505,9 @@ void NinjasUI::removeSlice(const int targetSlice)
     // fPianoKeyboard->setSlices(slices);
 
     // Update Plugin slices
-    editParameter(paramNumberOfSlices, true);
-    setParameterValue(paramNumberOfSlices, slices);
-    editParameter(paramNumberOfSlices, false);
+    //  editParameter(paramNumberOfSlices, true);
+    //  setParameterValue(paramNumberOfSlices, slices);
+    //  editParameter(paramNumberOfSlices, false);
     editSlice();
 
     repaint();
@@ -1592,9 +1539,9 @@ void NinjasUI::insertSlice(const int targetSlice, const int position)
     // fPianoKeyboard->setSlices(slices);
 
     // Update Plugin slices
-    editParameter(paramNumberOfSlices, true);
-    setParameterValue(paramNumberOfSlices, slices);
-    editParameter(paramNumberOfSlices, false);
+    //  editParameter(paramNumberOfSlices, true);
+    //  setParameterValue(paramNumberOfSlices, slices);
+    //   editParameter(paramNumberOfSlices, false);
     editSlice();
 
     repaint();
@@ -2051,19 +1998,19 @@ void NinjasUI::ProgramGrid(int grid)
 
 void NinjasUI::getProgram(int program)
 {
-    currentSlice = plugin->Programs[program].currentSlice;
-    slices = plugin->Programs[program].slices;
+    currentSlice = plugin->currentSlice;
+    slices = plugin->numSlices;
     for (int i = 0, voice = 0; i < 128; i++)
     {
         voice = (i + 60) % 128;
-        a_slices[i].sliceStart = plugin->Programs[program].a_slices[i].sliceStart / plugin->sampleChannels;
-        a_slices[i].sliceEnd = plugin->Programs[program].a_slices[i].sliceEnd / plugin->sampleChannels;
-        a_slices[i].playmode = static_cast<slicePlayMode>(plugin->Programs[program].a_slices[i].playmode);
-        p_Attack[i] = plugin->Programs[program].Attack[voice];
-        p_Decay[i] = plugin->Programs[program].Decay[voice];
-        p_Sustain[i] = plugin->Programs[program].Sustain[voice];
-        p_Release[i] = plugin->Programs[program].Release[voice];
-        p_playMode[i] = static_cast<slicePlayMode>(plugin->Programs[program].a_slices[i].playmode);
+        a_slices[i].sliceStart = plugin->a_slices[i].sliceStart / plugin->sampleChannels;
+        a_slices[i].sliceEnd = plugin->a_slices[i].sliceEnd / plugin->sampleChannels;
+        a_slices[i].playmode = static_cast<slicePlayMode>(plugin->a_slices[i].playmode);
+        p_Attack[i] = plugin->Attack[voice];
+        p_Decay[i] = plugin->Decay[voice];
+        p_Sustain[i] = plugin->Sustain[voice];
+        p_Release[i] = plugin->Release[voice];
+        p_playMode[i] = static_cast<slicePlayMode>(plugin->a_slices[i].playmode);
     }
     // fSpinBoxSlices->setValue(slices);
     // fPianoKeyboard->setSlices(slices);

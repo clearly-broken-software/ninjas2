@@ -74,7 +74,8 @@ struct SwitchEventHandler::PrivateData
         return false;
     }
 
-    void setDown(const bool down) noexcept {
+    void setDown(const bool down) noexcept
+    {
         isDown = down;
         widget->repaint();
     }
@@ -120,6 +121,8 @@ void SwitchEventHandler::setDown(const bool down) noexcept
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+
+// begin slider
 struct SliderEventHandler::PrivateData
 {
     SliderEventHandler *const self;
@@ -359,7 +362,8 @@ struct SliderEventHandler::PrivateData
 
     bool scrollEvent(const Widget::ScrollEvent &ev)
     {
-        return true;
+        printf("scroll event\n");
+        return false;
     }
 
     float getNormalizedValue() const noexcept
@@ -516,7 +520,212 @@ bool SliderEventHandler::scrollEvent(const Widget::ScrollEvent &ev)
 {
     return pData->scrollEvent(ev);
 }
+// end slider
+// --------------------------------------------------------------------------------------------------------------------
+
+// begin spinner
+
+struct SpinnerEventHandler::PrivateData
+{
+    SpinnerEventHandler *const self;
+    SubWidget *const widget;
+    SpinnerEventHandler::Callback *callback;
+
+    float minimum;
+    float maximum;
+    float step;
+    float value;
+    Rectangle<double> incArea;
+    Rectangle<double> decArea;
+
+    PrivateData(SpinnerEventHandler *const s, SubWidget *const w)
+        : self(s),
+          widget(w),
+          callback(nullptr),
+          minimum(0.0f),
+          maximum(1.0f),
+          step(0.0f),
+          value(0.5f),
+          incArea(),
+          decArea()
+    {
+    }
+
+    PrivateData(SpinnerEventHandler *const s, SubWidget *const w, PrivateData *const other)
+        : self(s),
+          widget(w),
+          callback(other->callback),
+          minimum(other->minimum),
+          maximum(other->maximum),
+          step(other->step),
+          value(other->value),
+          incArea(other->incArea),
+          decArea(other->decArea)
+    {
+    }
+
+    void assignFrom(PrivateData *const other)
+    {
+        callback = other->callback;
+        minimum = other->minimum;
+        maximum = other->maximum;
+        step = other->step;
+        value = other->value;
+        incArea = other->incArea;
+        decArea = other->decArea;
+    }
+
+    bool mouseEvent(const Widget::MouseEvent &ev)
+    {
+        if (ev.button != 1)
+            return false;
+
+        if (ev.press)
+        {
+            if (!incArea.contains(ev.pos) && !decArea.contains(ev.pos))
+                return false;
+
+            if (incArea.contains(ev.pos))
+                value += step;
+
+            if (decArea.contains(ev.pos))
+                value -= step;
+
+            value = clamp(value, maximum, minimum);
+
+            setValue(value, true);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool motionEvent(const Widget::MotionEvent &ev)
+    {
+        return false;
+    }
+
+    bool scrollEvent(const Widget::ScrollEvent &ev)
+    {
+        auto dir = ev.direction;
+        switch (dir)
+        {
+        case ScrollDirection::kScrollUp:
+            value += step;
+            break;
+        case ScrollDirection::kScrollDown:
+            value -= step;
+        default:
+            break;
+        }
+        setValue(value, true);
+        return true;
+    }
+
+    void setRange(const float min, const float max) noexcept
+    {
+        DISTRHO_SAFE_ASSERT_RETURN(max > min, );
+
+        minimum = min;
+        maximum = max;
+    }
+
+    bool setValue(const float value2, const bool sendCallback)
+    {
+        value = value2;
+        if (sendCallback && callback != nullptr)
+        {
+            try
+            {
+                callback->spinnerValueChanged(widget, value);
+            }
+            DISTRHO_SAFE_EXCEPTION("SpinnerEventHandler::setValue");
+        }
+
+        return true;
+    }
+};
 
 // --------------------------------------------------------------------------------------------------------------------
+
+SpinnerEventHandler::SpinnerEventHandler(SubWidget *const self)
+    : pData(new PrivateData(this, self)) {}
+
+SpinnerEventHandler::SpinnerEventHandler(SubWidget *const self, const SpinnerEventHandler &other)
+    : pData(new PrivateData(this, self, other.pData)) {}
+
+SpinnerEventHandler &SpinnerEventHandler::operator=(const SpinnerEventHandler &other)
+{
+    pData->assignFrom(other.pData);
+    return *this;
+}
+
+SpinnerEventHandler::~SpinnerEventHandler()
+{
+    delete pData;
+}
+
+float SpinnerEventHandler::getValue() const noexcept
+{
+    return pData->value;
+}
+
+bool SpinnerEventHandler::setValue(const float value, const bool sendCallback) noexcept
+{
+    return pData->setValue(value, sendCallback);
+}
+
+void SpinnerEventHandler::setRange(const float min, const float max) noexcept
+{
+    pData->setRange(min, max);
+}
+
+void SpinnerEventHandler::setStep(const float step) noexcept
+{
+    pData->step = step;
+}
+
+void SpinnerEventHandler::setIncrementArea(const Rectangle<double> &area) noexcept
+{
+    pData->incArea = area;
+}
+
+void SpinnerEventHandler::setDecrementArea(const Rectangle<double> &area) noexcept
+{
+    pData->decArea = area;
+}
+
+void SpinnerEventHandler::setCallback(Callback *const callback) noexcept
+{
+    pData->callback = callback;
+}
+
+Rectangle<double> SpinnerEventHandler::getIncrementArea() noexcept
+{
+    return pData->incArea;
+}
+
+Rectangle<double> SpinnerEventHandler::getDecrementArea() noexcept
+{
+    return pData->decArea;
+}
+
+bool SpinnerEventHandler::mouseEvent(const Widget::MouseEvent &ev)
+{
+    return pData->mouseEvent(ev);
+}
+
+bool SpinnerEventHandler::motionEvent(const Widget::MotionEvent &ev)
+{
+    return pData->motionEvent(ev);
+}
+
+bool SpinnerEventHandler::scrollEvent(const Widget::ScrollEvent &ev)
+{
+    return pData->scrollEvent(ev);
+    printf("scrollEvent \n");
+}
+// end slider
 
 END_NAMESPACE_DGL
