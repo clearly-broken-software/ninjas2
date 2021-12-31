@@ -40,6 +40,7 @@
 #include "Spinner.hpp"
 #include "TextButton.hpp"
 #include "PlayModeSwitch.hpp"
+#include "NanoLabel.hpp"
 // #include "StateSwitch.hpp"
 
 // #include "PianoKeyboard.hpp"
@@ -92,8 +93,7 @@ protected:
 
 private:
      std::unique_ptr<NanoKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
-     std::unique_ptr<Spinner> fSpinBoxSlices;
-     // ScopedPointer<SpinBox> fSpinBoxSlices, fSpinBoxPitchBendDepth;
+     std::unique_ptr<Spinner> fSpinBoxSlices, fSpinBoxPitchBendDepth;
      std::unique_ptr<SliceModeSwitch> fSliceModeSlider;
      // ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxSliceSensitivity, fLabelsBoxLoadSample;
      std::unique_ptr<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
@@ -101,7 +101,7 @@ private:
      // ScopedPointer<StateSwitch> fGrid[16];
      std::unique_ptr<TextButton> fSliceButton, fFileOpenButton;
      // ScopedPointer<PianoKeyboard> fPianoKeyboard;
-     // ScopedPointer<LabelBox> fFilePathBox;
+     std::unique_ptr<NanoLabel> fFilePathBox;
 
      const NinjasPlugin *plugin;
      void loadSample(bool fromUser);

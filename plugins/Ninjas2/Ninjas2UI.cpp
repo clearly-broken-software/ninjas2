@@ -77,15 +77,14 @@ NinjasUI::NinjasUI()
     fSpinBoxSlices->setId(widgetNumSlices);
     fSpinBoxSlices->setRange(1.0f, 128.0f);
     fSpinBoxSlices->setStep(1.0f);
-    fSpinBoxSlices->setSize(30, 100);
+    fSpinBoxSlices->setSize(spinboxSize);
+    fSpinBoxSlices->setIncrementArea(Rectangle<double>(0, 0, 48, 76 / 2));
+    fSpinBoxSlices->setDecrementArea(Rectangle<double>(0, 76 / 2, 48, 76 / 2));
 
-    /*
-    // fKnobSliceSensitivity = new VolumeKnob(window, knobSizeSmall);
-    // fKnobSliceSensitivity->setId(paramSliceSensitivity);
-    // fKnobSliceSensitivity->setRange(0.001f, 1.0f);
-    // fKnobSliceSensitivity->setColor(ninjasColor);
-    // fKnobSliceSensitivity->setCallback(this); 
-    */
+    fKnobSliceSensitivity.reset(new NanoKnob(this, this));
+    fKnobSliceSensitivity->setId(paramSliceSensitivity);
+    fKnobSliceSensitivity->setRange(0.001f, 1.0f);
+    fKnobSliceSensitivity->setSize(knobSize);
 
     fSliceButton.reset(new TextButton(this, this));
     fSliceButton->setSize(48, 30);
@@ -116,16 +115,14 @@ NinjasUI::NinjasUI()
     fKnobRelease->setRange(0.001f, 1.0f);
     fKnobRelease->setSize(knobSize);
 
-    /* 
-    fSpinBoxPitchBendDepth = new SpinBox(window, spinboxSize);
+    fSpinBoxPitchBendDepth.reset(new Spinner(this, this));
     fSpinBoxPitchBendDepth->setId(paramPitchbendDepth);
-    fSpinBoxPitchBendDepth->setValue()
+    fSpinBoxPitchBendDepth->setValue(12);
     fSpinBoxPitchBendDepth->setStep(1.0f);
     fSpinBoxPitchBendDepth->setRange(1.0, 12.0f);
-    fSpinBoxPitchBendDepth->setColor ( ninjasColor );
-    fSpinBoxPitchBendDepth->setCallback(this);
-    fSpinBoxPitchBendDepth->setDigitsColor(false); // set to white
-    */
+    fSpinBoxPitchBendDepth->setSize(spinboxSize); // 48, 76
+    fSpinBoxPitchBendDepth->setIncrementArea(Rectangle<double>(0, 0, 48, 76 / 2));
+    fSpinBoxPitchBendDepth->setDecrementArea(Rectangle<double>(0, 76 / 2, 48, 76 / 2));
 
     // slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
 
@@ -139,15 +136,15 @@ NinjasUI::NinjasUI()
     fLabelsBoxSliceModeSlider->setLabels({"RAW", "ONSETS"});
     fLabelsBoxSliceSensitivity = new GlowingLabelsBox(window, Size<uint>(84, 21));
     fLabelsBoxSliceSensitivity->setLabels({"SENSITIVITY"});
-
-    fFilePathBox = new LabelBox(window, Size<uint>(600, 33));
-    fFilePathBox->setFontSize(18);
-    fFilePathBox->setText("no sample loaded");
-    fFilePathBox->setBoxColor(Color(77, 77, 77));
-    fFilePathBox->setBoxColor(Color(77, 77, 77));
-    fFilePathBox->setBorderColor(Color(144, 0, 0));
-    fFilePathBox->setTextColor(Color(249, 249, 249));
-    */
+*/
+    fFilePathBox = std::make_unique<NanoLabel>(this);
+    fFilePathBox->setSize(600, 33);
+    // fFilePathBox->setFontSize(18);
+    fFilePathBox->setLabel("no sample loaded");
+    // fFilePathBox->setBoxColor(Color(77, 77, 77));
+    // fFilePathBox->setBoxColor(Color(77, 77, 77));
+    // fFilePathBox->setBorderColor(Color(144, 0, 0));
+    // fFilePathBox->setTextColor(Color(249, 249, 249));
 
     fFileOpenButton.reset(new TextButton(this, this));
     fFileOpenButton->setSize(43, 34);
@@ -170,20 +167,20 @@ NinjasUI::NinjasUI()
     fSwitchFwd->setLabel(u8"\xEF\x81\x90");
     fSwitchFwd->setSize(switchSize);
 
-    // fSwitchRev = new PlayModeSwitch(window, switchSize);
-    // fSwitchRev->setId(widgetSwitchRev);
-    // fSwitchRev->setLabel(u8"\xEF\x81\x89");
-    // fSwitchRev->setCallback(this);
+    fSwitchRev.reset(new PlayModeSwitch(this, this));
+    fSwitchRev->setId(widgetSwitchRev);
+    fSwitchRev->setLabel(u8"\xEF\x81\x89");
+    fSwitchRev->setSize(switchSize);
 
-    // fSwitchLoopFwd = new PlayModeSwitch(window, switchSize);
-    // fSwitchLoopFwd->setId(widgetSwitchLoopFwd);
-    // fSwitchLoopFwd->setLabel(u8"\xEF\x80\x9E");
-    // fSwitchLoopFwd->setCallback(this);
+    fSwitchLoopFwd.reset(new PlayModeSwitch(this, this));
+    fSwitchLoopFwd->setId(widgetSwitchLoopFwd);
+    fSwitchLoopFwd->setLabel(u8"\xEF\x80\x9E");
+    fSwitchLoopFwd->setSize(switchSize);
 
-    // fSwitchLoopRev = new PlayModeSwitch(window, switchSize);
-    // fSwitchLoopRev->setId(widgetSwitchLoopRev);
-    // fSwitchLoopRev->setLabel(u8"\xEF\x83\xA2");
-    // fSwitchLoopRev->setCallback(this);
+    fSwitchLoopRev.reset(new PlayModeSwitch(this, this));
+    fSwitchLoopRev->setId(widgetSwitchLoopRev);
+    fSwitchLoopRev->setLabel(u8"\xEF\x83\xA2");
+    fSwitchLoopRev->setSize(switchSize);
 
     // grid
     // for (int i = 0; i < 16; ++i)
@@ -228,14 +225,14 @@ void NinjasUI::positionWidgets()
     fSliceModeSlider->setAbsolutePos(424, 412);
     // fLabelsBoxSliceModeSlider->setAbsolutePos(446, 412);
 
-    // fKnobSliceSensitivity->setAbsolutePos(443, 450 + 16);
+    fKnobSliceSensitivity->setAbsolutePos(443, 450 + 16);
     // fLabelsBoxSliceSensitivity->setAbsolutePos(420, 450 + 38 + 16);
 
-    // fSpinBoxSlices->setAbsolutePos(345, 446);
+    fSpinBoxSlices->setAbsolutePos(345, 446);
 
     fSliceButton->setAbsolutePos(345, 410);
 
-    // fSpinBoxPitchBendDepth->setAbsolutePos(72, 436);
+    fSpinBoxPitchBendDepth->setAbsolutePos(72, 436);
 
     fKnobAttack->setAbsolutePos(671, 439);
     fKnobDecay->setAbsolutePos(743, 439);
@@ -243,13 +240,13 @@ void NinjasUI::positionWidgets()
     fKnobRelease->setAbsolutePos(888, 439);
 
     fSwitchFwd->setAbsolutePos(537, 422);
-    // fSwitchRev->setAbsolutePos(537, 475);
-    // fSwitchLoopFwd->setAbsolutePos(590, 422);
-    // fSwitchLoopRev->setAbsolutePos(590, 475);
+    fSwitchRev->setAbsolutePos(537, 475);
+    fSwitchLoopFwd->setAbsolutePos(590, 422);
+    fSwitchLoopRev->setAbsolutePos(590, 475);
 
     // fPianoKeyboard->setAbsolutePos(38, 545);
 
-    // fFilePathBox->setAbsolutePos(160, 10);
+    fFilePathBox->setAbsolutePos(160, 10);
     fFileOpenButton->setAbsolutePos(768, 9);
 
     //fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
