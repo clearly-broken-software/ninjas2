@@ -392,11 +392,13 @@ void NinjasUI::stateChanged(const char *key, const char *value)
         }
     }
 
-    //      if ( std::strcmp ( key, "sig_SampleLoaded") == 0 ) {
-    //         if ( std::stoi (value) ) {
-    // 	 loadSample(false);
-    //        }
-    //      }
+    if (std::strcmp(key, "sig_SampleLoaded") == 0)
+    {
+        if (std::stoi(value))
+        {
+            loadSample(false);
+        }
+    }
 }
 
 void NinjasUI::uiFileBrowserSelected(const char *filename)
@@ -1270,7 +1272,7 @@ void NinjasUI::loadSample(bool fromUser)
     // onsets
     onsets.clear();
     onsets = plugin->onsets;
-
+    initSlices();
     if (fromUser)
     {
         if (!slicemethod)

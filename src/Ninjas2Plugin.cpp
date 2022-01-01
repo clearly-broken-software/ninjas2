@@ -72,6 +72,15 @@ NinjasPlugin::NinjasPlugin()
     mixer.rightChannel = 0.0f;
     mixer.samples = 0;
 
+    // TODO move this to proper function
+    numSlices = 1;
+    currentSlice = 0;
+    std::fill_n(a_slices, 128, Slice());
+    std::fill_n(Attack, 128, 0.001f);
+    std::fill_n(Decay, 128, 0.001f);
+    std::fill_n(Sustain, 128, 1.0f);
+    std::fill_n(Release, 128, 0.001f);
+
     //for debugging , autoload sample
     /*
     filepath = "/home/rob/git/ninjas2/plugins/Ninjas2/Drumloop4.wav";
@@ -980,24 +989,6 @@ int NinjasPlugin::loadSample(std::string fp, bool fromUser)
     }
     return 0;
 }
-
-// void NinjasPlugin::initPrograms()
-// {
-//     for (int p = 0; p < 16; p++)
-//     {
-//         Programs[p].program_isEmpty = true;
-//         Programs[p].slices = 1;
-//         Programs[p].currentSlice = 0;
-//         std::fill_n(Programs[p].a_slices, 128, Slice());
-//         std::fill_n(Programs[p].Attack, 128, 0.001f);
-//         std::fill_n(Programs[p].Decay, 128, 0.001f);
-//         std::fill_n(Programs[p].Sustain, 128, 1.0f);
-//         std::fill_n(Programs[p].Release, 128, 0.001f);
-//         // std::fill_n ( Programs[p].OneShotFwd, 128, 1.0f );
-//         // std::fill_n ( Programs[p].OneShotRev,128, 0.0f );
-//         // std::fill_n ( Programs[p].LoopFwd, 128, 0.0f );
-//         // std::fill_n ( Programs[p].LoopRev, 128, 0.0f );
-//     }
 
 // }
 
