@@ -2,7 +2,6 @@
 #define PIANO_KEYBOARD_HPP
 
 #include "NanoVG.hpp"
-#include "Window.hpp"
 #include <vector>
 
 START_NAMESPACE_DISTRHO
@@ -21,8 +20,7 @@ public:
         return keyClicked;
     }
 
-    explicit PianoKeyboard ( Window &parent, uint startKey, uint endKey ) noexcept;
-    explicit PianoKeyboard ( NanoWidget *widget, uint startKey, uint endKey ) noexcept;
+    explicit PianoKeyboard ( Widget *widget, uint startKey, uint endKey ) noexcept;
     void setKeyColor ( uint noteNumber, Color keyColor );
     void setKeyRange ( int startKey, int endKey);
     void setActiveKeyIndicator (uint noteNumber); //needs better name

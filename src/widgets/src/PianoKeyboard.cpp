@@ -3,17 +3,9 @@
 
 START_NAMESPACE_DISTRHO
 
-PianoKeyboard::PianoKeyboard ( Window& parent, uint startKey, uint endKey ) noexcept
+PianoKeyboard::PianoKeyboard ( Widget* parent, uint startKey, uint endKey ) noexcept
 :
-NanoWidget ( parent )
-{
-    setKeyRange ( startKey,endKey );
-    keyPressed = false;
-}
-
-PianoKeyboard::PianoKeyboard ( NanoWidget * parent, uint startKey, uint endKey ) noexcept
-:
-NanoWidget ( parent )
+NanoSubWidget ( parent )
 {
     setKeyRange ( startKey,endKey );
     keyPressed = false;

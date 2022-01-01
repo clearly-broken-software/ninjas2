@@ -191,10 +191,10 @@ NinjasUI::NinjasUI()
     //     fGrid[i]->setDown(programNumber == i);
     // }
 
-    // fPianoKeyboard = new PianoKeyboard(window, 60 - 3 * 12, 60 + 3 * 12 + 11);
-    // fPianoKeyboard->setId(widgetPianoKeyboard);
-    // fPianoKeyboard->setSize(924, 54);
-    // fPianoKeyboard->setCallback(this);
+    fPianoKeyboard = std::make_unique<PianoKeyboard>(this, 60 - 3 * 12, 60 + 3 * 12 + 11);
+    fPianoKeyboard->setId(widgetPianoKeyboard);
+    fPianoKeyboard->setSize(924, 54);
+    fPianoKeyboard->setCallback(this);
 
     positionWidgets();
 
@@ -244,7 +244,7 @@ void NinjasUI::positionWidgets()
     fSwitchLoopFwd->setAbsolutePos(590, 422);
     fSwitchLoopRev->setAbsolutePos(590, 475);
 
-    // fPianoKeyboard->setAbsolutePos(38, 545);
+    fPianoKeyboard->setAbsolutePos(38, 545);
 
     fFilePathBox->setAbsolutePos(160, 10);
     fFileOpenButton->setAbsolutePos(768, 9);
@@ -361,7 +361,7 @@ void NinjasUI::parameterChanged(uint32_t index, float value)
             if (slices > 1)
             {
                 const uint nn = (currentSlice + 60) % 128;
-                // fPianoKeyboard->setActiveKeyIndicator(nn);
+                fPianoKeyboard->setActiveKeyIndicator(nn);
             }
             repaint();
         }
@@ -671,10 +671,10 @@ void NinjasUI::buttonClicked(SubWidget *widget, int button)
             setState("sliceButton", "true");
             //setState ( "paramSigLoadProgram", "true" ) ;
             slicemodeChanged = false;
-            //           fPianoKeyboard->setSlices(slices);
+            fPianoKeyboard->setSlices(slices);
             if (currentSlice < slices)
             {
-                // fPianoKeyboard->setActiveKeyIndicator((currentSlice + 60) % 128);
+                fPianoKeyboard->setActiveKeyIndicator((currentSlice + 60) % 128);
             }
             else
             {
@@ -682,12 +682,12 @@ void NinjasUI::buttonClicked(SubWidget *widget, int button)
                 if (slices == 1)
                 {
                     // only one slice, do not indicate active key
-                    // fPianoKeyboard->setActiveKeyIndicator(128);
+                    fPianoKeyboard->setActiveKeyIndicator(128);
                 }
                 else
                 {
                     // set basenote as active key
-                    // fPianoKeyboard->setActiveKeyIndicator(60);
+                    fPianoKeyboard->setActiveKeyIndicator(60);
                 }
             }
         }
@@ -707,11 +707,11 @@ void NinjasUI::buttonClicked(SubWidget *widget, int button)
     }
 }
 
-// void NinjasUI::pianoKeyboardClicked(PianoKeyboard *pianoKeyboard, int velocity)
-// {
-//     int keyPressed = pianoKeyboard->getKey();
-//     sendNote(0, keyPressed, velocity);
-// }
+void NinjasUI::pianoKeyboardClicked(PianoKeyboard *pianoKeyboard, int velocity)
+{
+    int keyPressed = pianoKeyboard->getKey();
+    sendNote(0, keyPressed, velocity);
+}
 
 void NinjasUI::onNanoDisplay()
 {
@@ -1284,12 +1284,12 @@ void NinjasUI::loadSample(bool fromUser)
         //     fGrid[0]->setDown(true);
     }
     initParameters();
-    initSlices();
+
     getProgram(0);
     //fSpinBoxSlices->setDigitsColor(false);
     repaint();
     setState("sig_SampleLoaded", "false");
-    //fPianoKeyboard->setSlices(1);
+    fPianoKeyboard->setSlices(1);
     return;
 }
 
@@ -1499,7 +1499,7 @@ void NinjasUI::removeSlice(const int targetSlice)
 
     // fSpinBoxSlices->setDigitsColor(false); // set digits to yellow
     // fSpinBoxSlices->setValue(slices);
-    // fPianoKeyboard->setSlices(slices);
+    fPianoKeyboard->setSlices(slices);
 
     // Update Plugin slices
     //  editParameter(paramNumberOfSlices, true);
@@ -1533,7 +1533,7 @@ void NinjasUI::insertSlice(const int targetSlice, const int position)
 
     // fSpinBoxSlices->setDigitsColor(false); // set digits to yellow
     // fSpinBoxSlices->setValue(slices);      // update digit
-    // fPianoKeyboard->setSlices(slices);
+    fPianoKeyboard->setSlices(slices);
 
     // Update Plugin slices
     //  editParameter(paramNumberOfSlices, true);
@@ -1864,7 +1864,7 @@ void NinjasUI::selectSlice()
     setState("currentSlice", std::to_string(currentSlice).c_str());
     recallSliceSettings(currentSlice);
     const int nn = (currentSlice + 60) % 128;
-    // fPianoKeyboard->setActiveKeyIndicator(nn);
+    fPianoKeyboard->setActiveKeyIndicator(nn);
     repaint();
 }
 void NinjasUI::editCurrentSlice()
@@ -2010,7 +2010,7 @@ void NinjasUI::getProgram(int program)
         p_playMode[i] = static_cast<slicePlayMode>(plugin->a_slices[i].playmode);
     }
     // fSpinBoxSlices->setValue(slices);
-    // fPianoKeyboard->setSlices(slices);
+    fPianoKeyboard->setSlices(slices);
     // tempSlices = slices;
     recallSliceSettings(currentSlice);
     // toggle switches

@@ -111,7 +111,7 @@ dpf_add_plugin(
   src/Ninjas2Resources.cpp
   src/widgets/src/Knob.cpp
   src/widgets/src/NanoLabel.cpp
-  # src/widgets/src/PianoKeyboard.cpp
+  src/widgets/src/PianoKeyboard.cpp
   src/widgets/src/PlayModeSwitch.cpp
   src/widgets/src/SliceModeSwitch.cpp
   src/widgets/src/Spinner.cpp

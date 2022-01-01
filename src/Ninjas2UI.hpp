@@ -43,7 +43,7 @@
 #include "NanoLabel.hpp"
 // #include "StateSwitch.hpp"
 
-// #include "PianoKeyboard.hpp"
+#include "PianoKeyboard.hpp"
 // #include "LabelBox.hpp"
 
 #include "Ninjas2Resources.hpp"
@@ -59,7 +59,7 @@ class NinjasUI : public UI,
                  public SwitchEventHandler::Callback,
                  public SpinnerEventHandler::Callback,
                  // public NanoButton::Callback,
-                 // public PianoKeyboard::Callback,
+                 public PianoKeyboard::Callback,
                  public IdleCallback
 {
 public:
@@ -86,7 +86,7 @@ protected:
      void knobDragFinished(SubWidget *widget) override;
      void spinnerValueChanged(SubWidget *widget, float value) override;
      void switchClicked(SubWidget *widget, bool down) override;
-     // void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard , int velocity ) override;
+     void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard , int velocity ) override;
      bool onMouse(const MouseEvent &) override;
      bool onScroll(const ScrollEvent &) override;
      bool onMotion(const MotionEvent &) override;
@@ -100,7 +100,7 @@ private:
      // ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
      // ScopedPointer<StateSwitch> fGrid[16];
      std::unique_ptr<TextButton> fSliceButton, fFileOpenButton;
-     // ScopedPointer<PianoKeyboard> fPianoKeyboard;
+     std::unique_ptr<PianoKeyboard> fPianoKeyboard;
      std::unique_ptr<NanoLabel> fFilePathBox;
 
      const NinjasPlugin *plugin;
