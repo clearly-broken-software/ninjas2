@@ -1,3 +1,9 @@
 [submodule "dpf"]
 	path = dpf
 	url = https://github.com/DISTRHO/DPF.git
+[submodule "thirdparty/aubio"]
+	path = thirdparty/aubio
+	url = https://github.com/aubio/aubio
+[submodule "thirdparty/widgets"]
+	path = thirdparty/widgets
+	url = https://github.com/clearly-broken-software/dpf-nanovg-widgets

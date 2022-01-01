@@ -1,0 +1,33 @@
+/*
+ISC License (ISC)
+
+Copyright 2021 Rob van den Berg <rghvdberg at gmail dot com>
+
+Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted, provided that the above copyright notice 
+and this permission notice appear in all copies. THE SOFTWARE IS PROVIDED 
+"AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE 
+INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT 
+SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL 
+DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, 
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING 
+OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+*/
+
+
+#ifndef CONFIG_H
+#define CONFIG_H
+#cmakedefine HAVE_STDLIB_H 1
+#cmakedefine HAVE_STDIO_H 1
+#cmakedefine HAVE_MATH_H 1
+#cmakedefine HAVE_STRING_H 1
+#cmakedefine HAVE_LIMITS_H 1
+#cmakedefine HAVE_STDARG_H 1
+#cmakedefine HAVE_GETOPT_H 1
+#cmakedefine HAVE_UNISTD_H 1
+#cmakedefine HAVE_C99_VARARGS_MACROS 1
+#cmakedefine HAVE_WAVREAD 1
+#cmakedefine HAVE_WAVWRITE 1
+#cmakedefine HAVE_MEMCPY_HACKS 1
+#cmakedefine HAVE_ERRNO_H 1
+#endif
