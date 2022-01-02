@@ -1,89 +1,107 @@
-/*
- * Copyright (C) 2018-2019 Rob van den Berg <rghvdberg at gmail dot org>
- *
- * This file is part of Ninjas2
- *
- * Ninjas2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Ninjas2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 #include "Spinner.hpp"
 
 START_NAMESPACE_DISTRHO
 Spinner::Spinner(Widget *const parent, SpinnerEventHandler::Callback *const cb)
-    : NanoWidget(parent),
-      SpinnerEventHandler(this),
-      backgroundColor(32, 32, 32),
-      labelColor(255, 255, 255),
-      label("button"),
-      fontScale(1.0f)
+    : NanoSpinner(parent, cb)
 {
 #ifdef DGL_NO_SHARED_RESOURCES
     createFontFromFile("sans", "/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf");
 #else
     loadSharedResources();
 #endif
-    SpinnerEventHandler::setCallback(cb);
-}
-
-void Spinner::setBackgroundColor(const Color color)
-{
-    backgroundColor = color;
-}
-
-void Spinner::setFontScale(const float scale)
-{
-    fontScale = scale;
-}
-
-void Spinner::setLabel(const std::string &label2)
-{
-    label = label2;
-}
-
-void Spinner::setLabelColor(const Color color)
-{
-    labelColor = color;
 }
 
 void Spinner::onNanoDisplay()
 {
     const uint w = getWidth();
     const uint h = getHeight();
-    const float margin = 1.0f;
+    const float margin = 2.0f;
+    const float doubleMargin = margin * 2.f;
 
-    // Background
+    // back
+/*     fillColor(255, 0, 0);
+    strokeColor(0, 0, 255);
     beginPath();
-    fillColor(backgroundColor);
-    strokeColor(labelColor);
-    rect(margin, margin, w - 2 * margin, h - 2 * margin);
+    rect(0, 0, w, h);
     fill();
-    stroke();
-    closePath();
+    closePath(); 
+*/
 
     // incArea
     const Rectangle<double> incArea = getIncrementArea();
     beginPath();
-    fillColor(255, 0, 0);
-    rect(incArea.getX(), incArea.getY(), incArea.getWidth(), incArea.getHeight());
+    fillColor(gray8);
+    strokeColor(gray7);
+    strokeWidth(margin);
+    rect(incArea.getX(), incArea.getY(),
+         incArea.getWidth(), incArea.getHeight());
+    fill();
+    stroke();
+    closePath();
+    // + sign = rect 5 x 15 and 15 x 5
+    fillColor(gray0);
+    // find center
+    float cx = incArea.getWidth() * .5f;
+    float cy = incArea.getHeight() * .5f;
+    // vertical bar of plus sign
+    float x = round(cx - 2.5f + incArea.getX());
+    float y = round(cy - 7.5f + incArea.getY());
+    beginPath();
+    rect(x, y, 5, 15);
     fill();
     closePath();
+    x = round(cx - 7.5f + incArea.getX());
+    y = round(cy - 2.5f + incArea.getY());
+    beginPath();
+    rect(x, y, 15, 5);
+    fill();
+    closePath();
+
     // deccArea
     const Rectangle<double> decArea = getDecrementArea();
     beginPath();
-    fillColor(0, 255, 0);
-    rect(decArea.getX(), decArea.getY(), decArea.getWidth(), decArea.getHeight());
+    fillColor(gray8);
+    strokeColor(gray7);
+    strokeWidth(margin);
+    rect(decArea.getX(), decArea.getY(),
+         decArea.getWidth(), decArea.getHeight());
     fill();
+    stroke();
+    closePath();
+
+    // minus sign rect 15 x 5
+    fillColor(gray0);
+    // find center
+    cx = decArea.getWidth() * .5f;
+    cy = decArea.getHeight() * .5f;
+    // minus sign
+    x = round(cx - 7.5f + decArea.getX());
+    y = round(cy - 2.5f + decArea.getY());
+    beginPath();
+    rect(x, y, 15, 5);
+    fill();
+    closePath();
+
+    // value box x,y 35, 0 ; size 52 x 27
+    fillColor(gray8);
+    beginPath();
+    rect(35, 0, 52, 27);
+    fill();
+    stroke();
+    closePath();
+    
+    // center of value box
+    cx = 122.5 * .5;
+    cy = 27.f * .5;
+
+    // value to text
+    char value[8];
+    sprintf(value, "%i", (int)getValue());
+    fillColor(gray0);
+    textAlign(ALIGN_CENTER|ALIGN_MIDDLE);
+    fontSize(16);
+    beginPath();
+    text(cx,cy,value,nullptr);
     closePath();
 }
 
