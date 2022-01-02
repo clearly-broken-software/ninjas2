@@ -42,9 +42,10 @@
 #include "PlayModeSwitch.hpp"
 #include "NanoLabel.hpp"
 // #include "StateSwitch.hpp"
-
 #include "PianoKeyboard.hpp"
 // #include "LabelBox.hpp"
+
+#include "open-color1_9_1.hpp"
 
 #include "Ninjas2Resources.hpp"
 #include "Ninjas2Plugin.hpp"

@@ -717,7 +717,7 @@ void NinjasUI::onNanoDisplay()
 
     beginPath();
 
-    fillColor(Color(0x0a, 0x0a, 0x0a, 0xff));
+    fillColor(gray9);
 
     rect(0, 0, width, height);
     fill();
@@ -726,14 +726,14 @@ void NinjasUI::onNanoDisplay()
 
     // waveform display background
     beginPath();
-    fillColor(0x36, 0x36, 0x36, 0xff);
+    fillColor(gray8);
     roundedRect(display_left, display_top, display_width, display_height, 4);
     fill();
     closePath();
 
     // parameter boxes
 
-    // global
+    /*  // global
     beginPath();
     // global
     fillColor(Color(0x90, 0x00, 0x00, 0xff));
@@ -780,7 +780,7 @@ void NinjasUI::onNanoDisplay()
     beginPath();
     roundedRect(644, 395, 330, 139, 4);
     fill();
-    closePath();
+    closePath(); */
 
     // Settings labels
     beginPath();
@@ -798,7 +798,6 @@ void NinjasUI::onNanoDisplay()
     fontSize(14);
     textAlign(ALIGN_CENTER);
     textBox(63 - 17, 405 + 9, 100.0f, "PITCHBEND DEPTH", NULL);
-    text(214 + 32, 399 + 11, "PROGRAMS", NULL);
     text(551 + 32, 407 + 8, "PLAYMODE", NULL);
     text(679 + 21.5, 420 + 10, "ATTACK", NULL);
     text(754 + 21 - 3, 420 + 10, "DECAY", NULL);
@@ -888,12 +887,12 @@ void NinjasUI::drawWaveform()
     moveTo(display_left, display_center);
     if (colorflip)
     {
-        strokeColor(103, 208, 240, 255);
+        strokeColor(yellow6);
     }
 
     else
     {
-        strokeColor(100, 100, 100, 255);
+        strokeColor(100, 100, 100);
     }
 
     strokeWidth(1.0f);
@@ -1207,7 +1206,7 @@ void NinjasUI::drawOnsets()
     double view = waveView.end - waveView.start;
     double pixels_per_sample = display_width / view;
     beginPath();
-    strokeColor(255, 64, 64, 255);
+    strokeColor(indigo3);
     strokeWidth(0.8f);
     for (std::vector<uint_t>::iterator it = onsets.begin(); it != onsets.end(); ++it)
     {
