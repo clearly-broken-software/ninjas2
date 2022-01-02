@@ -68,7 +68,7 @@ NinjasUI::NinjasUI()
     // knobs
     const Size<uint> knobSize = Size<uint>(59, 59);
     const Size<uint> knobSizeSmall = Size<uint>(40, 40);
-    const Size<uint> spinboxSize = Size<uint>(48, 76);
+    const Size<uint> spinboxSize = Size<uint>(122, 27);
     const Color ninjasColor = Color(222, 205, 135, 255);
 
     Window &window = getWindow();
@@ -78,8 +78,8 @@ NinjasUI::NinjasUI()
     fSpinBoxSlices->setRange(1.0f, 128.0f);
     fSpinBoxSlices->setStep(1.0f);
     fSpinBoxSlices->setSize(spinboxSize);
-    fSpinBoxSlices->setIncrementArea(0, 0, 48, 76 / 2);
-    fSpinBoxSlices->setDecrementArea(0, 76 / 2, 48, 76 / 2);
+    fSpinBoxSlices->setIncrementArea(95, 0, 27, 27);
+    fSpinBoxSlices->setDecrementArea(0, 0, 27, 27);
 
     fKnobSliceSensitivity.reset(new Knob(this, this));
     fKnobSliceSensitivity->setId(paramSliceSensitivity);
@@ -120,9 +120,9 @@ NinjasUI::NinjasUI()
     fSpinBoxPitchBendDepth->setValue(12);
     fSpinBoxPitchBendDepth->setStep(1.0f);
     fSpinBoxPitchBendDepth->setRange(1.0, 12.0f);
-    fSpinBoxPitchBendDepth->setSize(spinboxSize); // 48, 76
-    fSpinBoxPitchBendDepth->setIncrementArea(0, 0, 48, 76 / 2);
-    fSpinBoxPitchBendDepth->setDecrementArea(0, 76 / 2, 48, 76 / 2);
+    fSpinBoxPitchBendDepth->setSize(spinboxSize);
+    fSpinBoxPitchBendDepth->setIncrementArea(95, 0, 27, 27);
+    fSpinBoxPitchBendDepth->setDecrementArea(0, 0, 27, 27);
 
     // slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
 
@@ -486,19 +486,14 @@ void NinjasUI::spinnerValueChanged(SubWidget *widget, float value)
     switch (SpinnerID)
     {
     case widgetNumSlices:
-        //
+        repaint();
         break;
-
     case paramPitchbendDepth:
-    {
         setParameterValue(SpinnerID, value);
+        repaint();
         break;
-    }
-        //
     default:
-    {
         std::printf("describe it\n");
-    }
     }
 }
 
