@@ -21,7 +21,6 @@
 #define TEXT_BUTTON_HPP
 #include "NanoButton.hpp"
 
-// #include "Window.hpp"
 #include "fonts.hpp"
 
 START_NAMESPACE_DISTRHO
@@ -30,33 +29,30 @@ class TextButton : public NanoButton
 {
 public:
   explicit TextButton(Widget *widget, ButtonEventHandler::Callback* cb);
+  void setText(const char *text);
+  void setFontId(NanoVG::FontId fontId);
   void setFontSize(float fontSize);
   void setTextColor(Color color);
   void setButtonColor(Color color);
-  void setMargin(float t, float r, float b, float l);
-  void setAlign(int align); //NanoVG align
-  void setText(const char *text);
-  void setFontId(NanoVG::FontId fontId);
+  void setStrokeColor(Color color);
+  void setRounded(bool rounded, float radius);
+  void setStrokeWidth(float strokewidth);
+
+  
 
 protected:
   void onNanoDisplay() override;
 
 private:
-  struct Margin
-  {
-    float t;
-    float r;
-    float b;
-    float l;
-  };
-
-  Margin fMargin;
   const char *fText;
   NanoVG::FontId fFontId, fFontAwesome;
-  int fAlign;
   Color fTextColor;
   Color fButtonColor;
+  Color fStrokeColor;
   float fFontSize;
+  bool rounded;
+  float radius;
+  float fStrokeWidth;
 
   DISTRHO_LEAK_DETECTOR(TextButton)
 };

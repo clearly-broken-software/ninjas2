@@ -6,6 +6,7 @@
 #pragma once
 
 #include "NanoKnob.hpp"
+#include "open-color1_9_1.hpp"
 
 START_NAMESPACE_DISTRHO
 

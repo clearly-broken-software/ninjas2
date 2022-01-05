@@ -10,8 +10,8 @@ START_NAMESPACE_DISTRHO
 Knob::Knob(Widget *const parent,
            KnobEventHandler::Callback *cb)
     : NanoKnob(parent, cb),
-      backgroundColor(64, 64, 64),
-      foregroundColor(255, 69, 0)
+      backgroundColor(gray6),
+      foregroundColor(yellow9)
 {
     KnobEventHandler::setCallback(cb);
 }
@@ -20,7 +20,7 @@ void Knob::onNanoDisplay()
 {
     const uint w = getWidth();
     const uint h = getHeight();
-    const float margin = 1.0f;
+    const float margin = 0.0f; //TODO remove margin
 
     const float radius = (h - margin) / 2.0f;
     const float center_x = (w * .5f);

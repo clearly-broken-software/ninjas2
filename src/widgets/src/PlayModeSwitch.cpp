@@ -26,17 +26,35 @@ PlayModeSwitch::PlayModeSwitch(
     SwitchEventHandler::Callback *cb) noexcept
     : NanoSwitch(widget, cb),
       fLabel(u8"\xEF\x85\xB9"),
-      fLabelColor(255, 255, 255)
+      fLabelColor(gray0)
 {
     fFontAwesome = createFontFromMemory("fontawesome", fonts::fontawesome_ttf, fonts::fontawesome_ttf_size, false);
     SwitchEventHandler::setCallback(cb);
 }
 
-void PlayModeSwitch::onNanoDisplay() 
+void PlayModeSwitch::onNanoDisplay()
 {
+    const auto w = getWidth();
+    const auto h = getHeight();
+    beginPath();
+    if (isDown())
+    {
+        fillColor(lime8); 
+    }
+    else {
+        fillColor(gray8); 
+    }
+    strokeColor(gray7);
+   
+    strokeWidth(2.f);
+    rect(1, 1, w - 2, h - 2);
+    fill();
+    stroke();
+    closePath();
+
     beginPath();
     fontFaceId(fFontAwesome);
-    fontSize(20);
+    fontSize(30);
     Rectangle<float> bounds;
     textBounds(0, 0, fLabel.c_str(), NULL, bounds);
     const float tw = bounds.getWidth();

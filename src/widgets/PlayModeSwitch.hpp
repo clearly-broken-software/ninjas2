@@ -22,6 +22,7 @@
 
 #include "NanoSwitch.hpp"
 #include "fonts.hpp"
+#include "open-color1_9_1.hpp"
 #include <string>
 
 START_NAMESPACE_DISTRHO

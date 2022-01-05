@@ -23,12 +23,16 @@ START_NAMESPACE_DISTRHO
 
 TextButton::TextButton(Widget *const parent,
                        ButtonEventHandler::Callback *const cb)
-    : NanoButton(parent, cb), fText("button"),
-      fMargin(Margin{0, 0, 0, 0}),
-      fAlign(ALIGN_TOP | ALIGN_LEFT),
+    : NanoButton(parent, cb),
+      fText("button"),
       fTextColor(Color(255, 255, 255, 255)),
+      fButtonColor(Color(0, 0, 0)),
+      fStrokeColor(Color(64, 64, 64)),
       fFontSize(12.0f),
-      fFontId(0)
+      fFontId(0),
+      rounded(false),
+      radius(0),
+      fStrokeWidth(2.0f)
 {
     loadSharedResources();
     createFontFromMemory("fontawesome", fonts::fontawesome_ttf, fonts::fontawesome_ttf_size, false);
@@ -39,44 +43,22 @@ void TextButton::onNanoDisplay()
     // draw background
     float h = getHeight();
     float w = getWidth();
-
-    const float margin = 2.0f;
-    const float doubleMargin = margin * 2.0f;
-    Color col_1_00 = Color(0x99, 0x99, 0x99, 0xff);
-    Color col_0_86 = Color(0x2c, 0x2c, 0x2c, 0xff);
-    Color col_0_17 = Color(0x2c, 0x2c, 0x2c, 0xff);
-    Color col_0_00 = Color(0x00, 0x00, 0x00, 0xff);
-
-    // top half
+  
+    const float margin = fStrokeWidth * .5;
+    const float doubleMargin = fStrokeWidth;
+    strokeWidth(fStrokeWidth);
+    fillColor(fButtonColor);
+    strokeColor(fStrokeColor);
     beginPath();
-    const Paint bg_top = linearGradient(w / 2, margin, w / 2, 8, col_1_00, col_0_86);
-    fillPaint(bg_top);
-    roundedRect(margin, margin, w - doubleMargin, h / 2, 4.0f);
+    if (rounded)
+    {
+        roundedRect(margin, margin, w - doubleMargin, h - doubleMargin, radius);
+    }
+    else
+    {
+        rect(margin, margin, w - doubleMargin, h - doubleMargin);
+    }
     fill();
-    closePath();
-    //bottom half
-    beginPath();
-    Paint bg_bottom = linearGradient(w / 2, h - 8, w / 2, h - margin, col_0_17, col_0_00);
-    fillPaint(bg_bottom);
-    roundedRect(margin, h / 2, w - doubleMargin, h / 2 - margin, 4.0f);
-    fill();
-    closePath();
-
-    // borger grey
-    beginPath();
-    strokeWidth(margin);
-    strokeColor(0x33, 0x33, 0x33, 0xff);
-    roundedRect(margin, margin, w - doubleMargin, h - doubleMargin, 4.0f);
-    stroke();
-    closePath();
-
-    // border black
-    beginPath();
-    //translate(0.5f, 0.5f);
-    const float borderWidth = 1.0f;
-    strokeWidth(1);
-    strokeColor(0x00, 0x00, 0x00, 0xff);
-    roundedRect(doubleMargin - borderWidth, doubleMargin - borderWidth, w - 7, h - 7, 3.0f);
     stroke();
     closePath();
 
@@ -89,29 +71,12 @@ void TextButton::onNanoDisplay()
 
     fontSize(fFontSize);
     fillColor(fTextColor);
-    textAlign(fAlign);
-    Rectangle<float> bounds;
-    textBounds(0, 0, fText, NULL, bounds);
-    const float tw = bounds.getWidth();
-    const float th = bounds.getHeight();
-    const float x = w / 2 - tw / 2.0f;
-    const float y = h / 2 - th / 2.0f;
-    // translate(0.5f,0.5f);
-    fillColor(0, 0, 0);
-    text(x + 1, y + 1, fText, NULL);
+    textAlign(ALIGN_CENTER | ALIGN_MIDDLE);
+    const float cx = w * .5f;
+    const float cy = h * .5f;
     fillColor(fTextColor);
-    text(x, y, fText, NULL);
+    text(cx, cy, fText, NULL);
     closePath();
-}
-
-void TextButton::setTextColor(Color color)
-{
-    fTextColor = color;
-}
-
-void TextButton::setFontSize(float fontSize)
-{
-    fFontSize = fontSize;
 }
 
 void TextButton::setText(const char *text)
@@ -119,25 +84,39 @@ void TextButton::setText(const char *text)
     fText = text;
 }
 
-void TextButton::setAlign(int align)
-{
-    fAlign = align;
-}
-
-void TextButton::setMargin(float t, float r, float b, float l)
-
-{
-    fMargin = {t, r, b, l};
-}
-
 void TextButton::setFontId(NanoVG::FontId fontId)
 {
     fFontId = fontId;
 }
 
+void TextButton::setFontSize(float fontSize)
+{
+    fFontSize = fontSize;
+}
+
+void TextButton::setTextColor(Color color)
+{
+    fTextColor = color;
+}
+
 void TextButton::setButtonColor(Color color)
 {
     fButtonColor = color;
+}
+
+void TextButton::setStrokeColor(Color color)
+{
+    fStrokeColor = color;
+}
+void TextButton::setRounded(bool round, float rad)
+{
+    rounded = round;
+    radius = rad;
+}
+
+void TextButton::setStrokeWidth(float strokewidth)
+{
+    fStrokeWidth = strokewidth;
 }
 
 END_NAMESPACE_DISTRHO

@@ -116,12 +116,14 @@ dpf_add_plugin(
   src/widgets/src/SliceModeSwitch.cpp
   src/widgets/src/Spinner.cpp
   src/widgets/src/TextButton.cpp
+  src/widgets/src/Radio.cpp
   thirdparty/widgets/src/ExtraEventHandlers.cpp
   thirdparty/widgets/src/NanoButton.cpp
   thirdparty/widgets/src/NanoKnob.cpp
   thirdparty/widgets/src/NanoSlider.cpp
   thirdparty/widgets/src/NanoSpinner.cpp
   thirdparty/widgets/src/NanoSwitch.cpp
+  thirdparty/widgets/src/NanoRadio.cpp
 )
 
 target_include_directories(

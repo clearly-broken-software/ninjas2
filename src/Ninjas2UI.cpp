@@ -1,20 +1,5 @@
 /*
- * Copyright (C) 2018-2019 Rob van den Berg <rghvdberg at gmail dot org>
- *
- * This file is part of Ninjas2
- *
- * Ninjas2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Ninjas2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Ninjas2.  If not, see <https://www.gnu.org/licenses/>.
+
  */
 
 #include "DistrhoUI.hpp"
@@ -66,7 +51,7 @@ NinjasUI::NinjasUI()
     mouseEditSlice = false;
 
     // knobs
-    const Size<uint> knobSize = Size<uint>(59, 59);
+    const Size<uint> knobSize = Size<uint>(56, 56);
     const Size<uint> knobSizeSmall = Size<uint>(40, 40);
     const Size<uint> spinboxSize = Size<uint>(122, 27);
     const Color ninjasColor = Color(222, 205, 135, 255);
@@ -81,18 +66,18 @@ NinjasUI::NinjasUI()
     fSpinBoxSlices->setIncrementArea(95, 0, 27, 27);
     fSpinBoxSlices->setDecrementArea(0, 0, 27, 27);
 
-    fKnobSliceSensitivity.reset(new Knob(this, this));
-    fKnobSliceSensitivity->setId(paramSliceSensitivity);
-    fKnobSliceSensitivity->setRange(0.001f, 1.0f);
-    fKnobSliceSensitivity->setSize(knobSize);
+    // fKnobSliceSensitivity.reset(new Knob(this, this));
+    // fKnobSliceSensitivity->setId(paramSliceSensitivity);
+    // fKnobSliceSensitivity->setRange(0.001f, 1.0f);
+    // fKnobSliceSensitivity->setSize(knobSize);
 
     fSliceButton.reset(new TextButton(this, this));
-    fSliceButton->setSize(48, 30);
+    fSliceButton->setSize(64, 34);
     fSliceButton->setId(widgetSliceButton);
-    fSliceButton->setText("Slice");
+    fSliceButton->setText("SLICE");
     fSliceButton->setFontSize(14.0f);
-    fSliceButton->setTextColor(Color(255, 255, 255, 255));
-    fSliceButton->setMargin(5, 0, 7, 0);
+    fSliceButton->setTextColor(gray0);
+    fSliceButton->setButtonColor(red8);
     fSliceButton->setCallback(this);
 
     fKnobAttack.reset(new Knob(this, this));
@@ -115,7 +100,7 @@ NinjasUI::NinjasUI()
     fKnobRelease->setRange(0.001f, 1.0f);
     fKnobRelease->setSize(knobSize);
 
-    fSpinBoxPitchBendDepth.reset(new Spinner(this, this));
+    fSpinBoxPitchBendDepth = std::make_unique<Spinner>(this, this);
     fSpinBoxPitchBendDepth->setId(paramPitchbendDepth);
     fSpinBoxPitchBendDepth->setValue(12);
     fSpinBoxPitchBendDepth->setStep(1.0f);
@@ -124,21 +109,15 @@ NinjasUI::NinjasUI()
     fSpinBoxPitchBendDepth->setIncrementArea(95, 0, 27, 27);
     fSpinBoxPitchBendDepth->setDecrementArea(0, 0, 27, 27);
 
-    // slider TODO make tripolar switch | RAW | ONSETS | MANUAL |
+    fRadioSliceMode = std::make_unique<Radio>(this, this);
+    fRadioSliceMode->setId(paramSliceMode);
+    fRadioSliceMode->setSize(86, 62);
+    fRadioSliceMode->setValue(0.0f);
+    fRadioSliceMode->addOption("RAW", 0.0f);
+    fRadioSliceMode->addOption("ONSET", 1.0f);
 
-    fSliceModeSlider.reset(new SliceModeSwitch(this, this));
-    fSliceModeSlider->setId(paramSliceMode);
-    fSliceModeSlider->setSize(75, 40);
-    fSliceModeSlider->addLabels({"RAW", "ONSETS"});
-
-    /*
-    fLabelsBoxSliceModeSlider = new GlowingLabelsBox(window, Size<uint>(58, 42));
-    fLabelsBoxSliceModeSlider->setLabels({"RAW", "ONSETS"});
-    fLabelsBoxSliceSensitivity = new GlowingLabelsBox(window, Size<uint>(84, 21));
-    fLabelsBoxSliceSensitivity->setLabels({"SENSITIVITY"});
-*/
     fFilePathBox = std::make_unique<NanoLabel>(this);
-    fFilePathBox->setSize(600, 33);
+    fFilePathBox->setSize(602, 32);
     // fFilePathBox->setFontSize(18);
     fFilePathBox->setLabel("no sample loaded");
     // fFilePathBox->setBoxColor(Color(77, 77, 77));
@@ -147,25 +126,29 @@ NinjasUI::NinjasUI()
     // fFilePathBox->setTextColor(Color(249, 249, 249));
 
     fFileOpenButton.reset(new TextButton(this, this));
-    fFileOpenButton->setSize(43, 34);
+    fFileOpenButton->setSize(39, 32);
     fFileOpenButton->setId(paramLoadSample);
-    fFileOpenButton->setFontSize(24.0f);
+    fFileOpenButton->setFontSize(22.0f);
     fFileOpenButton->setFontId(1);
-    fFileOpenButton->setText(u8"\xEF\x81\xBC");
-    fFileOpenButton->setTextColor(Color(255, 255, 255, 255));
-    fFileOpenButton->setCallback(this);
+    fFileOpenButton->setText(u8"\xEF\x84\x95");
+    fFileOpenButton->setTextColor(gray1);
+    fFileOpenButton->setButtonColor(gray9);
+    fFileOpenButton->setStrokeColor(gray7);
+    fFileOpenButton->setRounded(true, 2.f);
+    fFileOpenButton->setStrokeWidth(1.f);
 
     // switches
 
     // play modes
 
-    const Size<uint> switchSize = Size<uint>(44, 44);
+    const Size<uint> switchSize = Size<uint>(54, 54);
     const Size<uint> gridSize = Size<uint>(30, 30);
 
     fSwitchFwd.reset(new PlayModeSwitch(this, this));
     fSwitchFwd->setId(widgetSwitchFwd);
     fSwitchFwd->setLabel(u8"\xEF\x81\x90");
     fSwitchFwd->setSize(switchSize);
+    fSwitchFwd->setDown(true);
 
     fSwitchRev.reset(new PlayModeSwitch(this, this));
     fSwitchRev->setId(widgetSwitchRev);
@@ -196,6 +179,18 @@ NinjasUI::NinjasUI()
     fPianoKeyboard->setSize(924, 54);
     fPianoKeyboard->setCallback(this);
 
+    // labels               box                                 text                        font size ,     has stroke,     has label, text color, background color
+    labels.push_back(Label(Rectangle<double>(19, 409, 132, 17), std::string("GLOBAL"), 14, true, true, gray0, indigo9));
+    labels.push_back(Label(Rectangle<double>(179, 409, 242, 17), std::string("SLICING"), 14, true, true, gray0, pink9));
+    labels.push_back(Label(Rectangle<double>(449, 409, 287, 17), std::string("SLICE 001"), 14, true, true, gray0, lime9));
+    labels.push_back(Label(Rectangle<double>(47, 505, 75, 24), std::string("PITCHBEND\nDEPTH"), 14, false, false, gray0, gray0));
+    labels.push_back(Label(Rectangle<double>(353, 513, 34, 11), std::string("TYPE"), 14, false, false, gray0, gray0));
+    labels.push_back(Label(Rectangle<double>(529, 513, 72, 11), std::string("PLAYMODE"), 14, false, false, gray0, gray0));
+    labels.push_back(Label(Rectangle<double>(709, 513, 50, 11), std::string("ATTACK"), 14, false, false, gray0, gray0));
+    labels.push_back(Label(Rectangle<double>(783, 513, 43, 11), std::string("DECAY"), 14, false, false, gray0, gray0));
+    labels.push_back(Label(Rectangle<double>(847, 513, 55, 11), std::string("SUSTAIN"), 14, false, false, gray0, gray0));
+    labels.push_back(Label(Rectangle<double>(916, 513, 57, 11), std::string("RELEASE"), 14, false, false, gray0, gray0));
+
     positionWidgets();
 
     // logos
@@ -222,32 +217,31 @@ void NinjasUI::positionWidgets()
 
     //  fSwitchLoadSample->setAbsolutePos ( 51+24, 470+18 );
 
-    fSliceModeSlider->setAbsolutePos(424, 412);
+    fRadioSliceMode->setAbsolutePos(329, 440);
     // fLabelsBoxSliceModeSlider->setAbsolutePos(446, 412);
 
-    fKnobSliceSensitivity->setAbsolutePos(443, 450 + 16);
+    // fKnobSliceSensitivity->setAbsolutePos(443, 450 + 16);
     // fLabelsBoxSliceSensitivity->setAbsolutePos(420, 450 + 38 + 16);
 
-    fSpinBoxSlices->setAbsolutePos(345, 446);
+    fSliceButton->setAbsolutePos(213, 500);
 
-    fSliceButton->setAbsolutePos(345, 410);
+    fSpinBoxPitchBendDepth->setAbsolutePos(24, 458);
+    fSpinBoxSlices->setAbsolutePos(184, 458);
 
-    fSpinBoxPitchBendDepth->setAbsolutePos(72, 436);
+    fKnobAttack->setAbsolutePos(705, 442);
+    fKnobDecay->setAbsolutePos(775, 442);
+    fKnobSustain->setAbsolutePos(845, 442);
+    fKnobRelease->setAbsolutePos(915, 442);
 
-    fKnobAttack->setAbsolutePos(671, 439);
-    fKnobDecay->setAbsolutePos(743, 439);
-    fKnobSustain->setAbsolutePos(815, 439);
-    fKnobRelease->setAbsolutePos(888, 439);
-
-    fSwitchFwd->setAbsolutePos(537, 422);
-    fSwitchRev->setAbsolutePos(537, 475);
-    fSwitchLoopFwd->setAbsolutePos(590, 422);
-    fSwitchLoopRev->setAbsolutePos(590, 475);
+    fSwitchFwd->setAbsolutePos(453, 445);
+    fSwitchRev->setAbsolutePos(508, 445);
+    fSwitchLoopFwd->setAbsolutePos(563, 445);
+    fSwitchLoopRev->setAbsolutePos(618, 445);
 
     fPianoKeyboard->setAbsolutePos(38, 545);
 
-    fFilePathBox->setAbsolutePos(160, 10);
-    fFileOpenButton->setAbsolutePos(768, 9);
+    fFilePathBox->setAbsolutePos(178, 19);
+    fFileOpenButton->setAbsolutePos(783, 19);
 
     //fLabelsBoxLoadSample->setAbsolutePos ( 51, 470 );
 
@@ -458,13 +452,13 @@ void NinjasUI::knobValueChanged(SubWidget *knob, const float value)
         p_Release[currentSlice] = value;
         break;
     }
-    case paramSliceSensitivity:
-    {
-        setParameterValue(KnobID, value);
-        getOnsets();
-        //repaint();
-        break;
-    }
+        // case paramSliceSensitivity:
+        // {
+        //     setParameterValue(KnobID, value);
+        //     getOnsets();
+        //     //repaint();
+        //     break;
+        // }
 
     default:
         setParameterValue(KnobID, value);
@@ -472,12 +466,8 @@ void NinjasUI::knobValueChanged(SubWidget *knob, const float value)
     }
     repaint();
 }
-void NinjasUI::knobDragStarted(SubWidget *widget)
-{
-}
-void NinjasUI::knobDragFinished(SubWidget *widget)
-{
-}
+void NinjasUI::knobDragStarted(SubWidget *widget) {}
+void NinjasUI::knobDragFinished(SubWidget *widget) {}
 
 void NinjasUI::spinnerValueChanged(SubWidget *widget, float value)
 {
@@ -495,6 +485,12 @@ void NinjasUI::spinnerValueChanged(SubWidget *widget, float value)
     default:
         std::printf("describe it\n");
     }
+}
+
+void NinjasUI::radioValueChanged(SubWidget *radio, float value)
+{
+    printf("radioValueChanged(%i,%f)\n", radio->getId(), value);
+    repaint();
 }
 
 void NinjasUI::switchClicked(SubWidget *nanoSwitch, bool down)
@@ -783,7 +779,8 @@ void NinjasUI::onNanoDisplay()
     closePath(); */
 
     // Settings labels
-    beginPath();
+    drawLabels();
+    /*     beginPath();
     fontFaceId(fNanoFont);
     fontSize(18);
     fillColor(Color(0xec, 0xec, 0xec, 0xff));
@@ -803,7 +800,7 @@ void NinjasUI::onNanoDisplay()
     text(754 + 21 - 3, 420 + 10, "DECAY", NULL);
     text(822 + 21 + 2, 420 + 10, "SUSTAIN", NULL);
     text(894 + 21 + 3, 420 + 10, "RELEASE", NULL);
-    closePath();
+    closePath(); */
 
     if (sample_is_loaded)
     {
@@ -825,7 +822,7 @@ void NinjasUI::onNanoDisplay()
     }
     // ninjas_logo
     const float logo_offset_x = display_left;
-    const float logo_offset_y = 12.0f;
+    const float logo_offset_y = 20.0f;
 
     // getSize() returns Size(0,0) , hardcoding for now
     // const Size<uint> logoSize = imgNinjasLogo.getSize();
@@ -836,7 +833,7 @@ void NinjasUI::onNanoDisplay()
     const auto cbWidth = 139;
     const auto cbHeight = 20;
     const float clearlyBroken_offset_x = display_right - cbWidth;
-    const float clearlyBroken_offset_y = 14.0f;
+    const float clearlyBroken_offset_y = 25.0f;
     beginPath();
     Paint logo_paint = imagePattern(logo_offset_x, logo_offset_y, logoWidth, logoHeight, 0, imgNinjasLogo, 1.0f);
     rect(logo_offset_x, logo_offset_y, logoWidth, logoHeight);
@@ -1215,17 +1212,59 @@ void NinjasUI::drawOnsets()
         {
             int display_onset_x = (double)(onset - waveView.start) * pixels_per_sample;
             display_onset_x += display_left;
-            for (unsigned int i = display_top; i < display_bottom; i += 10)
+            for (unsigned int i = display_top; i < display_bottom; i += 5)
             {
                 moveTo(display_onset_x, i);
                 lineTo(display_onset_x, i + 4);
-                moveTo(display_onset_x, i + 6);
-                lineTo(display_onset_x, i + 10);
             }
         }
     }
     stroke();
     closePath();
+}
+
+void NinjasUI::drawLabels()
+{
+    strokeWidth(2.f);
+    textAlign(ALIGN_CENTER | ALIGN_TOP);
+    for (const auto &label : labels)
+    {
+        beginPath();
+        if (label.hasBackground)
+        {
+            fillColor(label.backgroundColor);
+            rect(label.box.getX() + 1, label.box.getY() + 1,
+                 label.box.getWidth() - 2, label.box.getHeight() - 2);
+            fill();
+        }
+        if (label.hasStroke)
+        {
+            strokeColor(gray7);
+            stroke();
+        }
+        closePath();
+
+        fillColor(label.textColor);
+        fontSize(label.fntSize);
+        beginPath();
+        // measure and center the text
+        float bounds[4];
+        textBoxBounds(0, 0,
+                      label.box.getWidth(),
+                      label.text.c_str(),
+                      nullptr,
+                      bounds);
+        const float textWidth = bounds[2] - bounds[0];
+        const float textHeight = bounds[3] - bounds[1];
+        const auto cx = label.box.getX();
+        const auto cy = std::round(label.box.getY() +
+                                   label.box.getHeight() * .5 -
+                                   textHeight * .5);
+        textBox(cx, cy,
+                label.box.getWidth(),
+                label.text.c_str(), nullptr);
+        closePath();
+    }
 }
 
 void NinjasUI::loadSample(bool fromUser)

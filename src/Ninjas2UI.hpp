@@ -35,7 +35,7 @@
 #include <memory>
 
 #include "Knob.hpp"
-#include "SliceModeSwitch.hpp"
+#include "Radio.hpp"
 // #include "RemoveDCSwitch.hpp"
 #include "Spinner.hpp"
 #include "TextButton.hpp"
@@ -44,6 +44,7 @@
 // #include "StateSwitch.hpp"
 #include "PianoKeyboard.hpp"
 // #include "LabelBox.hpp"
+#include "Radio.hpp"
 
 #include "open-color1_9_1.hpp"
 
@@ -59,8 +60,10 @@ class NinjasUI : public UI,
                  public KnobEventHandler::Callback,
                  public SwitchEventHandler::Callback,
                  public SpinnerEventHandler::Callback,
+                 public RadioEventHandler::Callback,
                  // public NanoButton::Callback,
                  public PianoKeyboard::Callback,
+
                  public IdleCallback
 {
 public:
@@ -87,15 +90,40 @@ protected:
      void knobDragFinished(SubWidget *widget) override;
      void spinnerValueChanged(SubWidget *widget, float value) override;
      void switchClicked(SubWidget *widget, bool down) override;
-     void pianoKeyboardClicked ( PianoKeyboard * pianoKeyboard , int velocity ) override;
+     void radioValueChanged(SubWidget *widget, float value) override;
+     void pianoKeyboardClicked(PianoKeyboard *pianoKeyboard, int velocity) override;
      bool onMouse(const MouseEvent &) override;
      bool onScroll(const ScrollEvent &) override;
      bool onMotion(const MotionEvent &) override;
 
 private:
-     std::unique_ptr<NanoKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease, fKnobSliceSensitivity;
+     struct Label
+     {
+          Rectangle<double> box;
+          std::string text;
+          float fntSize;
+          bool hasStroke;
+          bool hasBackground;
+          Color textColor;
+          Color backgroundColor;
+
+          Label(
+              Rectangle<double> bx,
+              std::string txt,
+              float fs,
+              bool hasStrk,
+              bool hasBg,
+              Color txtClr,
+              Color bgClr)
+              : box(bx), text(txt), fntSize(fs),
+                hasStroke(hasStroke), hasBackground(hasBg), textColor(txtClr),
+                backgroundColor(bgClr) {}
+     };
+
+     std::vector<Label> labels;
+     std::unique_ptr<NanoKnob> fKnobAttack, fKnobDecay, fKnobSustain, fKnobRelease; //, fKnobSliceSensitivity;
      std::unique_ptr<Spinner> fSpinBoxSlices, fSpinBoxPitchBendDepth;
-     std::unique_ptr<SliceModeSwitch> fSliceModeSlider;
+     std::unique_ptr<Radio> fRadioSliceMode;
      // ScopedPointer<GlowingLabelsBox> fLabelsBoxSliceModeSlider, fLabelsBoxSliceSensitivity, fLabelsBoxLoadSample;
      std::unique_ptr<PlayModeSwitch> fSwitchFwd, fSwitchRev, fSwitchLoopFwd, fSwitchLoopRev;
      // ScopedPointer<RemoveDCSwitch> fSwitchLoadSample;
@@ -115,10 +143,12 @@ private:
      void recallSliceSettings(int slice);
      void drawWaveform();
      void drawRuler();
-     void drawOnsets();
-     void drawSliceMarkers();
-     void drawCurrentSlice();
+
      void drawPlayheads();
+     void drawCurrentSlice();
+     void drawSliceMarkers();
+     void drawOnsets();
+     void drawLabels();
      void getVisibleSlices(int &firstSice, int &lastSlice);
      void selectSlice();
      void editCurrentSlice();
@@ -134,8 +164,8 @@ private:
 
      std::string dirnameOf(const std::string &fname);
      std::string toTime(double time, double round_up);
-     int programNumber; // 0 - 15
 
+     int programNumber; // 0 - 15
      //
      bool mouseDragging;
      uint mouseX;
@@ -235,9 +265,9 @@ private:
 
      // need static constexpr apparently because of std::array ..
 
-     static constexpr unsigned int display_left = 25;
-     static constexpr unsigned int display_top = 50;
-     static constexpr unsigned int display_width = 950;
+     static constexpr unsigned int display_left = 20;
+     static constexpr unsigned int display_top = 70;
+     static constexpr unsigned int display_width = 960;
      static constexpr unsigned int display_right = display_left + display_width;
      static constexpr unsigned int display_height = 315;
 

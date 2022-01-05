@@ -1,5 +1,4 @@
-#ifndef NANO_LABEL_HPP_INCLUDED
-#define NANO_LABEL_HPP_INCLUDED
+#pragma once
 
 #include "NanoVG.hpp"
 #include <string>
@@ -12,6 +11,8 @@ public:
     explicit NanoLabel(Widget *const parent);
     void setLabel(std::string text);
     void setFont(const char *name, const uchar *data, uint dataSize);
+    void setFontSize(float size);
+    void setBackgroundColor(const Color color);
 
 protected:
     void onNanoDisplay() override;
@@ -19,8 +20,9 @@ protected:
 private:
     FontId labelFontId;
     std::string labelText;
+    Color backgroundColor;
+    Color textColor;
+    int align;
 };
 
 END_NAMESPACE_DISTRHO
-
-#endif

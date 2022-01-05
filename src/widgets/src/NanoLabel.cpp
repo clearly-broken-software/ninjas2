@@ -4,7 +4,10 @@ START_NAMESPACE_DISTRHO
 
 NanoLabel::NanoLabel(Widget *const parent)
     : NanoWidget(parent),
-      labelFontId(0)
+      labelFontId(0),
+      labelText("LABEL"),
+      backgroundColor(73, 80, 87), // gray7
+      textColor(248,249,250)
 {
 #ifdef DEBUG
     loadSharedResources();
@@ -25,16 +28,19 @@ void NanoLabel::setLabel(const std::string text)
 void NanoLabel::onNanoDisplay()
 {
     beginPath();
-    fillColor(84, 84, 84);
-    rect(0, 0, getWidth(), getHeight());
+    fillColor(backgroundColor);
+    strokeColor(134, 142, 150); // gray6
+    strokeWidth(1.0f);
+    roundedRect(.5, .5, getWidth()-1, getHeight()-1, 2);
     fill();
+    stroke();
     closePath();
     if (labelFontId != -1)
     {
         fontFaceId(labelFontId);
         beginPath();
-        fillColor(0xf1, 0xf3, 0xf5); // #f1f3f5ff
-        textAlign(ALIGN_LEFT | ALIGN_TOP);
+        fillColor(textColor); 
+        textAlign(align);
         text(0, 0, labelText.c_str(), nullptr);
         closePath();
     }
@@ -43,5 +49,6 @@ void NanoLabel::onNanoDisplay()
         printf("NanoLabel: no font loaded\n");
     }
 }
+
 
 END_NAMESPACE_DISTRHO
