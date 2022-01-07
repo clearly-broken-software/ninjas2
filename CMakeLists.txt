@@ -28,7 +28,10 @@ option(HAVE_WAVWRITE "Have wavwrite" ON)
 option(HAVE_MEMCPY_HACKS "Have memcpy hacks" ON)
 option(HAVE_ERRNO_H "Have errno.h" ON)
 
-add_definitions(-DHAVE_CONFIG_H -fPIC)
+option(USE_NANOVG_FREETYPE "Use Freetype2 fontrendering" ON)
+
+add_definitions(-DHAVE_CONFIG_H -fPIC) # for aubio
+
 
 configure_file(src/AubioConfig.h.in src/config.h)
 
@@ -132,8 +135,13 @@ target_include_directories(
   "src/widgets"
   "thirdparty/widgets"
   "thirdparty/aubio/src"
-)
+ )
 
-target_link_libraries(ninjas2 PUBLIC aubio -lsndfile -lsamplerate)
+target_link_libraries(
+  ninjas2 PUBLIC 
+  aubio 
+  -lsndfile 
+  -lsamplerate
+  )
 
 
