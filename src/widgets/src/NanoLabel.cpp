@@ -7,7 +7,8 @@ NanoLabel::NanoLabel(Widget *const parent)
       labelFontId(0),
       labelText("LABEL"),
       backgroundColor(73, 80, 87), // gray7
-      textColor(248,249,250)
+      textColor(248,249,250),
+      align(ALIGN_TOP|ALIGN_LEFT)
 {
 #ifdef DEBUG
     loadSharedResources();
@@ -38,6 +39,7 @@ void NanoLabel::onNanoDisplay()
     if (labelFontId != -1)
     {
         fontFaceId(labelFontId);
+        fontSize(24.f);
         beginPath();
         fillColor(textColor); 
         textAlign(align);
