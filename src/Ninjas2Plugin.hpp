@@ -96,6 +96,8 @@ private:
   int loadSample(std::string fp, bool fromUser);
   int64_t find_nearest(std::vector<uint_t> &haystack, uint_t needle);
   bool sig_SampleLoaded; // set to true when sample loaded, UI loads (new) sample -> use state to flip to false
+  bool sig_LoadProgram;
+
   // slices
   float sliceStart[128], sliceEnd[128];
 

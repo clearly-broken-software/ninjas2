@@ -36,14 +36,11 @@
 
 #include "Knob.hpp"
 #include "Radio.hpp"
-// #include "RemoveDCSwitch.hpp"
 #include "Spinner.hpp"
 #include "TextButton.hpp"
 #include "PlayModeSwitch.hpp"
 #include "NanoLabel.hpp"
-// #include "StateSwitch.hpp"
 #include "PianoKeyboard.hpp"
-// #include "LabelBox.hpp"
 #include "Radio.hpp"
 
 #include "open-color1_9_1.hpp"
@@ -61,7 +58,6 @@ class NinjasUI : public UI,
                  public SwitchEventHandler::Callback,
                  public SpinnerEventHandler::Callback,
                  public RadioEventHandler::Callback,
-                 // public NanoButton::Callback,
                  public PianoKeyboard::Callback,
 
                  public IdleCallback
@@ -154,9 +150,7 @@ private:
      void editCurrentSlice();
      void editSlice();
      bool sampleIsInSlice(long unsigned int sample);
-     void setProgramGrid(int program);
-     void ProgramGrid(int grid);
-     void getProgram(int program);
+     void getProgram();
      void getOnsets();
      float getMaxSample(const std::vector<float> &sampleData);
 
@@ -270,12 +264,8 @@ private:
      static constexpr unsigned int display_width = 960;
      static constexpr unsigned int display_right = display_left + display_width;
      static constexpr unsigned int display_height = 315;
-
      static constexpr unsigned int display_bottom = display_top + display_height;
      static constexpr unsigned int display_center = (display_bottom - display_top) / 2 + display_top;
-
-     //static constexpr unsigned int display_height = ( display_bottom - display_top ) /2;
-     //static constexpr unsigned int waveform_length = display_length * 2;
 
      // font
      FontId fNanoFont;
@@ -283,10 +273,11 @@ private:
      FontId fFontAwesome;
 
      NanoImage imgNinjasLogo, imgClearlyBroken;
-
-     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NinjasUI)
      void initParameters();
      void initSlices();
+
+     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NinjasUI)
+
 };
 
 // -----------------------------------------------------------------------

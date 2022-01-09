@@ -40,16 +40,17 @@
 enum Parameters // exposed to the host
 {
     paramLoadSample,
+    paramNumSlices,
     paramSliceSensitivity,
     paramAttack,
     paramDecay,
     paramSustain,
     paramRelease,
     paramSliceMode,
-    paramProgramGrid,
     paramPlayMode,
     paramPitchbendDepth,
     paramSigSampleLoaded,
+    paramSigLoadProgram,
     paramCurrentSlice,
     paramCount
 };
@@ -73,6 +74,7 @@ enum Ninjas2States
     stateCurrentSlice,
     stateSliceButton,
     stateSigSampleLoaded,
+    stateSigProgramLoaded,
     stateSigCurrentSlice,
     stateCount
 };

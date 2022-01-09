@@ -65,6 +65,7 @@ NinjasPlugin::NinjasPlugin()
     std::fill_n(voices, 128, Voice());
 
     sig_SampleLoaded = false;
+    sig_LoadProgram = false;
     sig_currentSlice = -1;
 
     // init mixer
@@ -108,6 +109,16 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.symbol = "sampleLoaded";
         break;
     }
+    case paramSigLoadProgram:
+    {
+        parameter.hints = kParameterIsOutput | kParameterIsBoolean;
+        parameter.ranges.def = 0.0f;
+        parameter.ranges.min = 0.0f;
+        parameter.ranges.max = 1.0f;
+        parameter.name = "sigLoadProgram";
+        parameter.symbol = "sigLoadProgram";
+        break;
+    }
     case paramCurrentSlice:
     {
         parameter.hints = kParameterIsOutput | kParameterIsInteger;
@@ -118,9 +129,19 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.symbol = "currentSlice";
         break;
     }
+    case paramNumSlices:
+    {
+        parameter.hints = kParameterIsInteger; // no automation
+        parameter.ranges.def = 1.0f;
+        parameter.ranges.min = 1.0f;
+        parameter.ranges.max = 128.0f;
+        parameter.name = "Number of Slices";
+        parameter.symbol = "numberOfSlices";
+        break;
+    }
     case paramAttack:
     {
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomatable;
         parameter.ranges.def = 0.001f;
         parameter.ranges.min = 0.001f;
         parameter.ranges.max = 1.0f;
@@ -131,7 +152,7 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
     }
     case paramDecay:
     {
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomatable;
         parameter.ranges.def = 0.001f;
         parameter.ranges.min = 0.001f;
         parameter.ranges.max = 1.0f;
@@ -142,7 +163,7 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
     }
     case paramSustain:
     {
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomatable;
         parameter.ranges.def = 1.0f;
         parameter.ranges.min = 0.0f;
         parameter.ranges.max = 1.0f;
@@ -153,7 +174,7 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
     }
     case paramRelease:
     {
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomatable;
         parameter.ranges.def = 0.001f;
         parameter.ranges.min = 0.001f;
         parameter.ranges.max = 1.0f;
@@ -164,7 +185,7 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
     }
     case paramPlayMode:
     {
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
         parameter.ranges.def = 0.0f;
         parameter.ranges.min = 0.0f;
         parameter.ranges.max = 3.0f;
@@ -182,7 +203,7 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
     }
     case paramLoadSample:
     {
-        parameter.hints = kParameterIsAutomable | kParameterIsBoolean;
+        parameter.hints = kParameterIsAutomatable | kParameterIsBoolean;
         parameter.ranges.def = 0.0f;
         parameter.ranges.min = 0.0f;
         parameter.ranges.max = 1.0f;
@@ -192,7 +213,7 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
     }
     case paramSliceMode:
     {
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
         parameter.ranges.def = 0.0f;
         parameter.ranges.min = 0.0f;
         parameter.ranges.max = 1.0f;
@@ -203,7 +224,7 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
     }
     case paramSliceSensitivity:
     {
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomatable;
         parameter.ranges.def = 0.5f;
         parameter.ranges.min = 0.0f;
         parameter.ranges.max = 1.0f;
@@ -211,19 +232,9 @@ void NinjasPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.symbol = "sliceSensitivity";
         break;
     }
-    case paramProgramGrid:
-    {
-        parameter.hints = kParameterIsInteger | kParameterIsInteger; // FIXME not automate ?? is this the correct way of operation
-        parameter.ranges.def = 0.0f;
-        parameter.ranges.min = 0.0f;
-        parameter.ranges.max = 65535.0f; // 16 bits
-        parameter.name = "Program Grid";
-        parameter.symbol = "programGrid";
-        break;
-    }
     case paramPitchbendDepth:
     {
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
         parameter.ranges.def = 12.0f;
         parameter.ranges.min = 0.0f;
         parameter.ranges.max = 12.0f;
@@ -269,12 +280,18 @@ void NinjasPlugin::initState(uint32_t index, String &stateKey, String &defaultSt
         stateKey = "sig_SampleLoaded";
         defaultStateValue = "empty";
         break;
+    case stateSigProgramLoaded:
+        stateKey = "sig_ProgramLoaded";
+        defaultStateValue = "empty";
+        break;
     case stateSigCurrentSlice:
         stateKey = "sig_CurrentSlice";
         defaultStateValue = "-1";
+        break;
     default:
         stateKey = "undefined state";
         defaultStateValue = "undefined";
+        printf("undefined state %i\n", index);
     }
 }
 String NinjasPlugin::getState(const char *key) const
@@ -333,6 +350,7 @@ void NinjasPlugin::setState(const char *key, const char *value)
             default:
                 printf("unexpected slicemode :%i\n", slicemode);
             }
+            sig_LoadProgram = true;
         }
     }
 
@@ -418,6 +436,11 @@ void NinjasPlugin::setState(const char *key, const char *value)
         sig_SampleLoaded = false;
     }
 
+    if (strcmp(key, "sig_LoadProgram") == 0)
+    {
+        sig_LoadProgram = false;
+    }
+
     if (strcmp(key, "sig_CurrentSlice") == 0)
     {
         sig_currentSlice = -1;
@@ -432,18 +455,21 @@ float NinjasPlugin::getParameterValue(uint32_t index) const
 
     switch (index)
     {
-
-    case paramSigSampleLoaded:
-    {
-        return_Value = (float)sig_SampleLoaded;
+    case paramLoadSample:
+        return_Value = 0.f;
         break;
-    }
-
+    case paramSigSampleLoaded:
+        return_Value = static_cast<float>(sig_SampleLoaded);
+        break;
+    case paramSigLoadProgram:
+        return_Value = static_cast<float>(sig_LoadProgram);
+          break;
+    case paramNumSlices:
+        return_Value = static_cast<float>(numSlices);
+        break;
     case paramCurrentSlice:
-    {
         return_Value = sig_currentSlice;
         break;
-    }
     case paramAttack:
         return_Value = Attack[voice];
         break;
@@ -459,12 +485,16 @@ float NinjasPlugin::getParameterValue(uint32_t index) const
     case paramSliceMode:
         return_Value = slicemode;
         break;
+    case paramPlayMode:
+        return 0.0f;
     case paramSliceSensitivity:
         return_Value = sliceSensitivity;
         break;
-
     case paramPitchbendDepth:
-        return_Value = pitchbendDepth / 2;
+        return_Value = pitchbendDepth * .5f;
+        break;
+    default:
+        printf("getParameterValue(%i) undefined \n", index);
     }
     return return_Value;
 }
@@ -474,6 +504,9 @@ void NinjasPlugin::setParameterValue(uint32_t index, float value)
     int voice = (currentSlice + 60) % 128;
     switch (index)
     {
+    case paramNumSlices:
+        numSlices = static_cast<int>(value);
+        break;
     case paramAttack:
         Attack[voice] = value;
         break;
