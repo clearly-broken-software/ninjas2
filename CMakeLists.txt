@@ -31,6 +31,7 @@ option(HAVE_ERRNO_H "Have errno.h" ON)
 option(USE_NANOVG_FREETYPE "Use Freetype2 fontrendering" ON)
 
 add_definitions(-DHAVE_CONFIG_H -fPIC) # for aubio
+add_definitions(-DDEBUG)
 
 
 configure_file(src/AubioConfig.h.in src/config.h)
