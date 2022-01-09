@@ -78,15 +78,19 @@ Linux, Windows and Mac binaries for several architectures are available [here](h
 +  libx11-dev
 +  libsndfile1-dev
 +  libsamplerate0-dev
++  cmake
 
 If you want a standalone jack binary install either `libjack-dev` or `libjack-jackd2-dev`
 
 ```
-git clone --recursive https://github.com/rghvdberg/ninjas2.git
+git clone --depth=1 https://github.com/rghvdberg/ninjas2.git
 cd ninjas2
+mkdir build
+cd build
+cmake ../
 make
-make install (optional)
 ```
+
 If you choose not to use the `make install`, you can copy the binaries from `/path/to/ninjas2/bin/` to an appropiate location, typically ~/.vst or /usr/lib/vst on linux.
 
 ***
