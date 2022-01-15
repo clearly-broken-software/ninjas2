@@ -435,7 +435,6 @@ void NinjasUI::knobValueChanged(SubWidget *knob, const float value)
     {
     case paramAttack:
     {
-        oldValue = p_Attack[currentSlice];
         p_Attack[currentSlice] = value;
         break;
     }
@@ -508,102 +507,43 @@ void NinjasUI::radioValueChanged(SubWidget *radio, float value)
 
 void NinjasUI::switchClicked(SubWidget *nanoSwitch, bool down)
 {
-    bool oldValue;
+
     const bool value = down;
     const uint buttonId = nanoSwitch->getId();
-    // check if parameter is changed
-    switch (buttonId)
-    {
-    case widgetSwitchFwd:
-    {
-        oldValue = p_playMode[currentSlice] == ONE_SHOT_FWD;
-        break;
-    }
-    case widgetSwitchRev:
-    {
-        oldValue = p_playMode[currentSlice] == ONE_SHOT_REV;
-        break;
-    }
-    case widgetSwitchLoopFwd:
-    {
-        oldValue = p_playMode[currentSlice] == LOOP_FWD;
-        break;
-    }
-    case widgetSwitchLoopRev:
-    {
-        oldValue = p_playMode[currentSlice] == LOOP_REV;
-        break;
-    }
-    }
 
     switch (buttonId)
     {
     case widgetSwitchFwd:
-    {
         p_playMode[currentSlice] = ONE_SHOT_FWD;
-        //   editParameter(paramOneShotForward, true);
-        fwd = !fwd;
-        //   setParameterValue(paramOneShotForward, fwd);
         fSwitchFwd->setDown(true);
         fSwitchRev->setDown(false);
         fSwitchLoopFwd->setDown(false);
         fSwitchLoopRev->setDown(false);
-        //   editParameter(paramOneShotForward, false);
         break;
-    }
     case widgetSwitchRev:
-    {
         p_playMode[currentSlice] = ONE_SHOT_REV;
-        //    editParameter(paramOneShotReverse, true);
-        rev = !rev;
-        //    setParameterValue(paramOneShotReverse, rev);
         fSwitchFwd->setDown(false);
         fSwitchRev->setDown(true);
         fSwitchLoopFwd->setDown(false);
         fSwitchLoopRev->setDown(false);
-        //   editParameter(paramOneShotReverse, false);
-
         break;
-    }
     case widgetSwitchLoopFwd:
-    {
         p_playMode[currentSlice] = LOOP_FWD;
-        //    editParameter(paramLoopForward, true);
-        loop = !loop;
-        //    setParameterValue(paramLoopForward, loop);
         fSwitchFwd->setDown(false);
         fSwitchRev->setDown(false);
         fSwitchLoopFwd->setDown(true);
         fSwitchLoopRev->setDown(false);
-        //    editParameter(paramLoopForward, false);
         break;
-    }
     case widgetSwitchLoopRev:
-    {
         p_playMode[currentSlice] = LOOP_REV;
-        //    editParameter(paramLoopReverse, true);
-        loop_rev = !loop_rev;
-        //  setParameterValue(paramLoopReverse, loop_rev);
         fSwitchFwd->setDown(false);
         fSwitchRev->setDown(false);
         fSwitchLoopFwd->setDown(false);
         fSwitchLoopRev->setDown(true);
-        //   editParameter(paramLoopReverse, false);
-        break;
-    }
-        // case paramSliceMode:
-        // {
-        //     if (slicemethod != value)
-        //     {
-        //         fLabelsBoxSliceModeSlider->setSelectedIndex((int)value);
-        //         slicemodeChanged = true;
-        //     }
-        //     setParameterValue(paramSliceMode, value);
-        //     slicemethod = value;
-        //     break;
-        // }
 
+        break;
     } // switch (buttonId)
+    setParameterValue(paramPlayMode, static_cast<float>(p_playMode[currentSlice]));
     repaint();
 }
 
