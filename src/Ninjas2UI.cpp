@@ -497,6 +497,12 @@ void NinjasUI::spinnerValueChanged(SubWidget *widget, float value)
 void NinjasUI::radioValueChanged(SubWidget *radio, float value)
 {
     printf("radioValueChanged(%i,%f)\n", radio->getId(), value);
+    if (slicemethod != static_cast<bool>(value))
+    {
+        slicemethod = static_cast<bool>(value);
+        slicemodeChanged = true;
+        setParameterValue(paramSliceMode, value);
+    }
     repaint();
 }
 
@@ -664,7 +670,7 @@ void NinjasUI::onNanoDisplay()
 {
     const float width = getWidth();
     const float height = getHeight();
-    
+
     beginPath();
 
     fillColor(gray9);
@@ -724,7 +730,6 @@ void NinjasUI::onNanoDisplay()
     fillPaint(cb_paint);
     fill();
     closePath();
-
 }
 
 void NinjasUI::idleCallback()
