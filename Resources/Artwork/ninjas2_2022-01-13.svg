@@ -6,8 +6,8 @@
    height="600"
    width="1000"
    inkscape:version="1.1.1 (1:1.1+202109281949+c3084ef5ed)"
-   sodipodi:docname="ninjas2_2023.svg"
-   inkscape:export-filename="/home/rob/Bureaublad/ninjas2_mockup.png"
+   sodipodi:docname="ninjas2_2022-01-13.svg"
+   inkscape:export-filename="/home/rob/git/ClearlyBroken/ninjas2/Resources/Artwork/ninjas2_2022-01-13.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -31,9 +31,9 @@
      inkscape:window-height="960"
      id="namedview5756"
      showgrid="false"
-     inkscape:zoom="1.2"
-     inkscape:cx="499.58333"
-     inkscape:cy="366.66667"
+     inkscape:zoom="1"
+     inkscape:cx="494.5"
+     inkscape:cy="300"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -80,18 +80,6 @@
   </sodipodi:namedview>
   <defs
      id="defs4">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient46448">
-      <stop
-         style="stop-color:#862e9c;stop-opacity:1;"
-         offset="0"
-         id="stop46444" />
-      <stop
-         style="stop-color:#862e9c;stop-opacity:0.50458884"
-         offset="1"
-         id="stop46446" />
-    </linearGradient>
     <marker
        style="overflow:visible"
        id="Arrow1Lstart"
@@ -377,15 +365,21 @@
            x="33.537498"
            y="72.234573">n</tspan></text>
     </clipPath>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient46448"
-       id="linearGradient46450"
-       x1="566.28796"
-       y1="70.63562"
-       x2="565.34772"
-       y2="369.36438"
-       gradientUnits="userSpaceOnUse" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath81037">
+      <text
+         xml:space="preserve"
+         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-opacity:1"
+         x="41.872986"
+         y="64.21347"
+         id="text81041"><tspan
+           sodipodi:role="line"
+           id="tspan81039"
+           x="41.872986"
+           y="64.21347"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Roboto;-inkscape-font-specification:Roboto;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-opacity:1">n</tspan></text>
+    </clipPath>
   </defs>
   <metadata
      id="metadata7">
@@ -458,20 +452,21 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Slice Boxes"
-     style="display:inline;opacity:0.553296">
+     style="display:inline;opacity:0.553296"
+     sodipodi:insensitive="true">
     <rect
-       style="opacity:0.501589;fill:#5c940d;fill-opacity:1;stroke:none;stroke-width:1.96748;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;paint-order:stroke fill markers;stop-color:#000000"
+       style="opacity:1;fill:#5c940d;fill-opacity:1;stroke:none;stroke-width:1.96748;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;paint-order:stroke fill markers;stop-color:#000000"
        id="rect29348"
        width="120"
        height="300"
        x="380"
        y="70" />
     <rect
-       style="opacity:1;fill:url(#linearGradient46450);fill-opacity:1;stroke:none;stroke-width:2.08315;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;paint-order:stroke fill markers;stop-color:#000000"
+       style="opacity:1;fill:#862e9c;fill-opacity:1;stroke:none;stroke-width:1.8228;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;paint-order:stroke fill markers;stop-color:#000000"
        id="rect32108"
-       width="134.52417"
+       width="103"
        height="300"
-       x="502"
+       x="637"
        y="70" />
   </g>
   <g
@@ -865,7 +860,7 @@
        height="53.231346"
        width="18.839283"
        id="rect12502"
-       style="fill:#f08c00;fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:#c92a2a;fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
@@ -1405,19 +1400,19 @@
        id="text268727"
        y="452.99762"
        x="81.019058"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.220537px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;stroke:#000000;stroke-width:1.47025px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.220537px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;stroke:#000000;stroke-width:1.47025px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"
        transform="scale(1.014578,0.98563146)"
        inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
          id="tspan268723"
          y="452.99762"
          x="81.019058"
          sodipodi:role="line">PITCHBEND</tspan><tspan
          id="tspan268725"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
          y="466.33093"
          x="80.908791"
          sodipodi:role="line">DEPTH</tspan></text>
@@ -1425,7 +1420,7 @@
        id="g2237"
        transform="translate(0,7)">
       <rect
-         style="display:inline;opacity:1;fill:#e03131;stroke:#495057;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+         style="display:inline;opacity:1;fill:#2b8a3e;stroke:#495057;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
          id="rect268729"
          width="60"
          height="30"
@@ -1438,14 +1433,14 @@
          id="text268733"
          y="487.77106"
          x="239.44815"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:url(#linearGradient6312);stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:url(#linearGradient6312);stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"
          transform="scale(1.0231304,0.97739252)"
          inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96"><tspan
            id="tspan268731"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke:none;stroke-width:1.64491px"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;stroke:none;stroke-width:1.64491px"
            y="487.77106"
            x="239.32478"
            sodipodi:role="line">SLICE</tspan></text>
@@ -1457,14 +1452,14 @@
          id="text268721"
          y="535.80591"
          x="549.55542"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"
          transform="scale(1.0231304,0.97739252)"
          inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96"><tspan
            id="tspan268719"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
            y="535.80591"
            x="549.43207"
            sodipodi:role="line">PLAYMODE</tspan></text>
@@ -1472,7 +1467,7 @@
          id="g65688"
          transform="translate(0,4)">
         <rect
-           style="display:inline;opacity:1;fill:#66a80f;stroke:#495057;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+           style="display:inline;opacity:1;fill:#c92a2a;stroke:#495057;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
            id="rect268797"
            width="50"
            height="50"
@@ -1571,37 +1566,33 @@
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35px;line-height:1.25;font-family:forkawesome;-inkscape-font-specification:forkawesome;fill:#f8f9fa;stroke-width:1.02345"></tspan></text>
       </g>
     </g>
-    <g
-       id="g2227"
-       transform="translate(1,-34)">
-      <rect
-         style="display:inline;opacity:1;fill:#a61e4d;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
-         id="rect268823"
-         width="240"
-         height="15"
-         x="180"
-         y="410"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
-      <text
-         id="text268837"
-         y="432.01697"
-         x="288.36945"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"
-         transform="scale(1.0231304,0.97739252)"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"><tspan
-           id="tspan268835"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
-           y="432.01697"
-           x="288.24609"
-           sodipodi:role="line">SLICING</tspan></text>
-    </g>
     <rect
-       style="display:inline;fill:#5c940d;stroke:#495057;stroke-width:2.63685;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+       style="display:inline;fill:#2b8a3e;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="rect268823"
+       width="240"
+       height="15"
+       x="181"
+       y="376"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       id="text268837"
+       y="397.23053"
+       x="289.34683"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       transform="scale(1.0231304,0.97739252)"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         id="tspan268835"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+         y="397.23053"
+         x="289.22348"
+         sodipodi:role="line">SLICING</tspan></text>
+    <rect
+       style="display:inline;fill:#c92a2a;stroke:#495057;stroke-width:2.63685;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
        id="rect268825"
        width="517.36316"
        height="14.363155"
@@ -1614,14 +1605,14 @@
        id="text268841"
        y="397.224"
        x="694.12445"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"
        transform="scale(1.0231304,0.97739252)"
        inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
          id="tspan268839"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
          y="397.224"
          x="694.0011"
          sodipodi:role="line">SLICE 001</tspan></text>
@@ -1648,28 +1639,28 @@
     <text
        xml:space="preserve"
        id="text268755"
-       style="font-style:normal;font-weight:normal;font-size:39.946px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect268827);display:inline;fill:#e67700;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:39.946px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;white-space:pre;shape-inside:url(#rect268827);display:inline;fill:#40c057;fill-opacity:1;stroke:none"
        transform="matrix(0.52231499,0,0,0.54605658,-213.87099,-62.023622)"
        inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
          x="1100"
-         y="875.34285"
-         id="tspan79225"><tspan
+         y="876.73117"
+         id="tspan142501"><tspan
    style="font-size:29.9595px"
-   id="tspan79223">RAW</tspan>
+   id="tspan142499">RAW</tspan>
 </tspan></text>
     <text
        xml:space="preserve"
        id="text268759"
-       style="font-style:normal;font-weight:normal;font-size:29.9595px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect268829);display:inline;fill:#495057;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.9595px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;white-space:pre;shape-inside:url(#rect268829);display:inline;fill:#495057;fill-opacity:1;stroke:none"
        transform="matrix(0.52231499,0,0,0.54605658,-212.99367,-54.970206)"
        inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
          x="1100"
-         y="926.50714"
-         id="tspan79227">ONSET</tspan></text>
+         y="927.54838"
+         id="tspan142503">ONSET</tspan></text>
     <rect
        style="display:inline;fill:#f8f9fa;stroke:none;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke markers fill"
        id="rect268761"
@@ -1717,14 +1708,14 @@
          id="text311369"
          y="442.24826"
          x="239.90714"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"
          transform="scale(1.0231304,0.97739252)"
          inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96"><tspan
            id="tspan311367"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
            y="442.24826"
            x="239.78377"
            sodipodi:role="line">128</tspan></text>
@@ -1783,14 +1774,14 @@
          id="text311365"
          y="483.17346"
          x="83.52433"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"
          transform="scale(1.0231304,0.97739252)"
          inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96"><tspan
            id="tspan311363"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
            y="483.17346"
            x="83.400963"
            sodipodi:role="line">12</tspan></text>
@@ -1812,233 +1803,451 @@
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96" />
     </g>
+    <text
+       xml:space="preserve"
+       style="font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f1f3f5"
+       x="703.22626"
+       y="482.41248"
+       id="text268781"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         id="tspan268777"
+         x="703.22626"
+         y="482.41248"
+         style="font-size:13.3333px;fill:#f1f3f5">ATTACK</tspan><tspan
+         sodipodi:role="line"
+         x="703.22626"
+         y="499.0791"
+         style="font-size:13.3333px;fill:#f1f3f5"
+         id="tspan268779" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f1f3f5"
+       x="775.6579"
+       y="482.41248"
+       id="text268785"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         x="775.6579"
+         y="482.41248"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;fill:#f1f3f5"
+         id="tspan268783">DECAY</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f1f3f5"
+       x="840.24457"
+       y="482.41248"
+       id="text268789"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         id="tspan268787"
+         x="840.24457"
+         y="482.41248"
+         style="font-size:13.3333px;fill:#f1f3f5">SUSTAIN</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f1f3f5"
+       x="908.43793"
+       y="482.41248"
+       id="text268795"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         id="tspan268791"
+         x="908.43793"
+         y="482.41248"
+         style="font-size:13.3333px;fill:#f1f3f5">RELEASE</tspan><tspan
+         sodipodi:role="line"
+         x="908.43793"
+         y="499.0791"
+         style="font-size:13.3333px;fill:#f1f3f5"
+         id="tspan268793" /></text>
     <g
-       id="g14455"
-       transform="translate(-6.5589023,-40.441041)">
-      <text
-         xml:space="preserve"
-         style="font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5"
-         x="709.78516"
-         y="522.85352"
-         id="text268781"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"><tspan
-           sodipodi:role="line"
-           id="tspan268777"
-           x="709.78516"
-           y="522.85352"
-           style="font-size:13.3333px;fill:#f1f3f5">ATTACK</tspan><tspan
-           sodipodi:role="line"
-           x="709.78516"
-           y="539.52014"
-           style="font-size:13.3333px;fill:#f1f3f5"
-           id="tspan268779" /></text>
-      <text
-         xml:space="preserve"
-         style="font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5"
-         x="782.2168"
-         y="522.85352"
-         id="text268785"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"><tspan
-           sodipodi:role="line"
-           x="782.2168"
-           y="522.85352"
-           style="font-size:13.3333px;fill:#f1f3f5"
-           id="tspan268783">DECAY</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5"
-         x="846.80347"
-         y="522.85352"
-         id="text268789"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"><tspan
-           sodipodi:role="line"
-           id="tspan268787"
-           x="846.80347"
-           y="522.85352"
-           style="font-size:13.3333px;fill:#f1f3f5">SUSTAIN</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5"
-         x="914.99683"
-         y="522.85352"
-         id="text268795"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"><tspan
-           sodipodi:role="line"
-           id="tspan268791"
-           x="914.99683"
-           y="522.85352"
-           style="font-size:13.3333px;fill:#f1f3f5">RELEASE</tspan><tspan
-           sodipodi:role="line"
-           x="914.99683"
-           y="539.52014"
-           style="font-size:13.3333px;fill:#f1f3f5"
-           id="tspan268793" /></text>
+       id="g65702"
+       transform="translate(-6.5589023,-36.441041)">
       <g
-         id="g65702"
-         transform="translate(0,4)">
-        <g
-           id="g85192"
-           transform="translate(-6.3668502e-5)"
-           inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-           inkscape:export-xdpi="96"
-           inkscape:export-ydpi="96">
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path79828"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="5.4977871"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126"
-             sodipodi:open="true" />
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#e67700;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path80818"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="3.5223673"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 710.78833,-477.69221 a 26.079571,26.079571 0 0 1 5.77063,-8.74883"
-             sodipodi:open="true" />
-        </g>
-        <g
-           id="g85198"
-           transform="translate(69.999944)"
-           inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-           inkscape:export-xdpi="96"
-           inkscape:export-ydpi="96">
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path85194"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="5.4977871"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126"
-             sodipodi:open="true" />
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#e67700;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path85196"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="0.17751852"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 760.66973,-463.39467 a 26.079571,26.079571 0 0 1 -21.94134,21.20636 26.079571,26.079571 0 0 1 -27.04558,-14.1304 26.079571,26.079571 0 0 1 4.87615,-30.12233"
-             sodipodi:open="true" />
-        </g>
-        <g
-           id="g85204"
-           transform="translate(140.00001)"
-           inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-           inkscape:export-xdpi="96"
-           inkscape:export-ydpi="96">
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path85200"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="5.4977871"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126"
-             sodipodi:open="true" />
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#e67700;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path85202"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="6.2040357"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 760.99792,-470.06203 a 26.079571,26.079571 0 0 1 -17.92881,26.8619 26.079571,26.079571 0 0 1 -30.30283,-11.16881 26.079571,26.079571 0 0 1 3.79268,-32.0721"
-             sodipodi:open="true" />
-        </g>
-        <g
-           id="g85210"
-           transform="translate(210)"
-           inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-           inkscape:export-xdpi="96"
-           inkscape:export-ydpi="96">
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path85206"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="5.4977871"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126"
-             sodipodi:open="true" />
-          <path
-             style="display:inline;opacity:1;fill:none;stroke:#e67700;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-             id="path85208"
-             transform="scale(1,-1)"
-             sodipodi:type="arc"
-             sodipodi:cx="735"
-             sodipodi:cy="-468"
-             sodipodi:rx="26.079571"
-             sodipodi:ry="26.079571"
-             sodipodi:start="1.8596913"
-             sodipodi:end="3.9269908"
-             sodipodi:arc-type="arc"
-             d="m 727.57011,-443.00119 a 26.079571,26.079571 0 0 1 -17.85017,-18.59081 26.079571,26.079571 0 0 1 6.83902,-24.84904"
-             sodipodi:open="true" />
-        </g>
+         id="g85192"
+         transform="translate(-6.3668502e-5)"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path79828"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="5.4977871"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126" />
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#c92a2a;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path80818"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="3.5223673"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 710.78833,-477.69221 a 26.079571,26.079571 0 0 1 5.77063,-8.74883" />
+      </g>
+      <g
+         id="g85198"
+         transform="translate(69.999944)"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path85194"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="5.4977871"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126" />
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#c92a2a;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path85196"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="0.17751852"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 760.66973,-463.39467 a 26.079571,26.079571 0 0 1 -21.94134,21.20636 26.079571,26.079571 0 0 1 -27.04558,-14.1304 26.079571,26.079571 0 0 1 4.87615,-30.12233" />
+      </g>
+      <g
+         id="g85204"
+         transform="translate(140.00001)"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path85200"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="5.4977871"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126" />
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#c92a2a;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path85202"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="6.2040357"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 760.99792,-470.06203 a 26.079571,26.079571 0 0 1 -17.92881,26.8619 26.079571,26.079571 0 0 1 -30.30283,-11.16881 26.079571,26.079571 0 0 1 3.79268,-32.0721" />
+      </g>
+      <g
+         id="g85210"
+         transform="translate(210)"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path85206"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="5.4977871"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126" />
+        <path
+           style="display:inline;opacity:1;fill:none;stroke:#c92a2a;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+           id="path85208"
+           transform="scale(1,-1)"
+           sodipodi:type="arc"
+           sodipodi:cx="735"
+           sodipodi:cy="-468"
+           sodipodi:rx="26.079571"
+           sodipodi:ry="26.079571"
+           sodipodi:start="1.8596913"
+           sodipodi:end="3.9269908"
+           sodipodi:arc-type="arc"
+           sodipodi:open="true"
+           d="m 727.57011,-443.00119 a 26.079571,26.079571 0 0 1 -17.85017,-18.59081 26.079571,26.079571 0 0 1 6.83902,-24.84904" />
       </g>
     </g>
+    <text
+       xml:space="preserve"
+       style="font-size:37.3333px;line-height:1.25;font-family:Audiowide;-inkscape-font-specification:Audiowide;letter-spacing:0px;word-spacing:0px;stroke-width:0.228735"
+       x="1009.4928"
+       y="201.23297"
+       id="text15864"><tspan
+         sodipodi:role="line"
+         id="tspan15862"
+         style="stroke-width:0.228735"
+         x="1009.4928"
+         y="201.23297" /></text>
+    <rect
+       style="display:inline;fill:#1864ab;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+       id="rect268821"
+       width="130"
+       height="15"
+       x="21"
+       y="376"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       id="text268833"
+       y="397.23053"
+       x="84.501724"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       transform="scale(1.0231304,0.97739252)"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         id="tspan268831"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+         y="397.23053"
+         x="84.378357"
+         sodipodi:role="line">GLOBAL</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,959.31434,83.278624)"
+       id="text61525"
+       style="font-size:37.3333px;line-height:1.25;font-family:Audiowide;-inkscape-font-specification:Audiowide;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect61527)" />
     <g
-       id="g94151"
-       transform="translate(-178,104)">
+       id="g2371"
+       transform="translate(1,26)">
       <rect
-         style="fill:#343a40;fill-opacity:1;stroke:#343a40;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke markers fill"
+         style="display:inline;opacity:1;fill:#343a40;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+         id="rect2357"
+         width="25"
+         height="25"
+         x="120"
+         y="455"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <rect
+         style="display:inline;opacity:1;fill:#343a40;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+         id="rect2359"
+         width="25"
+         height="25"
+         x="25"
+         y="455"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <rect
+         style="display:inline;opacity:1;fill:#343a40;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+         id="rect2361"
+         width="50"
+         height="25"
+         x="60"
+         y="455"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <text
+         id="text2365"
+         y="483.17346"
+         x="83.52433"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"
+         transform="scale(1.0231304,0.97739252)"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96"><tspan
+           id="tspan2363"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+           y="483.17346"
+           x="83.400963"
+           sodipodi:role="line">120</tspan></text>
+      <rect
+         style="opacity:1;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+         id="rect2367"
+         width="15"
+         height="5"
+         x="30"
+         y="465"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <path
+         id="path2369"
+         style="opacity:1;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
+         d="m 130,460 v 5 h -5 v 5 h 5 v 5 h 5 v -5 h 5 v -5 h -5 v -5 z"
+         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+    </g>
+    <text
+       id="text6095"
+       y="527.90076"
+       x="82.425034"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.220537px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;stroke:#000000;stroke-width:1.47025px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       transform="scale(1.014578,0.98563146)"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
+         id="tspan6091"
+         y="527.90076"
+         x="82.425034"
+         sodipodi:role="line">BPM</tspan><tspan
+         id="tspan6093"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
+         y="541.23407"
+         x="82.425034"
+         sodipodi:role="line" /></text>
+    <g
+       id="g8989"
+       transform="matrix(0.75004109,0,0,0.75004109,-208.33781,143.04096)"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+         id="path8985"
+         transform="scale(1,-1)"
+         sodipodi:type="arc"
+         sodipodi:cx="735"
+         sodipodi:cy="-468"
+         sodipodi:rx="26.079571"
+         sodipodi:ry="26.079571"
+         sodipodi:start="5.4977871"
+         sodipodi:end="3.9269908"
+         sodipodi:arc-type="arc"
+         sodipodi:open="true"
+         d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126" />
+      <path
+         style="display:inline;opacity:1;fill:none;stroke:#087f5b;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+         id="path8987"
+         transform="scale(1,-1)"
+         sodipodi:type="arc"
+         sodipodi:cx="735"
+         sodipodi:cy="-468"
+         sodipodi:rx="26.079571"
+         sodipodi:ry="26.079571"
+         sodipodi:start="1.8596913"
+         sodipodi:end="3.9269908"
+         sodipodi:arc-type="arc"
+         sodipodi:open="true"
+         d="m 727.57011,-443.00119 a 26.079571,26.079571 0 0 1 -17.85017,-18.59081 26.079571,26.079571 0 0 1 6.83902,-24.84904" />
+    </g>
+    <text
+       id="text9327"
+       y="541.99695"
+       x="334.04037"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"
+       transform="scale(1.0231304,0.97739252)"
+       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         id="tspan9325"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Roboto;-inkscape-font-specification:Roboto;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
+         y="541.99695"
+         x="333.91699"
+         sodipodi:role="line">SENSITIVITY</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#f8f9fa"
+       x="185.61853"
+       y="43.893242"
+       id="text56751"><tspan
+         sodipodi:role="line"
+         id="tspan56749"
+         x="185.61853"
+         y="43.893242"
+         style="font-size:26.6667px;-inkscape-font-specification:Roboto;font-family:Roboto;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">/home/rob/awesome_sample.wav</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:26.6667px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa"
+       x="57.226402"
+       y="44.22047"
+       id="text65681"><tspan
+         sodipodi:role="line"
+         id="tspan65679"
+         x="57.226402"
+         y="44.22047"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;font-family:Roboto;-inkscape-font-specification:Roboto">Ninjas<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;font-family:Roboto;-inkscape-font-specification:Roboto;fill:#c92a2a"
+   id="tspan75141">2</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:26.6667px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa"
+       x="789.14307"
+       y="46.213074"
+       id="text104933"><tspan
+         sodipodi:role="line"
+         id="tspan104931"
+         x="789.14307"
+         y="46.213074"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;font-family:Roboto;-inkscape-font-specification:Roboto">Clearly<tspan
+   style="font-size:26.6667px;fill:#c92a2a;-inkscape-font-specification:Roboto;font-family:Roboto;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+   id="tspan110087"
+   rotate="0 0 0 8.6000004 0">Broken</tspan></tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Automation"
+     style="display:inline">
+    <g
+       id="g138278"
+       transform="translate(-17.197557,2.239383)">
+      <rect
+         style="display:inline;opacity:1;fill:#343a40;fill-opacity:1;stroke:#343a40;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke markers fill"
          id="rect66629"
          width="237.00616"
          height="36.473228"
-         x="741.99384"
-         y="390" />
+         x="596.93402"
+         y="495.49124" />
       <g
          id="g65674"
-         transform="translate(7.9999982)">
+         transform="translate(-137.05981,103.38467)"
+         style="display:inline;opacity:1">
         <rect
            style="fill:#c92a2a;fill-opacity:1;stroke:#343a40;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke markers fill"
            id="rect2099"
@@ -2194,308 +2403,15 @@
       </g>
       <text
          xml:space="preserve"
-         style="font-size:8px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa"
-         x="817.60742"
-         y="396.78015"
+         style="font-size:8px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#f8f9fa"
+         x="672.54761"
+         y="502.27139"
          id="text81985"><tspan
            sodipodi:role="line"
            id="tspan81983"
-           x="817.60742"
-           y="396.78015">AUTOMATION ASSIGN</tspan></text>
+           x="672.54761"
+           y="502.27139">AUTOMATION ASSIGN</tspan></text>
     </g>
-    <g
-       id="g19738"
-       transform="translate(-52.941343,-101.23099)"
-       inkscape:export-filename="/home/rob/git/ClearlyBroken/ninjas2/Resources/Artwork/ninjas2_logo.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
-      <g
-         id="g16596"
-         transform="matrix(3.7941975,0,0,5.0375197,-38.981099,-140.57134)"
-         style="stroke-width:0.228735">
-        <text
-           xml:space="preserve"
-           style="font-size:8.53941px;line-height:1.25;font-family:Audiowide;-inkscape-font-specification:Audiowide;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:0.0523196"
-           x="31.052612"
-           y="65.542908"
-           id="text16594"
-           transform="scale(1.1522545,0.86786383)"><tspan
-             sodipodi:role="line"
-             id="tspan16592"
-             style="fill:#f8f9fa;stroke-width:0.0523196"
-             x="31.052612"
-             y="65.542908">injas<tspan
-   style="fill:#c92a2a"
-   id="tspan16590">2</tspan></tspan></text>
-      </g>
-      <text
-         xml:space="preserve"
-         style="font-size:8.53941px;line-height:1.25;font-family:Audiowide;-inkscape-font-specification:Audiowide;letter-spacing:0px;word-spacing:0px;fill:none;fill-opacity:1;stroke:#f8f9fa;stroke-width:0.457469;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         x="33.537498"
-         y="72.234573"
-         id="text10578"
-         transform="matrix(4.3718811,0,0,4.3718811,-75.839485,-169.71713)"
-         clip-path="url(#clipPath10652)"><tspan
-           sodipodi:role="line"
-           id="tspan10576"
-           style="fill:none;fill-opacity:1;stroke:#f8f9fa;stroke-width:0.457469;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           x="33.537498"
-           y="72.234573">n</tspan></text>
-    </g>
-    <text
-       xml:space="preserve"
-       style="font-size:37.3333px;line-height:1.25;font-family:Audiowide;-inkscape-font-specification:Audiowide;letter-spacing:0px;word-spacing:0px;stroke-width:0.228735"
-       x="1009.4928"
-       y="201.23297"
-       id="text15864"><tspan
-         sodipodi:role="line"
-         id="tspan15862"
-         style="stroke-width:0.228735"
-         x="1009.4928"
-         y="201.23297" /></text>
-    <g
-       id="g2222"
-       transform="translate(1,-34)">
-      <rect
-         style="display:inline;opacity:1;fill:#364fc7;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
-         id="rect268821"
-         width="130"
-         height="15"
-         x="20"
-         y="410"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
-      <text
-         id="text268833"
-         y="432.01697"
-         x="83.52433"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"
-         transform="scale(1.0231304,0.97739252)"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"><tspan
-           id="tspan268831"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
-           y="432.01697"
-           x="83.400963"
-           sodipodi:role="line">GLOBAL</tspan></text>
-    </g>
-    <text
-       xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,959.31434,83.278624)"
-       id="text61525"
-       style="font-size:37.3333px;line-height:1.25;font-family:Audiowide;-inkscape-font-specification:Audiowide;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect61527)" />
-    <g
-       id="g84128"
-       transform="matrix(0.71428644,0,0,0.71428644,593.50796,-63.602857)"
-       inkscape:export-filename="/home/rob/git/ClearlyBroken/ninjas2/Resources/Artwork/clearlybroken_logo.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96"
-       style="stroke-width:1.68966">
-      <path
-         d="m 291.2915,125.6492 v 17.69599 q 0,2.91199 5.45066,2.91199 5.48799,0 5.48799,-2.91199 v -2.688 q 0,-0.85867 1.49334,-0.85867 1.49333,0 1.49333,0.85867 v 2.31466 q 0,5.89867 -8.32533,5.89867 -3.88266,0 -6.23466,-1.38134 -2.352,-1.41866 -2.352,-4.51733 v -16.94931 q 0,-3.09867 2.352,-4.48 2.352,-1.41867 6.23466,-1.41867 8.32533,0 8.32533,5.89867 v 2.31466 q 0,0.85867 -1.49333,0.85867 -1.49334,0 -1.49334,-0.85867 v -2.688 q 0,-2.912 -5.48799,-2.912 -5.45066,0 -5.45066,2.912 z"
-         id="path75275"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:1.68966" />
-      <path
-         d="m 315.29679,119.30254 v 24.63998 q 0,1.19467 0.56,2.24 0.56,1.008 0.56,1.04533 0,0.448 -0.70934,0.97067 -0.70933,0.48533 -1.19466,0.48533 -0.784,0 -1.49333,-1.344 -0.70934,-1.38133 -0.70934,-3.024 v -25.01331 q 0,-0.85866 1.49334,-0.85866 1.49333,0 1.49333,0.85866 z"
-         id="path75277"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:1.68966" />
-      <path
-         d="m 339.48874,131.17453 v 1.12 q 0,3.17333 -1.30667,4.368 -1.30666,1.19466 -4.77866,1.53066 l -7.27999,0.70933 v 4.44267 q 0,2.91199 4.85333,2.91199 5.52533,0 5.52533,-2.53866 v -1.41867 q 0,-0.85866 1.49333,-0.85866 1.49333,0 1.49333,0.85866 v 1.04534 q 0,5.52533 -8.21333,5.52533 -3.62133,0 -5.89866,-1.41867 -2.24,-1.41867 -2.24,-4.48 V 131.2492 q 0,-3.09867 2.38933,-4.48 2.38934,-1.41866 6.23467,-1.41866 3.84533,0 5.78666,1.34399 1.94133,1.344 1.94133,4.48 z m -13.36532,-0.29867 v 5.41333 l 7.01866,-0.70933 q 2.128,-0.224 2.72533,-0.896 0.63467,-0.672 0.63467,-2.38933 v -1.41867 q 0,-2.91199 -5.18933,-2.91199 -5.18933,0 -5.18933,2.91199 z"
-         id="path75279"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:1.68966" />
-      <path
-         d="m 356.774,148.31052 h -4.36799 q -3.28533,0 -4.74133,-1.344 -1.456,-1.344 -1.456,-4.55467 v -0.29866 q 0,-3.17333 1.30667,-4.368 1.30666,-1.19466 4.66666,-1.53066 l 6.45866,-0.63467 v -4.144 q 0,-2.91199 -5.07733,-2.91199 h -5.11466 q -0.74667,0 -0.74667,-1.30667 0,-1.30666 0.74667,-1.30666 h 5.11466 q 3.65866,0 5.86133,1.41866 2.20266,1.38133 2.20266,4.48 v 11.01332 q 0,2.42667 0.85867,3.84533 0.26133,0.448 0.26133,0.56 0,0.448 -0.70933,0.97067 -0.70933,0.48533 -1.19467,0.48533 -0.82133,0 -1.53066,-1.53067 -0.672,-1.56799 -0.672,-3.95733 v -5.00266 l -6.23466,0.63467 q -2.016,0.224 -2.61333,0.896 -0.59734,0.672 -0.59734,2.38933 v 0.29866 q 0,1.792 0.59734,2.53867 0.63466,0.74667 2.61333,0.74667 h 4.36799 q 0.74667,0 0.74667,1.30666 0,1.30667 -0.74667,1.30667 z"
-         id="path75281"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:1.68966" />
-      <path
-         d="m 379.77127,132.74253 v -1.86667 q 0,-2.91199 -3.472,-2.91199 -3.47199,0 -3.47199,2.91199 v 17.13599 q 0,0.85867 -1.49334,0.85867 -1.49333,0 -1.49333,-0.85867 V 131.2492 q 0,-3.09867 1.75467,-4.48 1.79199,-1.41866 4.70399,-1.41866 6.45866,0 6.45866,5.82399 v 1.568 q 0,0.85867 -1.49333,0.85867 -1.49333,0 -1.49333,-0.85867 z"
-         id="path75283"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:1.68966" />
-      <path
-         d="m 390.59792,119.30254 v 24.63998 q 0,1.19467 0.56,2.24 0.56,1.008 0.56,1.04533 0,0.448 -0.70933,0.97067 -0.70934,0.48533 -1.19467,0.48533 -0.784,0 -1.49333,-1.344 -0.70933,-1.38133 -0.70933,-3.024 v -25.01331 q 0,-0.85866 1.49333,-0.85866 1.49333,0 1.49333,0.85866 z"
-         id="path75285"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:1.68966" />
-      <path
-         d="m 403.77655,157.64384 h -2.688 q -0.74666,0 -0.74666,-1.30666 0,-1.30667 0.74666,-1.30667 h 2.688 q 2.09067,0 2.87467,-0.63467 0.784,-0.59733 1.08266,-2.27733 l 0.52267,-3.24799 h -2.16533 q -2.94933,0 -4.18133,-1.19467 -1.232,-1.19467 -1.68,-3.92 l -2.72533,-16.42665 q -0.14934,-0.85867 -0.14934,-0.93333 0,-0.672 1.41867,-0.672 1.41866,0 1.568,0.85866 l 2.8,16.76266 q 0.26133,1.60533 0.82133,2.27733 0.59733,0.63466 2.128,0.63466 h 2.61333 l 3.28533,-19.67465 q 0.14933,-0.85866 1.49333,-0.85866 1.344,0 1.344,0.672 0,0.0747 -0.112,0.85866 l -4.144,24.49065 q -0.59733,3.54666 -1.904,4.704 -1.30666,1.19466 -4.89066,1.19466 z"
-         id="path75287"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;stroke-width:1.68966" />
-      <path
-         d="m 429.61115,148.49718 h -2.50133 q -3.21066,0 -4.55466,-1.53066 -1.344,-1.568 -1.344,-5.04 v -15.90398 q 0,-3.09867 2.24,-4.48 2.24,-1.41867 5.97333,-1.41867 3.73333,0 5.93599,1.41867 2.20267,1.38133 2.20267,4.48 v 3.47199 q 0,3.65867 -2.912,4.55467 3.28533,0.78399 3.28533,4.62932 v 3.92 q 0,3.09867 -2.27733,4.51733 -2.27733,1.38133 -6.048,1.38133 z m 1.30667,-13.10399 h -4.66667 q -0.74666,0 -0.74666,-1.30666 0,-1.30667 0.74666,-1.30667 h 4.29333 q 4.032,0 4.032,-3.28533 v -3.84533 q 0,-2.912 -5.18933,-2.912 -5.18933,0 -5.18933,2.912 v 16.27732 q 0,2.16533 0.63467,3.06133 0.672,0.896 2.27733,0.896 h 2.42667 q 5.41332,0 5.41332,-2.912 v -4.29333 q 0,-3.28533 -4.03199,-3.28533 z"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#c92a2a;stroke-width:1.68966"
-         id="path75289" />
-      <path
-         d="m 454.9604,132.74253 v -1.86667 q 0,-2.91199 -3.472,-2.91199 -3.47199,0 -3.47199,2.91199 v 17.13599 q 0,0.85867 -1.49333,0.85867 -1.49334,0 -1.49334,-0.85867 V 131.2492 q 0,-3.09867 1.75467,-4.48 1.792,-1.41866 4.70399,-1.41866 6.45867,0 6.45867,5.82399 v 1.568 q 0,0.85867 -1.49334,0.85867 -1.49333,0 -1.49333,-0.85867 z"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#c92a2a;stroke-width:1.68966"
-         id="path75291" />
-      <path
-         d="m 475.60571,143.34519 v -12.46933 q 0,-2.91199 -5.11466,-2.91199 -5.07733,0 -5.07733,2.91199 v 12.46933 q 0,2.91199 5.07733,2.91199 5.11466,0 5.11466,-2.91199 z m 2.98667,-12.09599 v 11.72265 q 0,3.09867 -2.20267,4.51733 -2.20266,1.38134 -5.86133,1.38134 -3.65866,0 -5.89866,-1.38134 -2.20266,-1.41866 -2.20266,-4.51733 V 131.2492 q 0,-3.09867 2.20266,-4.48 2.20267,-1.41866 5.86133,-1.41866 3.65866,0 5.86133,1.41866 2.24,1.38133 2.24,4.48 z"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#c92a2a;stroke-width:1.68966"
-         id="path75293" />
-      <path
-         id="path75295"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#c92a2a;stroke-width:1.68966"
-         d="m 501.17383,85.707031 c -2.56355,0 -4.64149,0.472199 -6.23438,1.417969 -0.7046,0.407347 -1.2516,0.927233 -1.64453,1.558594 0.10262,0.02365 0.20405,0.04852 0.30664,0.08008 0.49822,0.15328 0.92375,0.328943 1.29297,0.689453 0.36922,0.3605 0.58107,1.064041 0.41992,1.587891 -3e-4,7.4e-4 -0.0474,0.127997 -0.0605,0.154296 -0.0131,0.0263 -0.0223,0.04189 -0.0293,0.05469 -0.0146,0.0256 -0.0242,0.03873 -0.0332,0.05273 -0.0176,0.0279 -0.0327,0.05123 -0.0508,0.07813 -0.0362,0.05379 -0.0827,0.121432 -0.14257,0.207032 -0.11979,0.17121 -0.29181,0.414738 -0.52149,0.736328 l -0.006,0.0059 -1.91992,2.59961 v 8.398436 c 0,2.0409 0.74691,3.53469 2.24024,4.48047 1.51822,0.94578 3.48421,1.41797 5.89843,1.41797 5.47555,0 8.21289,-1.84184 8.21289,-5.52539 v -1.04492 c 0,-0.57244 -0.49859,-0.85937 -1.49414,-0.85937 -0.99556,0 -1.49218,0.28693 -1.49218,0.85937 v 1.41797 c 0,1.69244 -1.84185,2.53906 -5.5254,2.53906 -3.23555,0 -4.85351,-0.97078 -4.85351,-2.91211 v -4.441408 l 7.2793,-0.710938 c 2.31467,-0.224 3.90818,-0.732857 4.77929,-1.529297 0.87111,-0.79645 1.30664,-2.25359 1.30664,-4.36914 V 91.53125 c 0,-2.09067 -0.64718,-3.584469 -1.9414,-4.480469 -1.29423,-0.89599 -3.22356,-1.34375 -5.78711,-1.34375 z m -0.44727,2.613281 c 3.45955,0 5.18946,0.97078 5.18946,2.91211 v 1.417969 c 0,1.14489 -0.21166,1.942625 -0.63477,2.390625 -0.39823,0.448 -1.3079,0.745201 -2.72656,0.894531 l -7.01758,0.710937 v -5.414062 c 0,-1.94133 1.7299,-2.91211 5.18945,-2.91211 z m -8.10547,2.28125 c -0.0442,0.305275 -0.0685,0.625182 -0.0703,0.960938 l 0.29688,-0.400391 c 0.13502,-0.18905 0.20783,-0.293684 0.30273,-0.427734 -0.0674,-0.0288 -0.0421,-0.02949 -0.13672,-0.05859 -0.17432,-0.05365 -0.29678,-0.06934 -0.39258,-0.07422 z"
-         transform="translate(9.3220692,39.643635)" />
-      <path
-         d="m 542.22953,131.2492 v 16.38932 q 0,0.85866 -1.49333,0.85866 -1.49333,0 -1.49333,-0.85866 v -16.76266 q 0,-2.91199 -5.11466,-2.91199 -5.07733,0 -5.07733,2.91199 v 16.76266 q 0,0.85866 -1.49333,0.85866 -1.49334,0 -1.49334,-0.85866 V 131.2492 q 0,-3.09867 2.20267,-4.48 2.20266,-1.41866 5.86133,-1.41866 3.65866,0 5.86132,1.41866 2.24,1.38133 2.24,4.48 z"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#c92a2a;stroke-width:1.68966"
-         id="path75297" />
-      <path
-         d="m 493.49149,120.14278 -8.33192,27.08332 c -0.16832,0.54714 -0.72825,0.67434 -1.6798,0.38161 -0.95155,-0.29273 -1.34316,-0.71267 -1.17483,-1.25981 l 8.33192,-27.08332 c 0.16832,-0.54714 0.72825,-0.67434 1.6798,-0.38161 0.95155,0.29273 1.34316,0.71267 1.17483,1.25981 z m 4.03084,31.08191 c -0.13173,0.42819 -0.61389,0.51422 -1.4465,0.25808 -0.8326,-0.25614 -1.248,-0.68339 -1.24619,-1.28176 l 0.12314,-7.89131 c 0.0183,-0.90578 -0.12998,-1.52427 -0.44475,-1.85546 -0.28365,-0.34766 -1.06776,-0.71909 -2.35234,-1.11428 l -2.24803,-0.69158 c -0.47577,-0.14637 -0.58558,-0.63585 -0.32944,-1.46845 0.25614,-0.8326 0.6221,-1.17572 1.09787,-1.02935 l 1.35595,0.41714 c 1.00644,0.28359 1.69722,0.3659 2.07233,0.24694 0.38244,-0.14275 0.8408,-0.57462 1.37509,-1.29561 l 4.39963,-5.79448 c 0.35863,-0.48859 0.94236,-0.60848 1.75117,-0.35965 0.8326,0.25614 1.18304,0.59831 1.05131,1.0265 -0.007,0.0238 -0.23971,0.35593 -0.69714,0.9964 l -4.35022,5.8878 c -0.39706,0.52885 -0.83347,0.88935 -1.30922,1.08151 0.96987,0.74105 1.43563,1.97801 1.39728,3.7109 l -0.15333,8.11638 c -0.0237,0.66973 -0.0393,1.01649 -0.0466,1.04028 z"
-         id="path75303"
-         sodipodi:nodetypes="ccsccscsscccssssccccsscccccss"
-         style="font-size:37.3333px;line-height:1.25;font-family:Offside;-inkscape-font-specification:Offside;letter-spacing:0px;word-spacing:0px;fill:#c92a2a;stroke-width:1.68966" />
-    </g>
-    <g
-       id="g2371"
-       transform="translate(1,26)">
-      <rect
-         style="display:inline;opacity:1;fill:#343a40;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
-         id="rect2357"
-         width="25"
-         height="25"
-         x="120"
-         y="455"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
-      <rect
-         style="display:inline;opacity:1;fill:#343a40;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
-         id="rect2359"
-         width="25"
-         height="25"
-         x="25"
-         y="455"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
-      <rect
-         style="display:inline;opacity:1;fill:#343a40;stroke:#495057;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
-         id="rect2361"
-         width="50"
-         height="25"
-         x="60"
-         y="455"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
-      <text
-         id="text2365"
-         y="483.17346"
-         x="83.52433"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"
-         transform="scale(1.0231304,0.97739252)"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"><tspan
-           id="tspan2363"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
-           y="483.17346"
-           x="83.400963"
-           sodipodi:role="line">120</tspan></text>
-      <rect
-         style="opacity:1;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
-         id="rect2367"
-         width="15"
-         height="5"
-         x="30"
-         y="465"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
-      <path
-         id="path2369"
-         style="opacity:1;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers"
-         d="m 130,460 v 5 h -5 v 5 h 5 v 5 h 5 v -5 h 5 v -5 h -5 v -5 z"
-         inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
-    </g>
-    <text
-       id="text6095"
-       y="527.90076"
-       x="82.425034"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.220537px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;stroke:#000000;stroke-width:1.47025px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       xml:space="preserve"
-       transform="scale(1.014578,0.98563146)"
-       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
-         id="tspan6091"
-         y="527.90076"
-         x="82.425034"
-         sodipodi:role="line">BPM</tspan><tspan
-         id="tspan6093"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;stroke:none;stroke-width:1.47025px"
-         y="541.23407"
-         x="82.425034"
-         sodipodi:role="line" /></text>
-    <g
-       id="g8989"
-       transform="matrix(0.75004109,0,0,0.75004109,-208.33781,143.04096)"
-       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
-      <path
-         style="display:inline;opacity:1;fill:none;stroke:#868e96;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-         id="path8985"
-         transform="scale(1,-1)"
-         sodipodi:type="arc"
-         sodipodi:cx="735"
-         sodipodi:cy="-468"
-         sodipodi:rx="26.079571"
-         sodipodi:ry="26.079571"
-         sodipodi:start="5.4977871"
-         sodipodi:end="3.9269908"
-         sodipodi:arc-type="arc"
-         sodipodi:open="true"
-         d="m 753.44104,-486.44104 a 26.079571,26.079571 0 0 1 5.65334,28.42126 26.079571,26.079571 0 0 1 -24.09438,16.09935 26.079571,26.079571 0 0 1 -24.09438,-16.09935 26.079571,26.079571 0 0 1 5.65334,-28.42126" />
-      <path
-         style="display:inline;opacity:1;fill:none;stroke:#e67700;stroke-width:7.84086;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-         id="path8987"
-         transform="scale(1,-1)"
-         sodipodi:type="arc"
-         sodipodi:cx="735"
-         sodipodi:cy="-468"
-         sodipodi:rx="26.079571"
-         sodipodi:ry="26.079571"
-         sodipodi:start="1.8596913"
-         sodipodi:end="3.9269908"
-         sodipodi:arc-type="arc"
-         sodipodi:open="true"
-         d="m 727.57011,-443.00119 a 26.079571,26.079571 0 0 1 -17.85017,-18.59081 26.079571,26.079571 0 0 1 6.83902,-24.84904" />
-    </g>
-    <text
-       id="text9327"
-       y="541.99695"
-       x="334.04037"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;line-height:100%;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.246736px;word-spacing:0px;display:inline;opacity:1;fill:#f1f3f5;fill-opacity:1;stroke:#000000;stroke-width:1.64491px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       xml:space="preserve"
-       transform="scale(1.0231304,0.97739252)"
-       inkscape:export-filename="/home/rob/git/ninjas2/Artwork/Ninjas2_mockup_2022.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96"><tspan
-         id="tspan9325"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f1f3f5;fill-opacity:1;stroke:none;stroke-width:1.64491px"
-         y="541.99695"
-         x="333.91699"
-         sodipodi:role="line">SENSITIVITY</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#f8f9fa"
-       x="185.61853"
-       y="43.893242"
-       id="text56751"><tspan
-         sodipodi:role="line"
-         id="tspan56749"
-         x="185.61853"
-         y="43.893242"
-         style="font-size:26.6667px">/home/rob/awesome_sample.wav</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
