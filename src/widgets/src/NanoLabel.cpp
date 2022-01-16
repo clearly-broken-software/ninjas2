@@ -27,8 +27,8 @@ void NanoLabel::setLabel(const std::string text)
 
 void NanoLabel::onNanoDisplay()
 {
-    const float width = getWidth();
-    const float height = getHeight();
+    const float width = getWidth() -2 ;
+    const float height = getHeight() -2 ;
     beginPath();
     fillColor(backgroundColor);
     strokeColor(134, 142, 150); // gray6
@@ -60,7 +60,7 @@ void NanoLabel::onNanoDisplay()
                 break;
         }
 
-        text(0, std::round(height / 2.0f), tempText.c_str(), NULL);
+        text(1, std::round(height / 2.0f), tempText.c_str(), NULL);
         closePath();
     }
     else
