@@ -22,7 +22,6 @@ private:
     std::string labelText;
     Color backgroundColor;
     Color textColor;
-    int align;
 };
 
 END_NAMESPACE_DISTRHO
