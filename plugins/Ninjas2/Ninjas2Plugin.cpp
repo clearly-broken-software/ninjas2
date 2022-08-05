@@ -1123,7 +1123,6 @@ void NinjasPlugin::getOnsets ()
     }
     
     del_aubio_onset ( onset );
-    aubio_cleanup();
 }
 
 void NinjasPlugin::createSlicesOnsets ()
